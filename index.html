@@ -4,289 +4,191 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tarocchi dell'Anima — Cartomanzia Online</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
-    
     <style>
-        /* --- RESET E VARIABILI --- */
+        /* --- DESIGN MISTICO --- */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        
         :root {
-            --gold: #C9A84C;
-            --gold-light: #E8C97A;
-            --deep-space: #0D0A1A;
-            --surface: rgba(35, 27, 56, 0.4);
-            --text: #EDE0C4;
-            --text-muted: #9A8A6E;
-            --border: rgba(201, 168, 76, 0.15);
+            --gold: #C9A84C; --gold-light: #E8C97A; --deep: #0D0A1A;
+            --surface: #231B38; --surface2: #2D2347; --text: #EDE0C4;
+            --text-muted: #9A8A6E; --mystic: #C4A1E8; --border: rgba(201,168,76,0.25);
         }
-
         body {
-            background-color: var(--deep-space);
-            color: var(--text);
+            background: var(--deep); color: var(--text);
             font-family: 'Cormorant Garamond', serif;
-            font-size: 18px;
-            line-height: 1.6;
-            overflow-x: hidden;
-            position: relative;
+            font-size: 18px; line-height: 1.7; min-height: 100vh; overflow-x: hidden;
         }
-
-        /* SFONDO STELLATO */
         body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px);
-            background-size: 550px 550px, 350px 350px;
-            background-position: 0 0, 40px 60px;
-            z-index: -1;
-            opacity: 0.4;
+            content: ''; position: fixed; inset: 0;
+            background-image: radial-gradient(1px 1px at 10% 15%, white 0.5, transparent 100%),
+                              radial-gradient(1px 1px at 80% 20%, var(--gold) 0.3, transparent 100%);
+            pointer-events: none; z-index: 0;
         }
-
-        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
-
-        /* NAVBAR */
-        nav {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            background: rgba(13, 10, 26, 0.85);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            padding: 20px 0;
-        }
-        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
-        .nav-logo { font-family: 'Cinzel Decorative', cursive; color: var(--gold); text-decoration: none; font-size: 14px; letter-spacing: 0.1em; cursor: pointer; }
-        .nav-links { display: flex; gap: 30px; list-style: none; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-family: 'Cinzel', serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; cursor: pointer; transition: 0.3s; }
-        .nav-links a:hover { color: var(--gold-light); }
-
-        /* SEZIONI */
-        .content-section { display: none; padding: 160px 0 80px; animation: fadeIn 0.8s ease; }
-        .content-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* HERO STYLES */
-        .hero { text-align: center; display: flex; flex-direction: column; align-items: center; }
-        .hero-eyebrow { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.4em; color: var(--text-muted); margin-bottom: 20px; }
-        h1, .section-title { font-family: 'Cinzel Decorative', cursive; color: var(--gold-light); font-size: clamp(35px, 7vw, 75px); line-height: 1.1; margin-bottom: 20px; text-align: center; }
-        .hero-subtitle { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 0.3em; color: var(--text-muted); margin-bottom: 30px; text-align: center; }
-        .hero-divider { font-size: 20px; color: var(--gold); margin-bottom: 30px; display: flex; gap: 15px; opacity: 0.5; }
-        .hero-description { font-style: italic; font-weight: 300; font-size: 20px; color: var(--text-muted); max-width: 600px; margin: 0 auto; text-align: center; }
-
-        /* CARDS & FORMS */
-        .glass-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; backdrop-filter: blur(8px); margin-top: 40px; }
-        .form-label { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 15px; display: block; }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+        nav { position: sticky; top: 0; z-index: 100; background: rgba(13,10,26,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 14px 0; }
+        .nav-logo { font-family: 'Cinzel Decorative', cursive; color: var(--gold); text-decoration: none; font-size: 14px; letter-spacing: 2px; }
         
-        textarea, input {
-            width: 100%; background: rgba(13, 10, 26, 0.6); border: 1px solid var(--border); border-radius: 12px;
-            color: var(--text); padding: 18px; font-family: 'Cormorant Garamond', serif; font-size: 18px; outline: none; transition: 0.3s;
+        .hero { text-align: center; padding: 80px 0 50px; }
+        h1 { font-family: 'Cinzel Decorative', cursive; font-size: clamp(30px, 6vw, 55px); color: var(--gold-light); margin-bottom: 15px; }
+        
+        .input-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 35px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { font-family: 'Cinzel', serif; font-size: 22px; color: var(--gold); margin-bottom: 20px; text-align: center; letter-spacing: 2px; }
+        
+        textarea { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: inherit; font-size: 18px; padding: 15px; min-height: 120px; outline: none; transition: 0.3s; }
+        textarea:focus { border-color: var(--gold); }
+
+        .btn { width: 100%; padding: 16px; margin-top: 15px; background: linear-gradient(135deg,#3D2B6B,#5C3D9A); border: 1px solid var(--gold); border-radius: 10px; color: var(--gold-light); font-family: 'Cinzel', serif; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Carte */
+        .cards-spread { display: flex; gap: 20px; justify-content: center; margin: 40px 0; flex-wrap: wrap; perspective: 1000px; }
+        .tarot-card { width: 150px; height: 260px; position: relative; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .tarot-card.flipped { transform: rotateY(180deg); }
+        .card-back, .card-front { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 12px; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .card-back { background: var(--surface2); color: var(--gold); font-size: 40px; }
+        .card-front { background: linear-gradient(160deg, #1E1535, #2D2040); transform: rotateY(180deg); padding: 15px; text-align: center; }
+
+        /* Risultati */
+        .result-area { background: rgba(35, 27, 56, 0.9); border: 1px solid var(--gold); border-radius: 16px; padding: 35px; margin-top: 30px; display: none; animation: fadeIn 1s; }
+        .visible { display: block; }
+        
+        /* Stile del testo e del grassetto */
+        .reading-text { font-size: 20px; line-height: 1.8; }
+        .reading-text b, .reading-text strong { color: var(--gold-light); font-weight: bold; }
+        .reading-text em { color: var(--mystic); font-style: italic; }
+
+        /* Box Riassunto */
+        .summary-box { 
+            background: rgba(201, 168, 76, 0.1); 
+            border-left: 3px solid var(--gold); 
+            padding: 20px; 
+            margin-bottom: 25px; 
+            font-style: italic;
+            border-radius: 0 8px 8px 0;
         }
-        textarea:focus, input:focus { border-color: var(--gold); }
-
-        .btn-action {
-            width: 100%; padding: 20px; border-radius: 12px; font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.2em;
-            cursor: pointer; transition: 0.4s; text-transform: uppercase; margin-top: 20px; border: 1px solid var(--border);
-        }
-
-        /* TAGS SOGNI */
-        .temi-container { display: flex; flex-wrap: wrap; gap: 10px; margin: 25px 0; align-items: center; }
-        .tag-btn { background: rgba(61, 43, 107, 0.3); border: 1px solid var(--border); border-radius: 50px; color: #A1B6E8; padding: 6px 15px; font-size: 11px; font-family: 'Cinzel', serif; cursor: pointer; transition: 0.3s; }
-        .tag-btn:hover { border-color: var(--gold); }
-
-        /* GRIGLIA CONSULENZA */
-        .servizi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
-        .servizio-item { display: flex; align-items: center; gap: 12px; font-style: italic; color: var(--text-muted); }
-
-        /* TAROCCHI VISUAL */
-        .cards-spread { display: flex; gap: 15px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
-        .tarot-card { width: 130px; height: 210px; perspective: 1000px; }
-        .card-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s; }
-        .tarot-card.flipped .card-inner { transform: rotateY(180deg); }
-        .card-front, .card-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 10px; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; flex-direction: column; }
-        .card-back { background: #1A152E; color: var(--gold); font-size: 30px; }
-        .card-front { background: #1E1535; transform: rotateY(180deg); padding: 10px; text-align: center; }
-
-        .result-box { display: none; margin-top: 30px; padding: 25px; border-left: 2px solid var(--gold); background: rgba(255,255,255,0.03); font-style: italic; }
-
-        @media (max-width: 600px) { .servizi-grid { grid-template-columns: 1fr; } .nav-links { display: none; } }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .loading { font-style: italic; color: var(--gold); text-align: center; padding: 20px; }
     </style>
 </head>
 <body>
 
-<nav>
-    <div class="container nav-inner">
-        <a class="nav-logo" onclick="showSection('home')">✦ TAROCCHI DELL'ANIMA</a>
-        <ul class="nav-links">
-            <li><a onclick="showSection('oracolo')">Lettura</a></li>
-            <li><a onclick="showSection('sogni')">Sogni</a></li>
-            <li><a onclick="showSection('contatto')">Consulenza</a></li>
-        </ul>
-    </div>
-</nav>
+<nav><div class="container"><a href="#" class="nav-logo">✦ TAROCCHI DELL'ANIMA</a></div></nav>
 
 <div class="container">
-    
-    <section id="home" class="content-section active">
-        <div class="hero">
-            <div class="hero-eyebrow">✦ &nbsp; CARTOMANZIA · TAROCCHI · ORACOLO &nbsp; ✦</div>
-            <h1>TAROCCHI<br>DELL'ANIMA</h1>
-            <div class="hero-subtitle">LETTURA ONLINE · INTERPRETAZIONE DEI SOGNI</div>
-            <div class="hero-divider"><span>⟡</span> <span>✦</span> <span>⟡</span></div>
-            <p class="hero-description">Tre carte, una domanda, un percorso. Lascia che gli arcani rivelino ciò che il cuore già conosce.</p>
-            <div style="display: flex; gap: 20px; margin-top: 40px;">
-                <button class="tag-btn" style="padding: 15px 30px;" onclick="showSection('oracolo')">INIZIA LETTURA</button>
-                <button class="tag-btn" style="padding: 15px 30px; color: var(--gold);" onclick="showSection('sogni')">SVELA SOGNO</button>
-            </div>
-        </div>
+    <section class="hero">
+        <h1>L'Oracolo Mistico</h1>
+        <p>Svela il tuo destino attraverso il linguaggio segreto degli Arcani.</p>
     </section>
 
-    <section id="oracolo" class="content-section">
-        <div class="hero-eyebrow">✦ &nbsp; IL DESTINO NELLE TUE MANI &nbsp; ✦</div>
-        <h2 class="section-title">LE TRE CARTE</h2>
-        <div class="glass-card">
-            <label class="form-label">COSA DESIDERI CHIEDERE?</label>
-            <textarea id="questionInput" placeholder="Concentrati sulla tua domanda e scrivi qui..."></textarea>
-            <button class="btn-action" style="background: linear-gradient(90deg, #3D2B6B, #5C3D9A); color: var(--gold-light);" onclick="startReading()">Estrai gli Arcani</button>
-        </div>
-        <div class="cards-spread" id="cardsSpread" style="display:none">
-            <div class="tarot-card" id="card0"><div class="card-inner"><div class="card-back">✦</div><div class="card-front" id="cardFront0"></div></div></div>
-            <div class="tarot-card" id="card1"><div class="card-inner"><div class="card-back">✦</div><div class="card-front" id="cardFront1"></div></div></div>
-            <div class="tarot-card" id="card2"><div class="card-inner"><div class="card-back">✦</div><div class="card-front" id="cardFront2"></div></div></div>
-        </div>
-        <div class="result-box" id="readingResult"><div id="readingContent"></div></div>
-    </section>
+    <div class="input-box">
+        <h2>Lettura delle Tre Carte</h2>
+        <textarea id="qInput" placeholder="Quale domanda tormenta il tuo spirito?"></textarea>
+        <button class="btn" id="btnT" onclick="startReading()">✦ Rivela le Carte ✦</button>
+    </div>
 
-    <section id="sogni" class="content-section">
-        <div class="hero-eyebrow">✦ &nbsp; INTERPRETAZIONE DEI SOGNI &nbsp; ✦</div>
-        <h2 class="section-title">IL LIBRO DEI SOGNI</h2>
-        <div class="glass-card">
-            <label class="form-label">🌙 &nbsp; RACCONTA IL TUO SOGNO</label>
-            <textarea id="dreamInput" placeholder="Descrivi il tuo sogno, i luoghi, le sensazioni..."></textarea>
-            <div class="temi-container">
-                <span style="font-size: 11px; color: var(--text-muted);">TEMI:</span>
-                <button class="tag-btn" onclick="addSymbol('Acqua')">🌊 ACQUA</button>
-                <button class="tag-btn" onclick="addSymbol('Volare')">🦅 VOLARE</button>
-                <button class="tag-btn" onclick="addSymbol('Fuoco')">🔥 FUOCO</button>
-                <button class="tag-btn" onclick="addSymbol('Luna')">🌕 LUNA</button>
-                <button class="tag-btn" onclick="addSymbol('Foresta')">🌲 FORESTA</button>
-            </div>
-            <button class="btn-action" style="background: linear-gradient(90deg, #1A3550, #2C4B70); color: white;" onclick="interpretDream()">Interpreta il Sogno</button>
-        </div>
-        <div class="result-box" id="dreamResult"><div id="dreamContent"></div></div>
-    </section>
+    <div class="cards-spread" id="spread" style="display:none">
+        <div class="tarot-card" id="c0"><div class="card-back">✦</div><div class="card-front" id="f0"></div></div>
+        <div class="tarot-card" id="c1"><div class="card-back">✦</div><div class="card-front" id="f1"></div></div>
+        <div class="tarot-card" id="c2"><div class="card-back">✦</div><div class="card-front" id="f2"></div></div>
+    </div>
 
-    <section id="contatto" class="content-section">
-        <div class="hero-eyebrow">✦ &nbsp; CONSULENZA PERSONALE &nbsp; ✦</div>
-        <h2 class="section-title" style="text-align: left;">CONSULENZA<br>PERSONALE</h2>
-        <p class="hero-description" style="text-align: left; margin: 0 0 40px 0;">Scrivi per una lettura approfondita e riservata. Rispondo entro 48 ore.</p>
-        
-        <div class="servizi-grid">
-            <div class="servizio-item"><span>🃏</span> Lettura completa tarocchi</div>
-            <div class="servizio-item"><span>🌙</span> Analisi onirica dettagliata</div>
-            <div class="servizio-item"><span>✦</span> Tema natale e astrale</div>
-            <div class="servizio-item"><span>📜</span> Risposta scritta via email</div>
-        </div>
+    <div class="result-area" id="resT">
+        <div id="contT" class="reading-text"></div>
+        <button class="btn" style="background:transparent; font-size:12px;" onclick="location.reload()">↺ Nuova Consultazione</button>
+    </div>
 
-        <div class="input-group" style="margin-bottom: 20px;">
-            <label class="form-label">NOME</label>
-            <input type="text" id="cName" placeholder="Il tuo nome...">
-        </div>
-        <div class="input-group" style="margin-bottom: 20px;">
-            <label class="form-label">EMAIL</label>
-            <input type="email" id="cEmail" placeholder="la.tua@email.it">
-        </div>
-        <div class="input-group" style="margin-bottom: 20px;">
-            <label class="form-label">IL TUO MESSAGGIO</label>
-            <textarea id="cMessage" placeholder="Cosa desideri approfondire?"></textarea>
-        </div>
-        <button class="btn-action" style="background: var(--gold); color: var(--deep-space); font-weight: bold;" onclick="sendContact()">Invia Richiesta</button>
-        <p id="successMsg" style="display:none; color: var(--gold-light); text-align: center; margin-top: 20px; font-style: italic;">Messaggio inviato. Ti risponderò presto.</p>
-    </section>
+    <div class="input-box" style="margin-top: 80px;">
+        <h2>Interpretazione dei Sogni</h2>
+        <textarea id="dInput" placeholder="Descrivi il tuo sogno nei dettagli..."></textarea>
+        <button class="btn" style="background:linear-gradient(135deg,#1A3550,#254D75);" id="btnD" onclick="interpretDream()">🌙 Svela il Sogno</button>
+    </div>
 
+    <div class="result-area" id="resD">
+        <div id="contD" class="reading-text"></div>
+    </div>
 </div>
 
 <script>
-    // --- CONFIGURAZIONE MAKE.COM ---
-    const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/wdc6niacrxs2vlmssjbd592ymzw2859w";
+    const WEBHOOK = "https://hook.eu1.make.com/wdc6niacrxs2vlmssjbd592ymzw2859w";
 
-    function showSection(id) {
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        window.scrollTo(0,0);
-    }
-
-    function addSymbol(s) {
-        const i = document.getElementById('dreamInput');
-        i.value += (i.value ? ', ' : '') + s;
-    }
-
-    async function callMake(payload) {
-        const res = await fetch(MAKE_WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        return await res.text();
-    }
-
-    // LOGICA TAROCCHI
-    const CARDS = [
-        {name:'Il Mago', s:'🪄'}, {name:'La Papessa', s:'📖'}, {name:'L\'Imperatrice', s:'🌺'},
-        {name:'L\'Imperatore', s:'⚔️'}, {name:'Il Papa', s:'✝️'}, {name:'Gli Amanti', s:'💞'},
-        {name:'Il Carro', s:'🏆'}, {name:'La Forza', s:'🦁'}, {name:'L\'Eremita', s:'🕯️'},
-        {name:'La Ruota', s:'☸️'}, {name:'La Giustizia', s:'⚖️'}, {name:'L\'Appeso', s:'🔮'}
+    const DECK = [
+        {n:'I', name:'Il Mago', s:'🪄'}, {n:'II', name:'La Papessa', s:'📖'}, {n:'III', name:'L\'Imperatrice', s:'🌺'},
+        {n:'IV', name:'L\'Imperatore', s:'⚔️'}, {n:'VI', name:'Gli Amanti', s:'💞'}, {n:'X', name:'La Ruota', s:'☸️'},
+        {n:'XIII', name:'La Morte', s:'🌑'}, {n:'XVIII', name:'La Luna', s:'🌕'}, {n:'XIX', name:'Il Sole', s:'☀️'},
+        {n:'XXI', name:'Il Mondo', s:'🌍'}, {n:'0', name:'Il Matto', s:'🌟'}
     ];
 
+    // Funzione per pulire il testo da asterischi e formattare in HTML
+    function formatText(text) {
+        // Converte **grassetto** in <b>
+        let formatted = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+        // Converte *corsivo* in <em>
+        formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        // Converte a capo in <br>
+        return formatted.replace(/\n/g, '<br>');
+    }
+
+    async function askMake(data) {
+        const r = await fetch(WEBHOOK, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        return await r.text();
+    }
+
     async function startReading() {
-        const q = document.getElementById('questionInput').value;
-        if(!q) return alert("Fai una domanda all'oracolo.");
+        const q = document.getElementById('qInput').value.trim();
+        if(!q) return;
 
-        document.getElementById('cardsSpread').style.display = 'flex';
-        const chosen = [...CARDS].sort(() => 0.5 - Math.random()).slice(0,3);
-
-        chosen.forEach((c, i) => {
-            document.getElementById('card' + i).classList.remove('flipped');
-            document.getElementById('cardFront' + i).innerHTML = `<div style="font-size:30px">${c.s}</div><div style="font-size:12px; margin-top:10px">${c.name}</div>`;
-            setTimeout(() => document.getElementById('card' + i).classList.add('flipped'), (i+1)*600);
+        document.getElementById('btnT').disabled = true;
+        const drawn = [...DECK].sort(() => 0.5 - Math.random()).slice(0, 3);
+        
+        document.getElementById('spread').style.display = 'flex';
+        drawn.forEach((c, i) => {
+            document.getElementById('f' + i).innerHTML = `<div style="font-size:45px">${c.s}</div><div style="font-family:Cinzel; color:var(--gold); margin-top:10px">${c.name}</div>`;
+            setTimeout(() => document.getElementById('c' + i).classList.add('flipped'), i * 600);
         });
 
-        const resBox = document.getElementById('readingResult');
-        resBox.style.display = 'block';
-        document.getElementById('readingContent').innerHTML = "L'oracolo sta consultando gli astri...";
+        const resBox = document.getElementById('resT');
+        const cont = document.getElementById('contT');
+        resBox.classList.add('visible');
+        cont.innerHTML = `<div class="loading">L'Oracolo sta leggendo la trama del destino...</div>`;
 
         try {
-            const reply = await callMake({ tipo: "tarocchi", domanda: q, carte: chosen.map(c=>c.name).join(',') });
-            document.getElementById('readingContent').innerHTML = reply;
-        } catch(e) { document.getElementById('readingContent').innerHTML = "Il portale è momentaneamente chiuso."; }
+            const reply = await askMake({
+                type: "tarocchi",
+                prompt_mod: "Inizia la risposta con un breve paragrafo di sintesi chiamato 'SINTESI DELL'ORACOLO' racchiuso in un box, poi prosegui con la spiegazione dettagliata.",
+                question: q,
+                cards: drawn.map(c => c.name).join(", ")
+            });
+            cont.innerHTML = formatText(reply);
+        } catch (e) {
+            cont.innerHTML = "La connessione con l'etere è interrotta.";
+        }
     }
 
-    // LOGICA SOGNI
     async function interpretDream() {
-        const dream = document.getElementById('dreamInput').value;
-        if(!dream) return alert("Descrivi il tuo sogno.");
+        const d = document.getElementById('dInput').value.trim();
+        if(!d) return;
 
-        const resBox = document.getElementById('dreamResult');
-        resBox.style.display = 'block';
-        document.getElementById('dreamContent').innerHTML = "Interpretando i simboli del tuo inconscio...";
-
-        try {
-            const reply = await callMake({ tipo: "sogno", descrizione: dream });
-            document.getElementById('dreamContent').innerHTML = reply;
-        } catch(e) { document.getElementById('dreamContent').innerHTML = "Errore nella visione."; }
-    }
-
-    // LOGICA CONTATTO
-    async function sendContact() {
-        const n = document.getElementById('cName').value;
-        const e = document.getElementById('cEmail').value;
-        const m = document.getElementById('cMessage').value;
-        if(!n || !e || !m) return alert("Compila tutti i campi.");
+        const resBox = document.getElementById('resD');
+        const cont = document.getElementById('contD');
+        resBox.classList.add('visible');
+        cont.innerHTML = `<div class="loading">Viaggiando nei regni di Morfeo...</div>`;
 
         try {
-            await callMake({ tipo: "contatto", nome: n, email: e, messaggio: m });
-            document.getElementById('successMsg').style.display = 'block';
-        } catch(err) { alert("Errore nell'invio."); }
+            const reply = await askMake({
+                type: "sogno",
+                prompt_mod: "Inizia la risposta con un breve paragrafo di sintesi chiamato 'ESSENZA DEL SOGNO' racchiuso in un box, poi prosegui con l'interpretazione completa.",
+                dream: d
+            });
+            cont.innerHTML = formatText(reply);
+        } catch (e) {
+            cont.innerHTML = "Il sogno è svanito prima di essere compreso.";
+        }
     }
 </script>
 </body>
