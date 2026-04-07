@@ -41,12 +41,13 @@
             background: rgba(13, 10, 26, 0.9); backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border); padding: 20px 0;
         }
-        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 20px;}
         .nav-logo { font-family: 'Cinzel Decorative', cursive; color: var(--gold); text-decoration: none; font-size: 14px; letter-spacing: 0.1em; cursor: pointer; }
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .credit-badge { font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); border: 1px solid var(--gold); padding: 5px 15px; border-radius: 50px; background: rgba(201, 168, 76, 0.1); }
-        .nav-links { display: flex; gap: 30px; list-style: none; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-family: 'Cinzel', serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; cursor: pointer; transition: 0.3s; }
+        .nav-links { display: flex; gap: 20px; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-family: 'Cinzel', serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold-light); }
 
         /* SEZIONI */
         .content-section { display: none; padding: 160px 0 80px; animation: fadeIn 0.8s ease; }
@@ -59,18 +60,20 @@
         .hero-buttons-container { display: flex; gap: 20px; justify-content: center; margin-top: 40px; }
         .hero-tag-btn { 
             background: rgba(61, 43, 107, 0.3); border: 1px solid var(--border); border-radius: 50px; 
-            color: #EDE0C4; padding: 15px 30px; cursor: pointer; transition: 0.3s; 
+            color: #EDE0C4; padding: 12px 24px; cursor: pointer; transition: 0.3s; 
             font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; 
         }
+        .hero-tag-btn:hover { border-color: var(--gold); background: rgba(201, 168, 76, 0.15); }
 
         .glass-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; backdrop-filter: blur(8px); margin-top: 40px; }
-        textarea { width: 100%; background: rgba(13, 10, 26, 0.6); border: 1px solid var(--border); border-radius: 12px; color: var(--text); padding: 18px; font-family: 'Cormorant Garamond', serif; font-size: 18px; outline: none; margin-bottom: 20px; resize: none; min-height: 120px;}
-
+        textarea, input { width: 100%; background: rgba(13, 10, 26, 0.6); border: 1px solid var(--border); border-radius: 12px; color: var(--text); padding: 18px; font-family: 'Cormorant Garamond', serif; font-size: 18px; outline: none; margin-bottom: 20px; resize: none; }
+        
         .btn-action {
             width: 100%; padding: 20px; border-radius: 12px; font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.2em;
             cursor: pointer; transition: 0.4s; text-transform: uppercase; border: 1px solid var(--gold); 
             background: linear-gradient(90deg, #3D2B6B, #5C3D9A); color: white;
         }
+        .btn-action:hover { background: var(--gold); color: var(--deep-space); }
 
         .result-box { display: none; margin-top: 30px; padding: 30px; border: 1px solid var(--border); background: rgba(255,255,255,0.02); border-radius: 20px; }
 
@@ -80,26 +83,27 @@
         .card-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s; }
         .tarot-card.flipped .card-inner { transform: rotateY(180deg); }
         .card-front, .card-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 10px; border: 1px solid var(--gold); overflow: hidden; }
-        .card-back { background: #1A152E; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 40px; }
+        .card-back { background: #1A152E; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 40px; font-family: 'Cinzel', serif; }
         .card-front { background: #1E1535; transform: rotateY(180deg); display: flex; flex-direction: column; align-items: center; padding: 10px; }
-        
         .tarot-image { width: 100%; height: 85%; object-fit: cover; border-radius: 5px; transition: transform 0.3s; }
-        /* Se rovesciata, ruotiamo solo l'immagine dentro il fronte */
         .is-reversed .tarot-image { transform: rotate(180deg); }
-        
         .card-name-label { font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold); margin-top: 8px; text-align: center; }
+
+        /* TAG SOGNI */
+        .tag-container { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="container nav-inner">
+    <div class="nav-inner">
         <a class="nav-logo" onclick="showSection('home')">✦ TAROCCHI DELL'ANIMA</a>
         <div class="nav-right">
             <div class="credit-badge">✨ Crediti: <span id="creditCount">100</span></div>
             <ul class="nav-links">
-                <li><a onclick="showSection('oracolo')">Lettura</a></li>
+                <li><a onclick="showSection('oracolo')">Tarocchi</a></li>
                 <li><a onclick="showSection('sogni')">Sogni</a></li>
+                <li><a onclick="showSection('contatto')">Consulenza</a></li>
             </ul>
         </div>
     </div>
@@ -108,7 +112,7 @@
 <div class="container">
     <section id="home" class="content-section active">
         <h1>TAROCCHI<br>DELL'ANIMA</h1>
-        <p class="hero-subtitle">Lascia che gli arcani rivelino ciò che il cuore già conosce.</p>
+        <p class="hero-subtitle">"L'inconscio parla per simboli. Noi siamo qui per tradurli."</p>
         <div class="hero-buttons-container">
             <button class="hero-tag-btn" onclick="showSection('oracolo')">INIZIA LETTURA</button>
             <button class="hero-tag-btn" onclick="showSection('sogni')">SVELA SOGNO</button>
@@ -117,17 +121,15 @@
 
     <section id="oracolo" class="content-section">
         <h2>CONSULTA GLI ARCANI</h2>
-        <div id="inputBox" class="glass-card">
-            <textarea id="questionInput" placeholder="Qual è la tua domanda?"></textarea>
-            <button class="btn-action" onclick="runTarot()">Estrai 3 Carte</button>
+        <div id="tarotInputBox" class="glass-card">
+            <textarea id="questionInput" placeholder="Quale dubbio attanaglia il tuo spirito?"></textarea>
+            <button class="btn-action" onclick="runTarot()">Estrai le Carte (1 Credito)</button>
         </div>
-        
         <div class="cards-spread" id="cardsSpread" style="display:none">
             <div class="tarot-card" id="card0"><div class="card-inner"><div class="card-back">✦</div><div class="card-front" id="cf0"></div></div></div>
             <div class="tarot-card" id="card1"><div class="card-inner"><div class="card-back">✦</div><div class="card-front" id="cf1"></div></div></div>
             <div class="tarot-card" id="card2"><div class="card-inner"><div class="card-back">✦</div><div class="card-front" id="cf2"></div></div></div>
         </div>
-
         <div id="readingResult" class="result-box">
             <div id="readingContent" style="margin-bottom: 20px;"></div>
             <button class="btn-action" onclick="location.reload()">NUOVA DOMANDA</button>
@@ -136,20 +138,40 @@
 
     <section id="sogni" class="content-section">
         <h2>IL LIBRO DEI SOGNI</h2>
-        <div class="glass-card">
-            <textarea id="dreamInput" placeholder="Racconta il tuo sogno..."></textarea>
-            <button class="btn-action" onclick="runDream()">Interpreta</button>
+        <div id="dreamInputBox" class="glass-card">
+            <textarea id="dreamInput" placeholder="Racconta la tua visione notturna..."></textarea>
+            <div class="tag-container">
+                <button class="hero-tag-btn" onclick="addTag('Ricorrente')">🔄 Ricorrente</button>
+                <button class="hero-tag-btn" onclick="addTag('Amore')">❤️ Amore</button>
+                <button class="hero-tag-btn" onclick="addTag('Morte')">💀 Morte</button>
+                <button class="hero-tag-btn" onclick="addTag('Ansia')">😰 Ansia</button>
+                <button class="hero-tag-btn" onclick="addTag('Controllo')">🎮 Controllo</button>
+                <button class="hero-tag-btn" onclick="addTag('Nudità')">🫣 Nudità</button>
+                <button class="hero-tag-btn" onclick="addTag('Sesso')">🔥 Sesso</button>
+                <button class="hero-tag-btn" onclick="addTag('Libertà')">🦅 Libertà</button>
+                <button class="hero-tag-btn" onclick="addTag('Potere')">👑 Potere</button>
+            </div>
+            <button class="btn-action" onclick="runDream()">Interpreta Visione (1 Credito)</button>
         </div>
         <div id="dreamResult" class="result-box">
             <div id="dreamContent"></div>
+            <button class="btn-action" onclick="location.reload()" style="margin-top:20px">NUOVA INTERPRETAZIONE</button>
+        </div>
+    </section>
+
+    <section id="contatto" class="content-section">
+        <h2>CONSULENZA PRIVATA</h2>
+        <div class="glass-card">
+            <input type="text" id="cName" placeholder="Nome">
+            <input type="email" id="cEmail" placeholder="Email">
+            <textarea id="cMessage" placeholder="Descrivi la tua situazione per una consulenza approfondita..."></textarea>
+            <button class="btn-action">Invia Richiesta</button>
         </div>
     </section>
 </div>
 
 <script>
     const MAKE_URL = "https://hook.eu1.make.com/wdc6niacrxs2vlmssjbd592ymzw2859w";
-    
-    // IMMAGINI STABILI RIDER-WAITE
     const IMG_BASE = "https://www.sacred-texts.com/tarot/pkt/img/";
     const CARDS = [
         {n: "Il Matto", i: "ar00.jpg"}, {n: "Il Mago", i: "ar01.jpg"}, {n: "La Papessa", i: "ar02.jpg"},
@@ -170,13 +192,19 @@
     function showSection(id) {
         document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function addTag(tag) {
+        const input = document.getElementById('dreamInput');
+        input.value += (input.value ? ', ' : '') + tag;
     }
 
     async function runTarot() {
         const q = document.getElementById('questionInput').value;
         if (!q) return alert("Inserisci una domanda.");
-
-        document.getElementById('inputBox').style.display = 'none';
+        
+        document.getElementById('tarotInputBox').style.display = 'none';
         document.getElementById('cardsSpread').style.display = 'flex';
 
         let chosen = [...CARDS].sort(() => 0.5 - Math.random()).slice(0,3);
@@ -190,14 +218,10 @@
 
             const container = document.getElementById('card' + i);
             const front = document.getElementById('cf' + i);
-            
+            container.classList.remove('is-reversed', 'flipped');
             if(isReversed) container.classList.add('is-reversed');
             
-            front.innerHTML = `
-                <img src="${IMG_BASE + card.i}" class="tarot-image">
-                <div class="card-name-label">${card.n.toUpperCase()} ${isReversed ? '(R)' : ''}</div>
-            `;
-            
+            front.innerHTML = `<img src="${IMG_BASE + card.i}" class="tarot-image"><div class="card-name-label">${card.n.toUpperCase()} ${isReversed ? '(R)' : ''}</div>`;
             setTimeout(() => container.classList.add('flipped'), i * 600);
         }
 
@@ -214,22 +238,18 @@
             });
             const text = await response.text();
             content.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/###/g, '').replace(/#/g, '');
-            
-            let c = parseInt(localStorage.getItem('astral_credits'));
-            localStorage.setItem('astral_credits', c - 1);
-            document.getElementById('creditCount').innerText = c - 1;
-        } catch (e) {
-            content.innerHTML = "Errore di connessione con le sfere celesti. Riprova tra poco.";
-        }
+            updateCredits();
+        } catch (e) { content.innerHTML = "Le sfere celesti sono offuscate (Errore server). Riprova."; }
     }
 
-    // (La funzione runDream rimane simile, adattata alla grafica)
     async function runDream() {
         const d = document.getElementById('dreamInput').value;
-        if (!d) return alert("Racconta il sogno.");
+        if (!d) return alert("Racconta il tuo sogno.");
+        document.getElementById('dreamInputBox').style.display = 'none';
+        const resBox = document.getElementById('dreamResult');
         const content = document.getElementById('dreamContent');
-        document.getElementById('dreamResult').style.display = 'block';
-        content.innerHTML = "Interpretando i simboli...";
+        resBox.style.display = 'block';
+        content.innerHTML = "<em>Interpretando i tuoi simboli notturni...</em>";
         try {
             const response = await fetch(MAKE_URL, {
                 method: 'POST',
@@ -238,7 +258,14 @@
             });
             const text = await response.text();
             content.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/###/g, '').replace(/#/g, '');
-        } catch (e) { content.innerHTML = "Errore."; }
+            updateCredits();
+        } catch (e) { content.innerHTML = "Errore nella visione."; }
+    }
+
+    function updateCredits() {
+        let c = parseInt(localStorage.getItem('astral_credits'));
+        localStorage.setItem('astral_credits', c - 1);
+        document.getElementById('creditCount').innerText = c - 1;
     }
 
     window.onload = initCredits;
