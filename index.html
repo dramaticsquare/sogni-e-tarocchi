@@ -17,7 +17,7 @@
 
         body {
             background-color: var(--deep-space); color: var(--text);
-            font-family: 'Cormorant Garamond', serif; font-size: 18px; line-height: 1.6;
+            font-family: 'Cormorant Garamond', serif; font-size: 19px; line-height: 1.7;
             overflow-x: hidden; position: relative;
         }
 
@@ -75,7 +75,10 @@
         }
         .btn-action:hover { background: var(--gold); color: var(--deep-space); }
 
-        .result-box { display: none; margin-top: 30px; padding: 30px; border: 1px solid var(--border); background: rgba(255,255,255,0.02); border-radius: 20px; }
+        /* RISULTATO LEGGIBILE */
+        .result-box { display: none; margin-top: 30px; padding: 40px; border: 1px solid var(--border); background: rgba(255,255,255,0.03); border-radius: 20px; }
+        .result-content p { margin-bottom: 1.5em; }
+        .result-content strong { color: var(--gold-light); font-weight: 500; }
 
         /* TAROCCHI VISUAL */
         .cards-spread { display: flex; gap: 20px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
@@ -131,8 +134,8 @@
             <div class="tarot-card" id="card2"><div class="card-inner"><div class="card-back">✦</div><div class="card-front" id="cf2"></div></div></div>
         </div>
         <div id="readingResult" class="result-box">
-            <div id="readingContent" style="margin-bottom: 20px;"></div>
-            <button class="btn-action" onclick="location.reload()">NUOVA DOMANDA</button>
+            <div id="readingContent" class="result-content"></div>
+            <button class="btn-action" onclick="location.reload()" style="margin-top:40px">NUOVA DOMANDA</button>
         </div>
     </section>
 
@@ -146,16 +149,13 @@
                 <button class="hero-tag-btn" onclick="addTag('Morte')">💀 Morte</button>
                 <button class="hero-tag-btn" onclick="addTag('Ansia')">😰 Ansia</button>
                 <button class="hero-tag-btn" onclick="addTag('Controllo')">🎮 Controllo</button>
-                <button class="hero-tag-btn" onclick="addTag('Nudità')">🫣 Nudità</button>
-                <button class="hero-tag-btn" onclick="addTag('Sesso')">🔥 Sesso</button>
                 <button class="hero-tag-btn" onclick="addTag('Libertà')">🦅 Libertà</button>
-                <button class="hero-tag-btn" onclick="addTag('Potere')">👑 Potere</button>
             </div>
             <button class="btn-action" onclick="runDream()">Interpreta Visione (1 Credito)</button>
         </div>
         <div id="dreamResult" class="result-box">
-            <div id="dreamContent"></div>
-            <button class="btn-action" onclick="location.reload()" style="margin-top:20px">NUOVA INTERPRETAZIONE</button>
+            <div id="dreamContent" class="result-content"></div>
+            <button class="btn-action" onclick="location.reload()" style="margin-top:40px">NUOVA INTERPRETAZIONE</button>
         </div>
     </section>
 
@@ -200,6 +200,19 @@
         input.value += (input.value ? ', ' : '') + tag;
     }
 
+    // FORMATTATORE MIGLIORATO
+    function formatText(text) {
+        // Rimuove i vari cancelletti e divisori brutti di Make/Gemini
+        let clean = text.replace(/###/g, '').replace(/#/g, '').replace(/---/g, '').trim();
+        
+        // Converte i grassetti
+        clean = clean.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        // Divide in paragrafi ogni volta che trova un punto seguito da un a capo o doppio spazio
+        const paragraphs = clean.split(/\n\n|\n/).filter(p => p.length > 0);
+        return paragraphs.map(p => `<p>${p}</p>`).join('');
+    }
+
     async function runTarot() {
         const q = document.getElementById('questionInput').value;
         if (!q) return alert("Inserisci una domanda.");
@@ -228,7 +241,7 @@
         const resBox = document.getElementById('readingResult');
         const content = document.getElementById('readingContent');
         resBox.style.display = 'block';
-        content.innerHTML = "<em>L'universo sta rispondendo...</em>";
+        content.innerHTML = "<p><em>L'universo sta rispondendo...</em></p>";
 
         try {
             const response = await fetch(MAKE_URL, {
@@ -237,9 +250,9 @@
                 body: JSON.stringify({tipo: "tarocchi", domanda: q, carte: resultsForMake.join(", ")})
             });
             const text = await response.text();
-            content.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/###/g, '').replace(/#/g, '');
+            content.innerHTML = formatText(text);
             updateCredits();
-        } catch (e) { content.innerHTML = "Le sfere celesti sono offuscate (Errore server). Riprova."; }
+        } catch (e) { content.innerHTML = "<p>Le sfere celesti sono offuscate. Riprova tra poco.</p>"; }
     }
 
     async function runDream() {
@@ -249,7 +262,7 @@
         const resBox = document.getElementById('dreamResult');
         const content = document.getElementById('dreamContent');
         resBox.style.display = 'block';
-        content.innerHTML = "<em>Interpretando i tuoi simboli notturni...</em>";
+        content.innerHTML = "<p><em>Interpretando i tuoi simboli notturni...</em></p>";
         try {
             const response = await fetch(MAKE_URL, {
                 method: 'POST',
@@ -257,9 +270,9 @@
                 body: JSON.stringify({tipo: "sogno", descrizione: d})
             });
             const text = await response.text();
-            content.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/###/g, '').replace(/#/g, '');
+            content.innerHTML = formatText(text);
             updateCredits();
-        } catch (e) { content.innerHTML = "Errore nella visione."; }
+        } catch (e) { content.innerHTML = "<p>Errore nella visione.</p>"; }
     }
 
     function updateCredits() {
