@@ -57,6 +57,14 @@
         }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; }
         .nav-logo { font-family: 'Cinzel Decorative', cursive; color: var(--gold); text-decoration: none; font-size: 14px; letter-spacing: 0.1em; cursor: pointer; }
+        
+        .nav-right { display: flex; align-items: center; gap: 30px; }
+        .credit-badge { 
+            font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); 
+            border: 1px solid var(--gold); padding: 5px 15px; border-radius: 50px;
+            background: rgba(201, 168, 76, 0.1);
+        }
+
         .nav-links { display: flex; gap: 30px; list-style: none; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-family: 'Cinzel', serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; cursor: pointer; transition: 0.3s; }
         .nav-links a:hover { color: var(--gold-light); }
@@ -87,16 +95,28 @@
         .btn-action {
             width: 100%; padding: 20px; border-radius: 12px; font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.2em;
             cursor: pointer; transition: 0.4s; text-transform: uppercase; margin-top: 20px; border: 1px solid var(--border);
+            background: transparent; color: var(--gold);
         }
+        .btn-action:hover { background: var(--gold); color: var(--deep-space); }
 
         /* TAGS SOGNI */
         .temi-container { display: flex; flex-wrap: wrap; gap: 10px; margin: 25px 0; align-items: center; }
         .tag-btn { background: rgba(61, 43, 107, 0.3); border: 1px solid var(--border); border-radius: 50px; color: #A1B6E8; padding: 6px 15px; font-size: 11px; font-family: 'Cinzel', serif; cursor: pointer; transition: 0.3s; }
-        .tag-btn:hover { border-color: var(--gold); }
+        .tag-btn:hover { border-color: var(--gold); background: rgba(201, 168, 76, 0.15); }
 
-        /* GRIGLIA CONSULENZA */
-        .servizi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
-        .servizio-item { display: flex; align-items: center; gap: 12px; font-style: italic; color: var(--text-muted); }
+        /* MODAL PAGAMENTO */
+        #paymentModal { 
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); 
+            z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(10px); 
+        }
+        .modal-content { 
+            background: #151126; border: 1px solid var(--gold); padding: 40px; 
+            border-radius: 30px; max-width: 500px; width: 90%; text-align: center;
+        }
+        .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 25px 0; }
+
+        /* RISULTATI */
+        .result-box { display: none; margin-top: 30px; padding: 25px; border-left: 2px solid var(--gold); background: rgba(255,255,255,0.03); font-style: italic; white-space: pre-line; }
 
         /* TAROCCHI VISUAL */
         .cards-spread { display: flex; gap: 15px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
@@ -107,9 +127,7 @@
         .card-back { background: #1A152E; color: var(--gold); font-size: 30px; }
         .card-front { background: #1E1535; transform: rotateY(180deg); padding: 10px; text-align: center; }
 
-        .result-box { display: none; margin-top: 30px; padding: 25px; border-left: 2px solid var(--gold); background: rgba(255,255,255,0.03); font-style: italic; }
-
-        @media (max-width: 600px) { .servizi-grid { grid-template-columns: 1fr; } .nav-links { display: none; } }
+        @media (max-width: 600px) { .nav-links { display: none; } .price-grid { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
 <body>
@@ -117,16 +135,18 @@
 <nav>
     <div class="container nav-inner">
         <a class="nav-logo" onclick="showSection('home')">✦ TAROCCHI DELL'ANIMA</a>
-        <ul class="nav-links">
-            <li><a onclick="showSection('oracolo')">Lettura</a></li>
-            <li><a onclick="showSection('sogni')">Sogni</a></li>
-            <li><a onclick="showSection('contatto')">Consulenza</a></li>
-        </ul>
+        <div class="nav-right">
+            <div class="credit-badge">✨ Crediti: <span id="creditCount">1</span></div>
+            <ul class="nav-links">
+                <li><a onclick="showSection('oracolo')">Lettura</a></li>
+                <li><a onclick="showSection('sogni')">Sogni</a></li>
+                <li><a onclick="showSection('contatto')">Consulenza</a></li>
+            </ul>
+        </div>
     </div>
 </nav>
 
 <div class="container">
-    
     <section id="home" class="content-section active">
         <div class="hero">
             <div class="hero-eyebrow">✦ &nbsp; CARTOMANZIA · TAROCCHI · ORACOLO &nbsp; ✦</div>
@@ -147,7 +167,7 @@
         <div class="glass-card">
             <label class="form-label">COSA DESIDERI CHIEDERE?</label>
             <textarea id="questionInput" placeholder="Concentrati sulla tua domanda e scrivi qui..."></textarea>
-            <button class="btn-action" style="background: linear-gradient(90deg, #3D2B6B, #5C3D9A); color: var(--gold-light);" onclick="startReading()">Estrai gli Arcani</button>
+            <button class="btn-action" style="background: linear-gradient(90deg, #3D2B6B, #5C3D9A); color: var(--gold-light);" onclick="handleAction('tarocchi')">Estrai gli Arcani (1 Credito)</button>
         </div>
         <div class="cards-spread" id="cardsSpread" style="display:none">
             <div class="tarot-card" id="card0"><div class="card-inner"><div class="card-back">✦</div><div class="card-front" id="cardFront0"></div></div></div>
@@ -171,7 +191,7 @@
                 <button class="tag-btn" onclick="addSymbol('Luna')">🌕 LUNA</button>
                 <button class="tag-btn" onclick="addSymbol('Foresta')">🌲 FORESTA</button>
             </div>
-            <button class="btn-action" style="background: linear-gradient(90deg, #1A3550, #2C4B70); color: white;" onclick="interpretDream()">Interpreta il Sogno</button>
+            <button class="btn-action" style="background: linear-gradient(90deg, #1A3550, #2C4B70); color: white;" onclick="handleAction('sogno')">Interpreta il Sogno (1 Credito)</button>
         </div>
         <div class="result-box" id="dreamResult"><div id="dreamContent"></div></div>
     </section>
@@ -181,113 +201,58 @@
         <h2 class="section-title" style="text-align: left;">CONSULENZA<br>PERSONALE</h2>
         <p class="hero-description" style="text-align: left; margin: 0 0 40px 0;">Scrivi per una lettura approfondita e riservata. Rispondo entro 48 ore.</p>
         
-        <div class="servizi-grid">
-            <div class="servizio-item"><span>🃏</span> Lettura completa tarocchi</div>
-            <div class="servizio-item"><span>🌙</span> Analisi onirica dettagliata</div>
-            <div class="servizio-item"><span>✦</span> Tema natale e astrale</div>
-            <div class="servizio-item"><span>📜</span> Risposta scritta via email</div>
+        <div class="glass-card">
+            <div class="input-group" style="margin-bottom: 20px;">
+                <label class="form-label">NOME</label>
+                <input type="text" id="cName" placeholder="Il tuo nome...">
+            </div>
+            <div class="input-group" style="margin-bottom: 20px;">
+                <label class="form-label">EMAIL</label>
+                <input type="email" id="cEmail" placeholder="la.tua@email.it">
+            </div>
+            <div class="input-group" style="margin-bottom: 20px;">
+                <label class="form-label">IL TUO MESSAGGIO</label>
+                <textarea id="cMessage" placeholder="Cosa desideri approfondire?"></textarea>
+            </div>
+            <button class="btn-action" style="background: var(--gold); color: var(--deep-space); font-weight: bold;" onclick="sendContact()">Invia Richiesta</button>
+            <p id="successMsg" style="display:none; color: var(--gold-light); text-align: center; margin-top: 20px; font-style: italic;">Messaggio inviato. Ti risponderò presto.</p>
         </div>
-
-        <div class="input-group" style="margin-bottom: 20px;">
-            <label class="form-label">NOME</label>
-            <input type="text" id="cName" placeholder="Il tuo nome...">
-        </div>
-        <div class="input-group" style="margin-bottom: 20px;">
-            <label class="form-label">EMAIL</label>
-            <input type="email" id="cEmail" placeholder="la.tua@email.it">
-        </div>
-        <div class="input-group" style="margin-bottom: 20px;">
-            <label class="form-label">IL TUO MESSAGGIO</label>
-            <textarea id="cMessage" placeholder="Cosa desideri approfondire?"></textarea>
-        </div>
-        <button class="btn-action" style="background: var(--gold); color: var(--deep-space); font-weight: bold;" onclick="sendContact()">Invia Richiesta</button>
-        <p id="successMsg" style="display:none; color: var(--gold-light); text-align: center; margin-top: 20px; font-style: italic;">Messaggio inviato. Ti risponderò presto.</p>
     </section>
-
 </div>
 
+<div id="paymentModal">
+    <div class="modal-content">
+        <h2 style="font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 10px;">Energie Esaurite</h2>
+        <p style="font-size: 14px; opacity: 0.8; margin-bottom: 20px;">Ogni consultazione costa 1 credito (1€). Scegli la tua ricarica:</p>
+        
+        <div class="price-grid">
+            <button class="tag-btn" onclick="setAmount(1)">1€ (1 cr.)</button>
+            <button class="tag-btn" onclick="setAmount(5)">5€ (5 cr.)</button>
+            <button class="tag-btn" onclick="setAmount(10)">10€ (10 cr.)</button>
+            <button class="tag-btn" onclick="setAmount(20)">20€ (20 cr.)</button>
+            <button class="tag-btn" onclick="setAmount(50)">50€ (50 cr.)</button>
+            <input type="number" id="customAmount" placeholder="Altro €" oninput="setAmount(this.value)" style="text-align: center; padding: 5px;">
+        </div>
+
+        <div id="paymentDetails" style="margin: 20px 0; font-family: 'Cinzel'; color: var(--gold); font-size: 1.2rem;">
+            Totale: <span id="displayAmount">1</span>.00€
+        </div>
+
+        <div id="paypal-button-container"></div>
+        
+        <button onclick="document.getElementById('paymentModal').style.display='none'" style="background:none; border:none; color:var(--gold); margin-top:25px; cursor:pointer; font-family:'Cinzel'; letter-spacing: 2px; font-size: 10px;">
+            ✦ CHIUDI ✦
+        </button>
+    </div>
+</div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=IL_TUO_CLIENT_ID&currency=EUR"></script>
+
 <script>
-    // --- CONFIGURAZIONE MAKE.COM ---
+    // --- CONFIGURAZIONE ---
     const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/wdc6niacrxs2vlmssjbd592ymzw2859w";
+    let selectedAmount = 1;
 
-    function showSection(id) {
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        window.scrollTo(0,0);
-    }
-
-    function addSymbol(s) {
-        const i = document.getElementById('dreamInput');
-        i.value += (i.value ? ', ' : '') + s;
-    }
-
-    async function callMake(payload) {
-        const res = await fetch(MAKE_WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        return await res.text();
-    }
-
-    // LOGICA TAROCCHI
-    const CARDS = [
-        {name:'Il Mago', s:'🪄'}, {name:'La Papessa', s:'📖'}, {name:'L\'Imperatrice', s:'🌺'},
-        {name:'L\'Imperatore', s:'⚔️'}, {name:'Il Papa', s:'✝️'}, {name:'Gli Amanti', s:'💞'},
-        {name:'Il Carro', s:'🏆'}, {name:'La Forza', s:'🦁'}, {name:'L\'Eremita', s:'🕯️'},
-        {name:'La Ruota', s:'☸️'}, {name:'La Giustizia', s:'⚖️'}, {name:'L\'Appeso', s:'🔮'}
-    ];
-
-    async function startReading() {
-        const q = document.getElementById('questionInput').value;
-        if(!q) return alert("Fai una domanda all'oracolo.");
-
-        document.getElementById('cardsSpread').style.display = 'flex';
-        const chosen = [...CARDS].sort(() => 0.5 - Math.random()).slice(0,3);
-
-        chosen.forEach((c, i) => {
-            document.getElementById('card' + i).classList.remove('flipped');
-            document.getElementById('cardFront' + i).innerHTML = `<div style="font-size:30px">${c.s}</div><div style="font-size:12px; margin-top:10px">${c.name}</div>`;
-            setTimeout(() => document.getElementById('card' + i).classList.add('flipped'), (i+1)*600);
-        });
-
-        const resBox = document.getElementById('readingResult');
-        resBox.style.display = 'block';
-        document.getElementById('readingContent').innerHTML = "L'oracolo sta consultando gli astri...";
-
-        try {
-            const reply = await callMake({ tipo: "tarocchi", domanda: q, carte: chosen.map(c=>c.name).join(',') });
-            document.getElementById('readingContent').innerHTML = reply;
-        } catch(e) { document.getElementById('readingContent').innerHTML = "Il portale è momentaneamente chiuso."; }
-    }
-
-    // LOGICA SOGNI
-    async function interpretDream() {
-        const dream = document.getElementById('dreamInput').value;
-        if(!dream) return alert("Descrivi il tuo sogno.");
-
-        const resBox = document.getElementById('dreamResult');
-        resBox.style.display = 'block';
-        document.getElementById('dreamContent').innerHTML = "Interpretando i simboli del tuo inconscio...";
-
-        try {
-            const reply = await callMake({ tipo: "sogno", descrizione: dream });
-            document.getElementById('dreamContent').innerHTML = reply;
-        } catch(e) { document.getElementById('dreamContent').innerHTML = "Errore nella visione."; }
-    }
-
-    // LOGICA CONTATTO
-    async function sendContact() {
-        const n = document.getElementById('cName').value;
-        const e = document.getElementById('cEmail').value;
-        const m = document.getElementById('cMessage').value;
-        if(!n || !e || !m) return alert("Compila tutti i campi.");
-
-        try {
-            await callMake({ tipo: "contatto", nome: n, email: e, messaggio: m });
-            document.getElementById('successMsg').style.display = 'block';
-        } catch(err) { alert("Errore nell'invio."); }
-    }
-</script>
-</body>
-</html>
+    // INIZIALIZZAZIONE CREDITI
+    function initCredits() {
+        if (localStorage.getItem('astral_credits') ===
