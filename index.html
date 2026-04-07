@@ -6,7 +6,7 @@
     <title>Tarocchi dell'Anima — Cartomanzia Online</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        /* --- DESIGN MISTICO --- */
+        /* --- IL TUO STILE ORIGINALE --- */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
             --gold: #C9A84C; --gold-light: #E8C97A; --deep: #0D0A1A;
@@ -26,17 +26,17 @@
         }
         .container { max-width: 900px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
         nav { position: sticky; top: 0; z-index: 100; background: rgba(13,10,26,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 14px 0; }
-        .nav-logo { font-family: 'Cinzel Decorative', cursive; color: var(--gold); text-decoration: none; font-size: 14px; letter-spacing: 2px; }
+        .nav-logo { font-family: 'Cinzel Decorative', cursive; color: var(--gold); text-decoration: none; font-size: 14px; }
         
+        /* Layout */
         .hero { text-align: center; padding: 80px 0 50px; }
         h1 { font-family: 'Cinzel Decorative', cursive; font-size: clamp(30px, 6vw, 55px); color: var(--gold-light); margin-bottom: 15px; }
-        
         .input-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 35px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         h2 { font-family: 'Cinzel', serif; font-size: 22px; color: var(--gold); margin-bottom: 20px; text-align: center; letter-spacing: 2px; }
-        
         textarea { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: inherit; font-size: 18px; padding: 15px; min-height: 120px; outline: none; transition: 0.3s; }
         textarea:focus { border-color: var(--gold); }
 
+        /* Bottoni */
         .btn { width: 100%; padding: 16px; margin-top: 15px; background: linear-gradient(135deg,#3D2B6B,#5C3D9A); border: 1px solid var(--gold); border-radius: 10px; color: var(--gold-light); font-family: 'Cinzel', serif; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
         .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -49,24 +49,11 @@
         .card-back { background: var(--surface2); color: var(--gold); font-size: 40px; }
         .card-front { background: linear-gradient(160deg, #1E1535, #2D2040); transform: rotateY(180deg); padding: 15px; text-align: center; }
 
-        /* Risultati */
+        /* Responso */
         .result-area { background: rgba(35, 27, 56, 0.9); border: 1px solid var(--gold); border-radius: 16px; padding: 35px; margin-top: 30px; display: none; animation: fadeIn 1s; }
         .visible { display: block; }
-        
-        /* Stile del testo e del grassetto */
         .reading-text { font-size: 20px; line-height: 1.8; }
-        .reading-text b, .reading-text strong { color: var(--gold-light); font-weight: bold; }
-        .reading-text em { color: var(--mystic); font-style: italic; }
-
-        /* Box Riassunto */
-        .summary-box { 
-            background: rgba(201, 168, 76, 0.1); 
-            border-left: 3px solid var(--gold); 
-            padding: 20px; 
-            margin-bottom: 25px; 
-            font-style: italic;
-            border-radius: 0 8px 8px 0;
-        }
+        .reading-text em { color: var(--mystic); font-style: italic; font-weight: bold; }
         
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .loading { font-style: italic; color: var(--gold); text-align: center; padding: 20px; }
@@ -111,6 +98,7 @@
 </div>
 
 <script>
+    // --- IL TUO WEBHOOK DI MAKE ---
     const WEBHOOK = "https://hook.eu1.make.com/wdc6niacrxs2vlmssjbd592ymzw2859w";
 
     const DECK = [
@@ -119,16 +107,6 @@
         {n:'XIII', name:'La Morte', s:'🌑'}, {n:'XVIII', name:'La Luna', s:'🌕'}, {n:'XIX', name:'Il Sole', s:'☀️'},
         {n:'XXI', name:'Il Mondo', s:'🌍'}, {n:'0', name:'Il Matto', s:'🌟'}
     ];
-
-    // Funzione per pulire il testo da asterischi e formattare in HTML
-    function formatText(text) {
-        // Converte **grassetto** in <b>
-        let formatted = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-        // Converte *corsivo* in <em>
-        formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        // Converte a capo in <br>
-        return formatted.replace(/\n/g, '<br>');
-    }
 
     async function askMake(data) {
         const r = await fetch(WEBHOOK, {
@@ -160,13 +138,13 @@
         try {
             const reply = await askMake({
                 type: "tarocchi",
-                prompt_mod: "Inizia la risposta con un breve paragrafo di sintesi chiamato 'SINTESI DELL'ORACOLO' racchiuso in un box, poi prosegui con la spiegazione dettagliata.",
                 question: q,
                 cards: drawn.map(c => c.name).join(", ")
             });
-            cont.innerHTML = formatText(reply);
+            // Converte il testo tra asterischi in grassetto/corsivo magico
+            cont.innerHTML = reply.replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/\n/g, '<br>');
         } catch (e) {
-            cont.innerHTML = "La connessione con l'etere è interrotta.";
+            cont.innerHTML = "La connessione con l'etere è interrotta. Riprova più tardi.";
         }
     }
 
@@ -182,10 +160,9 @@
         try {
             const reply = await askMake({
                 type: "sogno",
-                prompt_mod: "Inizia la risposta con un breve paragrafo di sintesi chiamato 'ESSENZA DEL SOGNO' racchiuso in un box, poi prosegui con l'interpretazione completa.",
                 dream: d
             });
-            cont.innerHTML = formatText(reply);
+            cont.innerHTML = reply.replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/\n/g, '<br>');
         } catch (e) {
             cont.innerHTML = "Il sogno è svanito prima di essere compreso.";
         }
