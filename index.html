@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
-        /* --- RESET E VARIABILI ORIGINALI --- */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
             --gold: #C9A84C; --gold-light: #E8C97A; --deep-space: #0D0A1A;
@@ -17,7 +16,7 @@
 
         body {
             background-color: var(--deep-space); color: var(--text);
-            font-family: 'Cormorant Garamond', serif; font-size: 19px; line-height: 1.7;
+            font-family: 'Cormorant Gramond', serif; font-size: 19px; line-height: 1.7;
             overflow-x: hidden; position: relative;
         }
 
@@ -47,8 +46,7 @@
         
         .credit-badge { 
             font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); border: 1px solid var(--gold); 
-            padding: 5px 15px; border-radius: 50px; background: rgba(201, 168, 76, 0.1);
-            cursor: pointer; transition: 0.3s;
+            padding: 5px 15px; border-radius: 50px; background: rgba(201, 168, 76, 0.1); cursor: pointer;
         }
         .nav-links { display: flex; gap: 20px; list-style: none; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-family: 'Cinzel', serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; }
@@ -69,7 +67,7 @@
         }
 
         .glass-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; backdrop-filter: blur(8px); margin-top: 40px; }
-        textarea, input { width: 100%; background: rgba(13, 10, 26, 0.6); border: 1px solid var(--border); border-radius: 12px; color: var(--text); padding: 18px; font-family: 'Cormorant Garamond', serif; font-size: 18px; outline: none; margin-bottom: 20px; resize: none; }
+        textarea, input { width: 100%; background: rgba(13, 10, 26, 0.6); border: 1px solid var(--border); border-radius: 12px; color: var(--text); padding: 18px; font-family: 'Cormorant Garamond', serif; font-size: 18px; outline: none; margin-bottom: 20px; }
         
         .btn-action {
             width: 100%; padding: 20px; border-radius: 12px; font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.2em;
@@ -77,7 +75,7 @@
             background: linear-gradient(90deg, #3D2B6B, #5C3D9A); color: white;
         }
 
-        /* PAGAMENTO GRID */
+        /* PAGAMENTI GRID */
         .payment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin: 25px 0; }
         .tier-card { 
             background: rgba(201, 168, 76, 0.05); border: 1px solid var(--border); padding: 15px; 
@@ -89,7 +87,7 @@
         .tier-card .price { font-size: 12px; color: var(--gold-light); }
 
         .payment-methods { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; align-items: center; }
-        .stripe-btn { width: 100%; max-width: 300px; padding: 14px; border-radius: 8px; font-family: 'Cinzel', serif; font-size: 11px; cursor: pointer; border: none; background: #635bff; color: white; transition: 0.3s; }
+        .stripe-btn { width: 100%; max-width: 300px; padding: 14px; border-radius: 8px; font-family: 'Cinzel', serif; font-size: 11px; cursor: pointer; border: none; background: #635bff; color: white; display: none; }
         .paypal-container { width: 100%; max-width: 300px; }
 
         /* MODAL */
@@ -170,6 +168,17 @@
         </div>
         <div id="dreamResult" class="result-box"><div id="dreamContent"></div></div>
     </section>
+
+    <section id="contatto" class="content-section">
+        <h2>CONSULENZA PRIVATA</h2>
+        <div class="glass-card">
+            <p style="text-align:center; margin-bottom: 20px; font-style: italic;">Per una lettura approfondita dei tuoi percorsi karmici.</p>
+            <input type="text" placeholder="Tuo Nome">
+            <input type="email" placeholder="Tua Email">
+            <textarea placeholder="Descrivi la situazione o il quesito che desideri approfondire privatamente..."></textarea>
+            <button class="btn-action">Richiedi Consulenza</button>
+        </div>
+    </section>
 </div>
 
 <div id="paymentModal">
@@ -186,10 +195,9 @@
         </div>
 
         <div class="payment-methods">
-            <button class="stripe-btn" onclick="payWithStripe()">PAGA CON CARTA (STRIPE)</button>
+            <button id="stripeBtn" class="stripe-btn" onclick="payWithStripe()">PAGA CON CARTA (STRIPE)</button>
             <div id="paypal-button-container" class="paypal-container"></div>
         </div>
-
         <button onclick="closePayment()" style="background:none; border:none; color:var(--gold); margin-top:20px; cursor:pointer; font-family:'Cinzel';">✦ CHIUDI ✦</button>
     </div>
 </div>
@@ -199,16 +207,11 @@
 <script>
     const MAKE_URL = "https://hook.eu1.make.com/wdc6niacrxs2vlmssjbd592ymzw2859w";
     const IMG_BASE = "https://www.sacred-texts.com/tarot/pkt/img/";
-    const CARDS = [
-        {n: "Il Matto", i: "ar00.jpg"}, {n: "Il Mago", i: "ar01.jpg"}, {n: "La Papessa", i: "ar02.jpg"},
-        {n: "Imperatrice", i: "ar03.jpg"}, {n: "Imperatore", i: "ar04.jpg"}, {n: "Il Papa", i: "ar05.jpg"},
-        {n: "Gli Amanti", i: "ar06.jpg"}, {n: "Il Carro", i: "ar07.jpg"}, {n: "La Forza", i: "ar08.jpg"}
-    ];
+    const CARDS = [{n: "Matto", i: "ar00.jpg"}, {n: "Mago", i: "ar01.jpg"}, {n: "Papessa", i: "ar02.jpg"}, {n: "Imperatrice", i: "ar03.jpg"}, {n: "Imperatore", i: "ar04.jpg"}];
 
     let selectedCredits = 0;
     let selectedPrice = 0;
 
-    // Inizializzazione Crediti
     if(!localStorage.getItem('astral_credits')) localStorage.setItem('astral_credits', '1');
     document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
 
@@ -223,7 +226,6 @@
         input.value += (input.value ? ', ' : '') + tag;
     }
 
-    /* --- GESTIONE PAGAMENTI --- */
     function openPayment() { document.getElementById('paymentModal').style.display = 'flex'; }
     function closePayment() { document.getElementById('paymentModal').style.display = 'none'; }
 
@@ -232,45 +234,31 @@
         selectedPrice = price;
         document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('selected'));
         el.classList.add('selected');
+        document.getElementById('stripeBtn').style.display = 'block';
         renderPayPalButton();
-    }
-
-    function payWithStripe() {
-        if(selectedPrice === 0) return alert("Seleziona un pacchetto prima.");
-        // Reindirizza al tuo link di pagamento Stripe
-        window.open(`https://buy.stripe.com/tuo_codice_${selectedPrice}`, '_blank');
     }
 
     function renderPayPalButton() {
         const container = document.getElementById('paypal-button-container');
-        container.innerHTML = ''; // Reset
-        if(selectedPrice === 0) return;
-
+        container.innerHTML = '';
         paypal.Buttons({
-            createOrder: (data, actions) => {
-                return actions.order.create({
-                    purchase_units: [{ amount: { value: selectedPrice.toString() } }]
-                });
-            },
-            onApprove: (data, actions) => {
-                return actions.order.capture().then(details => {
-                    let total = parseInt(localStorage.getItem('astral_credits')) + selectedCredits;
-                    localStorage.setItem('astral_credits', total.toString());
-                    document.getElementById('creditCount').innerText = total;
-                    alert("Pagamento completato! Crediti aggiunti.");
-                    closePayment();
-                });
-            }
+            createOrder: (data, actions) => actions.order.create({ purchase_units: [{ amount: { value: selectedPrice.toString() } }] }),
+            onApprove: (data, actions) => actions.order.capture().then(() => {
+                let total = parseInt(localStorage.getItem('astral_credits')) + selectedCredits;
+                localStorage.setItem('astral_credits', total.toString());
+                document.getElementById('creditCount').innerText = total;
+                closePayment();
+            })
         }).render('#paypal-button-container');
     }
 
-    /* --- LOGICA AI --- */
+    function payWithStripe() { window.open(`https://buy.stripe.com/link_per_prezzo_${selectedPrice}`, '_blank'); }
+
     async function runTarot() {
         const q = document.getElementById('questionInput').value;
-        if (!q) return;
-        let credits = parseInt(localStorage.getItem('astral_credits'));
-        if(credits < 1) return openPayment();
-
+        let creds = parseInt(localStorage.getItem('astral_credits'));
+        if(!q || creds < 1) return creds < 1 ? openPayment() : null;
+        
         document.getElementById('tarotInputBox').style.display = 'none';
         document.getElementById('cardsSpread').style.display = 'flex';
         let chosen = [...CARDS].sort(() => 0.5 - Math.random()).slice(0,3);
@@ -279,32 +267,23 @@
             setTimeout(() => document.getElementById('card'+i).classList.add('flipped'), i*600);
         });
 
-        const res = await fetch(MAKE_URL, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({tipo: "tarocchi", domanda: q, carte: chosen.map(c=>c.n).join(",")})
-        });
+        const res = await fetch(MAKE_URL, { method: 'POST', body: JSON.stringify({tipo: "tarocchi", domanda: q, carte: chosen.map(c=>c.n).join(",")}) });
         document.getElementById('readingResult').style.display = 'block';
         document.getElementById('readingContent').innerHTML = await res.text();
-        localStorage.setItem('astral_credits', (credits-1).toString());
-        document.getElementById('creditCount').innerText = credits-1;
+        localStorage.setItem('astral_credits', (creds-1).toString());
+        document.getElementById('creditCount').innerText = creds-1;
     }
 
     async function runDream() {
         const d = document.getElementById('dreamInput').value;
-        if (!d) return;
-        let credits = parseInt(localStorage.getItem('astral_credits'));
-        if(credits < 1) return openPayment();
+        let creds = parseInt(localStorage.getItem('astral_credits'));
+        if(!d || creds < 1) return creds < 1 ? openPayment() : null;
 
-        const res = await fetch(MAKE_URL, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({tipo: "sogno", sogno: d})
-        });
+        const res = await fetch(MAKE_URL, { method: 'POST', body: JSON.stringify({tipo: "sogno", sogno: d}) });
         document.getElementById('dreamResult').style.display = 'block';
         document.getElementById('dreamContent').innerHTML = await res.text();
-        localStorage.setItem('astral_credits', (credits-1).toString());
-        document.getElementById('creditCount').innerText = credits-1;
+        localStorage.setItem('astral_credits', (creds-1).toString());
+        document.getElementById('creditCount').innerText = creds-1;
     }
 </script>
 </body>
