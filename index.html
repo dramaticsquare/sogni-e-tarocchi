@@ -351,4 +351,29 @@
 
     async function runDream() {
         const d = document.getElementById('dreamInput').value;
-       
+        if (!d) return alert("Racconta il tuo sogno.");
+        
+        if (!(await checkAndConsumeCredit())) return;
+
+        document.getElementById('dreamInputBox').style.display = 'none';
+        const resBox = document.getElementById('dreamResult');
+        const content = document.getElementById('dreamContent');
+        resBox.style.display = 'block';
+        content.innerHTML = "<p><em>Interpretando i tuoi simboli notturni...</em></p>";
+        try {
+            const response = await fetch(MAKE_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({tipo: "sogno", descrizione: d})
+            });
+            const text = await response.text();
+            content.innerHTML = formatText(text);
+            updateCredits();
+        } catch (e) { content.innerHTML = "<p>Errore nella visione.</p>"; }
+    }
+
+    window.onload = initCredits;
+</script>
+</body>
+</html>
+
