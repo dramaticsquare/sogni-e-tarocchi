@@ -351,11 +351,4 @@
 
     async function runDream() {
         const d = document.getElementById('dreamInput').value;
-        if (!d) return alert("Racconta il tuo sogno.");
-        
-        if (!(await checkAndConsumeCredit())) return;
-
-        document.getElementById('dreamInputBox').style.display = 'none';
-        const resBox = document.getElementById('dreamResult');
-        const content = document.getElementById('dreamContent');
-        resBox.style.display = 'block';
+       
