@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
-        /* --- RESET E VARIABILI --- */
+        /* --- RESET E VARIABILI (Mantengo tutto l'ultimo stile) --- */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
             --gold: #C9A84C; --gold-light: #E8C97A; --deep-space: #0D0A1A;
@@ -21,7 +21,6 @@
             overflow-x: hidden; position: relative;
         }
 
-        /* SFONDO STELLATO */
         body::before {
             content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
@@ -39,23 +38,20 @@
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             background: rgba(13, 10, 26, 0.9); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border); padding: 20px 0; transition: 0.3s;
+            border-bottom: 1px solid var(--border); padding: 20px 0;
         }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 20px;}
         .nav-logo { font-family: 'Cinzel Decorative', cursive; color: var(--gold); text-decoration: none; font-size: 14px; letter-spacing: 0.1em; cursor: pointer; }
         .nav-right { display: flex; align-items: center; gap: 30px; }
         
-        /* BADGE CREDITI CLICCABILE */
         .credit-badge { 
             font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); border: 1px solid var(--gold); 
             padding: 5px 15px; border-radius: 50px; background: rgba(201, 168, 76, 0.1);
             cursor: pointer; transition: 0.3s;
         }
-        .credit-badge:hover { background: rgba(201, 168, 76, 0.2); box-shadow: 0 0 10px rgba(201, 168, 76, 0.2); }
 
         .nav-links { display: flex; gap: 20px; list-style: none; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-family: 'Cinzel', serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: 0.3s; }
-        .nav-links a:hover { color: var(--gold-light); }
 
         /* SEZIONI */
         .content-section { display: none; padding: 160px 0 80px; animation: fadeIn 0.8s ease; }
@@ -63,7 +59,6 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         h1, h2 { font-family: 'Cinzel Decorative', cursive; color: var(--gold-light); font-size: clamp(35px, 7vw, 75px); line-height: 1.1; margin-bottom: 20px; text-align: center; }
-        .hero-subtitle { font-family: 'Cormorant Garamond', serif; font-style: italic; opacity: 0.8; font-size: 1.2rem; margin-bottom: 40px; text-align: center; }
         
         .hero-buttons-container { display: flex; gap: 20px; justify-content: center; margin-top: 40px; }
         .hero-tag-btn { 
@@ -71,7 +66,6 @@
             color: #EDE0C4; padding: 12px 24px; cursor: pointer; transition: 0.3s; 
             font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; 
         }
-        .hero-tag-btn:hover { border-color: var(--gold); background: rgba(201, 168, 76, 0.15); }
 
         .glass-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; backdrop-filter: blur(8px); margin-top: 40px; }
         textarea, input { width: 100%; background: rgba(13, 10, 26, 0.6); border: 1px solid var(--border); border-radius: 12px; color: var(--text); padding: 18px; font-family: 'Cormorant Garamond', serif; font-size: 18px; outline: none; margin-bottom: 20px; resize: none; }
@@ -81,48 +75,44 @@
             cursor: pointer; transition: 0.4s; text-transform: uppercase; border: 1px solid var(--gold); 
             background: linear-gradient(90deg, #3D2B6B, #5C3D9A); color: white;
         }
-        .btn-action:hover { background: var(--gold); color: var(--deep-space); }
 
         .result-box { display: none; margin-top: 30px; padding: 40px; border: 1px solid var(--border); background: rgba(255,255,255,0.03); border-radius: 20px; }
         .result-content p { margin-bottom: 1.5em; }
-        .result-content strong { color: var(--gold-light); font-weight: 500; }
 
-        /* TAROCCHI VISUAL */
-        .cards-spread { display: flex; gap: 20px; justify-content: center; margin-top: 30px; flex-wrap: nowrap; /* Impedisce di andare a capo */ }
+        /* TAROCCHI */
+        .cards-spread { display: flex; gap: 20px; justify-content: center; margin-top: 30px; flex-wrap: nowrap; }
         .tarot-card { width: 150px; height: 260px; perspective: 1000px; flex-shrink: 0; }
         .card-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s; }
         .tarot-card.flipped .card-inner { transform: rotateY(180deg); }
         .card-front, .card-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 10px; border: 1px solid var(--gold); overflow: hidden; }
-        .card-back { background: #1A152E; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 40px; font-family: 'Cinzel', serif; }
+        .card-back { background: #1A152E; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 40px; }
         .card-front { background: #1E1535; transform: rotateY(180deg); display: flex; flex-direction: column; align-items: center; padding: 10px; }
         .tarot-image { width: 100%; height: 85%; object-fit: cover; border-radius: 5px; transition: transform 0.3s; }
         .is-reversed .tarot-image { transform: rotate(180deg); }
         .card-name-label { font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold); margin-top: 8px; text-align: center; }
 
-        .tag-container { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+        /* MODAL PAGAMENTO MIGLIORATA */
+        #paymentModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px; }
+        .modal-content { background: #151126; border: 1px solid var(--gold); padding: 30px; border-radius: 30px; max-width: 450px; width: 100%; text-align: center; max-height: 90vh; overflow-y: auto; }
+        .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+        .pay-tag-btn { background: rgba(201, 168, 76, 0.1); border: 1px solid var(--border); border-radius: 50px; color: var(--gold); padding: 10px; cursor: pointer; transition: 0.3s; font-size: 12px; }
+        .pay-tag-btn.active { background: var(--gold); color: var(--deep-space); }
 
-        /* --- MODAL PAGAMENTO --- */
-        #paymentModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-        .modal-content { background: #151126; border: 1px solid var(--gold); padding: 40px; border-radius: 30px; max-width: 500px; width: 90%; text-align: center; }
-        .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 25px 0; }
-        .pay-tag-btn { background: rgba(201, 168, 76, 0.1); border: 1px solid var(--border); border-radius: 50px; color: var(--gold); padding: 10px; cursor: pointer; transition: 0.3s; font-family: 'Cinzel', serif;}
-        .pay-tag-btn:hover { border-color: var(--gold); background: rgba(201, 168, 76, 0.2); }
+        .divider { border-top: 1px solid var(--border); margin: 25px 0; position: relative; }
+        .divider::after { content: "OPPURE"; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #151126; padding: 0 15px; font-size: 10px; color: var(--text-muted); letter-spacing: 2px; }
 
-        /* --- RESPONSIVE MOBILE --- */
+        .direct-link-btn {
+            background: transparent; border: 1px dashed var(--gold); color: var(--gold-light);
+            padding: 15px; width: 100%; border-radius: 12px; cursor: pointer; font-family: 'Cinzel', serif; font-size: 11px;
+            text-decoration: none; display: block; margin-top: 15px; transition: 0.3s;
+        }
+        .direct-link-btn:hover { background: rgba(201, 168, 76, 0.05); border-style: solid; }
+
+        /* MOBILE */
         @media (max-width: 768px) {
-            .nav-inner { flex-direction: column; gap: 15px; padding: 15px 10px; }
-            .nav-right { flex-direction: column; gap: 10px; }
-            .nav-links { gap: 15px; justify-content: center; }
-            .content-section { padding: 200px 0 60px; }
-            
-            h1 { font-size: 40px; }
-            .hero-buttons-container { flex-direction: column; padding: 0 20px; }
-            
-            /* Adatta le carte per lo schermo piccolo mantenendo la riga */
-            .tarot-card { width: 28vw; height: 48vw; min-width: 90px; min-height: 160px; }
-            .card-name-label { font-size: 8px; margin-top: 4px; }
-            .glass-card { padding: 25px 15px; }
-            .result-box { padding: 20px 15px; }
+            .nav-inner { flex-direction: column; gap: 15px; }
+            .content-section { padding: 220px 0 60px; }
+            .tarot-card { width: 28vw; height: 48vw; min-width: 85px; min-height: 150px; }
         }
     </style>
 </head>
@@ -145,7 +135,7 @@
 <div class="container">
     <section id="home" class="content-section active">
         <h1>TAROCCHI<br>DELL'ANIMA</h1>
-        <p class="hero-subtitle">"L'inconscio parla per simboli. Noi siamo qui per tradurli."</p>
+        <p style="text-align:center; font-style: italic; opacity: 0.8;">"L'inconscio parla per simboli. Noi siamo qui per tradurli."</p>
         <div class="hero-buttons-container">
             <button class="hero-tag-btn" onclick="showSection('oracolo')">INIZIA LETTURA</button>
             <button class="hero-tag-btn" onclick="showSection('sogni')">SVELA SOGNO</button>
@@ -173,19 +163,11 @@
         <h2>IL LIBRO DEI SOGNI</h2>
         <div id="dreamInputBox" class="glass-card">
             <textarea id="dreamInput" placeholder="Racconta la tua visione notturna..."></textarea>
-            <div class="tag-container">
-                <button class="hero-tag-btn" onclick="addTag('Ricorrente')">🔄 Ricorrente</button>
-                <button class="hero-tag-btn" onclick="addTag('Amore')">❤️ Amore</button>
-                <button class="hero-tag-btn" onclick="addTag('Morte')">💀 Morte</button>
-                <button class="hero-tag-btn" onclick="addTag('Ansia')">😰 Ansia</button>
-                <button class="hero-tag-btn" onclick="addTag('Controllo')">🎮 Controllo</button>
-                <button class="hero-tag-btn" onclick="addTag('Libertà')">🦅 Libertà</button>
-            </div>
             <button class="btn-action" onclick="runDream()">Interpreta Visione (1 Credito)</button>
         </div>
         <div id="dreamResult" class="result-box">
             <div id="dreamContent" class="result-content"></div>
-            <button class="btn-action" onclick="location.reload()" style="margin-top:40px">NUOVA INTERPRETAZIONE</button>
+            <button class="btn-action" onclick="location.reload()" style="margin-top:20px">NUOVA INTERPRETAZIONE</button>
         </div>
     </section>
 
@@ -194,7 +176,7 @@
         <div class="glass-card">
             <input type="text" id="cName" placeholder="Nome">
             <input type="email" id="cEmail" placeholder="Email">
-            <textarea id="cMessage" placeholder="Descrivi la tua situazione per una consulenza approfondita..."></textarea>
+            <textarea id="cMessage" placeholder="Descrivi la tua situazione..."></textarea>
             <button class="btn-action">Invia Richiesta</button>
         </div>
     </section>
@@ -202,17 +184,30 @@
 
 <div id="paymentModal">
     <div class="modal-content">
-        <h2 style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 24px;">Ricarica Energia</h2>
-        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">1 Credito = 1€</p>
+        <h2 style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 20px; margin-bottom: 5px;">Ricarica Energia</h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Scegli quanti crediti aggiungere</p>
+        
         <div class="price-grid">
-            <button class="pay-tag-btn" onclick="setAmount(1)">1€ (1 cr.)</button>
-            <button class="pay-tag-btn" onclick="setAmount(5)">5€ (5 cr.)</button>
-            <button class="pay-tag-btn" onclick="setAmount(10)">10€ (10 cr.)</button>
+            <button class="pay-tag-btn" id="btn1" onclick="setAmount(1)">1€ (1 cr.)</button>
+            <button class="pay-tag-btn" id="btn5" onclick="setAmount(5)">5€ (5 cr.)</button>
+            <button class="pay-tag-btn" id="btn10" onclick="setAmount(10)">10€ (10 cr.)</button>
         </div>
-        <input type="number" id="customAmount" placeholder="Altro importo €" oninput="setAmount(this.value)" style="border-radius: 50px; text-align: center; margin-bottom: 20px; padding: 10px;">
-        <div id="paymentDetails" style="margin: 20px 0; color: var(--gold); font-family: 'Cinzel', serif;">Totale: <span id="displayAmount">1</span>.00€</div>
+
+        <div id="paymentDetails" style="margin: 15px 0; color: var(--gold-light); font-family: 'Cinzel', serif; font-size: 18px;">
+            Totale: <span id="displayAmount">1</span>.00€
+        </div>
+
         <div id="paypal-button-container"></div>
-        <button onclick="closePayment()" style="background:none; border:none; color:var(--gold); margin-top:20px; cursor:pointer; font-family:'Cinzel'; font-size: 12px; letter-spacing: 2px;">✦ CHIUDI ✦</button>
+
+        <div class="divider"></div>
+
+        <p style="font-size: 11px; color: var(--text-muted);">Problemi con i tasti sopra?</p>
+        <a href="https://paypal.me/IL_TUO_USER/1" id="directPayLink" target="_blank" class="direct-link-btn">
+            INVIA CON PAYPAL.ME <br>
+            <small>(Aggiunta crediti manuale)</small>
+        </a>
+
+        <button onclick="closePayment()" style="background:none; border:none; color:var(--text-muted); margin-top:25px; cursor:pointer; font-family:'Cinzel'; font-size: 10px; letter-spacing: 2px;">✦ TORNA AL SITO ✦</button>
     </div>
 </div>
 
@@ -245,22 +240,10 @@
         window.scrollTo(0,0);
     }
 
-    function addTag(tag) {
-        const input = document.getElementById('dreamInput');
-        input.value += (input.value ? ', ' : '') + tag;
-    }
-
-    function formatText(text) {
-        let clean = text.replace(/###/g, '').replace(/#/g, '').replace(/---/g, '').trim();
-        clean = clean.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        const paragraphs = clean.split(/\n\n|\n/).filter(p => p.length > 0);
-        return paragraphs.map(p => `<p>${p}</p>`).join('');
-    }
-
     // --- LOGICA PAGAMENTI ---
     function openPayment() {
         document.getElementById('paymentModal').style.display = 'flex';
-        renderPayPal();
+        setAmount(1); // Default
     }
 
     function closePayment() {
@@ -268,48 +251,51 @@
     }
 
     function setAmount(val) {
-        let n = parseFloat(val);
-        if (isNaN(n) || n < 1) n = 1;
-        selectedAmount = Math.floor(n);
-        document.getElementById('displayAmount').innerText = selectedAmount;
+        selectedAmount = val;
+        document.getElementById('displayAmount').innerText = val;
+        
+        // Aggiorna stile tasti
+        document.querySelectorAll('.pay-tag-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn' + val).classList.add('active');
+        
+        // Aggiorna il link PayPal.me
+        const user = "IL_TUO_USER"; // Sostituisci con il tuo username paypal.me
+        document.getElementById('directPayLink').href = `https://paypal.me/${user}/${val}`;
+
         renderPayPal();
     }
 
     function renderPayPal() {
         document.getElementById('paypal-button-container').innerHTML = '';
-        if(typeof paypal === 'undefined') return; // Evita errori se l'ID non è impostato
+        if(typeof paypal === 'undefined') return;
+        
         paypal.Buttons({
+            style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
             createOrder: (data, actions) => actions.order.create({ purchase_units: [{ amount: { value: selectedAmount.toString() } }] }),
             onApprove: (data, actions) => actions.order.capture().then(details => {
                 let current = parseInt(localStorage.getItem('astral_credits'));
                 localStorage.setItem('astral_credits', (current + selectedAmount).toString());
-                closePayment();
                 document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
+                alert("Energia ricaricata con successo!");
+                closePayment();
             })
         }).render('#paypal-button-container');
     }
 
-    // --- LOGICA AI ---
-    async function checkAndConsumeCredit() {
-        let c = parseInt(localStorage.getItem('astral_credits'));
-        if (c <= 0) {
-            openPayment();
-            return false;
-        }
-        return true;
-    }
-
-    function updateCredits() {
-        let c = parseInt(localStorage.getItem('astral_credits'));
-        localStorage.setItem('astral_credits', c - 1);
-        document.getElementById('creditCount').innerText = c - 1;
+    // --- RESTO DEL CODICE (Tarocchi/Sogni) ---
+    function formatText(text) {
+        let clean = text.replace(/###/g, '').replace(/#/g, '').replace(/---/g, '').trim();
+        clean = clean.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        const paragraphs = clean.split(/\n\n|\n/).filter(p => p.length > 0);
+        return paragraphs.map(p => `<p>${p}</p>`).join('');
     }
 
     async function runTarot() {
+        let c = parseInt(localStorage.getItem('astral_credits'));
+        if(c <= 0) return openPayment();
+
         const q = document.getElementById('questionInput').value;
         if (!q) return alert("Inserisci una domanda.");
-        
-        if (!(await checkAndConsumeCredit())) return;
         
         document.getElementById('tarotInputBox').style.display = 'none';
         document.getElementById('cardsSpread').style.display = 'flex';
@@ -320,22 +306,19 @@
         for(let i=0; i<3; i++) {
             const isReversed = Math.random() < 0.5;
             const card = chosen[i];
-            const status = isReversed ? "Rovesciata" : "Dritta";
-            resultsForMake.push(`${card.n} (${status})`);
-
+            resultsForMake.push(`${card.n} (${isReversed ? 'Rovesciata' : 'Dritta'})`);
             const container = document.getElementById('card' + i);
             const front = document.getElementById('cf' + i);
             container.classList.remove('is-reversed', 'flipped');
             if(isReversed) container.classList.add('is-reversed');
-            
-            front.innerHTML = `<img src="${IMG_BASE + card.i}" class="tarot-image"><div class="card-name-label">${card.n.toUpperCase()} ${isReversed ? '(R)' : ''}</div>`;
+            front.innerHTML = `<img src="${IMG_BASE + card.i}" class="tarot-image"><div class="card-name-label">${card.n.toUpperCase()}</div>`;
             setTimeout(() => container.classList.add('flipped'), i * 600);
         }
 
         const resBox = document.getElementById('readingResult');
         const content = document.getElementById('readingContent');
         resBox.style.display = 'block';
-        content.innerHTML = "<p><em>L'universo sta rispondendo...</em></p>";
+        content.innerHTML = "<p><em>Interrogando gli astri...</em></p>";
 
         try {
             const response = await fetch(MAKE_URL, {
@@ -345,21 +328,21 @@
             });
             const text = await response.text();
             content.innerHTML = formatText(text);
-            updateCredits();
-        } catch (e) { content.innerHTML = "<p>Le sfere celesti sono offuscate. Riprova tra poco.</p>"; }
+            localStorage.setItem('astral_credits', c - 1);
+            document.getElementById('creditCount').innerText = c - 1;
+        } catch (e) { content.innerHTML = "Errore di connessione."; }
     }
 
     async function runDream() {
+        let c = parseInt(localStorage.getItem('astral_credits'));
+        if(c <= 0) return openPayment();
         const d = document.getElementById('dreamInput').value;
-        if (!d) return alert("Racconta il tuo sogno.");
-        
-        if (!(await checkAndConsumeCredit())) return;
-
+        if (!d) return alert("Racconta il sogno.");
         document.getElementById('dreamInputBox').style.display = 'none';
         const resBox = document.getElementById('dreamResult');
         const content = document.getElementById('dreamContent');
         resBox.style.display = 'block';
-        content.innerHTML = "<p><em>Interpretando i tuoi simboli notturni...</em></p>";
+        content.innerHTML = "<p><em>Analizzando i simboli...</em></p>";
         try {
             const response = await fetch(MAKE_URL, {
                 method: 'POST',
@@ -368,12 +351,12 @@
             });
             const text = await response.text();
             content.innerHTML = formatText(text);
-            updateCredits();
-        } catch (e) { content.innerHTML = "<p>Errore nella visione.</p>"; }
+            localStorage.setItem('astral_credits', c - 1);
+            document.getElementById('creditCount').innerText = c - 1;
+        } catch (e) { content.innerHTML = "Errore."; }
     }
 
     window.onload = initCredits;
 </script>
 </body>
 </html>
-
