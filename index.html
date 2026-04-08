@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
+        /* --- RESET E VARIABILI --- */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
             --gold: #C9A84C; --gold-light: #E8C97A; --deep-space: #0D0A1A;
@@ -16,7 +17,7 @@
 
         body {
             background-color: var(--deep-space); color: var(--text);
-            font-family: 'Cormorant Gramond', serif; font-size: 19px; line-height: 1.7;
+            font-family: 'Cormorant Garamond', serif; font-size: 19px; line-height: 1.7;
             overflow-x: hidden; position: relative;
         }
 
@@ -38,18 +39,23 @@
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             background: rgba(13, 10, 26, 0.9); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border); padding: 20px 0;
+            border-bottom: 1px solid var(--border); padding: 20px 0; transition: 0.3s;
         }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 20px;}
         .nav-logo { font-family: 'Cinzel Decorative', cursive; color: var(--gold); text-decoration: none; font-size: 14px; letter-spacing: 0.1em; cursor: pointer; }
         .nav-right { display: flex; align-items: center; gap: 30px; }
         
+        /* BADGE CREDITI CLICCABILE */
         .credit-badge { 
             font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); border: 1px solid var(--gold); 
-            padding: 5px 15px; border-radius: 50px; background: rgba(201, 168, 76, 0.1); cursor: pointer;
+            padding: 5px 15px; border-radius: 50px; background: rgba(201, 168, 76, 0.1);
+            cursor: pointer; transition: 0.3s;
         }
+        .credit-badge:hover { background: rgba(201, 168, 76, 0.2); box-shadow: 0 0 10px rgba(201, 168, 76, 0.2); }
+
         .nav-links { display: flex; gap: 20px; list-style: none; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-family: 'Cinzel', serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-family: 'Cinzel', serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold-light); }
 
         /* SEZIONI */
         .content-section { display: none; padding: 160px 0 80px; animation: fadeIn 0.8s ease; }
@@ -65,52 +71,58 @@
             color: #EDE0C4; padding: 12px 24px; cursor: pointer; transition: 0.3s; 
             font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; 
         }
+        .hero-tag-btn:hover { border-color: var(--gold); background: rgba(201, 168, 76, 0.15); }
 
         .glass-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; backdrop-filter: blur(8px); margin-top: 40px; }
-        textarea, input { width: 100%; background: rgba(13, 10, 26, 0.6); border: 1px solid var(--border); border-radius: 12px; color: var(--text); padding: 18px; font-family: 'Cormorant Garamond', serif; font-size: 18px; outline: none; margin-bottom: 20px; }
+        textarea, input { width: 100%; background: rgba(13, 10, 26, 0.6); border: 1px solid var(--border); border-radius: 12px; color: var(--text); padding: 18px; font-family: 'Cormorant Garamond', serif; font-size: 18px; outline: none; margin-bottom: 20px; resize: none; }
         
         .btn-action {
             width: 100%; padding: 20px; border-radius: 12px; font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.2em;
             cursor: pointer; transition: 0.4s; text-transform: uppercase; border: 1px solid var(--gold); 
             background: linear-gradient(90deg, #3D2B6B, #5C3D9A); color: white;
         }
+        .btn-action:hover { background: var(--gold); color: var(--deep-space); }
 
-        /* PAGAMENTI GRID */
-        .payment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin: 25px 0; }
-        .tier-card { 
-            background: rgba(201, 168, 76, 0.05); border: 1px solid var(--border); padding: 15px; 
-            border-radius: 15px; cursor: pointer; transition: 0.3s; text-align: center;
-        }
-        .tier-card:hover, .tier-card.selected { border-color: var(--gold); background: rgba(201, 168, 76, 0.15); transform: translateY(-3px); }
-        .tier-card h4 { font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold); margin-bottom: 5px; }
-        .tier-card .amount { font-size: 20px; font-weight: bold; display: block; color: white; }
-        .tier-card .price { font-size: 12px; color: var(--gold-light); }
+        .result-box { display: none; margin-top: 30px; padding: 40px; border: 1px solid var(--border); background: rgba(255,255,255,0.03); border-radius: 20px; }
+        .result-content p { margin-bottom: 1.5em; }
+        .result-content strong { color: var(--gold-light); font-weight: 500; }
 
-        .payment-methods { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; align-items: center; }
-        .stripe-btn { width: 100%; max-width: 300px; padding: 14px; border-radius: 8px; font-family: 'Cinzel', serif; font-size: 11px; cursor: pointer; border: none; background: #635bff; color: white; display: none; }
-        .paypal-container { width: 100%; max-width: 300px; }
-
-        /* MODAL */
-        #paymentModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-        .modal-content { background: #151126; border: 1px solid var(--gold); padding: 30px; border-radius: 30px; max-width: 650px; width: 95%; text-align: center; max-height: 90vh; overflow-y: auto; }
-
-        /* TAROCCHI */
-        .cards-spread { display: flex; gap: 20px; justify-content: center; margin-top: 30px; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 10px; }
+        /* TAROCCHI VISUAL */
+        .cards-spread { display: flex; gap: 20px; justify-content: center; margin-top: 30px; flex-wrap: nowrap; /* Impedisce di andare a capo */ }
         .tarot-card { width: 150px; height: 260px; perspective: 1000px; flex-shrink: 0; }
         .card-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s; }
         .tarot-card.flipped .card-inner { transform: rotateY(180deg); }
         .card-front, .card-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 10px; border: 1px solid var(--gold); overflow: hidden; }
-        .card-back { background: #1A152E; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 40px; }
+        .card-back { background: #1A152E; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 40px; font-family: 'Cinzel', serif; }
         .card-front { background: #1E1535; transform: rotateY(180deg); display: flex; flex-direction: column; align-items: center; padding: 10px; }
-        .tarot-image { width: 100%; height: 85%; object-fit: cover; }
+        .tarot-image { width: 100%; height: 85%; object-fit: cover; border-radius: 5px; transition: transform 0.3s; }
+        .is-reversed .tarot-image { transform: rotate(180deg); }
+        .card-name-label { font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold); margin-top: 8px; text-align: center; }
 
-        .result-box { display: none; margin-top: 30px; padding: 40px; border: 1px solid var(--border); background: rgba(255,255,255,0.03); border-radius: 20px; }
+        .tag-container { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
 
+        /* --- MODAL PAGAMENTO --- */
+        #paymentModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .modal-content { background: #151126; border: 1px solid var(--gold); padding: 40px; border-radius: 30px; max-width: 500px; width: 90%; text-align: center; }
+        .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 25px 0; }
+        .pay-tag-btn { background: rgba(201, 168, 76, 0.1); border: 1px solid var(--border); border-radius: 50px; color: var(--gold); padding: 10px; cursor: pointer; transition: 0.3s; font-family: 'Cinzel', serif;}
+        .pay-tag-btn:hover { border-color: var(--gold); background: rgba(201, 168, 76, 0.2); }
+
+        /* --- RESPONSIVE MOBILE --- */
         @media (max-width: 768px) {
-            .nav-inner { flex-direction: column; gap: 15px; }
+            .nav-inner { flex-direction: column; gap: 15px; padding: 15px 10px; }
+            .nav-right { flex-direction: column; gap: 10px; }
+            .nav-links { gap: 15px; justify-content: center; }
             .content-section { padding: 200px 0 60px; }
-            .tarot-card { width: 110px; height: 190px; }
-            .payment-grid { grid-template-columns: repeat(2, 1fr); }
+            
+            h1 { font-size: 40px; }
+            .hero-buttons-container { flex-direction: column; padding: 0 20px; }
+            
+            /* Adatta le carte per lo schermo piccolo mantenendo la riga */
+            .tarot-card { width: 28vw; height: 48vw; min-width: 90px; min-height: 160px; }
+            .card-name-label { font-size: 8px; margin-top: 4px; }
+            .glass-card { padding: 25px 15px; }
+            .result-box { padding: 20px 15px; }
         }
     </style>
 </head>
@@ -120,7 +132,7 @@
     <div class="nav-inner">
         <a class="nav-logo" onclick="showSection('home')">✦ TAROCCHI DELL'ANIMA</a>
         <div class="nav-right">
-            <div class="credit-badge" onclick="openPayment()">✨ Crediti: <span id="creditCount">0</span></div>
+            <div class="credit-badge" onclick="openPayment()">✨ Crediti: <span id="creditCount">100</span></div>
             <ul class="nav-links">
                 <li><a onclick="showSection('oracolo')">Tarocchi</a></li>
                 <li><a onclick="showSection('sogni')">Sogni</a></li>
@@ -151,54 +163,56 @@
             <div class="tarot-card" id="card1"><div class="card-inner"><div class="card-back">✦</div><div class="card-front" id="cf1"></div></div></div>
             <div class="tarot-card" id="card2"><div class="card-inner"><div class="card-back">✦</div><div class="card-front" id="cf2"></div></div></div>
         </div>
-        <div id="readingResult" class="result-box"><div id="readingContent"></div></div>
+        <div id="readingResult" class="result-box">
+            <div id="readingContent" class="result-content"></div>
+            <button class="btn-action" onclick="location.reload()" style="margin-top:40px">NUOVA DOMANDA</button>
+        </div>
     </section>
 
     <section id="sogni" class="content-section">
         <h2>IL LIBRO DEI SOGNI</h2>
         <div id="dreamInputBox" class="glass-card">
             <textarea id="dreamInput" placeholder="Racconta la tua visione notturna..."></textarea>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px;">
+            <div class="tag-container">
                 <button class="hero-tag-btn" onclick="addTag('Ricorrente')">🔄 Ricorrente</button>
                 <button class="hero-tag-btn" onclick="addTag('Amore')">❤️ Amore</button>
                 <button class="hero-tag-btn" onclick="addTag('Morte')">💀 Morte</button>
                 <button class="hero-tag-btn" onclick="addTag('Ansia')">😰 Ansia</button>
+                <button class="hero-tag-btn" onclick="addTag('Controllo')">🎮 Controllo</button>
+                <button class="hero-tag-btn" onclick="addTag('Libertà')">🦅 Libertà</button>
             </div>
             <button class="btn-action" onclick="runDream()">Interpreta Visione (1 Credito)</button>
         </div>
-        <div id="dreamResult" class="result-box"><div id="dreamContent"></div></div>
+        <div id="dreamResult" class="result-box">
+            <div id="dreamContent" class="result-content"></div>
+            <button class="btn-action" onclick="location.reload()" style="margin-top:40px">NUOVA INTERPRETAZIONE</button>
+        </div>
     </section>
 
     <section id="contatto" class="content-section">
         <h2>CONSULENZA PRIVATA</h2>
         <div class="glass-card">
-            <p style="text-align:center; margin-bottom: 20px; font-style: italic;">Per una lettura approfondita dei tuoi percorsi karmici.</p>
-            <input type="text" placeholder="Tuo Nome">
-            <input type="email" placeholder="Tua Email">
-            <textarea placeholder="Descrivi la situazione o il quesito che desideri approfondire privatamente..."></textarea>
-            <button class="btn-action">Richiedi Consulenza</button>
+            <input type="text" id="cName" placeholder="Nome">
+            <input type="email" id="cEmail" placeholder="Email">
+            <textarea id="cMessage" placeholder="Descrivi la tua situazione per una consulenza approfondita..."></textarea>
+            <button class="btn-action">Invia Richiesta</button>
         </div>
     </section>
 </div>
 
 <div id="paymentModal">
     <div class="modal-content">
-        <h2 style="font-size: 24px; color: var(--gold);">Ricarica Energia</h2>
-        <div class="payment-grid">
-            <div class="tier-card" onclick="selectTier(1, 1, this)"><h4>SCINTILLA</h4><span class="amount">1 Cr.</span><span class="price">1.00€</span></div>
-            <div class="tier-card" onclick="selectTier(5, 5, this)"><h4>SENTIERO</h4><span class="amount">5 Cr.</span><span class="price">5.00€</span></div>
-            <div class="tier-card" onclick="selectTier(10, 10, this)"><h4>VISIONE</h4><span class="amount">10 Cr.</span><span class="price">10.00€</span></div>
-            <div class="tier-card" onclick="selectTier(25, 20, this)"><h4>SAGGIO</h4><span class="amount">25 Cr.</span><span class="price">20.00€</span></div>
-            <div class="tier-card" onclick="selectTier(60, 45, this)"><h4>TEMPIO</h4><span class="amount">60 Cr.</span><span class="price">45.00€</span></div>
-            <div class="tier-card" onclick="selectTier(150, 100, this)"><h4>ORCOLO</h4><span class="amount">150 Cr.</span><span class="price">100.00€</span></div>
-            <div class="tier-card" onclick="selectTier(999, 29, this)"><h4>INFINITO</h4><span class="amount">∞</span><span class="price">29.00€/ms</span></div>
+        <h2 style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 24px;">Ricarica Energia</h2>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">1 Credito = 1€</p>
+        <div class="price-grid">
+            <button class="pay-tag-btn" onclick="setAmount(1)">1€ (1 cr.)</button>
+            <button class="pay-tag-btn" onclick="setAmount(5)">5€ (5 cr.)</button>
+            <button class="pay-tag-btn" onclick="setAmount(10)">10€ (10 cr.)</button>
         </div>
-
-        <div class="payment-methods">
-            <button id="stripeBtn" class="stripe-btn" onclick="payWithStripe()">PAGA CON CARTA (STRIPE)</button>
-            <div id="paypal-button-container" class="paypal-container"></div>
-        </div>
-        <button onclick="closePayment()" style="background:none; border:none; color:var(--gold); margin-top:20px; cursor:pointer; font-family:'Cinzel';">✦ CHIUDI ✦</button>
+        <input type="number" id="customAmount" placeholder="Altro importo €" oninput="setAmount(this.value)" style="border-radius: 50px; text-align: center; margin-bottom: 20px; padding: 10px;">
+        <div id="paymentDetails" style="margin: 20px 0; color: var(--gold); font-family: 'Cinzel', serif;">Totale: <span id="displayAmount">1</span>.00€</div>
+        <div id="paypal-button-container"></div>
+        <button onclick="closePayment()" style="background:none; border:none; color:var(--gold); margin-top:20px; cursor:pointer; font-family:'Cinzel'; font-size: 12px; letter-spacing: 2px;">✦ CHIUDI ✦</button>
     </div>
 </div>
 
@@ -207,13 +221,23 @@
 <script>
     const MAKE_URL = "https://hook.eu1.make.com/wdc6niacrxs2vlmssjbd592ymzw2859w";
     const IMG_BASE = "https://www.sacred-texts.com/tarot/pkt/img/";
-    const CARDS = [{n: "Matto", i: "ar00.jpg"}, {n: "Mago", i: "ar01.jpg"}, {n: "Papessa", i: "ar02.jpg"}, {n: "Imperatrice", i: "ar03.jpg"}, {n: "Imperatore", i: "ar04.jpg"}];
+    const CARDS = [
+        {n: "Il Matto", i: "ar00.jpg"}, {n: "Il Mago", i: "ar01.jpg"}, {n: "La Papessa", i: "ar02.jpg"},
+        {n: "L'Imperatrice", i: "ar03.jpg"}, {n: "L'Imperatore", i: "ar04.jpg"}, {n: "Il Papa", i: "ar05.jpg"},
+        {n: "Gli Amanti", i: "ar06.jpg"}, {n: "Il Carro", i: "ar07.jpg"}, {n: "La Forza", i: "ar08.jpg"},
+        {n: "L'Eremita", i: "ar09.jpg"}, {n: "La Ruota", i: "ar10.jpg"}, {n: "La Giustizia", i: "ar11.jpg"},
+        {n: "L'Appeso", i: "ar12.jpg"}, {n: "Morte", i: "ar13.jpg"}, {n: "Temperanza", i: "ar14.jpg"},
+        {n: "Il Diavolo", i: "ar15.jpg"}, {n: "La Torre", i: "ar16.jpg"}, {n: "La Stella", i: "ar17.jpg"},
+        {n: "La Luna", i: "ar18.jpg"}, {n: "Il Sole", i: "ar19.jpg"}, {n: "Giudizio", i: "ar20.jpg"},
+        {n: "Il Mondo", i: "ar21.jpg"}
+    ];
 
-    let selectedCredits = 0;
-    let selectedPrice = 0;
+    let selectedAmount = 1;
 
-    if(!localStorage.getItem('astral_credits')) localStorage.setItem('astral_credits', '1');
-    document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
+    function initCredits() {
+        if (!localStorage.getItem('astral_credits')) localStorage.setItem('astral_credits', '100');
+        document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
+    }
 
     function showSection(id) {
         document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
@@ -226,65 +250,112 @@
         input.value += (input.value ? ', ' : '') + tag;
     }
 
-    function openPayment() { document.getElementById('paymentModal').style.display = 'flex'; }
-    function closePayment() { document.getElementById('paymentModal').style.display = 'none'; }
-
-    function selectTier(credits, price, el) {
-        selectedCredits = credits;
-        selectedPrice = price;
-        document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('selected'));
-        el.classList.add('selected');
-        document.getElementById('stripeBtn').style.display = 'block';
-        renderPayPalButton();
+    function formatText(text) {
+        let clean = text.replace(/###/g, '').replace(/#/g, '').replace(/---/g, '').trim();
+        clean = clean.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        const paragraphs = clean.split(/\n\n|\n/).filter(p => p.length > 0);
+        return paragraphs.map(p => `<p>${p}</p>`).join('');
     }
 
-    function renderPayPalButton() {
-        const container = document.getElementById('paypal-button-container');
-        container.innerHTML = '';
+    // --- LOGICA PAGAMENTI ---
+    function openPayment() {
+        document.getElementById('paymentModal').style.display = 'flex';
+        renderPayPal();
+    }
+
+    function closePayment() {
+        document.getElementById('paymentModal').style.display = 'none';
+    }
+
+    function setAmount(val) {
+        let n = parseFloat(val);
+        if (isNaN(n) || n < 1) n = 1;
+        selectedAmount = Math.floor(n);
+        document.getElementById('displayAmount').innerText = selectedAmount;
+        renderPayPal();
+    }
+
+    function renderPayPal() {
+        document.getElementById('paypal-button-container').innerHTML = '';
+        if(typeof paypal === 'undefined') return; // Evita errori se l'ID non è impostato
         paypal.Buttons({
-            createOrder: (data, actions) => actions.order.create({ purchase_units: [{ amount: { value: selectedPrice.toString() } }] }),
-            onApprove: (data, actions) => actions.order.capture().then(() => {
-                let total = parseInt(localStorage.getItem('astral_credits')) + selectedCredits;
-                localStorage.setItem('astral_credits', total.toString());
-                document.getElementById('creditCount').innerText = total;
+            createOrder: (data, actions) => actions.order.create({ purchase_units: [{ amount: { value: selectedAmount.toString() } }] }),
+            onApprove: (data, actions) => actions.order.capture().then(details => {
+                let current = parseInt(localStorage.getItem('astral_credits'));
+                localStorage.setItem('astral_credits', (current + selectedAmount).toString());
                 closePayment();
+                document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
             })
         }).render('#paypal-button-container');
     }
 
-    function payWithStripe() { window.open(`https://buy.stripe.com/link_per_prezzo_${selectedPrice}`, '_blank'); }
+    // --- LOGICA AI ---
+    async function checkAndConsumeCredit() {
+        let c = parseInt(localStorage.getItem('astral_credits'));
+        if (c <= 0) {
+            openPayment();
+            return false;
+        }
+        return true;
+    }
+
+    function updateCredits() {
+        let c = parseInt(localStorage.getItem('astral_credits'));
+        localStorage.setItem('astral_credits', c - 1);
+        document.getElementById('creditCount').innerText = c - 1;
+    }
 
     async function runTarot() {
         const q = document.getElementById('questionInput').value;
-        let creds = parseInt(localStorage.getItem('astral_credits'));
-        if(!q || creds < 1) return creds < 1 ? openPayment() : null;
+        if (!q) return alert("Inserisci una domanda.");
+        
+        if (!(await checkAndConsumeCredit())) return;
         
         document.getElementById('tarotInputBox').style.display = 'none';
         document.getElementById('cardsSpread').style.display = 'flex';
-        let chosen = [...CARDS].sort(() => 0.5 - Math.random()).slice(0,3);
-        chosen.forEach((c, i) => {
-            document.getElementById('cf'+i).innerHTML = `<img src="${IMG_BASE+c.i}" class="tarot-image">`;
-            setTimeout(() => document.getElementById('card'+i).classList.add('flipped'), i*600);
-        });
 
-        const res = await fetch(MAKE_URL, { method: 'POST', body: JSON.stringify({tipo: "tarocchi", domanda: q, carte: chosen.map(c=>c.n).join(",")}) });
-        document.getElementById('readingResult').style.display = 'block';
-        document.getElementById('readingContent').innerHTML = await res.text();
-        localStorage.setItem('astral_credits', (creds-1).toString());
-        document.getElementById('creditCount').innerText = creds-1;
+        let chosen = [...CARDS].sort(() => 0.5 - Math.random()).slice(0,3);
+        let resultsForMake = [];
+
+        for(let i=0; i<3; i++) {
+            const isReversed = Math.random() < 0.5;
+            const card = chosen[i];
+            const status = isReversed ? "Rovesciata" : "Dritta";
+            resultsForMake.push(`${card.n} (${status})`);
+
+            const container = document.getElementById('card' + i);
+            const front = document.getElementById('cf' + i);
+            container.classList.remove('is-reversed', 'flipped');
+            if(isReversed) container.classList.add('is-reversed');
+            
+            front.innerHTML = `<img src="${IMG_BASE + card.i}" class="tarot-image"><div class="card-name-label">${card.n.toUpperCase()} ${isReversed ? '(R)' : ''}</div>`;
+            setTimeout(() => container.classList.add('flipped'), i * 600);
+        }
+
+        const resBox = document.getElementById('readingResult');
+        const content = document.getElementById('readingContent');
+        resBox.style.display = 'block';
+        content.innerHTML = "<p><em>L'universo sta rispondendo...</em></p>";
+
+        try {
+            const response = await fetch(MAKE_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({tipo: "tarocchi", domanda: q, carte: resultsForMake.join(", ")})
+            });
+            const text = await response.text();
+            content.innerHTML = formatText(text);
+            updateCredits();
+        } catch (e) { content.innerHTML = "<p>Le sfere celesti sono offuscate. Riprova tra poco.</p>"; }
     }
 
     async function runDream() {
         const d = document.getElementById('dreamInput').value;
-        let creds = parseInt(localStorage.getItem('astral_credits'));
-        if(!d || creds < 1) return creds < 1 ? openPayment() : null;
+        if (!d) return alert("Racconta il tuo sogno.");
+        
+        if (!(await checkAndConsumeCredit())) return;
 
-        const res = await fetch(MAKE_URL, { method: 'POST', body: JSON.stringify({tipo: "sogno", sogno: d}) });
-        document.getElementById('dreamResult').style.display = 'block';
-        document.getElementById('dreamContent').innerHTML = await res.text();
-        localStorage.setItem('astral_credits', (creds-1).toString());
-        document.getElementById('creditCount').innerText = creds-1;
-    }
-</script>
-</body>
-</html>
+        document.getElementById('dreamInputBox').style.display = 'none';
+        const resBox = document.getElementById('dreamResult');
+        const content = document.getElementById('dreamContent');
+        resBox.style.display = 'block';
