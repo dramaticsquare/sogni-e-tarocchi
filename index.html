@@ -194,9 +194,9 @@
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Scegli quanti crediti aggiungere</p>
         
        <div class="price-grid">
-            <button class="pay-tag-btn" id="btn1" onclick="setAmount(2.99)">2.99€ (1 cr.)</button>
-            <button class="pay-tag-btn" id="btn5" onclick="setAmount(10)">10€ (5 cr.)</button>
-            <button class="pay-tag-btn" id="btn10" onclick="setAmount(15)">15€ (10 cr.)</button>
+            <button class="pay-tag-btn" id="btn2.99" onclick="setAmount(2.99)">2,99€ (1 cr.)</button>
+            <button class="pay-tag-btn" id="btn10" onclick="setAmount(10)">10€ (5 cr.)</button>
+            <button class="pay-tag-btn" id="btn15" onclick="setAmount(15)">15€ (10 cr.)</button>
         </div>
 
         <div id="paymentDetails" style="margin: 15px 0; color: var(--gold-light); font-family: 'Cinzel', serif; font-size: 18px;">
@@ -263,9 +263,17 @@
         // Aggiorna stile tasti
         document.querySelectorAll('.pay-tag-btn').forEach(b => b.classList.remove('active'));
         document.getElementById('btn' + val).classList.add('active');
-        
+
+        // Aggiungi questo pezzo per gestire il link PayPal.me
+function updatePayPalLink(val) {
+    const user = "MarcoPoli467"; // <--- Questa è la riga da personalizzare
+    const linkElement = document.getElementById('directPayLink');
+    if(linkElement) {
+        linkElement.href = `https://paypal.me/${user}/${val}`;
+    }
+}
         // Aggiorna il link PayPal.me
-        const user = "Tarocchi dell'anima"; // Sostituisci con il tuo username paypal.me
+        const user = "MarcoPoli467"; // Sostituisci con il tuo username paypal.me
         document.getElementById('directPayLink').href = `https://paypal.me/${user}/${val}`;
 
         renderPayPal();
