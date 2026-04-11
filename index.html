@@ -193,7 +193,7 @@
         <h2 style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 20px; margin-bottom: 5px;">Ricarica Energia</h2>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Scegli quanti crediti aggiungere</p>
         
-        <div class="price-grid">
+       <div class="price-grid">
             <button class="pay-tag-btn" id="btn1" onclick="setAmount(2.99)">2.99€ (1 cr.)</button>
             <button class="pay-tag-btn" id="btn5" onclick="setAmount(10)">10€ (5 cr.)</button>
             <button class="pay-tag-btn" id="btn10" onclick="setAmount(15)">15€ (10 cr.)</button>
@@ -208,13 +208,15 @@
         <div class="divider"></div>
 
         <p style="font-size: 11px; color: var(--text-muted);">Problemi con i tasti sopra?</p>
-      
+        <a href="https://paypal.me/Tarocchianima/1" id="directPayLink" target="_blank" class="direct-link-btn">
+            INVIA CON PAYPAL.ME <br>
+            <small>(Aggiunta crediti manuale)</small>
         </a>
 
         <button onclick="closePayment()" style="background:none; border:none; color:var(--text-muted); margin-top:25px; cursor:pointer; font-family:'Cinzel'; font-size: 10px; letter-spacing: 2px;">✦ TORNA AL SITO ✦</button>
     </div>
 </div>
-
+    
 <script src="https://www.paypal.com/sdk/js?client-id=AfQIZID382-iGxXR0F12RmXOTr10lTCRnvUHWe6ioiRci8LmO_Ous4MN4l9aYfTEMDTqSgwTZveuSyba&currency=EUR"></script>
 
 <script>
@@ -263,7 +265,7 @@
         document.getElementById('btn' + val).classList.add('active');
         
         // Aggiorna il link PayPal.me
-        const user = "IL_TUO_USER"; // Sostituisci con il tuo username paypal.me
+        const user = "Tarocchi dell'anima"; // Sostituisci con il tuo username paypal.me
         document.getElementById('directPayLink').href = `https://paypal.me/${user}/${val}`;
 
         renderPayPal();
