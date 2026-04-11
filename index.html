@@ -5,191 +5,358 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tarocchi dell'Anima — Cartomanzia Online</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+    
     <style>
-        /* --- DESIGN MISTICO --- */
+        /* --- RESET E VARIABILI (Mantengo tutto l'ultimo stile) --- */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --gold: #C9A84C; --gold-light: #E8C97A; --deep: #0D0A1A;
-            --surface: #231B38; --surface2: #2D2347; --text: #EDE0C4;
-            --text-muted: #9A8A6E; --mystic: #C4A1E8; --border: rgba(201,168,76,0.25);
+            --gold: #C9A84C; --gold-light: #E8C97A; --deep-space: #0D0A1A;
+            --surface: rgba(35, 27, 56, 0.4); --text: #EDE0C4; --text-muted: #9A8A6E;
+            --border: rgba(201, 168, 76, 0.2);
         }
+
         body {
-            background: var(--deep); color: var(--text);
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 18px; line-height: 1.7; min-height: 100vh; overflow-x: hidden;
+            background-color: var(--deep-space); color: var(--text);
+            font-family: 'Cormorant Garamond', serif; font-size: 19px; line-height: 1.7;
+            overflow-x: hidden; position: relative;
         }
+
         body::before {
-            content: ''; position: fixed; inset: 0;
-            background-image: radial-gradient(1px 1px at 10% 15%, white 0.5, transparent 100%),
-                              radial-gradient(1px 1px at 80% 20%, var(--gold) 0.3, transparent 100%);
-            pointer-events: none; z-index: 0;
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px), 
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+                radial-gradient(circle at center, #1a152e 0%, #0d0a1a 100%);
+            background-size: 550px 550px, 350px 350px, 100% 100%;
+            background-position: 0 0, 40px 60px, center;
+            z-index: -1; opacity: 0.4;
         }
-        .container { max-width: 900px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
-        nav { position: sticky; top: 0; z-index: 100; background: rgba(13,10,26,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 14px 0; }
-        .nav-logo { font-family: 'Cinzel Decorative', cursive; color: var(--gold); text-decoration: none; font-size: 14px; letter-spacing: 2px; }
-        
-        .hero { text-align: center; padding: 80px 0 50px; }
-        h1 { font-family: 'Cinzel Decorative', cursive; font-size: clamp(30px, 6vw, 55px); color: var(--gold-light); margin-bottom: 15px; }
-        
-        .input-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 35px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h2 { font-family: 'Cinzel', serif; font-size: 22px; color: var(--gold); margin-bottom: 20px; text-align: center; letter-spacing: 2px; }
-        
-        textarea { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: inherit; font-size: 18px; padding: 15px; min-height: 120px; outline: none; transition: 0.3s; }
-        textarea:focus { border-color: var(--gold); }
 
-        .btn { width: 100%; padding: 16px; margin-top: 15px; background: linear-gradient(135deg,#3D2B6B,#5C3D9A); border: 1px solid var(--gold); border-radius: 10px; color: var(--gold-light); font-family: 'Cinzel', serif; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
 
-        /* Carte */
-        .cards-spread { display: flex; gap: 20px; justify-content: center; margin: 40px 0; flex-wrap: wrap; perspective: 1000px; }
-        .tarot-card { width: 150px; height: 260px; position: relative; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-        .tarot-card.flipped { transform: rotateY(180deg); }
-        .card-back, .card-front { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 12px; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; flex-direction: column; }
-        .card-back { background: var(--surface2); color: var(--gold); font-size: 40px; }
-        .card-front { background: linear-gradient(160deg, #1E1535, #2D2040); transform: rotateY(180deg); padding: 15px; text-align: center; }
-
-        /* Risultati */
-        .result-area { background: rgba(35, 27, 56, 0.9); border: 1px solid var(--gold); border-radius: 16px; padding: 35px; margin-top: 30px; display: none; animation: fadeIn 1s; }
-        .visible { display: block; }
-        
-        /* Stile del testo e del grassetto */
-        .reading-text { font-size: 20px; line-height: 1.8; }
-        .reading-text b, .reading-text strong { color: var(--gold-light); font-weight: bold; }
-        .reading-text em { color: var(--mystic); font-style: italic; }
-
-        /* Box Riassunto */
-        .summary-box { 
-            background: rgba(201, 168, 76, 0.1); 
-            border-left: 3px solid var(--gold); 
-            padding: 20px; 
-            margin-bottom: 25px; 
-            font-style: italic;
-            border-radius: 0 8px 8px 0;
+        /* NAVBAR */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(13, 10, 26, 0.9); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border); padding: 20px 0;
         }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 20px;}
+        .nav-logo { font-family: 'Cinzel Decorative', cursive; color: var(--gold); text-decoration: none; font-size: 14px; letter-spacing: 0.1em; cursor: pointer; }
+        .nav-right { display: flex; align-items: center; gap: 30px; }
         
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .loading { font-style: italic; color: var(--gold); text-align: center; padding: 20px; }
+        .credit-badge { 
+            font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); border: 1px solid var(--gold); 
+            padding: 5px 15px; border-radius: 50px; background: rgba(201, 168, 76, 0.1);
+            cursor: pointer; transition: 0.3s;
+        }
+
+        .nav-links { display: flex; gap: 20px; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-family: 'Cinzel', serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: 0.3s; }
+
+        /* SEZIONI */
+        .content-section { display: none; padding: 160px 0 80px; animation: fadeIn 0.8s ease; }
+        .content-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1, h2 { font-family: 'Cinzel Decorative', cursive; color: var(--gold-light); font-size: clamp(35px, 7vw, 75px); line-height: 1.1; margin-bottom: 20px; text-align: center; }
+        
+        .hero-buttons-container { display: flex; gap: 20px; justify-content: center; margin-top: 40px; }
+        .hero-tag-btn { 
+            background: rgba(61, 43, 107, 0.3); border: 1px solid var(--border); border-radius: 50px; 
+            color: #EDE0C4; padding: 12px 24px; cursor: pointer; transition: 0.3s; 
+            font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; 
+        }
+
+        .glass-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; backdrop-filter: blur(8px); margin-top: 40px; }
+        textarea, input { width: 100%; background: rgba(13, 10, 26, 0.6); border: 1px solid var(--border); border-radius: 12px; color: var(--text); padding: 18px; font-family: 'Cormorant Garamond', serif; font-size: 18px; outline: none; margin-bottom: 20px; resize: none; }
+        
+        .btn-action {
+            width: 100%; padding: 20px; border-radius: 12px; font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.2em;
+            cursor: pointer; transition: 0.4s; text-transform: uppercase; border: 1px solid var(--gold); 
+            background: linear-gradient(90deg, #3D2B6B, #5C3D9A); color: white;
+        }
+
+        .result-box { display: none; margin-top: 30px; padding: 40px; border: 1px solid var(--border); background: rgba(255,255,255,0.03); border-radius: 20px; }
+        .result-content p { margin-bottom: 1.5em; }
+
+        /* TAROCCHI */
+        .cards-spread { display: flex; gap: 20px; justify-content: center; margin-top: 30px; flex-wrap: nowrap; }
+        .tarot-card { width: 150px; height: 260px; perspective: 1000px; flex-shrink: 0; }
+        .card-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s; }
+        .tarot-card.flipped .card-inner { transform: rotateY(180deg); }
+        .card-front, .card-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 10px; border: 1px solid var(--gold); overflow: hidden; }
+        .card-back { background: #1A152E; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 40px; }
+        .card-front { background: #1E1535; transform: rotateY(180deg); display: flex; flex-direction: column; align-items: center; padding: 10px; }
+        .tarot-image { width: 100%; height: 85%; object-fit: cover; border-radius: 5px; transition: transform 0.3s; }
+        .is-reversed .tarot-image { transform: rotate(180deg); }
+        .card-name-label { font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold); margin-top: 8px; text-align: center; }
+
+        /* MODAL PAGAMENTO MIGLIORATA */
+        #paymentModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px; }
+        .modal-content { background: #151126; border: 1px solid var(--gold); padding: 30px; border-radius: 30px; max-width: 450px; width: 100%; text-align: center; max-height: 90vh; overflow-y: auto; }
+        .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+        .pay-tag-btn { background: rgba(201, 168, 76, 0.1); border: 1px solid var(--border); border-radius: 50px; color: var(--gold); padding: 10px; cursor: pointer; transition: 0.3s; font-size: 12px; }
+        .pay-tag-btn.active { background: var(--gold); color: var(--deep-space); }
+
+        .divider { border-top: 1px solid var(--border); margin: 25px 0; position: relative; }
+        .divider::after { content: "OPPURE"; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #151126; padding: 0 15px; font-size: 10px; color: var(--text-muted); letter-spacing: 2px; }
+
+        .direct-link-btn {
+            background: transparent; border: 1px dashed var(--gold); color: var(--gold-light);
+            padding: 15px; width: 100%; border-radius: 12px; cursor: pointer; font-family: 'Cinzel', serif; font-size: 11px;
+            text-decoration: none; display: block; margin-top: 15px; transition: 0.3s;
+        }
+        .direct-link-btn:hover { background: rgba(201, 168, 76, 0.05); border-style: solid; }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .nav-inner { flex-direction: column; gap: 15px; }
+            .content-section { padding: 220px 0 60px; }
+            .tarot-card { width: 28vw; height: 48vw; min-width: 85px; min-height: 150px; }
+        }
     </style>
 </head>
 <body>
 
-<nav><div class="container"><a href="#" class="nav-logo">✦ TAROCCHI DELL'ANIMA</a></div></nav>
+<nav>
+    <div class="nav-inner">
+        <a class="nav-logo" onclick="showSection('home')">✦ TAROCCHI DELL'ANIMA</a>
+        <div class="nav-right">
+            <div class="credit-badge" onclick="openPayment()">✨ Crediti: <span id="creditCount">100</span></div>
+            <ul class="nav-links">
+                <li><a onclick="showSection('oracolo')">Tarocchi</a></li>
+                <li><a onclick="showSection('sogni')">Sogni</a></li>
+                <li><a onclick="showSection('contatto')">Consulenza</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <div class="container">
-    <section class="hero">
-        <h1>L'Oracolo Mistico</h1>
-        <p>Svela il tuo destino attraverso il linguaggio segreto degli Arcani.</p>
+    <section id="home" class="content-section active">
+        <h1>TAROCCHI<br>DELL'ANIMA</h1>
+        <p style="text-align:center; font-style: italic; opacity: 0.8;">"L'inconscio parla per simboli. Noi siamo qui per tradurli."</p>
+        <div class="hero-buttons-container">
+            <button class="hero-tag-btn" onclick="showSection('oracolo')">INIZIA LETTURA</button>
+            <button class="hero-tag-btn" onclick="showSection('sogni')">SVELA SOGNO</button>
+        </div>
     </section>
 
-    <div class="input-box">
-        <h2>Lettura delle Tre Carte</h2>
-        <textarea id="qInput" placeholder="Quale domanda tormenta il tuo spirito?"></textarea>
-        <button class="btn" id="btnT" onclick="startReading()">✦ Rivela le Carte ✦</button>
-    </div>
+    <section id="oracolo" class="content-section">
+        <h2>CONSULTA GLI ARCANI</h2>
+        <div id="tarotInputBox" class="glass-card">
+            <textarea id="questionInput" placeholder="Quale dubbio attanaglia il tuo spirito?"></textarea>
+            <button class="btn-action" onclick="runTarot()">Estrai le Carte (1 Credito)</button>
+        </div>
+        <div class="cards-spread" id="cardsSpread" style="display:none">
+            <div class="tarot-card" id="card0"><div class="card-inner"><div class="card-back">✦</div><div class="card-front" id="cf0"></div></div></div>
+            <div class="tarot-card" id="card1"><div class="card-inner"><div class="card-back">✦</div><div class="card-front" id="cf1"></div></div></div>
+            <div class="tarot-card" id="card2"><div class="card-inner"><div class="card-back">✦</div><div class="card-front" id="cf2"></div></div></div>
+        </div>
+        <div id="readingResult" class="result-box">
+            <div id="readingContent" class="result-content"></div>
+            <button class="btn-action" onclick="location.reload()" style="margin-top:40px">NUOVA DOMANDA</button>
+        </div>
+    </section>
 
-    <div class="cards-spread" id="spread" style="display:none">
-        <div class="tarot-card" id="c0"><div class="card-back">✦</div><div class="card-front" id="f0"></div></div>
-        <div class="tarot-card" id="c1"><div class="card-back">✦</div><div class="card-front" id="f1"></div></div>
-        <div class="tarot-card" id="c2"><div class="card-back">✦</div><div class="card-front" id="f2"></div></div>
-    </div>
+    <section id="sogni" class="content-section">
+        <h2>IL LIBRO DEI SOGNI</h2>
+        <div id="dreamInputBox" class="glass-card">
+            <textarea id="dreamInput" placeholder="Racconta la tua visione notturna..."></textarea>
+            <button class="btn-action" onclick="runDream()">Interpreta Visione (1 Credito)</button>
+        </div>
+        <div id="dreamResult" class="result-box">
+            <div id="dreamContent" class="result-content"></div>
+            <button class="btn-action" onclick="location.reload()" style="margin-top:20px">NUOVA INTERPRETAZIONE</button>
+        </div>
+    </section>
 
-    <div class="result-area" id="resT">
-        <div id="contT" class="reading-text"></div>
-        <button class="btn" style="background:transparent; font-size:12px;" onclick="location.reload()">↺ Nuova Consultazione</button>
-    </div>
+    <section id="contatto" class="content-section">
+        <h2>CONSULENZA PRIVATA</h2>
+        <div class="glass-card">
+            <input type="text" id="cName" placeholder="Nome">
+            <input type="email" id="cEmail" placeholder="Email">
+            <textarea id="cMessage" placeholder="Descrivi la tua situazione..."></textarea>
+            <button class="btn-action">Invia Richiesta</button>
+        </div>
+    </section>
+</div>
 
-    <div class="input-box" style="margin-top: 80px;">
-        <h2>Interpretazione dei Sogni</h2>
-        <textarea id="dInput" placeholder="Descrivi il tuo sogno nei dettagli..."></textarea>
-        <button class="btn" style="background:linear-gradient(135deg,#1A3550,#254D75);" id="btnD" onclick="interpretDream()">🌙 Svela il Sogno</button>
-    </div>
+<div id="paymentModal">
+    <div class="modal-content">
+        <h2 style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 20px; margin-bottom: 5px;">Ricarica Energia</h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Scegli quanti crediti aggiungere</p>
+        
+        <div class="price-grid">
+            <button class="pay-tag-btn" id="btn1" onclick="setAmount(1)">1€ (1 cr.)</button>
+            <button class="pay-tag-btn" id="btn5" onclick="setAmount(5)">5€ (5 cr.)</button>
+            <button class="pay-tag-btn" id="btn10" onclick="setAmount(10)">10€ (10 cr.)</button>
+        </div>
 
-    <div class="result-area" id="resD">
-        <div id="contD" class="reading-text"></div>
+        <div id="paymentDetails" style="margin: 15px 0; color: var(--gold-light); font-family: 'Cinzel', serif; font-size: 18px;">
+            Totale: <span id="displayAmount">1</span>.00€
+        </div>
+
+        <div id="paypal-button-container"></div>
+
+        <div class="divider"></div>
+
+        <p style="font-size: 11px; color: var(--text-muted);">Problemi con i tasti sopra?</p>
+        <a href="https://paypal.me/IL_TUO_USER/1" id="directPayLink" target="_blank" class="direct-link-btn">
+            INVIA CON PAYPAL.ME <br>
+            <small>(Aggiunta crediti manuale)</small>
+        </a>
+
+        <button onclick="closePayment()" style="background:none; border:none; color:var(--text-muted); margin-top:25px; cursor:pointer; font-family:'Cinzel'; font-size: 10px; letter-spacing: 2px;">✦ TORNA AL SITO ✦</button>
     </div>
 </div>
 
-<script>
-    const WEBHOOK = "https://hook.eu1.make.com/wdc6niacrxs2vlmssjbd592ymzw2859w";
+<script src="https://www.paypal.com/sdk/js?client-id=IL_TUO_CLIENT_ID&currency=EUR"></script>
 
-    const DECK = [
-        {n:'I', name:'Il Mago', s:'🪄'}, {n:'II', name:'La Papessa', s:'📖'}, {n:'III', name:'L\'Imperatrice', s:'🌺'},
-        {n:'IV', name:'L\'Imperatore', s:'⚔️'}, {n:'VI', name:'Gli Amanti', s:'💞'}, {n:'X', name:'La Ruota', s:'☸️'},
-        {n:'XIII', name:'La Morte', s:'🌑'}, {n:'XVIII', name:'La Luna', s:'🌕'}, {n:'XIX', name:'Il Sole', s:'☀️'},
-        {n:'XXI', name:'Il Mondo', s:'🌍'}, {n:'0', name:'Il Matto', s:'🌟'}
+<script>
+    const MAKE_URL = "https://hook.eu1.make.com/wdc6niacrxs2vlmssjbd592ymzw2859w";
+    const IMG_BASE = "https://www.sacred-texts.com/tarot/pkt/img/";
+    const CARDS = [
+        {n: "Il Matto", i: "ar00.jpg"}, {n: "Il Mago", i: "ar01.jpg"}, {n: "La Papessa", i: "ar02.jpg"},
+        {n: "L'Imperatrice", i: "ar03.jpg"}, {n: "L'Imperatore", i: "ar04.jpg"}, {n: "Il Papa", i: "ar05.jpg"},
+        {n: "Gli Amanti", i: "ar06.jpg"}, {n: "Il Carro", i: "ar07.jpg"}, {n: "La Forza", i: "ar08.jpg"},
+        {n: "L'Eremita", i: "ar09.jpg"}, {n: "La Ruota", i: "ar10.jpg"}, {n: "La Giustizia", i: "ar11.jpg"},
+        {n: "L'Appeso", i: "ar12.jpg"}, {n: "Morte", i: "ar13.jpg"}, {n: "Temperanza", i: "ar14.jpg"},
+        {n: "Il Diavolo", i: "ar15.jpg"}, {n: "La Torre", i: "ar16.jpg"}, {n: "La Stella", i: "ar17.jpg"},
+        {n: "La Luna", i: "ar18.jpg"}, {n: "Il Sole", i: "ar19.jpg"}, {n: "Giudizio", i: "ar20.jpg"},
+        {n: "Il Mondo", i: "ar21.jpg"}
     ];
 
-    // Funzione per pulire il testo da asterischi e formattare in HTML
-    function formatText(text) {
-        // Converte **grassetto** in <b>
-        let formatted = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-        // Converte *corsivo* in <em>
-        formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        // Converte a capo in <br>
-        return formatted.replace(/\n/g, '<br>');
+    let selectedAmount = 1;
+
+    function initCredits() {
+        if (!localStorage.getItem('astral_credits')) localStorage.setItem('astral_credits', '100');
+        document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
     }
 
-    async function askMake(data) {
-        const r = await fetch(WEBHOOK, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        return await r.text();
+    function showSection(id) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        window.scrollTo(0,0);
     }
 
-    async function startReading() {
-        const q = document.getElementById('qInput').value.trim();
-        if(!q) return;
+    // --- LOGICA PAGAMENTI ---
+    function openPayment() {
+        document.getElementById('paymentModal').style.display = 'flex';
+        setAmount(1); // Default
+    }
 
-        document.getElementById('btnT').disabled = true;
-        const drawn = [...DECK].sort(() => 0.5 - Math.random()).slice(0, 3);
+    function closePayment() {
+        document.getElementById('paymentModal').style.display = 'none';
+    }
+
+    function setAmount(val) {
+        selectedAmount = val;
+        document.getElementById('displayAmount').innerText = val;
         
-        document.getElementById('spread').style.display = 'flex';
-        drawn.forEach((c, i) => {
-            document.getElementById('f' + i).innerHTML = `<div style="font-size:45px">${c.s}</div><div style="font-family:Cinzel; color:var(--gold); margin-top:10px">${c.name}</div>`;
-            setTimeout(() => document.getElementById('c' + i).classList.add('flipped'), i * 600);
-        });
+        // Aggiorna stile tasti
+        document.querySelectorAll('.pay-tag-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn' + val).classList.add('active');
+        
+        // Aggiorna il link PayPal.me
+        const user = "IL_TUO_USER"; // Sostituisci con il tuo username paypal.me
+        document.getElementById('directPayLink').href = `https://paypal.me/${user}/${val}`;
 
-        const resBox = document.getElementById('resT');
-        const cont = document.getElementById('contT');
-        resBox.classList.add('visible');
-        cont.innerHTML = `<div class="loading">L'Oracolo sta leggendo la trama del destino...</div>`;
-
-        try {
-            const reply = await askMake({
-                type: "tarocchi",
-                prompt_mod: "Inizia la risposta con un breve paragrafo di sintesi chiamato 'SINTESI DELL'ORACOLO' racchiuso in un box, poi prosegui con la spiegazione dettagliata.",
-                question: q,
-                cards: drawn.map(c => c.name).join(", ")
-            });
-            cont.innerHTML = formatText(reply);
-        } catch (e) {
-            cont.innerHTML = "La connessione con l'etere è interrotta.";
-        }
+        renderPayPal();
     }
 
-    async function interpretDream() {
-        const d = document.getElementById('dInput').value.trim();
-        if(!d) return;
+    function renderPayPal() {
+        document.getElementById('paypal-button-container').innerHTML = '';
+        if(typeof paypal === 'undefined') return;
+        
+        paypal.Buttons({
+            style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
+            createOrder: (data, actions) => actions.order.create({ purchase_units: [{ amount: { value: selectedAmount.toString() } }] }),
+            onApprove: (data, actions) => actions.order.capture().then(details => {
+                let current = parseInt(localStorage.getItem('astral_credits'));
+                localStorage.setItem('astral_credits', (current + selectedAmount).toString());
+                document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
+                alert("Energia ricaricata con successo!");
+                closePayment();
+            })
+        }).render('#paypal-button-container');
+    }
 
-        const resBox = document.getElementById('resD');
-        const cont = document.getElementById('contD');
-        resBox.classList.add('visible');
-        cont.innerHTML = `<div class="loading">Viaggiando nei regni di Morfeo...</div>`;
+    // --- RESTO DEL CODICE (Tarocchi/Sogni) ---
+    function formatText(text) {
+        let clean = text.replace(/###/g, '').replace(/#/g, '').replace(/---/g, '').trim();
+        clean = clean.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        const paragraphs = clean.split(/\n\n|\n/).filter(p => p.length > 0);
+        return paragraphs.map(p => `<p>${p}</p>`).join('');
+    }
+
+    async function runTarot() {
+        let c = parseInt(localStorage.getItem('astral_credits'));
+        if(c <= 0) return openPayment();
+
+        const q = document.getElementById('questionInput').value;
+        if (!q) return alert("Inserisci una domanda.");
+        
+        document.getElementById('tarotInputBox').style.display = 'none';
+        document.getElementById('cardsSpread').style.display = 'flex';
+
+        let chosen = [...CARDS].sort(() => 0.5 - Math.random()).slice(0,3);
+        let resultsForMake = [];
+
+        for(let i=0; i<3; i++) {
+            const isReversed = Math.random() < 0.5;
+            const card = chosen[i];
+            resultsForMake.push(`${card.n} (${isReversed ? 'Rovesciata' : 'Dritta'})`);
+            const container = document.getElementById('card' + i);
+            const front = document.getElementById('cf' + i);
+            container.classList.remove('is-reversed', 'flipped');
+            if(isReversed) container.classList.add('is-reversed');
+            front.innerHTML = `<img src="${IMG_BASE + card.i}" class="tarot-image"><div class="card-name-label">${card.n.toUpperCase()}</div>`;
+            setTimeout(() => container.classList.add('flipped'), i * 600);
+        }
+
+        const resBox = document.getElementById('readingResult');
+        const content = document.getElementById('readingContent');
+        resBox.style.display = 'block';
+        content.innerHTML = "<p><em>Interrogando gli astri...</em></p>";
 
         try {
-            const reply = await askMake({
-                type: "sogno",
-                prompt_mod: "Inizia la risposta con un breve paragrafo di sintesi chiamato 'ESSENZA DEL SOGNO' racchiuso in un box, poi prosegui con l'interpretazione completa.",
-                dream: d
+            const response = await fetch(MAKE_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({tipo: "tarocchi", domanda: q, carte: resultsForMake.join(", ")})
             });
-            cont.innerHTML = formatText(reply);
-        } catch (e) {
-            cont.innerHTML = "Il sogno è svanito prima di essere compreso.";
-        }
+            const text = await response.text();
+            content.innerHTML = formatText(text);
+            localStorage.setItem('astral_credits', c - 1);
+            document.getElementById('creditCount').innerText = c - 1;
+        } catch (e) { content.innerHTML = "Errore di connessione."; }
     }
+
+    async function runDream() {
+        let c = parseInt(localStorage.getItem('astral_credits'));
+        if(c <= 0) return openPayment();
+        const d = document.getElementById('dreamInput').value;
+        if (!d) return alert("Racconta il sogno.");
+        document.getElementById('dreamInputBox').style.display = 'none';
+        const resBox = document.getElementById('dreamResult');
+        const content = document.getElementById('dreamContent');
+        resBox.style.display = 'block';
+        content.innerHTML = "<p><em>Analizzando i simboli...</em></p>";
+        try {
+            const response = await fetch(MAKE_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({tipo: "sogno", descrizione: d})
+            });
+            const text = await response.text();
+            content.innerHTML = formatText(text);
+            localStorage.setItem('astral_credits', c - 1);
+            document.getElementById('creditCount').innerText = c - 1;
+        } catch (e) { content.innerHTML = "Errore."; }
+    }
+
+    window.onload = initCredits;
 </script>
 </body>
 </html>
