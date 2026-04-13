@@ -291,7 +291,7 @@
         document.getElementById('paymentModal').style.display = 'none';
     }
 
-    function setAmount(val) {
+function setAmount(val) {
         selectedAmount = val;
         document.getElementById('displayAmount').innerText = val;
         
@@ -299,17 +299,12 @@
         document.querySelectorAll('.pay-tag-btn').forEach(b => b.classList.remove('active'));
         document.getElementById('btn' + val).classList.add('active');
 
-        // Aggiungi questo pezzo per gestire il link PayPal.me
-function updatePayPalLink(val) {
-    const user = "MarcoPoli467"; // <--- Questa è la riga da personalizzare
-    const linkElement = document.getElementById('directPayLink');
-    if(linkElement) {
-        linkElement.href = `https://paypal.me/${user}/${val}`;
-    }
-}
-        // Aggiorna il link PayPal.me
-        const user = "MarcoPoli467"; // Sostituisci con il tuo username paypal.me
-        document.getElementById('directPayLink').href = `https://paypal.me/${user}/${val}`;
+        // Aggiorna il link PayPal.me direttamente
+        const user = "MarcoPoli467"; 
+        const directLink = document.getElementById('directPayLink');
+        if (directLink) {
+            directLink.href = `https://paypal.me/${user}/${val}`;
+        }
 
         renderPayPal();
     }
