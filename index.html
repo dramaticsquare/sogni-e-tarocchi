@@ -274,10 +274,12 @@
         {n: "Il Mondo", i: "ar21.jpg"}
     ];
 
-    let selectedAmount = 1;
+    // Rimuovi la vecchia riga 'let selectedAmount = 1;' che creava il conflitto
+    let selectedAmount = 3; 
+    let selectedCredits = 5;
 
     function initCredits() {
-        // Se l'utente è nuovo, gli regala 3 crediti iniziali invece di 100
+        // Inizializza con 3 crediti gratuiti
         if (!localStorage.getItem('astral_credits')) localStorage.setItem('astral_credits', '3');
         document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
     }
@@ -289,13 +291,9 @@
     }
 
     // --- LOGICA PAGAMENTI ---
-// Aggiungiamo selectedCredits per tenere traccia dei crediti comprati
-    let selectedAmount = 3; 
-    let selectedCredits = 5;
-
     function openPayment() {
         document.getElementById('paymentModal').style.display = 'flex';
-        setAmount(3, 5); // Default: seleziona il primo pacchetto all'apertura
+        setAmount(3, 5); 
     }
 
     function closePayment() {
