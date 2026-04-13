@@ -150,6 +150,9 @@
 
     <section id="oracolo" class="content-section">
         <h2>CONSULTA GLI ARCANI</h2>
+        <div style="max-width: 650px; margin: 0 auto 30px; text-align: center; color: var(--text-muted); font-style: italic; line-height: 1.6;">
+        <p>Chiudi gli occhi, respira profondamente e visualizza il tuo dubbio come se fosse una luce tra le mani. Digita la tua domanda con sincerità: gli Arcani non giudicano, indicano la via attraverso simboli antichi che il nostro Oracolo tradurrà per la tua anima.</p>
+    </div>
         <div id="tarotInputBox" class="glass-card">
             <textarea id="questionInput" placeholder="Quale dubbio attanaglia il tuo spirito?"></textarea>
             <button class="btn-action" onclick="runTarot()">Estrai le Carte (1 Credito)</button>
@@ -222,7 +225,18 @@
         </div>
     </section>
 </div>
-
+<div id="infoModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(15px); padding: 20px;">
+    <div class="modal-content" style="border-color: var(--gold-light); max-width: 500px;">
+        <h2 style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 22px; margin-bottom: 20px;">Saggezza dell'Oracolo</h2>
+        <div style="text-align: left; font-size: 0.95rem; color: var(--text); line-height: 1.8;">
+            <p style="margin-bottom: 15px;">✨ <strong>Cosa chiedere:</strong> Evita domande secche (Sì/No). Preferisci quesiti che iniziano con <em>"Cosa devo capire..."</em> o <em>"Quali energie circondano..."</em>.</p>
+            <p style="margin-bottom: 15px;">🎴 <strong>Il Responso:</strong> Estrarrai tre Arcani. Il primo rivela le radici del tuo dubbio, il secondo l'ostacolo presente, il terzo la luce del possibile futuro.</p>
+            <p style="margin-bottom: 20px;">📜 <strong>La Visione:</strong> Le risposte fluiscono da un'antica sapienza che intreccia il significato di ogni carta con le tue parole esatte.</p>
+        </div>
+        <button onclick="closeInfo()" class="btn-action" style="padding: 15px;">HO COMPRESO</button>
+    </div>
+</div>
+    
 <div id="paymentModal">
     <div class="modal-content">
         <h2 style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 20px; margin-bottom: 5px;">Ricarica Energia</h2>
@@ -294,11 +308,26 @@
         document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
     }
 
-    function showSection(id) {
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        window.scrollTo(0,0);
+   function checkFirstTime() {
+    if (!localStorage.getItem('visited_tarot')) {
+        document.getElementById('infoModal').style.display = 'flex';
+        localStorage.setItem('visited_tarot', 'true');
     }
+}
+
+function closeInfo() {
+    document.getElementById('infoModal').style.display = 'none';
+}
+
+// Modifica la tua funzione showSection esistente per attivare il check
+function showSection(id) {
+    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+    
+    // Se entra nei tarocchi, controlla se mostrare le istruzioni
+    if(id === 'oracolo') checkFirstTime();
+}
 
     // --- LOGICA PAGAMENTI ---
     function openPayment() {
