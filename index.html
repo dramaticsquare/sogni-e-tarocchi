@@ -170,6 +170,9 @@
 
     <section id="sogni" class="content-section">
         <h2>IL LIBRO DEI SOGNI</h2>
+        <div style="max-width: 650px; margin: 0 auto 30px; text-align: center; color: var(--text-muted); font-style: italic; line-height: 1.6;">
+        <p>Le visioni notturne sono messaggi cifrati che l'anima invia a se stessa. Nel Libro dei Sogni, ogni frammento, emozione o colore diventa una chiave. Descrivi ciò che hai visto oltre il velo del sonno: l'Oracolo ne estrarrà il significato profondo, guidandoti tra le ombre del tuo inconscio.</p>
+    </div>
         <div id="dreamInputBox" class="glass-card">
             <textarea id="dreamInput" placeholder="Racconta la tua visione notturna..."></textarea>
             <button class="btn-action" onclick="runDream()">Interpreta Visione (1 Credito)</button>
@@ -226,6 +229,18 @@
             <p style="margin-bottom: 20px;">📜 <strong>La Visione:</strong> Le risposte fluiscono da un'antica sapienza che intreccia il significato di ogni carta con le tue parole esatte.</p>
         </div>
         <button onclick="closeInfo()" class="btn-action" style="padding: 15px;">HO COMPRESO</button>
+    </div>
+</div>
+
+    <div id="dreamInfoModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(15px); padding: 20px;">
+    <div class="modal-content" style="border-color: #5C3D9A; max-width: 500px;">
+        <h2 style="font-family: 'Cinzel', serif; color: #9A8A6E; font-size: 22px; margin-bottom: 20px;">L'Arte del Sognare</h2>
+        <div style="text-align: left; font-size: 0.95rem; color: var(--text); line-height: 1.8;">
+            <p style="margin-bottom: 15px;">🌙 <strong>Cosa narrare:</strong> Non limitarti ai fatti. Descrivi i colori, le sensazioni e ciò che hai provato. Più il racconto è vivido, più la connessione sarà potente.</p>
+            <p style="margin-bottom: 15px;">👁️ <strong>I Simboli:</strong> L'Oracolo identificherà gli archetipi nascosti nelle tue visioni, svelando come essi influenzano la tua vita da sveglio.</p>
+            <p style="margin-bottom: 20px;">✨ <strong>L'Eco del Sogno:</strong> La risposta non è una verità assoluta, ma uno specchio per aiutarti a guardare dentro di te con occhi nuovi.</p>
+        </div>
+        <button onclick="closeDreamInfo()" class="btn-action" style="padding: 15px; background: linear-gradient(90deg, #1A152E, #3D2B6B);">ENTRA NEL SOGNO</button>
     </div>
 </div>
     
@@ -307,15 +322,36 @@
     }
 }
 
+// Funzioni per chiudere i popup
 function closeInfo() {
     document.getElementById('infoModal').style.display = 'none';
 }
 
-// Modifica la tua funzione showSection esistente per attivare il check
+function closeDreamInfo() {
+    document.getElementById('dreamInfoModal').style.display = 'none';
+}
+
 function showSection(id) {
     document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     window.scrollTo(0,0);
+    
+    // Gestione Popup Tarocchi
+    if(id === 'oracolo') {
+        if (!localStorage.getItem('visited_tarot')) {
+            document.getElementById('infoModal').style.display = 'flex';
+            localStorage.setItem('visited_tarot', 'true');
+        }
+    }
+    
+    // Gestione Popup Sogni
+    if(id === 'sogni') {
+        if (!localStorage.getItem('visited_sogni')) {
+            document.getElementById('dreamInfoModal').style.display = 'flex';
+            localStorage.setItem('visited_sogni', 'true');
+        }
+    }
+}
     
     // Se entra nei tarocchi, controlla se mostrare le istruzioni
     if(id === 'oracolo') checkFirstTime();
