@@ -309,53 +309,47 @@
     let selectedAmount = 3; 
     let selectedCredits = 5;
 
-    function initCredits() {
-        // Inizializza con 3 crediti gratuiti
+   function initCredits() {
         if (!localStorage.getItem('astral_credits')) localStorage.setItem('astral_credits', '3');
         document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
     }
 
-   function checkFirstTime() {
-    if (!localStorage.getItem('visited_tarot')) {
-        document.getElementById('infoModal').style.display = 'flex';
-        localStorage.setItem('visited_tarot', 'true');
-    }
-}
-
-// Funzioni per chiudere i popup
-function closeInfo() {
-    document.getElementById('infoModal').style.display = 'none';
-}
-
-function closeDreamInfo() {
-    document.getElementById('dreamInfoModal').style.display = 'none';
-}
-
-function showSection(id) {
-    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    window.scrollTo(0,0);
-    
-    // Gestione Popup Tarocchi
-    if(id === 'oracolo') {
+    function checkFirstTime() {
         if (!localStorage.getItem('visited_tarot')) {
             document.getElementById('infoModal').style.display = 'flex';
             localStorage.setItem('visited_tarot', 'true');
         }
     }
-    
-    // Gestione Popup Sogni
-    if(id === 'sogni') {
-        if (!localStorage.getItem('visited_sogni')) {
-            document.getElementById('dreamInfoModal').style.display = 'flex';
-            localStorage.setItem('visited_sogni', 'true');
+
+    function closeInfo() {
+        document.getElementById('infoModal').style.display = 'none';
+    }
+
+    function closeDreamInfo() {
+        document.getElementById('dreamInfoModal').style.display = 'none';
+    }
+
+    function showSection(id) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        window.scrollTo(0,0);
+        
+        // Gestione Popup Tarocchi
+        if(id === 'oracolo') {
+            if (!localStorage.getItem('visited_tarot')) {
+                document.getElementById('infoModal').style.display = 'flex';
+                localStorage.setItem('visited_tarot', 'true');
+            }
+        }
+        
+        // Gestione Popup Sogni
+        if(id === 'sogni') {
+            if (!localStorage.getItem('visited_sogni')) {
+                document.getElementById('dreamInfoModal').style.display = 'flex';
+                localStorage.setItem('visited_sogni', 'true');
+            }
         }
     }
-}
-    
-    // Se entra nei tarocchi, controlla se mostrare le istruzioni
-    if(id === 'oracolo') checkFirstTime();
-}
 
     // --- LOGICA PAGAMENTI ---
     function openPayment() {
