@@ -122,7 +122,7 @@
     <div class="nav-inner">
         <a class="nav-logo" onclick="showSection('home')">✦ SIDERA</a>
         <div class="nav-right">
-            <div class="credit-badge" onclick="openPayment()">✨ Crediti: <span id="creditCount">5</span></div>
+            <div class="credit-badge" onclick="openPayment()">✨ Crediti: <span id="creditCount">3</span></div>
             <ul class="nav-links">
                 <li><a onclick="showSection('oracolo')">Tarocchi</a></li>
                 <li><a onclick="showSection('sogni')">Sogni</a></li>
@@ -228,10 +228,16 @@
         <h2 style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 20px; margin-bottom: 5px;">Ricarica Energia</h2>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Scegli quanti crediti aggiungere</p>
         
-       <div class="price-grid">
-            <button class="pay-tag-btn" id="btn2.99" onclick="setAmount(2.99)">2,99€ (1 cr.)</button>
-            <button class="pay-tag-btn" id="btn10" onclick="setAmount(10)">10€ (5 cr.)</button>
-            <button class="pay-tag-btn" id="btn15" onclick="setAmount(15)">15€ (10 cr.)</button>
+       <div class="price-grid" style="grid-template-columns: repeat(2, 1fr); gap: 12px;">
+            <button class="pay-tag-btn" id="btn3" onclick="setAmount(3, 5)">3€ (5 cr.)</button>
+            <button class="pay-tag-btn" id="btn5" onclick="setAmount(5, 10)">5€ (10 cr.)</button>
+            <button class="pay-tag-btn" id="btn9" onclick="setAmount(9, 20)">9€ (20 cr.)</button>
+            <button class="pay-tag-btn" id="btn15" onclick="setAmount(15, 40)">15€ (40 cr.)</button>
+            <button class="pay-tag-btn" id="btn25" onclick="setAmount(25, 75)">25€ (75 cr.)</button>
+            <button class="pay-tag-btn" id="btn50" onclick="setAmount(50, 200)">50€ (200 cr.)</button>
+            <button class="pay-tag-btn" id="btn19.99" onclick="setAmount(19.99, 100)" style="grid-column: span 2; background: linear-gradient(90deg, #3D2B6B, #5C3D9A); color: white; border: 1px solid var(--gold); padding: 15px; font-family: 'Cinzel', serif;">
+                Abbonamento Mensile: 19,99€ (100 cr./mese)
+            </button>
         </div>
 
         <div id="paymentDetails" style="margin: 15px 0; color: var(--gold-light); font-family: 'Cinzel', serif; font-size: 18px;">
@@ -271,7 +277,8 @@
     let selectedAmount = 1;
 
     function initCredits() {
-        if (!localStorage.getItem('astral_credits')) localStorage.setItem('astral_credits', '100');
+        // Se l'utente è nuovo, gli regala 3 crediti iniziali invece di 100
+        if (!localStorage.getItem('astral_credits')) localStorage.setItem('astral_credits', '3');
         document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
     }
 
@@ -282,24 +289,31 @@
     }
 
     // --- LOGICA PAGAMENTI ---
+// Aggiungiamo selectedCredits per tenere traccia dei crediti comprati
+    let selectedAmount = 3; 
+    let selectedCredits = 5;
+
     function openPayment() {
         document.getElementById('paymentModal').style.display = 'flex';
-        setAmount(1); // Default
+        setAmount(3, 5); // Default: seleziona il primo pacchetto all'apertura
     }
 
     function closePayment() {
         document.getElementById('paymentModal').style.display = 'none';
     }
 
-function setAmount(val) {
+    // Ora riceve sia il valore in Euro (val) che i Crediti (creds)
+    function setAmount(val, creds) {
         selectedAmount = val;
+        selectedCredits = creds;
         document.getElementById('displayAmount').innerText = val;
         
         // Aggiorna stile tasti
         document.querySelectorAll('.pay-tag-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('btn' + val).classList.add('active');
+        let btn = document.getElementById('btn' + val);
+        if(btn) btn.classList.add('active');
 
-        // Aggiorna il link PayPal.me direttamente
+        // Aggiorna il link PayPal.me
         const user = "MarcoPoli467"; 
         const directLink = document.getElementById('directPayLink');
         if (directLink) {
@@ -318,7 +332,8 @@ function setAmount(val) {
             createOrder: (data, actions) => actions.order.create({ purchase_units: [{ amount: { value: selectedAmount.toString() } }] }),
             onApprove: (data, actions) => actions.order.capture().then(details => {
                 let current = parseInt(localStorage.getItem('astral_credits'));
-                localStorage.setItem('astral_credits', (current + selectedAmount).toString());
+                // Qui aggiunge il numero di crediti corretti (selectedCredits) e non gli Euro
+                localStorage.setItem('astral_credits', (current + selectedCredits).toString()); 
                 document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
                 alert("Energia ricaricata con successo!");
                 closePayment();
