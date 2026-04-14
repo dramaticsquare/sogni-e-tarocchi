@@ -126,6 +126,7 @@
             <ul class="nav-links">
                 <li><a onclick="showSection('oracolo')">Tarocchi</a></li>
                 <li><a onclick="showSection('sogni')">Sogni</a></li>
+                <li><a onclick="showSection('astrologia')">Astrologia</a></li>
                 <li><a onclick="showSection('contatto')">Consulenza</a></li>
             </ul>
         </div>
@@ -220,6 +221,27 @@
         </div>
     </section>
 </div>
+<section id="astrologia" class="content-section">
+    <h2>MAPPA DEGLI ASTRI</h2>
+    <div style="max-width: 650px; margin: 0 auto 30px; text-align: center; color: var(--text-muted); font-style: italic; line-height: 1.6;">
+        <p>Nel momento del tuo primo respiro, l'universo ha scattato una fotografia eterna. Inserisci i dati della tua venuta al mondo per decodificare il tuo destino scritto tra le stelle.</p>
+    </div>
+
+    <div id="astroInputBox" class="glass-card">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <input type="date" id="birthDate">
+            <input type="time" id="birthTime">
+        </div>
+        <input type="text" id="birthCity" placeholder="Città di nascita (es: Roma)">
+        <p style="font-size: 12px; color: var(--gold); margin-bottom: 20px; text-align: center;">Il calcolo richiede 2 Crediti per l'allineamento astrale.</p>
+        <button class="btn-action" onclick="runAstrology()">Genera Mappa (2 Crediti)</button>
+    </div>
+
+    <div id="astroResult" class="result-box">
+        <div id="astroContent" class="result-content"></div>
+        <button class="btn-action" onclick="location.reload()" style="margin-top:20px">NUOVO CALCOLO</button>
+    </div>
+</section>
 <div id="infoModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(15px); padding: 20px;">
     <div class="modal-content" style="border-color: var(--gold-light); max-width: 500px;">
         <h2 style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 22px; margin-bottom: 20px;">Saggezza dell'Oracolo</h2>
@@ -288,7 +310,7 @@
         <button onclick="closePayment()" style="background:none; border:none; color:var(--text-muted); margin-top:25px; cursor:pointer; font-family:'Cinzel'; font-size: 10px; letter-spacing: 2px;">✦ TORNA AL SITO ✦</button>
     </div>
 </div>
-    
+<script src="https://unpkg.com/astrology-js@1.0.1/dist/astrology.min.js"></script>    
 <script src="https://www.paypal.com/sdk/js?client-id=AZsxkgEdU7HJjgac8oVcEM4rfIsfLpFWyCISuRWUgIKIeEN4dFSqhoEUNAFF3EQAqZhCdPMhFavc1Qpk&currency=EUR"></script>
 
 <script>
@@ -473,6 +495,49 @@
             document.getElementById('creditCount').innerText = c - 1;
         } catch (e) { content.innerHTML = "Errore."; }
     }
+    async function runAstrology() {
+    let c = parseInt(localStorage.getItem('astral_credits'));
+    if(c < 2) return openPayment(); // Costa 2 crediti
+
+    const date = document.getElementById('birthDate').value;
+    const time = document.getElementById('birthTime').value;
+    const city = document.getElementById('birthCity').value;
+
+    if (!date || !time || !city) return alert("Inserisci tutti i dati per allineare le stelle.");
+
+    document.getElementById('astroInputBox').style.display = 'none';
+    const resBox = document.getElementById('astroResult');
+    const content = document.getElementById('astroContent');
+    resBox.style.display = 'block';
+    content.innerHTML = "<p><em>Calcolando le effemeridi e le posizioni planetarie...</em></p>";
+
+    // --- SIMULAZIONE CALCOLO VIA 3 (Dati Tecnici) ---
+    // In una versione avanzata useremo le coordinate reali. 
+    // Per ora prepariamo il pacchetto dati per Gemini.
+    const astroData = {
+        tipo: "astrologia",
+        data_nascita: date,
+        ora_nascita: time,
+        luogo: city,
+        richiesta: "Calcola Sole, Luna e Ascendente e fornisci un'interpretazione mistica."
+    };
+
+    try {
+        const response = await fetch(MAKE_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(astroData)
+        });
+        const text = await response.text();
+        content.innerHTML = formatText(text);
+        
+        // Sottrai 2 crediti
+        localStorage.setItem('astral_credits', c - 2);
+        document.getElementById('creditCount').innerText = c - 2;
+    } catch (e) {
+        content.innerHTML = "Le stelle sono oscurate da un errore di connessione.";
+    }
+}
 
     window.onload = initCredits;
 </script>
