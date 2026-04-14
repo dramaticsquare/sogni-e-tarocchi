@@ -172,6 +172,51 @@
 .depth-option:has(input:checked) small {
     color: #333 !important;
 }
+/* --- STILE TABELLA EFFEMERIDI --- */
+#astroContent table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 30px 0;
+    background: rgba(20, 20, 30, 0.6); /* Sfondo scuro e vetroso */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1); /* Leggero bagliore oro */
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+#astroContent th {
+    background: var(--gold);
+    color: #1a1a1a;
+    padding: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+}
+
+#astroContent td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15); /* Righe divisorie dorate leggere */
+    color: var(--text-color);
+    text-align: center;
+    vertical-align: middle;
+}
+
+#astroContent tr:last-child td {
+    border-bottom: none; /* Rimuove la riga dall'ultimo elemento */
+}
+
+/* Rende i simboli (☉ ☽ ♀) più grandi e dorati */
+#astroContent td:nth-child(2) {
+    font-size: 1.8rem; 
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+/* Evidenzia leggermente la riga quando ci passi sopra col mouse */
+#astroContent tr:hover td {
+    background: rgba(212, 175, 55, 0.05);
+}
     </style>
 </head>
 <body>
