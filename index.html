@@ -114,29 +114,53 @@
             .content-section { padding: 220px 0 60px; }
             .tarot-card { width: 28vw; height: 48vw; min-width: 85px; min-height: 150px; }
         }
-        .depth-option {
-            flex: 1;
-            cursor: pointer;
-            border: 1px solid var(--gold);
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            transition: 0.3s;
-            background: rgba(255,215,0,0.05);
-            color: var(--text-color); /* Assicurati che il testo sia visibile */
-        }
-        .depth-option input { 
-            display: none; 
-        }
-        /* Questo serve per colorare il tasto quando viene selezionato */
-        .depth-option:has(input:checked) {
-            background: var(--gold);
-            color: var(--bg-dark);
-        }
-        .depth-option span { 
-            font-size: 14px; 
-            display: block; 
-        }
+       .depth-option {
+    flex: 1;
+    cursor: pointer;
+    border: 1px solid var(--gold);
+    padding: 20px 10px; /* Aumentato lo spazio verticale */
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: rgba(255, 215, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 80px; /* Altezza minima garantita */
+}
+
+.depth-option input { 
+    display: none; 
+}
+
+/* Quando l'opzione è selezionata */
+.depth-option:has(input:checked) {
+    background: var(--gold);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+/* Stile del testo principale (Essenziale/Profonda) */
+.depth-option strong {
+    font-size: 1.2rem; /* Testo più grande */
+    display: block;
+    margin-bottom: 5px;
+    color: var(--gold); /* Oro quando non selezionato */
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Stile del testo "Crediti" */
+.depth-option small {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* CAMBIO COLORE AL CLICK: La magia per la leggibilità */
+.depth-option:has(input:checked) strong,
+.depth-option:has(input:checked) small {
+    color: #1a1a1a !important; /* Testo quasi nero sull'oro per il massimo contrasto */
+    font-weight: bold;
+}
     </style>
 </head>
 <body>
