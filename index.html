@@ -114,6 +114,29 @@
             .content-section { padding: 220px 0 60px; }
             .tarot-card { width: 28vw; height: 48vw; min-width: 85px; min-height: 150px; }
         }
+        .depth-option {
+            flex: 1;
+            cursor: pointer;
+            border: 1px solid var(--gold);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            transition: 0.3s;
+            background: rgba(255,215,0,0.05);
+            color: var(--text-color); /* Assicurati che il testo sia visibile */
+        }
+        .depth-option input { 
+            display: none; 
+        }
+        /* Questo serve per colorare il tasto quando viene selezionato */
+        .depth-option:has(input:checked) {
+            background: var(--gold);
+            color: var(--bg-dark);
+        }
+        .depth-option span { 
+            font-size: 14px; 
+            display: block; 
+        }
     </style>
 </head>
 <body>
@@ -229,14 +252,25 @@
     </div>
 
     <div id="astroInputBox" class="glass-card">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <input type="date" id="birthDate">
-            <input type="time" id="birthTime">
-        </div>
-        <input type="text" id="birthCity" placeholder="Città di nascita (es: Roma)">
-        <p style="font-size: 12px; color: var(--gold); margin-bottom: 20px; text-align: center;">Il calcolo richiede 2 Crediti per l'allineamento astrale.</p>
-        <button class="btn-action" onclick="runAstrology()">Genera Mappa (2 Crediti)</button>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+        <input type="date" id="birthDate">
+        <input type="time" id="birthTime">
     </div>
+    <input type="text" id="birthCity" placeholder="Città di nascita" style="margin-bottom: 20px;">
+    
+    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <label class="depth-option">
+            <input type="radio" name="astroDepth" value="base" checked>
+            <span><strong>Essenziale</strong><br><small>1 Credito</small></span>
+        </label>
+        <label class="depth-option">
+            <input type="radio" name="astroDepth" value="profonda">
+            <span><strong>Profonda</strong><br><small>3 Crediti</small></span>
+        </label>
+    </div>
+
+    <button class="btn-action" onclick="runAstrology()">Genera Mappa</button>
+</div>
 
     <div id="astroResult" class="result-box">
         <div id="astroContent" class="result-content"></div>
@@ -497,30 +531,31 @@
         } catch (e) { content.innerHTML = "Errore."; }
     }
     async function runAstrology() {
+    const depth = document.querySelector('input[name="astroDepth"]:checked').value;
+    const cost = depth === 'profonda' ? 3 : 1; // Costo differenziato
+
     let c = parseInt(localStorage.getItem('astral_credits'));
-    if(c < 2) return openPayment(); // Costa 2 crediti
+    if(c < cost) return openPayment();
 
     const date = document.getElementById('birthDate').value;
     const time = document.getElementById('birthTime').value;
     const city = document.getElementById('birthCity').value;
 
-    if (!date || !time || !city) return alert("Inserisci tutti i dati per allineare le stelle.");
+    if (!date || !time || !city) return alert("Inserisci i dati per l'allineamento.");
 
     document.getElementById('astroInputBox').style.display = 'none';
     const resBox = document.getElementById('astroResult');
     const content = document.getElementById('astroContent');
     resBox.style.display = 'block';
-    content.innerHTML = "<p><em>Calcolando le effemeridi e le posizioni planetarie...</em></p>";
+    content.innerHTML = "<p><em>Interrogando il moto perpetuo dei pianeti...</em></p>";
 
-    // --- SIMULAZIONE CALCOLO VIA 3 (Dati Tecnici) ---
-    // In una versione avanzata useremo le coordinate reali. 
-    // Per ora prepariamo il pacchetto dati per Gemini.
     const astroData = {
         tipo: "astrologia",
+        profondita: depth, // "base" o "profonda"
         data_nascita: date,
         ora_nascita: time,
         luogo: city,
-        richiesta: "Calcola Sole, Luna e Ascendente e fornisci un'interpretazione mistica."
+        data_odierna: new Date().toLocaleDateString('it-IT')
     };
 
     try {
@@ -530,16 +565,16 @@
             body: JSON.stringify(astroData)
         });
         const text = await response.text();
+        
+        // Formattazione speciale: Gemini userà i Markdown Table che il tuo formatText già gestisce
         content.innerHTML = formatText(text);
         
-        // Sottrai 2 crediti
-        localStorage.setItem('astral_credits', c - 2);
-        document.getElementById('creditCount').innerText = c - 2;
+        localStorage.setItem('astral_credits', c - cost);
+        document.getElementById('creditCount').innerText = c - cost;
     } catch (e) {
-        content.innerHTML = "Le stelle sono oscurate da un errore di connessione.";
+        content.innerHTML = "Le stelle sono oscurate. Riprova più tardi.";
     }
 }
-
     window.onload = initCredits;
 </script>
 </body>
