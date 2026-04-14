@@ -114,11 +114,11 @@
             .content-section { padding: 220px 0 60px; }
             .tarot-card { width: 28vw; height: 48vw; min-width: 85px; min-height: 150px; }
         }
-       .depth-option {
+      .depth-option {
     flex: 1;
     cursor: pointer;
     border: 1px solid var(--gold);
-    padding: 20px 10px; /* Aumentato lo spazio verticale */
+    padding: 10px; /* Ridotto il padding */
     border-radius: 8px;
     text-align: center;
     transition: all 0.3s ease;
@@ -126,40 +126,37 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: 80px; /* Altezza minima garantita */
+    height: 60px; /* Altezza fissa ridotta per proporzione */
 }
 
 .depth-option input { 
     display: none; 
 }
 
-/* Quando l'opzione è selezionata */
+/* Stato selezionato */
 .depth-option:has(input:checked) {
     background: var(--gold);
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
 }
 
-/* Stile del testo principale (Essenziale/Profonda) */
+/* Testo principale (Essenziale/Profonda) */
 .depth-option strong {
-    font-size: 1.2rem; /* Testo più grande */
+    font-size: 1rem; /* Dimensione bilanciata */
     display: block;
-    margin-bottom: 5px;
-    color: var(--gold); /* Oro quando non selezionato */
-    letter-spacing: 1px;
+    color: var(--gold);
     text-transform: uppercase;
+    line-height: 1.2;
 }
 
-/* Stile del testo "Crediti" */
+/* Testo crediti */
 .depth-option small {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
 }
 
-/* CAMBIO COLORE AL CLICK: La magia per la leggibilità */
+/* Contrasto colori al click */
 .depth-option:has(input:checked) strong,
 .depth-option:has(input:checked) small {
-    color: #1a1a1a !important; /* Testo quasi nero sull'oro per il massimo contrasto */
-    font-weight: bold;
+    color: #1a1a1a !important;
 }
     </style>
 </head>
