@@ -114,49 +114,63 @@
             .content-section { padding: 220px 0 60px; }
             .tarot-card { width: 28vw; height: 48vw; min-width: 85px; min-height: 150px; }
         }
-      .depth-option {
+ .depth-option {
     flex: 1;
     cursor: pointer;
     border: 1px solid var(--gold);
-    padding: 10px; /* Ridotto il padding */
     border-radius: 8px;
     text-align: center;
     transition: all 0.3s ease;
     background: rgba(255, 215, 0, 0.05);
+    /* Flexbox per centrare tutto */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 60px; /* Altezza fissa ridotta per proporzione */
+    align-items: center;
+    height: 70px; /* Alzato leggermente a 70px per respiro */
+    padding: 5px;
+    box-sizing: border-box; /* Fondamentale per non far uscire i bordi */
 }
 
 .depth-option input { 
     display: none; 
 }
 
-/* Stato selezionato */
 .depth-option:has(input:checked) {
     background: var(--gold);
 }
 
-/* Testo principale (Essenziale/Profonda) */
+/* Stile del testo interno */
+.depth-option span {
+    display: block;
+    width: 100%;
+}
+
 .depth-option strong {
-    font-size: 1rem; /* Dimensione bilanciata */
+    font-size: 0.95rem; 
     display: block;
     color: var(--gold);
     text-transform: uppercase;
+    margin: 0 !important; /* Forza la rimozione dei margini */
+    padding: 0 !important;
     line-height: 1.2;
 }
 
-/* Testo crediti */
 .depth-option small {
     font-size: 0.8rem;
     color: var(--text-muted);
+    margin: 0 !important; /* Forza la rimozione dei margini */
+    padding: 0 !important;
+    display: block;
 }
 
 /* Contrasto colori al click */
-.depth-option:has(input:checked) strong,
-.depth-option:has(input:checked) small {
+.depth-option:has(input:checked) strong {
     color: #1a1a1a !important;
+}
+
+.depth-option:has(input:checked) small {
+    color: #333 !important;
 }
     </style>
 </head>
