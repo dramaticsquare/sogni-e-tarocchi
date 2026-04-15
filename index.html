@@ -608,7 +608,41 @@
         const paragraphs = clean.split(/\n\n|\n/).filter(p => p.length > 0);
         return paragraphs.map(p => `<p>${p}</p>`).join('');
     }
+function formatText(text) {
+    // 1. Converte le righe con le stanghette | in una tabella HTML
+    let lines = text.split('\n');
+    let inTable = false;
+    let htmlOutput = "";
+    let tableHtml = "<table>";
 
+    lines.forEach(line => {
+        if (line.trim().startsWith('|')) {
+            if (!inTable) {
+                inTable = true;
+                tableHtml = "<table>";
+            }
+            // Suddivide la riga in celle, pulendo gli spazi
+            let cells = line.split('|').filter(cell => cell.trim() !== "");
+            tableHtml += "<tr>";
+            cells.forEach(cell => {
+                tableHtml += `<td>${cell.trim()}</td>`;
+            });
+            tableHtml += "</tr>";
+        } else {
+            if (inTable) {
+                inTable = false;
+                tableHtml += "</table>";
+                htmlOutput += tableHtml;
+            }
+            // Gestione normale del testo (grassetto e a capo)
+            let formattedLine = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            htmlOutput += `<p>${formattedLine}</p>`;
+        }
+    });
+    
+    if (inTable) htmlOutput += "</table>"; // Chiude se la tabella era alla fine
+    return htmlOutput;
+}
     async function runTarot() {
         let c = parseInt(localStorage.getItem('astral_credits'));
         if(c <= 0) return openPayment();
