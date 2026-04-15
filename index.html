@@ -172,50 +172,42 @@
 .depth-option:has(input:checked) small {
     color: #333 !important;
 }
-/* --- STILE TABELLA EFFEMERIDI --- */
-#astroContent table {
+/* Riduciamo lo spazio tra i paragrafi del responso */
+#astroCommentary p, #readingContent p, #dreamContent p {
+    margin-bottom: 12px; /* Spazio ridotto tra le righe di testo */
+    line-height: 1.6;
+}
+
+/* Stile Tabella Universale (vale per tutto il sito) */
+#astroCommentary table, #astroContent table {
     width: 100%;
     border-collapse: collapse;
-    margin: 30px 0;
-    background: rgba(20, 20, 30, 0.6); /* Sfondo scuro e vetroso */
+    margin: 15px 0; /* Spazio bilanciato sopra e sotto la tabella */
+    background: rgba(20, 20, 30, 0.6);
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1); /* Leggero bagliore oro */
     border: 1px solid rgba(212, 175, 55, 0.3);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1);
 }
 
-#astroContent th {
-    background: var(--gold);
-    color: #1a1a1a;
-    padding: 15px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.9rem;
-}
-
-#astroContent td {
-    padding: 15px;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.15); /* Righe divisorie dorate leggere */
-    color: var(--text-color);
-    text-align: center;
+#astroCommentary td, #astroContent td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    color: var(--text);
+    text-align: left;
     vertical-align: middle;
 }
 
-#astroContent tr:last-child td {
-    border-bottom: none; /* Rimuove la riga dall'ultimo elemento */
-}
-
-/* Rende i simboli (☉ ☽ ♀) più grandi e dorati */
-#astroContent td:nth-child(2) {
-    font-size: 1.8rem; 
+/* Rende i simboli o i titoli della prima colonna dorati */
+#astroCommentary td:first-child, #astroContent td:first-child {
     color: var(--gold);
-    text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
 }
 
-/* Evidenzia leggermente la riga quando ci passi sopra col mouse */
-#astroContent tr:hover td {
-    background: rgba(212, 175, 55, 0.05);
+/* Simboli planetari grandi se usati come icone */
+#astroCommentary td:contains('☉'), #astroCommentary td:contains('☽') {
+    font-size: 1.5rem;
 }
 
 .share-container {
@@ -704,27 +696,46 @@
     }
 
     function formatText(text) {
-        let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        if (html.includes('|')) {
-            const lines = html.split('\n');
-            let tableHtml = '<table>';
-            let inTable = false;
-            let finalHtml = '';
-            lines.forEach(line => {
-                if (line.trim().startsWith('|')) {
-                    if (!inTable) inTable = true;
-                    const cells = line.split('|').filter(c => c.trim() !== "");
-                    tableHtml += `<tr>${cells.map(c => `<td>${c.trim()}</td>`).join('')}</tr>`;
-                } else {
-                    if (inTable) { inTable = false; tableHtml += '</table>'; finalHtml += tableHtml; tableHtml = '<table>'; }
-                    finalHtml += line + '<br>';
+    // 1. Rimuove eventuali righe vuote eccessive all'inizio e alla fine
+    let cleanText = text.trim();
+
+    // 2. Grassetto (Markdown **text**)
+    let html = cleanText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    // 3. Gestione Tabella
+    if (html.includes('|')) {
+        const lines = html.split('\n');
+        let finalHtml = '';
+        let tableRows = '';
+        let inTable = false;
+
+        lines.forEach(line => {
+            const trimmedLine = line.trim();
+            if (trimmedLine.startsWith('|')) {
+                if (!inTable) inTable = true;
+                // Splitta per | e rimuove i vuoti
+                const cells = trimmedLine.split('|').filter(c => c.trim() !== "");
+                tableRows += `<tr>${cells.map(c => `<td>${c.trim()}</td>`).join('')}</tr>`;
+            } else {
+                if (inTable) {
+                    finalHtml += `<table>${tableRows}</table>`;
+                    tableRows = '';
+                    inTable = false;
                 }
-            });
-            return finalHtml;
-        }
-        return html.replace(/\n/g, '<br>');
+                if (trimmedLine !== "") {
+                    finalHtml += `<p>${trimmedLine}</p>`;
+                }
+            }
+        });
+        
+        // Chiude la tabella se il testo finisce con una tabella
+        if (inTable) finalHtml += `<table>${tableRows}</table>`;
+        return finalHtml;
     }
 
+    // Se non ci sono tabelle, trasforma semplicemente i ritorni a capo in paragrafi
+    return html.split('\n').filter(line => line.trim() !== "").map(line => `<p>${line}</p>`).join('');
+}
     async function runTarot() {
         let c = parseInt(localStorage.getItem('astral_credits'));
         if(c <= 0) return openPayment();
@@ -835,13 +846,14 @@
                 if (cleanLine.toLowerCase().includes('ascendente:')) document.getElementById('summaryAscSign').innerText = cleanLine.split(':')[1].trim();
             });
 
-            // Inserisce il testo completo fuori dalla card
-            commentary.innerHTML = formatText(mainText);
-        } else {
-            // Se non ci sono marcatori, metti tutto nel commento
-            commentary.innerHTML = formatText(text);
-        }
+           // 2. MOSTRA IL TESTO LUNGO (Fuori dalla card)
+    // Usiamo la funzione formatText per pulire tabelle e spazi
+    document.getElementById('astroCommentary').innerHTML = formatText(mainText);
 
+} else {
+    // Se non ci sono marcatori, metti tutto nel commento fuori
+    document.getElementById('astroCommentary').innerHTML = formatText(text);
+}
         // Scalo crediti
         localStorage.setItem('astral_credits', (c - cost).toString());
         document.getElementById('creditCount').innerText = c - cost;
