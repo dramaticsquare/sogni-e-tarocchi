@@ -217,6 +217,43 @@
 #astroContent tr:hover td {
     background: rgba(212, 175, 55, 0.05);
 }
+
+.share-container {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    text-align: center;
+}
+.share-title {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.share-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.btn-share {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.btn-share:hover {
+    background: var(--gold);
+    color: #1a1a1a;
+}
     </style>
 </head>
 <body>
@@ -269,6 +306,15 @@
         </div>
         <div id="readingResult" class="result-box">
             <div id="readingContent" class="result-content"></div>
+            <div class="share-container">
+    <div class="share-title">Condividi la rivelazione</div>
+    <div class="share-buttons">
+        <button class="btn-share" onclick="nativeShare()">✨ Condividi</button>
+        <button class="btn-share" onclick="shareFB()">Facebook</button>
+        <button class="btn-share" onclick="sharePinterest()">Pinterest</button>
+        <button class="btn-share" onclick="copyText()">Copia Testo</button>
+    </div>
+</div>
             <button class="btn-action" onclick="location.reload()" style="margin-top:40px">NUOVA DOMANDA</button>
         </div>
     </section>
@@ -284,6 +330,15 @@
         </div>
         <div id="dreamResult" class="result-box">
             <div id="dreamContent" class="result-content"></div>
+            <div class="share-container">
+    <div class="share-title">Condividi la rivelazione</div>
+    <div class="share-buttons">
+        <button class="btn-share" onclick="nativeShare()">✨ Condividi</button>
+        <button class="btn-share" onclick="shareFB()">Facebook</button>
+        <button class="btn-share" onclick="sharePinterest()">Pinterest</button>
+        <button class="btn-share" onclick="copyText()">Copia Testo</button>
+    </div>
+</div>
             <button class="btn-action" onclick="location.reload()" style="margin-top:20px">NUOVA INTERPRETAZIONE</button>
         </div>
     </section>
@@ -354,6 +409,15 @@
 
     <div id="astroResult" class="result-box">
         <div id="astroContent" class="result-content"></div>
+        <div class="share-container">
+    <div class="share-title">Condividi la rivelazione</div>
+    <div class="share-buttons">
+        <button class="btn-share" onclick="nativeShare()">✨ Condividi</button>
+        <button class="btn-share" onclick="shareFB()">Facebook</button>
+        <button class="btn-share" onclick="sharePinterest()">Pinterest</button>
+        <button class="btn-share" onclick="copyText()">Copia Testo</button>
+    </div>
+</div>
         <button class="btn-action" onclick="location.reload()" style="margin-top:20px">NUOVO CALCOLO</button>
     </div>
 </section>
@@ -654,6 +718,44 @@
     } catch (e) {
         content.innerHTML = "Le stelle sono oscurate. Riprova più tardi.";
     }
+}
+// Condivisione Nativa (Mobile, apre le app incluse IG e TikTok)
+async function nativeShare() {
+    // Prende il testo generato
+    const testoTesto = document.getElementById('astroContent').innerText.substring(0, 100) + "...";
+    
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: 'Oracolo Sidera',
+                text: 'Guarda la mia rivelazione astrale su Sidera: \n' + testoTesto,
+                url: window.location.href
+            });
+        } catch (err) {
+            console.log('Condivisione annullata');
+        }
+    } else {
+        alert("Il tuo browser non supporta la condivisione nativa. Usa 'Copia Testo'.");
+    }
+}
+
+function shareFB() {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+}
+
+function sharePinterest() {
+    const url = encodeURIComponent(window.location.href);
+    const desc = encodeURIComponent("Ho appena consultato l'Oracolo di Sidera!");
+    window.open(`https://pinterest.com/pin/create/button/?url=${url}&description=${desc}`, '_blank');
+}
+
+function copyText() {
+    // Adatta l'ID a seconda della sezione (astroContent, oracoloContent, ecc.)
+    const testo = document.getElementById('astroContent').innerText;
+    navigator.clipboard.writeText(testo).then(() => {
+        alert("Testo copiato! Ora puoi incollarlo nelle storie di Instagram o TikTok.");
+    });
 }
     window.onload = initCredits;
 </script>
