@@ -109,11 +109,59 @@
         .direct-link-btn:hover { background: rgba(201, 168, 76, 0.05); border-style: solid; }
 
         /* MOBILE */
-        @media (max-width: 768px) {
-            .nav-inner { flex-direction: column; gap: 15px; }
-            .content-section { padding: 220px 0 60px; }
-            .tarot-card { width: 28vw; height: 48vw; min-width: 85px; min-height: 150px; }
-        }
+       /* MOBILE FIX - Versione Ottimizzata */
+@media (max-width: 768px) {
+    /* Abbassiamo leggermente il padding per recuperare spazio */
+    nav { 
+        padding: 10px 0; 
+    }
+
+    .nav-inner { 
+        flex-direction: column; /* Mette il logo sopra e i tasti sotto */
+        gap: 10px; 
+        padding: 0 10px;
+    }
+
+    .nav-right {
+        gap: 15px; /* Riduce lo spazio tra crediti e link */
+        width: 100%;
+        justify-content: center; /* Centra tutto su mobile */
+    }
+
+    .nav-links { 
+        gap: 12px; /* Avvicina le scritte (Astrologia, Tarocchi, ecc) */
+    }
+
+    .nav-links a {
+        font-size: 10px; /* Testo leggermente più piccolo per non farlo andare a capo */
+    }
+
+    .credit-badge {
+        padding: 4px 10px;
+        font-size: 10px;
+    }
+
+    /* Aumentiamo lo spazio superiore per le sezioni per non farle finire sotto il menù che ora è più alto */
+    .content-section { 
+        padding: 180px 15px 60px; 
+    }
+
+    /* Ridimensioniamo i titoli grandi che su mobile rompono il layout */
+    h1, h2 {
+        font-size: 28px;
+        margin-top: 10px;
+    }
+}
+
+/* Fix per schermi molto piccoli (es. iPhone SE) */
+@media (max-width: 380px) {
+    .nav-links {
+        gap: 8px;
+    }
+    .nav-links a {
+        font-size: 9px;
+    }
+}
  .depth-option {
     flex: 1;
     cursor: pointer;
