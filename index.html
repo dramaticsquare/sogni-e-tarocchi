@@ -785,44 +785,73 @@
         } catch (e) { content.innerHTML = "Errore."; }
     }
 
-    async function runAstrology() {
-        const depth = document.querySelector('input[name="astroDepth"]:checked').value;
-        const cost = depth === 'profonda' ? 3 : 1;
-        let c = parseInt(localStorage.getItem('astral_credits')) || 0;
-        if(c < cost) return openPayment();
-        const date = document.getElementById('birthDate').value;
-        const time = document.getElementById('birthTime').value;
-        const city = document.getElementById('birthCity').value;
-        if (!date || !time || !city) return alert("Inserisci i dati.");
-        document.getElementById('astroInputBox').style.display = 'none';
-        const resBox = document.getElementById('astroResult');
-        const content = document.getElementById('astroContent');
-        resBox.style.display = 'block';
-        content.innerHTML = "<p style='text-align:center;'><em>Interrogando il moto dei pianeti...</em></p>";
-        try {
-            const response = await fetch(MAKE_URL, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({tipo: "astrologia", profondita: depth, data_nascita: date, ora_nascita: time, luogo: city})
-            });
-            const text = await response.text();
-            if (text.includes('##SUMMARY_DATA##')) {
-                const dataPart = text.split('##SUMMARY_DATA##')[1].trim();
-                const lines = dataPart.split('\n');
-                lines.forEach(line => {
-                    const cleanLine = line.replace(/[*#]/g, '').trim();
-                    if (cleanLine.toLowerCase().includes('sole:')) document.getElementById('summarySoleSign').innerText = cleanLine.split(':')[1].trim();
-                    if (cleanLine.toLowerCase().includes('luna:')) document.getElementById('summaryLunaSign').innerText = cleanLine.split(':')[1].trim();
-                    if (cleanLine.toLowerCase().includes('ascendente:')) document.getElementById('summaryAscSign').innerText = cleanLine.split(':')[1].trim();
-                });
-            }
-            const cleanBody = text.split('##SUMMARY_DATA##')[0].trim();
-            content.innerHTML = formatText(cleanBody);
-            localStorage.setItem('astral_credits', c - cost);
-            document.getElementById('creditCount').innerText = c - cost;
-        } catch (e) { content.innerHTML = "Errore nelle stelle."; }
-    }
+   async function runAstrology() {
+    const depth = document.querySelector('input[name="astroDepth"]:checked').value;
+    const cost = depth === 'profonda' ? 3 : 1;
+    let c = parseInt(localStorage.getItem('astral_credits')) || 0;
+    
+    if(c < cost) return openPayment();
 
+    const date = document.getElementById('birthDate').value;
+    const time = document.getElementById('birthTime').value;
+    const city = document.getElementById('birthCity').value;
+
+    if (!date || !time || !city) return alert("Inserisci tutti i dati di nascita.");
+
+    document.getElementById('astroInputBox').style.display = 'none';
+    const resBox = document.getElementById('astroResult');
+    const commentary = document.getElementById('astroCommentary');
+    
+    resBox.style.display = 'block';
+    commentary.innerHTML = "<p style='text-align:center;'><em>Interrogando il moto dei pianeti...</em></p>";
+
+    try {
+        const response = await fetch(MAKE_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                tipo: "astrologia", 
+                profondita: depth, 
+                data_nascita: date, 
+                ora_nascita: time, 
+                luogo: city
+            })
+        });
+
+        const text = await response.text();
+
+        // 1. Estrazione dati per la Card (se presenti tra i marcatori ##)
+        if (text.includes('##SUMMARY_DATA##')) {
+            const parts = text.split('##SUMMARY_DATA##');
+            const mainText = parts[0].trim();
+            const dataPart = parts[1].trim();
+
+            // Riempie la card con i dati sintetici
+            const lines = dataPart.split('\n');
+            lines.forEach(line => {
+                const cleanLine = line.replace(/[*#]/g, '').trim();
+                if (cleanLine.toLowerCase().includes('sole:')) document.getElementById('summarySoleSign').innerText = cleanLine.split(':')[1].trim();
+                if (cleanLine.toLowerCase().includes('luna:')) document.getElementById('summaryLunaSign').innerText = cleanLine.split(':')[1].trim();
+                if (cleanLine.toLowerCase().includes('ascendente:')) document.getElementById('summaryAscSign').innerText = cleanLine.split(':')[1].trim();
+            });
+
+            // Inserisce il testo completo fuori dalla card
+            commentary.innerHTML = formatText(mainText);
+        } else {
+            // Se non ci sono marcatori, metti tutto nel commento
+            commentary.innerHTML = formatText(text);
+        }
+
+        // Scalo crediti
+        localStorage.setItem('astral_credits', (c - cost).toString());
+        document.getElementById('creditCount').innerText = c - cost;
+
+    } catch (e) {
+        commentary.innerHTML = "Le stelle sono offuscate. Riprova più tardi.";
+        console.error(e);
+    }
+}
+    
     function downloadCard(elementId) {
         const card = document.getElementById(elementId);
         const header = card.querySelector('.card-header');
