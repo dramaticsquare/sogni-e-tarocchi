@@ -511,7 +511,8 @@
 
     <button class="btn-action" onclick="runAstrology()">Genera Mappa</button>
 </div>
-
+#astroResult {
+    display: none; 
    <div id="astroResult" class="result-box">
 <div id="astroCaptureArea" class="capture-card summary-card">
     <div class="card-header">
@@ -520,6 +521,10 @@
     </div>
 
     <div class="summary-section">
+        </div>
+
+    <div id="astroContent" style="padding: 20px; color: var(--text-color); line-height: 1.6;"></div>
+    </div>
         <h2>Il Tuo Allineamento Celeste</h2>
         
         <div class="summary-item">
@@ -562,8 +567,7 @@
 
     <button class="btn-action" onclick="location.reload()" style="margin-top:20px">NUOVO CALCOLO</button>
 </div>
-        <button class="btn-action" onclick="location.reload()" style="margin-top:20px">NUOVO CALCOLO</button>
-    </div>
+    }
 </section>
 <div id="infoModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(15px); padding: 20px;">
     <div class="modal-content" style="border-color: var(--gold-light); max-width: 500px;">
@@ -854,9 +858,9 @@ function formatText(text) {
     }
     async function runAstrology() {
     const depth = document.querySelector('input[name="astroDepth"]:checked').value;
-    const cost = depth === 'profonda' ? 3 : 1; // Costo differenziato
+    const cost = depth === 'profonda' ? 3 : 1;
 
-    let c = parseInt(localStorage.getItem('astral_credits'));
+    let c = parseInt(localStorage.getItem('astral_credits')) || 0;
     if(c < cost) return openPayment();
 
     const date = document.getElementById('birthDate').value;
@@ -865,6 +869,7 @@ function formatText(text) {
 
     if (!date || !time || !city) return alert("Inserisci i dati per l'allineamento.");
 
+    // Nasconde l'input e mostra il contenitore dei risultati
     document.getElementById('astroInputBox').style.display = 'none';
     const resBox = document.getElementById('astroResult');
     const content = document.getElementById('astroContent');
@@ -873,7 +878,7 @@ function formatText(text) {
 
     const astroData = {
         tipo: "astrologia",
-        profondita: depth, // "base" o "profonda"
+        profondita: depth,
         data_nascita: date,
         ora_nascita: time,
         luogo: city,
@@ -886,21 +891,82 @@ function formatText(text) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(astroData)
         });
-        // ... dentro la funzione runAstrology, dopo aver ricevuto il testo:
-const text = await response.text();
 
-// Formatta il testo lungo
-content.innerHTML = formatText(text);
+        const text = await response.text();
 
-// Estrai i dati grezzi per il riassunto
-if (text.includes('##SUMMARY_DATA##')) {
-    const dataPart = text.split('##SUMMARY_DATA##')[1].trim();
-    const lines = dataPart.split('\n');
-    lines.forEach(line => {
-        if (line.includes('Sole:')) document.getElementById('summarySoleSign').innerText = line.split('Sole:')[1].trim();
-        if (line.includes('Luna:')) document.getElementById('summaryLunaSign').innerText = line.split('Luna:')[1].trim();
-        if (line.includes('Ascendente:')) document.getElementById('summaryAscSign').innerText = line.split('Ascendente:')[1].trim();
+        // 1. Popola la Card Riassuntiva (Estrae i dati tecnici)
+        if (text.includes('##SUMMARY_DATA##')) {
+            const dataPart = text.split('##SUMMARY_DATA##')[1].trim();
+            const lines = dataPart.split('\n');
+            lines.forEach(line => {
+                const cleanLine = line.replace(/[*#]/g, '').trim();
+                if (cleanLine.toLowerCase().includes('sole:')) 
+                    document.getElementById('summarySoleSign').innerText = cleanLine.split(':')[1].trim();
+                if (cleanLine.toLowerCase().includes('luna:')) 
+                    document.getElementById('summaryLunaSign').innerText = cleanLine.split(':')[1].trim();
+                if (cleanLine.toLowerCase().includes('ascendente:')) 
+                    document.getElementById('summaryAscSign').innerText = cleanLine.split(':')[1].trim();
+            });
+        }
+// Funzione per formattare tabelle e grassetti
+function formatText(text) {
+    let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    
+    // Converte le tabelle Markdown in HTML vero
+    if (html.includes('|')) {
+        const lines = html.split('\n');
+        let inTable = false;
+        let tableHtml = '<table>';
+        let finalHtml = '';
+
+        lines.forEach(line => {
+            if (line.trim().startsWith('|')) {
+                if (!inTable) { inTable = true; tableHtml = '<table>'; }
+                const cells = line.split('|').filter(c => c.trim() !== "");
+                tableHtml += `<tr>${cells.map(c => `<td>${c.trim()}</td>`).join('')}</tr>`;
+            } else {
+                if (inTable) { inTable = false; tableHtml += '</table>'; finalHtml += tableHtml; }
+                finalHtml += line + '<br>';
+            }
+        });
+        if (inTable) finalHtml += '</table>';
+        return finalHtml;
+    }
+    return html.replace(/\n/g, '<br>');
+}
+
+// Funzione per salvare la Card (Richiede la libreria html2canvas)
+function downloadCard(elementId) {
+    const card = document.getElementById(elementId);
+    // Mostriamo header/footer solo per lo scatto
+    card.querySelectorAll('.card-header, .card-footer').forEach(el => el.style.display = 'block');
+    
+    html2canvas(card, { scale: 2, backgroundColor: "#0d0d1a" }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Sidera-Mappa.png';
+        link.href = canvas.toDataURL();
+        link.click();
+        card.querySelectorAll('.card-header, .card-footer').forEach(el => el.style.display = 'none');
     });
+}
+
+// Funzione per copiare il testo
+function copyForSocial() {
+    const text = document.getElementById('astroContent').innerText;
+    navigator.clipboard.writeText(text).then(() => alert("Responso copiato!"));
+}
+        // 2. Formatta e mostra il testo dell'analisi (Rimuovendo i dati tecnici)
+        const cleanText = text.split('##SUMMARY_DATA##')[0].trim();
+        content.innerHTML = formatText(cleanText);
+
+        // 3. Aggiorna Crediti
+        localStorage.setItem('astral_credits', c - cost);
+        document.getElementById('creditCount').innerText = c - cost;
+
+    } catch (e) {
+        content.innerHTML = "Le stelle sono oscurate. Riprova più tardi.";
+        console.error(e);
+    }
 }
         
         // Formattazione speciale: Gemini userà i Markdown Table che il tuo formatText già gestisce
