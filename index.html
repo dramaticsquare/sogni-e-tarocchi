@@ -210,6 +210,24 @@
     font-size: 1.5rem;
 }
 
+        /* Stile per i titoli delle sezioni nel responso (ex ###) */
+#astroCommentary h4, #astroContent h4 {
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem; /* Più grande del testo normale */
+    margin: 30px 0 15px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.3);
+    padding-bottom: 5px;
+    display: block;
+}
+
+/* Rimuove il margine superiore se il titolo è la prima cosa che appare */
+#astroCommentary h4:first-child, #astroContent h4:first-child {
+    margin-top: 10px;
+}
+
 .share-container {
     margin-top: 30px;
     padding-top: 20px;
@@ -696,13 +714,17 @@
     }
 
     function formatText(text) {
-    // 1. Rimuove eventuali righe vuote eccessive all'inizio e alla fine
-    let cleanText = text.trim();
-
-    // 2. Grassetto (Markdown **text**)
+    if (!text) return "";
+    
+    // 1. Pulizia iniziale: rimuove i cancelletti trasformandoli in titoli veri (h4)
+    // Trasforma "### Titolo" in "<h4>Titolo</h4>"
+    let cleanText = text.replace(/###\s*(.*)/g, '<h4>$1</h4>');
+    
+    // 2. Rimuove eventuali doppie linee vuote e applica il grassetto Markdown
+    cleanText = cleanText.trim().replace(/\n{3,}/g, '\n\n');
     let html = cleanText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-    // 3. Gestione Tabella
+    // 3. Gestione Tabelle
     if (html.includes('|')) {
         const lines = html.split('\n');
         let finalHtml = '';
@@ -713,8 +735,8 @@
             const trimmedLine = line.trim();
             if (trimmedLine.startsWith('|')) {
                 if (!inTable) inTable = true;
-                // Splitta per | e rimuove i vuoti
                 const cells = trimmedLine.split('|').filter(c => c.trim() !== "");
+                if (cells[0].includes('---')) return;
                 tableRows += `<tr>${cells.map(c => `<td>${c.trim()}</td>`).join('')}</tr>`;
             } else {
                 if (inTable) {
@@ -722,19 +744,26 @@
                     tableRows = '';
                     inTable = false;
                 }
+                // Se la riga è un titolo (contiene già <h4>), non metterla nel paragrafo <p>
                 if (trimmedLine !== "") {
-                    finalHtml += `<p>${trimmedLine}</p>`;
+                    if (trimmedLine.startsWith('<h4>')) {
+                        finalHtml += trimmedLine;
+                    } else {
+                        finalHtml += `<p>${trimmedLine}</p>`;
+                    }
                 }
             }
         });
         
-        // Chiude la tabella se il testo finisce con una tabella
         if (inTable) finalHtml += `<table>${tableRows}</table>`;
         return finalHtml;
     }
 
-    // Se non ci sono tabelle, trasforma semplicemente i ritorni a capo in paragrafi
-    return html.split('\n').filter(line => line.trim() !== "").map(line => `<p>${line}</p>`).join('');
+    // Se non c'è tabella, divide in paragrafi e titoli
+    return html.split('\n').filter(l => l.trim() !== "").map(l => {
+        if (l.trim().startsWith('<h4>')) return l;
+        return `<p>${l}</p>`;
+    }).join('');
 }
     async function runTarot() {
         let c = parseInt(localStorage.getItem('astral_credits'));
