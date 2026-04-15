@@ -512,54 +512,53 @@
     </div>
 
     <div id="astroResult" class="result-box" style="display: none;">
-        <div id="astroCaptureArea" class="capture-card">
-            <div class="card-header">
-                <h1 class="sidera-logo-small">SIDERA</h1>
-                <p>L'ORACOLO DELLE STELLE</p>
-            </div>
+    <div id="astroCommentary" class="result-content" style="margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px;"></div>
 
-            <div class="summary-section">
-                <h2>Il Tuo Allineamento Celeste</h2>
-                <div class="summary-item">
-                    <span class="symbol">☉</span>
-                    <div class="info">
-                        <strong>Sole in <span id="summarySoleSign">...</span></strong>
-                        <p>La tua essenza profonda e la tua vitalità.</p>
-                    </div>
-                </div>
-                <div class="summary-item">
-                    <span class="symbol">☽</span>
-                    <div class="info">
-                        <strong>Luna in <span id="summaryLunaSign">...</span></strong>
-                        <p>Le tue emozioni e il mondo interiore.</p>
-                    </div>
-                </div>
-                <div class="summary-item">
-                    <span class="symbol">↑</span>
-                    <div class="info">
-                        <strong>Ascendente <span id="summaryAscSign">...</span></strong>
-                        <p>La maschera che mostri al mondo.</p>
-                    </div>
+    <div id="astroCaptureArea" class="capture-card">
+        <div class="card-header" style="display:block"> <h1 class="sidera-logo-small">SIDERA</h1>
+            <p>L'ORACOLO DELLE STELLE</p>
+        </div>
+
+        <div class="summary-section">
+            <h2>Il Tuo Allineamento</h2>
+            <div class="summary-item">
+                <span class="symbol">☉</span>
+                <div class="info">
+                    <strong>Sole in <span id="summarySoleSign">...</span></strong>
+                    <p>Essenza e Vitalità</p>
                 </div>
             </div>
-
-            <div id="astroContent" style="padding: 10px; border-top: 1px solid rgba(212,175,55,0.1); margin-top:10px;"></div>
-
-            <div class="card-footer">
-                <p>sidera.com | L'universo ti aspetta</p>
+            <div class="summary-item">
+                <span class="symbol">☽</span>
+                <div class="info">
+                    <strong>Luna in <span id="summaryLunaSign">...</span></strong>
+                    <p>Emozioni e Inconscio</p>
+                </div>
+            </div>
+            <div class="summary-item">
+                <span class="symbol">↑</span>
+                <div class="info">
+                    <strong>Ascendente <span id="summaryAscSign">...</span></strong>
+                    <p>Personalità esteriore</p>
+                </div>
             </div>
         </div>
 
-        <div class="share-container">
-            <p class="share-title">Condividi la rivelazione</p>
-            <div class="share-buttons">
-                <button class="btn-share" onclick="downloadCard('astroCaptureArea')">📸 Salva Card per Stories</button>
-                <button class="btn-share" onclick="copyForSocial()">✨ Copia Testo</button>
-            </div>
+        <div class="card-footer" style="display:block">
+            <p>www.sidera.com</p>
         </div>
-
-        <button class="btn-action" onclick="location.reload()" style="margin-top:20px">NUOVO CALCOLO</button>
     </div>
+
+    <div class="share-container">
+        <p class="share-title">Condividi la rivelazione</p>
+        <div class="share-buttons">
+            <button class="btn-share" onclick="downloadCard('astroCaptureArea')">📸 Salva Card per Stories</button>
+            <button class="btn-share" onclick="copyText()">✨ Copia Testo</button>
+        </div>
+    </div>
+    <button class="btn-action" onclick="location.reload()" style="margin-top:20px">NUOVO CALCOLO</button>
+</div>
+   
 </section>
 
 <div id="infoModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(15px); padding: 20px;">
