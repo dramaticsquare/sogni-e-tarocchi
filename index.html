@@ -492,83 +492,76 @@
     </div>
 
     <div id="astroInputBox" class="glass-card">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-        <input type="date" id="birthDate">
-        <input type="time" id="birthTime">
-    </div>
-    <input type="text" id="birthCity" placeholder="Città di nascita" style="margin-bottom: 20px;">
-    
-    <div style="display: flex; gap: 15px; margin: 20px 0;">
-    <label class="depth-option">
-        <input type="radio" name="astroDepth" value="base" checked>
-        <span><strong>Essenziale</strong><small>1 Credito</small></span>
-    </label>
-    <label class="depth-option">
-        <input type="radio" name="astroDepth" value="profonda">
-        <span><strong>Profonda</strong><small>3 Crediti</small></span>
-    </label>
-</div>
-
-    <button class="btn-action" onclick="runAstrology()">Genera Mappa</button>
-</div>
-#astroResult {
-    display: none; 
-   <div id="astroResult" class="result-box">
-<div id="astroCaptureArea" class="capture-card summary-card">
-    <div class="card-header">
-        <h1 class="sidera-logo-small">SIDERA</h1>
-        <p>L'ORACOLO DELLE STELLE</p>
-    </div>
-
-    <div class="summary-section">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+            <input type="date" id="birthDate">
+            <input type="time" id="birthTime">
         </div>
-
-    <div id="astroContent" style="padding: 20px; color: var(--text-color); line-height: 1.6;"></div>
-    </div>
-        <h2>Il Tuo Allineamento Celeste</h2>
+        <input type="text" id="birthCity" placeholder="Città di nascita" style="margin-bottom: 20px;">
         
-        <div class="summary-item">
-            <span class="symbol">☉</span>
-            <div class="info">
-                <strong>Sole in <span id="summarySoleSign">...</span></strong>
-                <p>La tua essenza profonda e la tua vitalità.</p>
+        <div style="display: flex; gap: 15px; margin: 20px 0;">
+            <label class="depth-option">
+                <input type="radio" name="astroDepth" value="base" checked>
+                <span><strong>Essenziale</strong><small>1 Credito</small></span>
+            </label>
+            <label class="depth-option">
+                <input type="radio" name="astroDepth" value="profonda">
+                <span><strong>Profonda</strong><small>3 Crediti</small></span>
+            </label>
+        </div>
+        <button class="btn-action" onclick="runAstrology()">Genera Mappa</button>
+    </div>
+
+    <div id="astroResult" class="result-box" style="display: none;">
+        <div id="astroCaptureArea" class="capture-card">
+            <div class="card-header">
+                <h1 class="sidera-logo-small">SIDERA</h1>
+                <p>L'ORACOLO DELLE STELLE</p>
+            </div>
+
+            <div class="summary-section">
+                <h2>Il Tuo Allineamento Celeste</h2>
+                <div class="summary-item">
+                    <span class="symbol">☉</span>
+                    <div class="info">
+                        <strong>Sole in <span id="summarySoleSign">...</span></strong>
+                        <p>La tua essenza profonda e la tua vitalità.</p>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <span class="symbol">☽</span>
+                    <div class="info">
+                        <strong>Luna in <span id="summaryLunaSign">...</span></strong>
+                        <p>Le tue emozioni e il mondo interiore.</p>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <span class="symbol">↑</span>
+                    <div class="info">
+                        <strong>Ascendente <span id="summaryAscSign">...</span></strong>
+                        <p>La maschera che mostri al mondo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="astroContent" style="padding: 10px; border-top: 1px solid rgba(212,175,55,0.1); margin-top:10px;"></div>
+
+            <div class="card-footer">
+                <p>sidera.com | L'universo ti aspetta</p>
             </div>
         </div>
 
-        <div class="summary-item">
-            <span class="symbol">☽</span>
-            <div class="info">
-                <strong>Luna in <span id="summaryLunaSign">...</span></strong>
-                <p>Le tue emozioni, l'inconscio e il tuo mondo interiore.</p>
+        <div class="share-container">
+            <p class="share-title">Condividi la rivelazione</p>
+            <div class="share-buttons">
+                <button class="btn-share" onclick="downloadCard('astroCaptureArea')">📸 Salva Card per Stories</button>
+                <button class="btn-share" onclick="copyForSocial()">✨ Copia Testo</button>
             </div>
         </div>
 
-        <div class="summary-item">
-            <span class="symbol">↑</span>
-            <div class="info">
-                <strong>Ascendente <span id="summaryAscSign">...</span></strong>
-                <p>La maschera che mostri al mondo e la tua prima impressione.</p>
-            </div>
-        </div>
+        <button class="btn-action" onclick="location.reload()" style="margin-top:20px">NUOVO CALCOLO</button>
     </div>
-
-    <div class="card-footer">
-        <p>sidera.com | L'universo ti aspetta</p>
-    </div>
-</div>
-
-    <div class="share-container">
-        <p class="share-title">Condividi la rivelazione</p>
-        <div class="share-buttons">
-            <button class="btn-share" onclick="downloadCard('astroCaptureArea')">📸 Salva Card per Stories</button>
-            <button class="btn-share" onclick="copyForSocial()">✨ Copia Testo</button>
-        </div>
-    </div>
-
-    <button class="btn-action" onclick="location.reload()" style="margin-top:20px">NUOVO CALCOLO</button>
-</div>
-    }
 </section>
+
 <div id="infoModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(15px); padding: 20px;">
     <div class="modal-content" style="border-color: var(--gold-light); max-width: 500px;">
         <h2 style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 22px; margin-bottom: 20px;">Saggezza dell'Oracolo</h2>
@@ -856,7 +849,8 @@ function formatText(text) {
             document.getElementById('creditCount').innerText = c - 1;
         } catch (e) { content.innerHTML = "Errore."; }
     }
-    async function runAstrology() {
+// 1. FUNZIONE PRINCIPALE PER L'ASTROLOGIA
+async function runAstrology() {
     const depth = document.querySelector('input[name="astroDepth"]:checked').value;
     const cost = depth === 'profonda' ? 3 : 1;
 
@@ -869,32 +863,29 @@ function formatText(text) {
 
     if (!date || !time || !city) return alert("Inserisci i dati per l'allineamento.");
 
-    // Nasconde l'input e mostra il contenitore dei risultati
+    // Cambia visualizzazione
     document.getElementById('astroInputBox').style.display = 'none';
     const resBox = document.getElementById('astroResult');
     const content = document.getElementById('astroContent');
     resBox.style.display = 'block';
-    content.innerHTML = "<p><em>Interrogando il moto perpetuo dei pianeti...</em></p>";
-
-    const astroData = {
-        tipo: "astrologia",
-        profondita: depth,
-        data_nascita: date,
-        ora_nascita: time,
-        luogo: city,
-        data_odierna: new Date().toLocaleDateString('it-IT')
-    };
+    content.innerHTML = "<p style='text-align:center;'><em>Interrogando il moto dei pianeti...</em></p>";
 
     try {
         const response = await fetch(MAKE_URL, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(astroData)
+            body: JSON.stringify({
+                tipo: "astrologia",
+                profondita: depth,
+                data_nascita: date,
+                ora_nascita: time,
+                luogo: city
+            })
         });
 
         const text = await response.text();
 
-        // 1. Popola la Card Riassuntiva (Estrae i dati tecnici)
+        // Popola i dati nella Card (Cerca il tag speciale ##SUMMARY_DATA##)
         if (text.includes('##SUMMARY_DATA##')) {
             const dataPart = text.split('##SUMMARY_DATA##')[1].trim();
             const lines = dataPart.split('\n');
@@ -908,65 +899,67 @@ function formatText(text) {
                     document.getElementById('summaryAscSign').innerText = cleanLine.split(':')[1].trim();
             });
         }
-// Funzione per formattare tabelle e grassetti
+
+        // Mostra il testo pulito (senza i dati tecnici)
+        const cleanBody = text.split('##SUMMARY_DATA##')[0].trim();
+        content.innerHTML = formatText(cleanBody);
+
+        // Scalo crediti
+        localStorage.setItem('astral_credits', c - cost);
+        document.getElementById('creditCount').innerText = c - cost;
+
+    } catch (e) {
+        content.innerHTML = "Le stelle sono oscurate. Controlla la connessione.";
+        console.error(e);
+    }
+}
+
+// 2. FUNZIONE PER FORMATTARE IL TESTO (TABELLE E GRASSETTI)
 function formatText(text) {
     let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    
-    // Converte le tabelle Markdown in HTML vero
     if (html.includes('|')) {
         const lines = html.split('\n');
-        let inTable = false;
         let tableHtml = '<table>';
+        let inTable = false;
         let finalHtml = '';
-
         lines.forEach(line => {
             if (line.trim().startsWith('|')) {
-                if (!inTable) { inTable = true; tableHtml = '<table>'; }
+                if (!inTable) inTable = true;
                 const cells = line.split('|').filter(c => c.trim() !== "");
                 tableHtml += `<tr>${cells.map(c => `<td>${c.trim()}</td>`).join('')}</tr>`;
             } else {
-                if (inTable) { inTable = false; tableHtml += '</table>'; finalHtml += tableHtml; }
+                if (inTable) { inTable = false; tableHtml += '</table>'; finalHtml += tableHtml; tableHtml = '<table>'; }
                 finalHtml += line + '<br>';
             }
         });
-        if (inTable) finalHtml += '</table>';
         return finalHtml;
     }
     return html.replace(/\n/g, '<br>');
 }
 
-// Funzione per salvare la Card (Richiede la libreria html2canvas)
+// 3. FUNZIONE PER SCARICARE LA CARD
 function downloadCard(elementId) {
     const card = document.getElementById(elementId);
-    // Mostriamo header/footer solo per lo scatto
-    card.querySelectorAll('.card-header, .card-footer').forEach(el => el.style.display = 'block');
-    
-    html2canvas(card, { scale: 2, backgroundColor: "#0d0d1a" }).then(canvas => {
+    // Mostra temporaneamente header/footer per lo scatto
+    const header = card.querySelector('.card-header');
+    const footer = card.querySelector('.card-footer');
+    header.style.display = 'block';
+    footer.style.display = 'block';
+
+    html2canvas(card, { scale: 3, backgroundColor: '#0d0d1a' }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'Sidera-Mappa.png';
         link.href = canvas.toDataURL();
         link.click();
-        card.querySelectorAll('.card-header, .card-footer').forEach(el => el.style.display = 'none');
+        // Nascondi di nuovo sul sito
+        header.style.display = 'none';
+        footer.style.display = 'none';
     });
 }
 
-// Funzione per copiare il testo
 function copyForSocial() {
-    const text = document.getElementById('astroContent').innerText;
-    navigator.clipboard.writeText(text).then(() => alert("Responso copiato!"));
-}
-        // 2. Formatta e mostra il testo dell'analisi (Rimuovendo i dati tecnici)
-        const cleanText = text.split('##SUMMARY_DATA##')[0].trim();
-        content.innerHTML = formatText(cleanText);
-
-        // 3. Aggiorna Crediti
-        localStorage.setItem('astral_credits', c - cost);
-        document.getElementById('creditCount').innerText = c - cost;
-
-    } catch (e) {
-        content.innerHTML = "Le stelle sono oscurate. Riprova più tardi.";
-        console.error(e);
-    }
+    const txt = document.getElementById('astroContent').innerText;
+    navigator.clipboard.writeText(txt).then(() => alert("Testo copiato!"));
 }
         
         // Formattazione speciale: Gemini userà i Markdown Table che il tuo formatText già gestisce
