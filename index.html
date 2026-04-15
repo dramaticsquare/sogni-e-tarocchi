@@ -562,7 +562,7 @@
     <div class="share-container">
         <p class="share-title">Condividi la rivelazione</p>
         <div class="share-buttons">
-            <button class="btn-share" onclick="downloadCard('astroCaptureArea')">📸 Salva Card per Stories</button>
+           <button class="btn-share" onclick="shareCard('astroCaptureArea')">✨ Condividi Risultato</button>
             <button class="btn-share" onclick="copyText()">✨ Copia Testo</button>
         </div>
     </div>
@@ -893,21 +893,66 @@
     }
 }
     
-    function downloadCard(elementId) {
-        const card = document.getElementById(elementId);
-        const header = card.querySelector('.card-header');
-        const footer = card.querySelector('.card-footer');
-        if(header) header.style.display = 'block';
-        if(footer) footer.style.display = 'block';
-        html2canvas(card, { scale: 3, backgroundColor: '#0d0d1a' }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'Sidera-Mappa.png';
-            link.href = canvas.toDataURL();
-            link.click();
-            if(header) header.style.display = 'none';
-            if(footer) footer.style.display = 'none';
+   async function shareCard(elementId) {
+    const card = document.getElementById(elementId);
+    const header = card.querySelector('.card-header');
+    const footer = card.querySelector('.card-footer');
+
+    // 1. Mostra elementi per la foto
+    if(header) header.style.display = 'block';
+    if(footer) footer.style.display = 'block';
+
+    try {
+        const canvas = await html2canvas(card, { 
+            scale: 2, 
+            backgroundColor: '#0d0d1a',
+            useCORS: true 
         });
+
+        // 2. Nascondi di nuovo sul sito
+        if(header) header.style.display = 'none';
+        if(footer) footer.style.display = 'none';
+
+        // 3. Converti il canvas in un Blob (file)
+        canvas.toBlob(async (blob) => {
+            const file = new File([blob], 'Sidera-Mappa.png', { type: 'image/png' });
+            
+            // 4. Controlla se il browser supporta la condivisione di file
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Sidera - La mia Rivelazione',
+                        text: 'Guarda il mio allineamento astrale su Sidera ✨'
+                    });
+                } catch (err) {
+                    if (err.name !== "AbortError") {
+                        console.error("Errore condivisione:", err);
+                        // Se l'utente annulla non facciamo nulla, altrimenti scarichiamo come backup
+                        downloadAsBackup(canvas);
+                    }
+                }
+            } else {
+                // Se il browser non supporta la condivisione file (es. molti browser Desktop)
+                // facciamo il download classico come backup
+                downloadAsBackup(canvas);
+            }
+        }, 'image/png');
+
+    } catch (e) {
+        console.error("Errore generazione immagine:", e);
+        alert("Non è stato possibile generare l'immagine.");
     }
+}
+
+// Funzione di supporto per il download se la condivisione fallisce
+function downloadAsBackup(canvas) {
+    const link = document.createElement('a');
+    link.download = 'Sidera-Mappa.png';
+    link.href = canvas.toDataURL();
+    link.click();
+    alert("Condivisione non supportata su questo browser. Immagine salvata nei download!");
+}
 
     function copyText() {
         const testo = document.getElementById('astroContent').innerText || document.getElementById('readingContent').innerText || document.getElementById('dreamContent').innerText;
