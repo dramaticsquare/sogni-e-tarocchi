@@ -1997,55 +1997,110 @@ let selectedCredits = 5;
 let currentUser = null;
 
 // ─────────────────────────────────────────────
-//  STELLE CANVAS
+//  INIT — tutto dentro DOMContentLoaded
 // ─────────────────────────────────────────────
-(function initStars() {
-    const canvas = document.getElementById('starCanvas');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
+window.addEventListener('DOMContentLoaded', () => {
 
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
+    // ── Stelle Canvas ───────────────────────────
+    (function initStars() {
+        const canvas = document.getElementById('starCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let stars = [];
 
-    function createStars() {
-        stars = [];
-        for (let i = 0; i < 180; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                r: Math.random() * 1.2 + 0.2,
-                a: Math.random(),
-                speed: Math.random() * 0.003 + 0.001,
-                phase: Math.random() * Math.PI * 2
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function createStars() {
+            stars = [];
+            for (let i = 0; i < 180; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 1.2 + 0.2,
+                    a: Math.random(),
+                    speed: Math.random() * 0.003 + 0.001,
+                    phase: Math.random() * Math.PI * 2
+                });
+            }
+        }
+
+        function draw(t) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                const alpha = 0.3 + 0.5 * Math.sin(t * s.speed * 1000 + s.phase);
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(232, 201, 122, ${alpha})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+
+        resize();
+        createStars();
+        window.addEventListener('resize', () => { resize(); createStars(); });
+        requestAnimationFrame(draw);
+    })();
+
+    // ── Navbar scroll ───────────────────────────
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('mainNav');
+        if (nav) nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // ── Cursore personalizzato ──────────────────
+    if (!window.matchMedia('(pointer: coarse)').matches) {
+        const dot  = document.getElementById('cursor');
+        const ring = document.getElementById('cursor-ring');
+        if (dot && ring) {
+            dot.style.display  = 'block';
+            ring.style.display = 'block';
+            document.addEventListener('mousemove', e => {
+                dot.style.left  = e.clientX + 'px';
+                dot.style.top   = e.clientY + 'px';
+                ring.style.left = e.clientX + 'px';
+                ring.style.top  = e.clientY + 'px';
+            });
+            document.addEventListener('click', e => {
+                for (let i = 0; i < 8; i++) {
+                    const spark = document.createElement('div');
+                    spark.className = 'spark';
+                    const angle = (Math.PI * 2 / 8) * i;
+                    const dist  = 24 + Math.random() * 20;
+                    spark.style.left = e.clientX + 'px';
+                    spark.style.top  = e.clientY + 'px';
+                    spark.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+                    spark.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+                    document.body.appendChild(spark);
+                    setTimeout(() => spark.remove(), 600);
+                }
             });
         }
     }
 
-    function draw(t) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(s => {
-            const alpha = 0.3 + 0.5 * Math.sin(t * s.speed * 1000 + s.phase);
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(232, 201, 122, ${alpha})`;
-            ctx.fill();
+    // ── Scroll reveal ───────────────────────────
+    const revealObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('in-view'); revealObs.unobserve(e.target); }
         });
-        requestAnimationFrame(draw);
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.ritual-step, .astro-intro-card, .consult-type-card, .faq-item').forEach(el => {
+        el.classList.add('reveal');
+        revealObs.observe(el);
+    });
+
+    // ── Onboarding / App init ───────────────────
+    if (localStorage.getItem('sidera_onboarded')) {
+        document.getElementById('onboarding').style.display = 'none';
+        initApp();
+    } else {
+        localStorage.setItem('sidera_onboarded', '1');
+        // L'onboarding parte automaticamente
     }
 
-    resize();
-    createStars();
-    window.addEventListener('resize', () => { resize(); createStars(); });
-    requestAnimationFrame(draw);
-})();
-
-// ─────────────────────────────────────────────
-//  NAVBAR SCROLL
-// ─────────────────────────────────────────────
-window.addEventListener('scroll', () => {
-    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
 });
 
 // ─────────────────────────────────────────────
@@ -2186,13 +2241,10 @@ function renderPayPal() {
 }
 
 // ─────────────────────────────────────────────
-//  ACCOUNT
-// ─────────────────────────────────────────────
-// ─────────────────────────────────────────────
 //  ACCOUNT — AUTH
 //  Per sincronizzazione reale cross-device:
-//  1. <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-//  2. const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+//  1. Aggiungi l'SDK Supabase nell'head: cdn.jsdelivr.net/npm/@supabase/supabase-js@2
+//  2. const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 //  3. Sostituisci i blocchi [SUPABASE] nel codice qui sotto
 // ─────────────────────────────────────────────
 function openAccount() {
@@ -2999,65 +3051,6 @@ function toggleMobileMenu() {
     hamburger.classList.toggle('open', isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
 }
-
-// ─────────────────────────────────────────────
-//  INIT — tutto dentro DOMContentLoaded
-// ─────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
-
-    // ── Cursore personalizzato ──────────────────
-    if (!window.matchMedia('(pointer: coarse)').matches) {
-        const dot  = document.getElementById('cursor');
-        const ring = document.getElementById('cursor-ring');
-        if (dot && ring) {
-            dot.style.display  = 'block';
-            ring.style.display = 'block';
-            document.addEventListener('mousemove', e => {
-                dot.style.left  = e.clientX + 'px';
-                dot.style.top   = e.clientY + 'px';
-                ring.style.left = e.clientX + 'px';
-                ring.style.top  = e.clientY + 'px';
-            });
-            document.addEventListener('click', e => {
-                for (let i = 0; i < 8; i++) {
-                    const spark = document.createElement('div');
-                    spark.className = 'spark';
-                    const angle = (Math.PI * 2 / 8) * i;
-                    const dist  = 24 + Math.random() * 20;
-                    spark.style.left = e.clientX + 'px';
-                    spark.style.top  = e.clientY + 'px';
-                    spark.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
-                    spark.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
-                    document.body.appendChild(spark);
-                    setTimeout(() => spark.remove(), 600);
-                }
-            });
-        }
-    }
-
-    // ── Scroll reveal ───────────────────────────
-    const revealObs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting) { e.target.classList.add('in-view'); revealObs.unobserve(e.target); }
-        });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.ritual-step, .astro-intro-card, .consult-type-card, .faq-item').forEach(el => {
-        el.classList.add('reveal');
-        revealObs.observe(el);
-    });
-
-    // ── Onboarding / App init ───────────────────
-    if (localStorage.getItem('sidera_onboarded')) {
-        document.getElementById('onboarding').style.display = 'none';
-        initApp();
-        const home = document.getElementById('home');
-        home.classList.add('active');
-        setTimeout(() => home.classList.add('visible'), 50);
-    } else {
-        localStorage.setItem('sidera_onboarded', '1');
-        // L'onboarding parte automaticamente
-    }
-});
 </script>
 <!-- ════════════════════════════════
      INSTAGRAM SHARE MODAL
