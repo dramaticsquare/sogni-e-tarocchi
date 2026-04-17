@@ -2196,7 +2196,8 @@ function renderPayPal() {
 //  2. const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 //  3. Sostituisci i blocchi [SUPABASE] nel codice qui sotto
 // ─────────────────────────────────────────────
-function openAccount() {
+<script>
+    function openAccount() {
     document.getElementById('accountModal').classList.add('open');
     if (currentUser) showProfileView();
     else showAuthView();
