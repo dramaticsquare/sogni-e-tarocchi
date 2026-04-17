@@ -1885,10 +1885,12 @@
             </div>
 
             <div id="loginTab" class="account-tab-content active">
-                <input type="email" id="loginEmail" placeholder="Email">
-                <input type="password" id="loginPass" placeholder="Password">
+                <form onsubmit="doLogin();return false;" autocomplete="on">
+                <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
+                <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password">
                 <div id="loginError" style="display:none;font-size:0.78rem;color:#e07070;text-align:center;margin:-8px 0 10px;font-family:'Cinzel',serif;letter-spacing:1px;"></div>
-                <button class="btn-action" id="loginBtn" onclick="doLogin()">✦ Accedi al Tempio</button>
+                <button type="submit" class="btn-action" id="loginBtn">✦ Accedi al Tempio</button>
+                </form>
                 <p style="font-size:0.73rem;color:var(--text-muted);margin-top:14px;text-align:center;line-height:1.6;">
                     Crediti e letture sincronizzati su tutti i tuoi dispositivi.<br>
                     <span style="color:rgba(138,122,94,0.5);font-size:0.68rem;">
@@ -1898,11 +1900,13 @@
             </div>
 
             <div id="registerTab" class="account-tab-content">
-                <input type="text" id="regName" placeholder="Nome (o nome d'arte)">
-                <input type="email" id="regEmail" placeholder="Email">
-                <input type="password" id="regPass" placeholder="Password (min. 6 caratteri)">
+                <form onsubmit="doRegister();return false;" autocomplete="on">
+                <input type="text" id="regName" placeholder="Nome (o nome d'arte)" autocomplete="name">
+                <input type="email" id="regEmail" placeholder="Email" autocomplete="email">
+                <input type="password" id="regPass" placeholder="Password (min. 6 caratteri)" autocomplete="new-password">
                 <div id="registerError" style="display:none;font-size:0.78rem;color:#e07070;text-align:center;margin:-8px 0 10px;font-family:'Cinzel',serif;letter-spacing:1px;"></div>
-                <button class="btn-action" onclick="doRegister()">🌟 Crea il Tuo Profilo</button>
+                <button type="submit" class="btn-action">🌟 Crea il Tuo Profilo</button>
+                </form>
             </div>
         </div>
 
@@ -1979,7 +1983,7 @@ const IMG_BASE = "https://www.sacred-texts.com/tarot/pkt/img/";
 // ── Astrologer API (RapidAPI) ──────────────────
 // Ottieni la tua chiave su: https://rapidapi.com/g-battaglia/api/astrologer
 // Piano gratuito: 100 richieste/mese. Piano base: ~$10/mese per 1000 richieste.
-const ASTROLOGER_API_KEY = "8ecb093643msh14158b060d9f54ap1cc2e8jsne21589d3a1b4";
+const ASTROLOGER_API_KEY = "INSERISCI_LA_TUA_RAPIDAPI_KEY_QUI";
 const ASTROLOGER_API_HOST = "astrologer.p.rapidapi.com";
 const CARDS = [
     {n:"Il Matto",i:"ar00.jpg"},{n:"Il Mago",i:"ar01.jpg"},{n:"La Papessa",i:"ar02.jpg"},
@@ -2631,7 +2635,7 @@ async function runAstrology() {
                 const [hour, minute] = (time || '12:00').split(':').map(Number);
 
                 // Chiama Astrologer API v5
-                const astroRes = await fetch('https://astrologer.p.rapidapi.com/api/v5/birth-chart', {
+                const astroRes = await fetch('https://astrologer.p.rapidapi.com/api/v5/chart/birth-chart', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -2651,6 +2655,12 @@ async function runAstrology() {
                     })
                 });
                 realPlanets = await astroRes.json();
+                // v5 restituisce chart_data.subjects[0] per il natal chart
+                if (realPlanets?.chart_data?.subjects?.[0]) {
+                    realPlanets._subject = realPlanets.chart_data.subjects[0];
+                } else if (realPlanets?.subject) {
+                    realPlanets._subject = realPlanets.subject; // fallback struttura precedente
+                }
             }
         } catch (e) { console.warn('Astrologer API non disponibile:', e); }
     }
@@ -2662,20 +2672,20 @@ async function runAstrology() {
         data_nascita: date,
         ora_nascita: time,
         luogo: city,
-        ...(realPlanets && {
-            sole: realPlanets?.subject?.sun?.sign || null,
-            luna: realPlanets?.subject?.moon?.sign || null,
-            ascendente: realPlanets?.subject?.first_house?.sign || null,
-            pianeti: realPlanets?.subject ? Object.entries(realPlanets.subject)
-                .filter(([k,v]) => v && v.sign && v.position)
-                .map(([k,v]) => `${k}: ${v.sign} ${v.position?.toFixed(1)}°`)
-                .join(', ') : null
+        ...(realPlanets && realPlanets._subject && {
+            sole: realPlanets._subject?.sun?.sign || null,
+            luna: realPlanets._subject?.moon?.sign || null,
+            ascendente: realPlanets._subject?.first_house?.sign || null,
+            pianeti: Object.entries(realPlanets._subject)
+                .filter(([k,v]) => v && typeof v === 'object' && v.sign && v.position !== undefined)
+                .map(([k,v]) => `${k}: ${v.sign} ${Number(v.position).toFixed(1)}°`)
+                .join(', ')
         })
     };
 
     // Aggiorna triad con dati reali se disponibili
-    if (realPlanets?.subject) {
-        const s = realPlanets.subject;
+    if (realPlanets?._subject) {
+        const s = realPlanets._subject;
         if (s.sun?.sign) document.getElementById('summarySoleSign').innerText = translateSign(s.sun.sign);
         if (s.moon?.sign) document.getElementById('summaryLunaSign').innerText = translateSign(s.moon.sign);
         if (s.first_house?.sign) document.getElementById('summaryAscSign').innerText = translateSign(s.first_house.sign);
@@ -2803,7 +2813,7 @@ async function fetchBirthChart(date, time, city, name) {
     const lat = parseFloat(geoData[0].lat), lon = parseFloat(geoData[0].lon);
     const [year, month, day] = date.split('-').map(Number);
     const [hour, minute] = (time||'12:00').split(':').map(Number);
-    const res = await fetch('https://astrologer.p.rapidapi.com/api/v5/birth-chart', {
+    const res = await fetch('https://astrologer.p.rapidapi.com/api/v5/chart/birth-chart', {
         method: 'POST',
         headers: { 'Content-Type':'application/json', 'X-RapidAPI-Key': ASTROLOGER_API_KEY, 'X-RapidAPI-Host': ASTROLOGER_API_HOST },
         body: JSON.stringify({ subject: { name, year, month, day, hour, minute, longitude: lon, latitude: lat, city, nation:'IT', timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, zodiac_type:'Tropic', sidereal_mode:null, houses_system_identifier:'P', perspective_type:'Apparent Geocentric' } })
@@ -2812,8 +2822,9 @@ async function fetchBirthChart(date, time, city, name) {
 }
 
 function extractPlanetSummary(chart) {
-    if (!chart?.subject) return null;
-    const s = chart.subject;
+    // v5: chart_data.subjects[0], fallback a subject diretto
+    const s = chart?.chart_data?.subjects?.[0] || chart?.subject;
+    if (!s) return null;
     return ['sun','moon','mercury','venus','mars','jupiter','saturn','first_house']
         .filter(k => s[k]?.sign)
         .map(k => `${k}: ${s[k].sign}`)
