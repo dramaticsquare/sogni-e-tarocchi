@@ -660,56 +660,6 @@
         .mt-32 { margin-top: 32px; }
 
         /* ══════════════════════════════════
-           MOBILE HAMBURGER + SIDEBAR
-        ══════════════════════════════════ */
-        .btn-hamburger {
-            display: none;
-            background: none; border: none; padding: 6px;
-            cursor: pointer; flex-direction: column; gap: 5px;
-            width: 36px; height: 36px; align-items: center; justify-content: center;
-        }
-        .btn-hamburger span {
-            display: block; width: 20px; height: 1.5px;
-            background: var(--gold); border-radius: 2px;
-            transition: transform 0.3s, opacity 0.3s;
-        }
-        .btn-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-        .btn-hamburger.open span:nth-child(2) { opacity: 0; }
-        .btn-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-        #mobileSidebar {
-            position: fixed; top: 0; right: 0; height: 100%; width: 280px;
-            background: rgba(10, 7, 20, 0.98); backdrop-filter: blur(24px);
-            border-left: 1px solid var(--border); z-index: 1500;
-            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
-        }
-        #mobileSidebar.open { transform: translateX(0); }
-        #mobileSidebarInner { padding: 24px 22px; height: 100%; overflow-y: auto; }
-
-        .mobile-nav-link {
-            display: block; padding: 14px 16px; border-radius: 10px;
-            font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 1.5px;
-            color: var(--text-muted); cursor: pointer; transition: 0.25s;
-            border: 1px solid transparent;
-        }
-        .mobile-nav-link:hover {
-            color: var(--gold-light); background: rgba(201,168,76,0.06);
-            border-color: var(--border);
-        }
-
-        #sidebarOverlay {
-            display: none; position: fixed; inset: 0; z-index: 1400;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
-        }
-        #sidebarOverlay.open { display: block; }
-
-        @media (max-width: 768px) {
-            .btn-hamburger { display: flex; }
-            .nav-center { display: none !important; }
-            .credit-badge { font-size: 10px; padding: 5px 10px; }
-        }
-
-        /* ══════════════════════════════════
            SINASTRIA
         ══════════════════════════════════ */
         .synastry-persons {
@@ -1201,8 +1151,56 @@
         }
         .btn-ig-secondary:hover { border-color: var(--gold); color: var(--gold-light); }
 
-    </style>
-<style>
+        /* ══════════════════════════════════
+           MOBILE HAMBURGER + SIDEBAR
+        ══════════════════════════════════ */
+        .btn-hamburger {
+            display: none;
+            background: none; border: none; padding: 6px;
+            cursor: pointer; flex-direction: column; gap: 5px;
+            width: 36px; height: 36px; align-items: center; justify-content: center;
+        }
+        .btn-hamburger span {
+            display: block; width: 20px; height: 1.5px;
+            background: var(--gold); border-radius: 2px;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .btn-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .btn-hamburger.open span:nth-child(2) { opacity: 0; }
+        .btn-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+        #mobileSidebar {
+            position: fixed; top: 0; right: 0; height: 100%; width: 280px;
+            background: rgba(10, 7, 20, 0.98); backdrop-filter: blur(24px);
+            border-left: 1px solid var(--border); z-index: 1500;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
+        }
+        #mobileSidebar.open { transform: translateX(0); }
+        #mobileSidebarInner { padding: 24px 22px; height: 100%; overflow-y: auto; }
+
+        .mobile-nav-link {
+            display: block; padding: 14px 16px; border-radius: 10px;
+            font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 1.5px;
+            color: var(--text-muted); cursor: pointer; transition: 0.25s;
+            border: 1px solid transparent;
+        }
+        .mobile-nav-link:hover {
+            color: var(--gold-light); background: rgba(201,168,76,0.06);
+            border-color: var(--border);
+        }
+
+        #sidebarOverlay {
+            display: none; position: fixed; inset: 0; z-index: 1400;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+        }
+        #sidebarOverlay.open { display: block; }
+
+        @media (max-width: 768px) {
+            .btn-hamburger { display: flex; }
+            .nav-center { display: none !important; }
+            .credit-badge { font-size: 10px; padding: 5px 10px; }
+        }
+
         /* ── CURSORE PERSONALIZZATO ── */
         @media (pointer: fine) { * { cursor: none !important; } }
         #cursor {
@@ -1245,7 +1243,8 @@
             transition: opacity 0.7s ease, transform 0.7s ease;
         }
         .reveal.in-view { opacity: 1; transform: translateY(0); }
-</style>
+
+    </style>
 </head>
 <body>
 <div id="cursor"></div>
@@ -2192,12 +2191,11 @@ function renderPayPal() {
 // ─────────────────────────────────────────────
 //  ACCOUNT — AUTH
 //  Per sincronizzazione reale cross-device:
-//  1. <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+//  1. <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 //  2. const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 //  3. Sostituisci i blocchi [SUPABASE] nel codice qui sotto
 // ─────────────────────────────────────────────
-<script>
-    function openAccount() {
+function openAccount() {
     document.getElementById('accountModal').classList.add('open');
     if (currentUser) showProfileView();
     else showAuthView();
@@ -3003,58 +3001,52 @@ function toggleMobileMenu() {
 }
 
 // ─────────────────────────────────────────────
-//  CURSORE + PARTICELLE
+//  INIT — tutto dentro DOMContentLoaded
 // ─────────────────────────────────────────────
-(function initCursor() {
-    if (window.matchMedia('(pointer: coarse)').matches) return; // touch device, no cursor
-    const dot  = document.getElementById('cursor');
-    const ring = document.getElementById('cursor-ring');
-    if (!dot || !ring) return;
-    dot.style.display = 'block'; ring.style.display = 'block';
+window.addEventListener('DOMContentLoaded', () => {
 
-    let mx = 0, my = 0;
-    document.addEventListener('mousemove', e => {
-        mx = e.clientX; my = e.clientY;
-        dot.style.left  = mx + 'px';
-        dot.style.top   = my + 'px';
-        ring.style.left = mx + 'px';
-        ring.style.top  = my + 'px';
-    });
-
-    document.addEventListener('click', e => {
-        for (let i = 0; i < 8; i++) {
-            const spark = document.createElement('div');
-            spark.className = 'spark';
-            const angle = (Math.PI * 2 / 8) * i;
-            const dist  = 24 + Math.random() * 20;
-            spark.style.left = e.clientX + 'px';
-            spark.style.top  = e.clientY + 'px';
-            spark.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
-            spark.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
-            document.body.appendChild(spark);
-            setTimeout(() => spark.remove(), 600);
+    // ── Cursore personalizzato ──────────────────
+    if (!window.matchMedia('(pointer: coarse)').matches) {
+        const dot  = document.getElementById('cursor');
+        const ring = document.getElementById('cursor-ring');
+        if (dot && ring) {
+            dot.style.display  = 'block';
+            ring.style.display = 'block';
+            document.addEventListener('mousemove', e => {
+                dot.style.left  = e.clientX + 'px';
+                dot.style.top   = e.clientY + 'px';
+                ring.style.left = e.clientX + 'px';
+                ring.style.top  = e.clientY + 'px';
+            });
+            document.addEventListener('click', e => {
+                for (let i = 0; i < 8; i++) {
+                    const spark = document.createElement('div');
+                    spark.className = 'spark';
+                    const angle = (Math.PI * 2 / 8) * i;
+                    const dist  = 24 + Math.random() * 20;
+                    spark.style.left = e.clientX + 'px';
+                    spark.style.top  = e.clientY + 'px';
+                    spark.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+                    spark.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+                    document.body.appendChild(spark);
+                    setTimeout(() => spark.remove(), 600);
+                }
+            });
         }
-    });
-})();
+    }
 
-// ─────────────────────────────────────────────
-//  SCROLL REVEAL
-// ─────────────────────────────────────────────
-(function initReveal() {
-    const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); } });
+    // ── Scroll reveal ───────────────────────────
+    const revealObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('in-view'); revealObs.unobserve(e.target); }
+        });
     }, { threshold: 0.12 });
     document.querySelectorAll('.ritual-step, .astro-intro-card, .consult-type-card, .faq-item').forEach(el => {
         el.classList.add('reveal');
-        obs.observe(el);
+        revealObs.observe(el);
     });
-})();
 
-// ─────────────────────────────────────────────
-//  INIT
-// ─────────────────────────────────────────────
-// Mostra onboarding solo al primo accesso
-window.addEventListener('DOMContentLoaded', () => {
+    // ── Onboarding / App init ───────────────────
     if (localStorage.getItem('sidera_onboarded')) {
         document.getElementById('onboarding').style.display = 'none';
         initApp();
