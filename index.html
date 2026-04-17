@@ -2635,7 +2635,7 @@ async function runAstrology() {
                 const [hour, minute] = (time || '12:00').split(':').map(Number);
 
                 // Chiama Astrologer API v5
-                const astroRes = await fetch('https://astrologer.p.rapidapi.com/api/v5/birth-chart', {
+                const astroRes = await fetch('https://astrologer.p.rapidapi.com/api/v5/chart/birth-chart', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -2813,7 +2813,7 @@ async function fetchBirthChart(date, time, city, name) {
     const lat = parseFloat(geoData[0].lat), lon = parseFloat(geoData[0].lon);
     const [year, month, day] = date.split('-').map(Number);
     const [hour, minute] = (time||'12:00').split(':').map(Number);
-    const res = await fetch('https://astrologer.p.rapidapi.com/api/v5/birth-chart', {
+    const res = await fetch('https://astrologer.p.rapidapi.com/api/v5/chart/birth-chart', {
         method: 'POST',
         headers: { 'Content-Type':'application/json', 'X-RapidAPI-Key': ASTROLOGER_API_KEY, 'X-RapidAPI-Host': ASTROLOGER_API_HOST },
         body: JSON.stringify({ subject: { name, year, month, day, hour, minute, longitude: lon, latitude: lat, city, nation:'IT', timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, zodiac_type:'Tropic', sidereal_mode:null, houses_system_identifier:'P', perspective_type:'Apparent Geocentric' } })
