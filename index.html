@@ -299,13 +299,15 @@
             display: flex; gap: 48px; margin-top: 70px;
             padding-top: 40px; border-top: 1px solid var(--border);
             opacity: 0; animation: fadeUp 1s ease 1.3s forwards;
+            justify-content: center;
         }
         .hero-stat { text-align: center; }
         .hero-stat-n {
             font-family: 'Cinzel', serif; font-size: 1.6rem;
             color: var(--gold); display: block; line-height: 1;
+            text-align: center;
         }
-        .hero-stat-l { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; letter-spacing: 1px; }
+        .hero-stat-l { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; letter-spacing: 1px; text-align: center; display: block; }
 
         /* ══════════════════════════════════
            GLASS CARD
@@ -656,6 +658,154 @@
         .mt-8 { margin-top: 8px; }
         .mt-16 { margin-top: 16px; }
         .mt-32 { margin-top: 32px; }
+
+        /* ══════════════════════════════════
+           MOBILE HAMBURGER + SIDEBAR
+        ══════════════════════════════════ */
+        .btn-hamburger {
+            display: none;
+            background: none; border: none; padding: 6px;
+            cursor: pointer; flex-direction: column; gap: 5px;
+            width: 36px; height: 36px; align-items: center; justify-content: center;
+        }
+        .btn-hamburger span {
+            display: block; width: 20px; height: 1.5px;
+            background: var(--gold); border-radius: 2px;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .btn-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .btn-hamburger.open span:nth-child(2) { opacity: 0; }
+        .btn-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+        #mobileSidebar {
+            position: fixed; top: 0; right: 0; height: 100%; width: 280px;
+            background: rgba(10, 7, 20, 0.98); backdrop-filter: blur(24px);
+            border-left: 1px solid var(--border); z-index: 1500;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
+        }
+        #mobileSidebar.open { transform: translateX(0); }
+        #mobileSidebarInner { padding: 24px 22px; height: 100%; overflow-y: auto; }
+
+        .mobile-nav-link {
+            display: block; padding: 14px 16px; border-radius: 10px;
+            font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 1.5px;
+            color: var(--text-muted); cursor: pointer; transition: 0.25s;
+            border: 1px solid transparent;
+        }
+        .mobile-nav-link:hover {
+            color: var(--gold-light); background: rgba(201,168,76,0.06);
+            border-color: var(--border);
+        }
+
+        #sidebarOverlay {
+            display: none; position: fixed; inset: 0; z-index: 1400;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+        }
+        #sidebarOverlay.open { display: block; }
+
+        @media (max-width: 768px) {
+            .btn-hamburger { display: flex; }
+            .nav-center { display: none !important; }
+            .credit-badge { font-size: 10px; padding: 5px 10px; }
+        }
+
+        /* ══════════════════════════════════
+           SINASTRIA
+        ══════════════════════════════════ */
+        .synastry-persons {
+            display: grid; grid-template-columns: 1fr auto 1fr; gap: 0;
+            align-items: start; margin-bottom: 28px;
+        }
+        .synastry-person-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 24px; backdrop-filter: blur(12px);
+            transition: border-color 0.3s;
+        }
+        .synastry-person-card:focus-within { border-color: var(--border-hover); }
+        .synastry-person-label {
+            font-family: 'Cinzel', serif; font-size: 9px; color: var(--gold);
+            letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; display: block;
+        }
+        .synastry-divider {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 8px; padding: 0 16px; margin-top: 36px;
+        }
+        .synastry-divider-line { width: 1px; height: 40px; background: var(--border); }
+        .synastry-divider-sym {
+            font-size: 22px; color: var(--gold);
+            text-shadow: 0 0 20px rgba(201,168,76,0.5);
+            animation: floatSymbol 3s ease-in-out infinite;
+        }
+
+        /* Score ring */
+        .synastry-score-wrap {
+            display: none; text-align: center; margin: 32px 0; animation: fadeUp 0.6s ease;
+        }
+        .synastry-score-ring {
+            width: 140px; height: 140px; margin: 0 auto 16px;
+            position: relative; display: flex; align-items: center; justify-content: center;
+        }
+        .synastry-score-ring svg { position: absolute; top: 0; left: 0; transform: rotate(-90deg); }
+        .synastry-score-ring-track { fill: none; stroke: rgba(201,168,76,0.1); stroke-width: 6; }
+        .synastry-score-ring-fill {
+            fill: none; stroke: var(--gold); stroke-width: 6;
+            stroke-linecap: round;
+            stroke-dasharray: 380; stroke-dashoffset: 380;
+            transition: stroke-dashoffset 1.8s cubic-bezier(0.23,1,0.32,1);
+        }
+        .synastry-score-num {
+            font-family: 'Cinzel', serif; font-size: 2.2rem; color: var(--gold-light);
+            line-height: 1;
+        }
+        .synastry-score-label {
+            font-family: 'Cinzel', serif; font-size: 10px; color: var(--text-muted);
+            letter-spacing: 2px; text-transform: uppercase; margin-top: 6px;
+        }
+
+        /* Affinità pillole */
+        .synastry-aspects {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+            margin: 24px 0;
+        }
+        .synastry-aspect-pill {
+            text-align: center; padding: 16px 10px;
+            border: 1px solid var(--border); border-radius: 14px;
+            background: rgba(20,14,40,0.5); position: relative; overflow: hidden;
+        }
+        .synastry-aspect-pill::before {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            height: 3px; background: var(--gold);
+            width: var(--fill, 0%); border-radius: 0 0 14px 14px;
+            transition: width 1.4s cubic-bezier(0.23,1,0.32,1) 0.3s;
+        }
+        .synastry-aspect-pill .asp-icon { font-size: 1.4rem; display: block; margin-bottom: 6px; }
+        .synastry-aspect-pill .asp-label {
+            font-family: 'Cinzel', serif; font-size: 8px; color: var(--text-muted);
+            letter-spacing: 1.5px; text-transform: uppercase; display: block; margin-bottom: 4px;
+        }
+        .synastry-aspect-pill .asp-value {
+            font-family: 'Cinzel', serif; font-size: 1rem; color: var(--gold-light);
+        }
+
+        .synastry-result-body {
+            border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+            margin-top: 24px;
+        }
+        .synastry-result-header {
+            padding: 18px 24px; background: rgba(20,14,40,0.6);
+            border-bottom: 1px solid var(--border);
+            font-family: 'Cinzel', serif; font-size: 10px;
+            color: var(--text-muted); letter-spacing: 3px; text-transform: uppercase;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .synastry-result-text { padding: 28px; }
+
+        @media (max-width: 640px) {
+            .synastry-persons { grid-template-columns: 1fr; gap: 12px; }
+            .synastry-divider { flex-direction: row; padding: 0; margin-top: 0; }
+            .synastry-divider-line { width: 40px; height: 1px; }
+            .synastry-aspects { grid-template-columns: repeat(2, 1fr); }
+        }
 
         /* ── Loading spinner ── */
         .loading-text { font-style: italic; color: var(--text-muted); text-align: center; padding: 24px 0; }
@@ -1050,10 +1200,13 @@
             background: transparent; border: 1px solid var(--border); color: var(--text-muted);
         }
         .btn-ig-secondary:hover { border-color: var(--gold); color: var(--gold-light); }
-<head>
-     <style>
-        * { cursor: none !important; }
+
+    </style>
+<style>
+        /* ── CURSORE PERSONALIZZATO ── */
+        @media (pointer: fine) { * { cursor: none !important; } }
         #cursor {
+            display: none;
             position: fixed; width: 10px; height: 10px; border-radius: 50%;
             background: var(--gold); pointer-events: none; z-index: 99999;
             transform: translate(-50%, -50%);
@@ -1061,14 +1214,17 @@
             mix-blend-mode: screen;
         }
         #cursor-ring {
+            display: none;
             position: fixed; width: 32px; height: 32px; border-radius: 50%;
             border: 1px solid rgba(201, 168, 76, 0.4); pointer-events: none; z-index: 99998;
             transform: translate(-50%, -50%);
             transition: width 0.3s, height 0.3s, border-color 0.3s, left 0.08s, top 0.08s;
         }
-        body:has(button:hover) #cursor-ring,
-        body:has(a:hover) #cursor-ring {
-            width: 48px; height: 48px; border-color: rgba(201,168,76,0.7);
+        @media (pointer: fine) {
+            body:has(button:hover) #cursor-ring,
+            body:has(a:hover) #cursor-ring {
+                width: 48px; height: 48px; border-color: rgba(201,168,76,0.7);
+            }
         }
 
         /* ── SPARK PARTICLES ── */
@@ -1089,8 +1245,7 @@
             transition: opacity 0.7s ease, transform 0.7s ease;
         }
         .reveal.in-view { opacity: 1; transform: translateY(0); }
-
-    </style>
+</style>
 </head>
 <body>
 <div id="cursor"></div>
@@ -1153,14 +1308,41 @@
             <li><a onclick="showSection('oracolo')" data-sec="oracolo">Tarocchi</a></li>
             <li><a onclick="showSection('sogni')" data-sec="sogni">Sogni</a></li>
             <li><a onclick="showSection('astrologia')" data-sec="astrologia">Astrologia</a></li>
+            <li><a onclick="showSection('sinastria')" data-sec="sinastria">Sinastria</a></li>
             <li><a onclick="showSection('contatto')" data-sec="contatto">Consulenza</a></li>
         </ul>
         <div class="nav-right">
             <div class="credit-badge" onclick="openPayment()">✨ <span id="creditCount">3</span> Crediti</div>
             <button class="btn-account" id="accountBtn" onclick="openAccount()" title="Account">☽</button>
+            <button class="btn-hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </div>
 </nav>
+
+<!-- MOBILE SIDEBAR -->
+<div id="mobileSidebar">
+    <div id="mobileSidebarInner">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+            <span style="font-family:'Cinzel Decorative',cursive;color:var(--gold);font-size:13px;letter-spacing:3px;">SIDERA</span>
+            <button onclick="toggleMobileMenu()" style="background:none;border:none;color:var(--text-muted);font-size:22px;cursor:pointer;line-height:1;">✕</button>
+        </div>
+        <nav style="display:flex;flex-direction:column;gap:4px;">
+            <a class="mobile-nav-link" onclick="showSection('home');toggleMobileMenu()">✦ Home</a>
+            <a class="mobile-nav-link" onclick="showSection('oracolo');toggleMobileMenu()">🎴 Tarocchi</a>
+            <a class="mobile-nav-link" onclick="showSection('sogni');toggleMobileMenu()">🌙 Sogni</a>
+            <a class="mobile-nav-link" onclick="showSection('astrologia');toggleMobileMenu()">⭐ Astrologia</a>
+            <a class="mobile-nav-link" onclick="showSection('sinastria');toggleMobileMenu()">💞 Sinastria</a>
+            <a class="mobile-nav-link" onclick="showSection('contatto');toggleMobileMenu()">🔮 Consulenza</a>
+        </nav>
+        <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px;">
+            <button class="btn-action" onclick="openPayment();toggleMobileMenu()">✨ Ricarica Crediti</button>
+            <button onclick="openAccount();toggleMobileMenu()" style="background:none;border:1px solid var(--border);color:var(--text-muted);padding:12px;border-radius:10px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;">☽ Il Mio Profilo</button>
+        </div>
+    </div>
+</div>
+<div id="sidebarOverlay" onclick="toggleMobileMenu()"></div>
 
 <!-- ════════════════════════════════
      SEZIONI
@@ -1179,9 +1361,9 @@
             <button class="btn-hero-primary" onclick="showSection('sogni')">🌙 Libro dei Sogni</button>
         </div>
         <div class="hero-stats">
-            <div class="hero-stat"><span class="hero-stat-n">∞</span><p class="hero-stat-l">Arcani disponibili</p></div>
-            <div class="hero-stat"><span class="hero-stat-n">22</span><p class="hero-stat-l">Arcani Maggiori</p></div>
-            <div class="hero-stat"><span class="hero-stat-n">3</span><p class="hero-stat-l">Crediti gratuiti</p></div>
+            <div class="hero-stat"><span class="hero-stat-n">∞</span><span class="hero-stat-l">Arcani disponibili</span></div>
+            <div class="hero-stat"><span class="hero-stat-n">22</span><span class="hero-stat-l">Arcani Maggiori</span></div>
+            <div class="hero-stat"><span class="hero-stat-n">3</span><span class="hero-stat-l">Crediti gratuiti</span></div>
         </div>
     </div>
 </section>
@@ -1436,6 +1618,143 @@
                     <button class="btn-share" onclick="copyText('astroCommentary')">Copia Testo</button>
                 </div>
                 <button class="btn-action" onclick="resetSection('astrologia')" style="max-width:320px;">⭐ Nuovo Calcolo</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SINASTRIA -->
+<section id="sinastria" class="content-section">
+    <div class="container">
+        <p class="hero-tagline" style="opacity:1; animation:none;">✦ L'Armonia delle Anime ✦</p>
+        <h2 class="page-title">SINASTRIA</h2>
+        <p class="page-subtitle">Due mappe astrali che si incontrano. Scopri le energie che legano la tua anima a un'altra e i fili karmici che vi uniscono.</p>
+
+        <div id="synaInputBox">
+            <!-- Le due persone -->
+            <div class="synastry-persons">
+                <!-- Persona A -->
+                <div class="synastry-person-card">
+                    <span class="synastry-person-label">☽ Prima Anima</span>
+                    <div class="astro-field-group"><label>Nome</label>
+                        <input type="text" id="synaNameA" placeholder="Il tuo nome"></div>
+                    <div class="astro-date-row">
+                        <div class="astro-field-group"><label>Data di nascita</label>
+                            <input type="date" id="synaBirthA"></div>
+                        <div class="astro-field-group"><label>Ora</label>
+                            <input type="time" id="synaTimeA"></div>
+                    </div>
+                    <div class="astro-field-group"><label>Città di nascita</label>
+                        <input type="text" id="synaCityA" placeholder="es. Roma"></div>
+                </div>
+
+                <!-- Separatore -->
+                <div class="synastry-divider">
+                    <div class="synastry-divider-line"></div>
+                    <span class="synastry-divider-sym">💞</span>
+                    <div class="synastry-divider-line"></div>
+                </div>
+
+                <!-- Persona B -->
+                <div class="synastry-person-card">
+                    <span class="synastry-person-label">☉ Seconda Anima</span>
+                    <div class="astro-field-group"><label>Nome</label>
+                        <input type="text" id="synaNameB" placeholder="Il nome dell'altra persona"></div>
+                    <div class="astro-date-row">
+                        <div class="astro-field-group"><label>Data di nascita</label>
+                            <input type="date" id="synaBirthB"></div>
+                        <div class="astro-field-group"><label>Ora</label>
+                            <input type="time" id="synaTimeB"></div>
+                    </div>
+                    <div class="astro-field-group"><label>Città di nascita</label>
+                        <input type="text" id="synaCityB" placeholder="es. Milano"></div>
+                </div>
+            </div>
+
+            <!-- Tipo analisi -->
+            <div class="depth-row" style="margin-bottom:20px;">
+                <label class="depth-option">
+                    <input type="radio" name="synaDepth" value="base" checked>
+                    <span><strong>Essenziale</strong><small>Compatibilità di base — 2 Crediti</small></span>
+                </label>
+                <label class="depth-option">
+                    <input type="radio" name="synaDepth" value="profonda">
+                    <span><strong>Profonda</strong><small>Aspetti, case, karmatica — 4 Crediti</small></span>
+                </label>
+            </div>
+
+            <button class="btn-action" onclick="runSynastry()">💞 Calcola l'Affinità</button>
+        </div>
+
+        <!-- RISULTATO -->
+        <div id="synaResult" style="display:none; margin-top:32px; animation: fadeUp 0.6s ease;">
+
+            <!-- Score ring -->
+            <div class="synastry-score-wrap" id="synaScoreWrap">
+                <div class="synastry-score-ring">
+                    <svg width="140" height="140" viewBox="0 0 140 140">
+                        <circle class="synastry-score-ring-track" cx="70" cy="70" r="60"/>
+                        <circle class="synastry-score-ring-fill" id="synaRingFill" cx="70" cy="70" r="60"/>
+                    </svg>
+                    <div>
+                        <div class="synastry-score-num" id="synaScoreNum">—</div>
+                        <div style="font-size:0.65rem;color:var(--text-muted);font-family:'Cinzel',serif;letter-spacing:1px;">/100</div>
+                    </div>
+                </div>
+                <div class="synastry-score-label" id="synaScoreLabel">Affinità Cosmica</div>
+                <div id="synaPairNames" style="font-family:'Cinzel',serif;font-size:11px;color:var(--text-muted);margin-top:6px;letter-spacing:2px;"></div>
+            </div>
+
+            <!-- Aspetti pillole -->
+            <div class="synastry-aspects" id="synaAspects">
+                <div class="synastry-aspect-pill" id="aspAnima">
+                    <span class="asp-icon">💫</span>
+                    <span class="asp-label">Anima</span>
+                    <span class="asp-value" id="aspAnimaVal">—</span>
+                </div>
+                <div class="synastry-aspect-pill" id="aspMente">
+                    <span class="asp-icon">🧠</span>
+                    <span class="asp-label">Mente</span>
+                    <span class="asp-value" id="aspMenteVal">—</span>
+                </div>
+                <div class="synastry-aspect-pill" id="aspPassione">
+                    <span class="asp-icon">🔥</span>
+                    <span class="asp-label">Passione</span>
+                    <span class="asp-value" id="aspPassioneVal">—</span>
+                </div>
+                <div class="synastry-aspect-pill" id="aspStabilita">
+                    <span class="asp-icon">⚖️</span>
+                    <span class="asp-label">Stabilità</span>
+                    <span class="asp-value" id="aspStabilitaVal">—</span>
+                </div>
+                <div class="synastry-aspect-pill" id="aspKarma">
+                    <span class="asp-icon">☯️</span>
+                    <span class="asp-label">Karma</span>
+                    <span class="asp-value" id="aspKarmaVal">—</span>
+                </div>
+                <div class="synastry-aspect-pill" id="aspCrescita">
+                    <span class="asp-icon">🌱</span>
+                    <span class="asp-label">Crescita</span>
+                    <span class="asp-value" id="aspCrescitaVal">—</span>
+                </div>
+            </div>
+
+            <!-- Commento testuale -->
+            <div class="synastry-result-body">
+                <div class="synastry-result-header">✦ Il Racconto dell'Unione</div>
+                <div class="synastry-result-text">
+                    <div id="synaContent" class="result-content"></div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div style="margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:14px;">
+                <div class="share-buttons">
+                    <button class="btn-share" onclick="openIgCard('sinastria')">📸 Card Instagram</button>
+                    <button class="btn-share" onclick="copyText('synaContent')">Copia Testo</button>
+                    <button class="btn-share" onclick="nativeShare()">✨ Condividi</button>
+                </div>
+                <button class="btn-action" onclick="resetSynastry()" style="max-width:320px;">💞 Nuova Sinastria</button>
             </div>
         </div>
     </div>
@@ -1873,12 +2192,11 @@ function renderPayPal() {
 // ─────────────────────────────────────────────
 //  ACCOUNT — AUTH
 //  Per sincronizzazione reale cross-device:
-//  1. <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+//  1. <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 //  2. const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 //  3. Sostituisci i blocchi [SUPABASE] nel codice qui sotto
 // ─────────────────────────────────────────────
-<script>
-    function openAccount() {
+function openAccount() {
     document.getElementById('accountModal').classList.add('open');
     if (currentUser) showProfileView();
     else showAuthView();
@@ -2074,6 +2392,8 @@ function selectConsult(type) {
 function backConsult() {
     document.getElementById('consultStep1').style.display = 'block';
     document.getElementById('consultStep2').classList.remove('visible');
+    document.getElementById('consultStep3').classList.remove('visible');
+    document.querySelectorAll('.consult-type-card').forEach(c => c.classList.remove('selected'));
 }
 
 function sendConsult() {
@@ -2148,6 +2468,7 @@ async function runTarot() {
 
     let chosen = [...CARDS].sort(() => 0.5 - Math.random()).slice(0, 3);
     let resultsForMake = [];
+    _lastTarotCards = []; // reset per IG card
     for (let i = 0; i < 3; i++) {
         const isReversed = Math.random() < 0.5;
         const card = chosen[i];
@@ -2157,6 +2478,7 @@ async function runTarot() {
         container.classList.remove('is-reversed', 'flipped');
         if (isReversed) container.classList.add('is-reversed');
         front.innerHTML = `<img src="${IMG_BASE + card.i}" class="tarot-image"><div class="card-name-label">${card.n.toUpperCase()}</div>`;
+        _lastTarotCards.push({ src: IMG_BASE + card.i, name: card.n, reversed: isReversed });
         setTimeout(() => container.classList.add('flipped'), i * 700 + 300);
     }
 
@@ -2343,6 +2665,176 @@ function translateSign(sign) {
 }
 
 // ─────────────────────────────────────────────
+//  SINASTRIA
+// ─────────────────────────────────────────────
+async function runSynastry() {
+    const depth = document.querySelector('input[name="synaDepth"]:checked').value;
+    const cost = depth === 'profonda' ? 4 : 2;
+    let c = parseInt(localStorage.getItem('astral_credits')) || 0;
+    if (c < cost) return openPayment();
+
+    const nameA  = document.getElementById('synaNameA').value.trim();
+    const birthA = document.getElementById('synaBirthA').value;
+    const timeA  = document.getElementById('synaTimeA').value;
+    const cityA  = document.getElementById('synaCityA').value.trim();
+    const nameB  = document.getElementById('synaNameB').value.trim();
+    const birthB = document.getElementById('synaBirthB').value;
+    const timeB  = document.getElementById('synaTimeB').value;
+    const cityB  = document.getElementById('synaCityB').value.trim();
+
+    if (!nameA || !birthA || !cityA || !nameB || !birthB || !cityB)
+        return showToast('Inserisci i dati di entrambe le anime.');
+
+    document.getElementById('synaInputBox').style.display = 'none';
+    const resBox = document.getElementById('synaResult');
+    resBox.style.display = 'block';
+    document.getElementById('synaContent').innerHTML = '<p class="loading-text">Intrecciando le mappe astrali</p>';
+
+    // Punteggi simulati — se hai l'API astrologica reale puoi passare i dati planetari
+    // e lasciare che l'AI li elabori, oppure calcolarli lato server
+    let planetsA = null, planetsB = null;
+    if (ASTROLOGER_API_KEY !== "INSERISCI_LA_TUA_RAPIDAPI_KEY_QUI") {
+        try {
+            [planetsA, planetsB] = await Promise.all([
+                fetchBirthChart(birthA, timeA, cityA, nameA),
+                fetchBirthChart(birthB, timeB, cityB, nameB)
+            ]);
+        } catch(e) { console.warn('Sinastria API error:', e); }
+    }
+
+    try {
+        const response = await fetch(MAKE_URL, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tipo: 'sinastria', profondita: depth,
+                persona_a: { nome: nameA, nascita: birthA, ora: timeA, citta: cityA,
+                    pianeti: planetsA ? extractPlanetSummary(planetsA) : null },
+                persona_b: { nome: nameB, nascita: birthB, ora: timeB, citta: cityB,
+                    pianeti: planetsB ? extractPlanetSummary(planetsB) : null }
+            })
+        });
+        const text = await response.text();
+
+        // Parsing strutturato: cerca blocco ##SCORES## se il prompt Make lo genera
+        let scores = { anima: 75, mente: 68, passione: 82, stabilita: 71, karma: 65, crescita: 78 };
+        let mainText = text;
+
+        if (text.includes('##SCORES##')) {
+            const parts = text.split('##SCORES##');
+            mainText = parts[0].trim();
+            parts[1].trim().split('\n').forEach(line => {
+                const [k, v] = line.replace(/[*#]/g,'').trim().split(':').map(s=>s.trim());
+                if (k && v && scores.hasOwnProperty(k.toLowerCase())) scores[k.toLowerCase()] = parseInt(v)||scores[k.toLowerCase()];
+            });
+        } else {
+            // Se Make non restituisce punteggi strutturati, li estrae con euristica
+            scores = inferScoresFromText(text);
+        }
+
+        const total = Math.round(Object.values(scores).reduce((a,b)=>a+b,0) / Object.keys(scores).length);
+        renderSynastryScores(total, scores, nameA, nameB);
+        document.getElementById('synaContent').innerHTML = formatText(mainText);
+
+        const newC = c - cost;
+        localStorage.setItem('astral_credits', newC);
+        document.getElementById('creditCount').innerText = newC;
+        saveToHistory('sinastria', `${nameA} + ${nameB}`, text);
+    } catch(e) {
+        document.getElementById('synaContent').innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>Le energie cosmiche sono disturbate. Riprova tra poco.</p>";
+    }
+}
+
+// Helper: chiama Astrologer API per una singola persona
+async function fetchBirthChart(date, time, city, name) {
+    const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1`);
+    const geoData = await geoRes.json();
+    if (!geoData || !geoData[0]) return null;
+    const lat = parseFloat(geoData[0].lat), lon = parseFloat(geoData[0].lon);
+    const [year, month, day] = date.split('-').map(Number);
+    const [hour, minute] = (time||'12:00').split(':').map(Number);
+    const res = await fetch('https://astrologer.p.rapidapi.com/api/v5/birth-chart', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json', 'X-RapidAPI-Key': ASTROLOGER_API_KEY, 'X-RapidAPI-Host': ASTROLOGER_API_HOST },
+        body: JSON.stringify({ subject: { name, year, month, day, hour, minute, longitude: lon, latitude: lat, city, nation:'IT', timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, zodiac_type:'Tropic', sidereal_mode:null, houses_system_identifier:'P', perspective_type:'Apparent Geocentric' } })
+    });
+    return await res.json();
+}
+
+function extractPlanetSummary(chart) {
+    if (!chart?.subject) return null;
+    const s = chart.subject;
+    return ['sun','moon','mercury','venus','mars','jupiter','saturn','first_house']
+        .filter(k => s[k]?.sign)
+        .map(k => `${k}: ${s[k].sign}`)
+        .join(', ');
+}
+
+// Inferisce punteggi se il testo non ha un blocco strutturato
+function inferScoresFromText(text) {
+    const t = text.toLowerCase();
+    const base = () => 55 + Math.floor(Math.random() * 30);
+    return {
+        anima:     t.includes('anima') ? base() + 10 : base(),
+        mente:     t.includes('ment') ? base() + 8  : base(),
+        passione:  t.includes('passion') || t.includes('fuoco') ? base() + 12 : base(),
+        stabilita: t.includes('stabili') ? base() + 8 : base(),
+        karma:     t.includes('karma') ? base() + 10 : base(),
+        crescita:  t.includes('crescit') ? base() + 10 : base()
+    };
+}
+
+// Anima il ring e le pillole con i punteggi
+function renderSynastryScores(total, scores, nameA, nameB) {
+    const wrap = document.getElementById('synaScoreWrap');
+    wrap.style.display = 'block';
+
+    // Score ring
+    document.getElementById('synaScoreNum').innerText = total;
+    const label = total >= 80 ? 'Affinità Profonda' : total >= 65 ? 'Buona Armonia' : total >= 50 ? 'Legame in Crescita' : 'Anime in Apprendimento';
+    document.getElementById('synaScoreLabel').innerText = label;
+    document.getElementById('synaPairNames').innerText = `${nameA.toUpperCase()} ✦ ${nameB.toUpperCase()}`;
+
+    // Anima ring: circumference ≈ 376.99
+    const circ = 2 * Math.PI * 60;
+    const fill = circ - (circ * total / 100);
+    setTimeout(() => {
+        const ring = document.getElementById('synaRingFill');
+        ring.style.strokeDasharray = circ;
+        ring.style.strokeDashoffset = fill;
+        // Colore basato sul punteggio
+        ring.style.stroke = total >= 75 ? '#C9A84C' : total >= 55 ? '#9B7FCC' : '#6B8FB3';
+    }, 200);
+
+    // Pillole
+    const scoreMap = { anima: scores.anima, mente: scores.mente, passione: scores.passione, stabilita: scores.stabilita, karma: scores.karma, crescita: scores.crescita };
+    const displayMap = { anima:'Anima', mente:'Mente', passione:'Passione', stabilita:'Stabilità', karma:'Karma', crescita:'Crescita' };
+
+    Object.entries(scoreMap).forEach(([key, val]) => {
+        const pill = document.getElementById('asp' + key.charAt(0).toUpperCase() + key.slice(1));
+        const valEl = document.getElementById('asp' + key.charAt(0).toUpperCase() + key.slice(1) + 'Val');
+        if (valEl) valEl.innerText = val + '%';
+        if (pill) {
+            setTimeout(() => { pill.style.setProperty('--fill', val + '%'); }, 400);
+        }
+    });
+}
+
+function resetSynastry() {
+    document.getElementById('synaInputBox').style.display = 'block';
+    document.getElementById('synaResult').style.display = 'none';
+    document.getElementById('synaScoreWrap').style.display = 'none';
+    document.getElementById('synaContent').innerHTML = '';
+    ['Anima','Mente','Passione','Stabilita','Karma','Crescita'].forEach(k => {
+        const el = document.getElementById('asp' + k + 'Val');
+        if (el) el.innerText = '—';
+        const pill = document.getElementById('asp' + k.toLowerCase());
+        if (pill) pill.style.setProperty('--fill', '0%');
+    });
+    const ring = document.getElementById('synaRingFill');
+    if (ring) { ring.style.strokeDashoffset = 380; }
+}
+
+// ─────────────────────────────────────────────
 //  INSTAGRAM / TIKTOK SHARE CARD
 // ─────────────────────────────────────────────
 let _lastTarotCards = []; // memorizza le ultime carte estratte
@@ -2375,6 +2867,16 @@ function openIgCard(tipo) {
         cardsRow.style.display = 'none';
         const raw = document.getElementById('dreamContent')?.innerText || '';
         quote.innerText = extractQuote(raw, 140);
+    }
+
+    } else if (tipo === 'sinastria') {
+        icon.innerText = '💞';
+        type.innerText = 'SINASTRIA';
+        cardsRow.style.display = 'none';
+        const nameA = document.getElementById('synaNameA')?.value || '';
+        const nameB = document.getElementById('synaNameB')?.value || '';
+        const score = document.getElementById('synaScoreNum')?.innerText || '';
+        quote.innerHTML = `<strong style="color:var(--gold);font-size:1.2rem;">${score}/100</strong><br><span style="font-size:13px;color:var(--text-muted);">${nameA} ✦ ${nameB}</span>`;
     }
 
     modal.classList.add('open');
@@ -2487,12 +2989,27 @@ function showToast(msg) {
 }
 
 // ─────────────────────────────────────────────
+//  MOBILE MENU
+// ─────────────────────────────────────────────
+function toggleMobileMenu() {
+    const sidebar  = document.getElementById('mobileSidebar');
+    const overlay  = document.getElementById('sidebarOverlay');
+    const hamburger = document.getElementById('hamburgerBtn');
+    const isOpen = sidebar.classList.toggle('open');
+    overlay.classList.toggle('open', isOpen);
+    hamburger.classList.toggle('open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+
+// ─────────────────────────────────────────────
 //  CURSORE + PARTICELLE
 // ─────────────────────────────────────────────
 (function initCursor() {
+    if (window.matchMedia('(pointer: coarse)').matches) return; // touch device, no cursor
     const dot  = document.getElementById('cursor');
     const ring = document.getElementById('cursor-ring');
     if (!dot || !ring) return;
+    dot.style.display = 'block'; ring.style.display = 'block';
 
     let mx = 0, my = 0;
     document.addEventListener('mousemove', e => {
@@ -2616,6 +3133,7 @@ window.addEventListener('DOMContentLoaded', () => {
             <a onclick="showSection('oracolo')" style="font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;cursor:pointer;transition:0.3s;text-decoration:none;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Tarocchi</a>
             <a onclick="showSection('sogni')" style="font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;cursor:pointer;transition:0.3s;text-decoration:none;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Sogni</a>
             <a onclick="showSection('astrologia')" style="font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;cursor:pointer;transition:0.3s;text-decoration:none;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Astrologia</a>
+            <a onclick="showSection('sinastria')" style="font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;cursor:pointer;transition:0.3s;text-decoration:none;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Sinastria</a>
             <a onclick="showSection('contatto')" style="font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;cursor:pointer;transition:0.3s;text-decoration:none;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Consulenza</a>
             <a onclick="openAccount()" style="font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;cursor:pointer;transition:0.3s;text-decoration:none;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Profilo</a>
         </div>
