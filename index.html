@@ -2623,14 +2623,16 @@ async function runAstrology() {
     // Dati calcolati di base
     let realPlanets = null;
 
-    if (depth === 'profonda' && ASTROLOGER_API_KEY !== "8ecb093643msh14158b060d9f54ap1cc2e8jsne21589d3a1b4") {
+    if (depth === 'profonda' && ASTROLOGER_API_KEY !== "INSERISCI_LA_TUA_RAPIDAPI_KEY_QUI" && ASTROLOGER_API_KEY.length > 10) {
         try {
+            console.log('[Sidera] Avvio chiamata Astrologer API per:', city);
             // Geocoding città → lat/lon (usa OpenStreetMap, gratuito)
             const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1`);
             const geoData = await geoRes.json();
             if (geoData && geoData[0]) {
                 const lat = parseFloat(geoData[0].lat);
                 const lon = parseFloat(geoData[0].lon);
+                console.log('[Sidera] Geocoding OK — lat:', lat, 'lon:', lon);
                 const [year, month, day] = date.split('-').map(Number);
                 const [hour, minute] = (time || '12:00').split(':').map(Number);
 
@@ -2654,15 +2656,25 @@ async function runAstrology() {
                         }
                     })
                 });
+                console.log('[Sidera] Astrologer API status:', astroRes.status);
                 realPlanets = await astroRes.json();
+                console.log('[Sidera] Risposta API completa:', realPlanets);
                 // v5 restituisce chart_data.subjects[0] per il natal chart
                 if (realPlanets?.chart_data?.subjects?.[0]) {
                     realPlanets._subject = realPlanets.chart_data.subjects[0];
+                    console.log('[Sidera] Struttura v5 trovata. Sole:', realPlanets._subject?.sun?.sign);
                 } else if (realPlanets?.subject) {
-                    realPlanets._subject = realPlanets.subject; // fallback struttura precedente
+                    realPlanets._subject = realPlanets.subject;
+                    console.log('[Sidera] Struttura legacy trovata. Sole:', realPlanets._subject?.sun?.sign);
+                } else {
+                    console.warn('[Sidera] Struttura risposta non riconosciuta:', Object.keys(realPlanets));
                 }
+            } else {
+                console.warn('[Sidera] Geocoding fallito — città non trovata:', city);
             }
-        } catch (e) { console.warn('Astrologer API non disponibile:', e); }
+        } catch (e) { console.warn('[Sidera] Astrologer API non disponibile:', e); }
+    } else {
+        console.log('[Sidera] API non chiamata. Depth:', depth, '| Chiave presente:', ASTROLOGER_API_KEY.length > 10);
     }
 
     // Costruisci payload per Make/Claude
@@ -2754,7 +2766,7 @@ async function runSynastry() {
     // Punteggi simulati — se hai l'API astrologica reale puoi passare i dati planetari
     // e lasciare che l'AI li elabori, oppure calcolarli lato server
     let planetsA = null, planetsB = null;
-    if (ASTROLOGER_API_KEY !== "8ecb093643msh14158b060d9f54ap1cc2e8jsne21589d3a1b4") {
+    if (ASTROLOGER_API_KEY !== "INSERISCI_LA_TUA_RAPIDAPI_KEY_QUI" && ASTROLOGER_API_KEY.length > 10) {
         try {
             [planetsA, planetsB] = await Promise.all([
                 fetchBirthChart(birthA, timeA, cityA, nameA),
