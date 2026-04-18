@@ -2408,16 +2408,35 @@ function prepareAndShareCard() {
     const sole = document.getElementById('summarySoleSign').innerText;
     const luna = document.getElementById('summaryLunaSign').innerText;
     const asc  = document.getElementById('summaryAscSign').innerText;
+
+    // Aggiorna gli span nella capture card
+    const shareSole = document.getElementById('shareSole');
+    const shareLuna = document.getElementById('shareLuna');
+    const shareAsc  = document.getElementById('shareAsc');
+    if (shareSole) shareSole.innerText = sole;
+    if (shareLuna) shareLuna.innerText = luna;
+    if (shareAsc)  shareAsc.innerText  = asc;
+
+    // Mostra la capture card, aspetta che il DOM si aggiorni, poi cattura
     const captureEl = document.getElementById('astroCaptureArea');
     captureEl.style.display = 'block';
-    const sh = captureEl.querySelectorAll('span[id]');
-    document.getElementById('shareSole') && (document.getElementById('shareSole').innerText = sole);
-    document.getElementById('shareLuna') && (document.getElementById('shareLuna').innerText = luna);
-    document.getElementById('shareAsc')  && (document.getElementById('shareAsc').innerText  = asc);
-    setTimeout(() => {
-        shareCard('astroCaptureArea');
-        setTimeout(() => { captureEl.style.display = 'none'; }, 2000);
-    }, 150);
+    captureEl.style.position = 'fixed';
+    captureEl.style.left = '-9999px';
+    captureEl.style.top = '0';
+
+    // Aspetta un frame per assicurarsi che il DOM sia aggiornato
+    requestAnimationFrame(() => {
+        setTimeout(() => {
+            shareCard('astroCaptureArea');
+            // Nasconde dopo la cattura
+            setTimeout(() => {
+                captureEl.style.display = 'none';
+                captureEl.style.position = '';
+                captureEl.style.left = '';
+                captureEl.style.top = '';
+            }, 2000);
+        }, 100);
+    });
 }
 
 // ─────────────────────────────────────────────
@@ -2659,15 +2678,49 @@ async function runAstrology() {
                 console.log('[Sidera] Astrologer API status:', astroRes.status);
                 realPlanets = await astroRes.json();
                 console.log('[Sidera] Risposta API completa:', realPlanets);
-                // v5 restituisce chart_data.subjects[0] per il natal chart
+                console.log('[Sidera] chart_data keys:', realPlanets?.chart_data ? Object.keys(realPlanets.chart_data) : 'nessuno');
+
+                // Prova tutte le strutture note dell'API v5
+                let subj = null;
                 if (realPlanets?.chart_data?.subjects?.[0]) {
-                    realPlanets._subject = realPlanets.chart_data.subjects[0];
-                    console.log('[Sidera] Struttura v5 trovata. Sole:', realPlanets._subject?.sun?.sign);
+                    // struttura con array subjects
+                    subj = realPlanets.chart_data.subjects[0];
+                    console.log('[Sidera] Struttura: chart_data.subjects[0]');
+                } else if (realPlanets?.chart_data?.subject) {
+                    // struttura con subject singolo
+                    subj = realPlanets.chart_data.subject;
+                    console.log('[Sidera] Struttura: chart_data.subject');
+                } else if (realPlanets?.chart_data?.natal) {
+                    // struttura con natal
+                    subj = realPlanets.chart_data.natal;
+                    console.log('[Sidera] Struttura: chart_data.natal');
                 } else if (realPlanets?.subject) {
-                    realPlanets._subject = realPlanets.subject;
-                    console.log('[Sidera] Struttura legacy trovata. Sole:', realPlanets._subject?.sun?.sign);
+                    // struttura legacy diretta
+                    subj = realPlanets.subject;
+                    console.log('[Sidera] Struttura: subject legacy');
+                } else if (realPlanets?.chart_data) {
+                    // chart_data potrebbe contenere direttamente i pianeti
+                    const cd = realPlanets.chart_data;
+                    if (cd.sun || cd.moon) {
+                        subj = cd;
+                        console.log('[Sidera] Struttura: chart_data diretto');
+                    } else {
+                        // Cerca il primo oggetto dentro chart_data che abbia sun/moon
+                        for (const key of Object.keys(cd)) {
+                            if (cd[key] && typeof cd[key] === 'object' && (cd[key].sun || cd[key].moon)) {
+                                subj = cd[key];
+                                console.log('[Sidera] Struttura: chart_data.' + key);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (subj) {
+                    realPlanets._subject = subj;
+                    console.log('[Sidera] Pianeti trovati! Sole:', subj?.sun?.sign, '| Luna:', subj?.moon?.sign, '| Asc:', subj?.first_house?.sign || subj?.ascendant?.sign);
                 } else {
-                    console.warn('[Sidera] Struttura risposta non riconosciuta:', Object.keys(realPlanets));
+                    console.warn('[Sidera] Struttura non riconosciuta. chart_data completo:', JSON.stringify(realPlanets?.chart_data).slice(0, 300));
                 }
             } else {
                 console.warn('[Sidera] Geocoding fallito — città non trovata:', city);
@@ -2687,7 +2740,7 @@ async function runAstrology() {
         ...(realPlanets && realPlanets._subject && {
             sole: realPlanets._subject?.sun?.sign || null,
             luna: realPlanets._subject?.moon?.sign || null,
-            ascendente: realPlanets._subject?.first_house?.sign || null,
+            ascendente: realPlanets._subject?.first_house?.sign || realPlanets._subject?.ascendant?.sign || null,
             pianeti: Object.entries(realPlanets._subject)
                 .filter(([k,v]) => v && typeof v === 'object' && v.sign && v.position !== undefined)
                 .map(([k,v]) => `${k}: ${v.sign} ${Number(v.position).toFixed(1)}°`)
@@ -2700,7 +2753,8 @@ async function runAstrology() {
         const s = realPlanets._subject;
         if (s.sun?.sign) document.getElementById('summarySoleSign').innerText = translateSign(s.sun.sign);
         if (s.moon?.sign) document.getElementById('summaryLunaSign').innerText = translateSign(s.moon.sign);
-        if (s.first_house?.sign) document.getElementById('summaryAscSign').innerText = translateSign(s.first_house.sign);
+        const ascSign = s.first_house?.sign || s.ascendant?.sign;
+        if (ascSign) document.getElementById('summaryAscSign').innerText = translateSign(ascSign);
     }
 
     try {
@@ -2834,13 +2888,24 @@ async function fetchBirthChart(date, time, city, name) {
 }
 
 function extractPlanetSummary(chart) {
-    // v5: chart_data.subjects[0], fallback a subject diretto
-    const s = chart?.chart_data?.subjects?.[0] || chart?.subject;
+    // Prova tutte le strutture note
+    const cd = chart?.chart_data;
+    let s = cd?.subjects?.[0] || cd?.subject || cd?.natal || chart?.subject;
+    if (!s && cd) {
+        if (cd.sun || cd.moon) s = cd;
+        else {
+            for (const key of Object.keys(cd)) {
+                if (cd[key] && typeof cd[key] === 'object' && (cd[key].sun || cd[key].moon)) { s = cd[key]; break; }
+            }
+        }
+    }
     if (!s) return null;
-    return ['sun','moon','mercury','venus','mars','jupiter','saturn','first_house']
-        .filter(k => s[k]?.sign)
-        .map(k => `${k}: ${s[k].sign}`)
-        .join(', ');
+    const planets = ['sun','moon','mercury','venus','mars','jupiter','saturn'];
+    // ascendente: può essere first_house o ascendant
+    const ascKey = s.first_house ? 'first_house' : s.ascendant ? 'ascendant' : null;
+    const list = planets.filter(k => s[k]?.sign).map(k => `${k}: ${s[k].sign}`);
+    if (ascKey && s[ascKey]?.sign) list.push(`ascendant: ${s[ascKey].sign}`);
+    return list.join(', ');
 }
 
 // Inferisce punteggi se il testo non ha un blocco strutturato
