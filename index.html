@@ -612,12 +612,37 @@
             color: var(--text); font-size: 0.9rem;
         }
         #astroCommentary td:first-child, #astroContent td:first-child { color: var(--gold); font-family: 'Cinzel', serif; }
-        #astroCommentary h4, #astroContent h4 {
-            color: var(--gold-light); font-family: 'Cinzel', serif;
-            font-size: 1.1rem; margin: 24px 0 10px; letter-spacing: 1px;
-            border-bottom: 1px solid var(--border); padding-bottom: 6px;
+        /* ── Titoli sezioni nei responsi ── */
+        #astroCommentary h4, #astroContent h4,
+        #readingContent h4, #dreamContent h4, #synaContent h4 {
+            font-family: 'Cinzel', serif;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--gold);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            text-align: center;
+            margin: 32px 0 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
-        #astroCommentary p, #readingContent p, #dreamContent p { margin-bottom: 10px; line-height: 1.65; }
+        #astroCommentary h4::before, #astroContent h4::before,
+        #readingContent h4::before, #dreamContent h4::before, #synaContent h4::before,
+        #astroCommentary h4::after, #astroContent h4::after,
+        #readingContent h4::after, #dreamContent h4::after, #synaContent h4::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(201,168,76,0.35), transparent);
+        }
+        #astroCommentary h4 span, #astroContent h4 span,
+        #readingContent h4 span, #dreamContent h4 span, #synaContent h4 span {
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        #astroCommentary p, #readingContent p, #dreamContent p,
+        #synaContent p { margin-bottom: 10px; line-height: 1.65; }
 
         /* ══════════════════════════════════
            CAPTURE CARD (per condivisione)
@@ -2504,7 +2529,7 @@ function toggleFaq(el) {
 // ─────────────────────────────────────────────
 function formatText(text) {
     if (!text) return "";
-    let clean = text.replace(/###\s*(.*)/g, '<h4>$1</h4>').trim().replace(/\n{3,}/g, '\n\n');
+    let clean = text.replace(/###\s*(.*)/g, '<h4><span>✦ $1 ✦</span></h4>').trim().replace(/\n{3,}/g, '\n\n');
     let html = clean.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     if (html.includes('|')) {
         const lines = html.split('\n');
@@ -2980,50 +3005,291 @@ let _lastTarotCards = []; // memorizza le ultime carte estratte
 
 function openIgCard(tipo) {
     const modal = document.getElementById('igCardModal');
-    const icon  = document.getElementById('igIcon');
-    const type  = document.getElementById('igType');
-    const quote = document.getElementById('igQuote');
-    const cardsRow = document.getElementById('igCardsRow');
 
     if (tipo === 'tarocchi') {
-        icon.innerText = '🎴';
-        type.innerText = 'GLI ARCANI';
-        cardsRow.style.display = 'flex';
-
-        // Popola mini-carte con le immagini già estratte
-        _lastTarotCards.forEach((card, i) => {
-            const img = document.getElementById('igMini' + i);
-            if (img) img.src = card.src;
-        });
-
-        // Estrai prima frase significativa dal risultato
         const raw = document.getElementById('readingContent')?.innerText || '';
-        quote.innerText = extractQuote(raw, 120);
+        const quote = extractQuote(raw, 110);
+        const cardImages = _lastTarotCards.map(c => c.src);
+        const cardNames  = _lastTarotCards.map(c => c.name);
+        renderIgCanvas({ tipo: 'tarocchi', quote, cardImages, cardNames });
 
     } else if (tipo === 'sogno') {
-        icon.innerText = '🌙';
-        type.innerText = 'IL LIBRO DEI SOGNI';
-        cardsRow.style.display = 'none';
         const raw = document.getElementById('dreamContent')?.innerText || '';
-        quote.innerText = extractQuote(raw, 140);
+        const quote = extractQuote(raw, 130);
+        renderIgCanvas({ tipo: 'sogno', quote });
 
     } else if (tipo === 'sinastria') {
-        icon.innerText = '💞';
-        type.innerText = 'SINASTRIA';
-        cardsRow.style.display = 'none';
         const nameA = document.getElementById('synaNameA')?.value || '';
         const nameB = document.getElementById('synaNameB')?.value || '';
-        const score = document.getElementById('synaScoreNum')?.innerText || '';
-        quote.innerHTML = `<strong style="color:var(--gold);font-size:1.2rem;">${score}/100</strong><br><span style="font-size:13px;color:var(--text-muted);">${nameA} ✦ ${nameB}</span>`;
+        const score = document.getElementById('synaScoreNum')?.innerText || '—';
+        const raw   = document.getElementById('synaContent')?.innerText || '';
+        const quote = extractQuote(raw, 110);
+        renderIgCanvas({ tipo: 'sinastria', quote, nameA, nameB, score });
     }
 
     modal.classList.add('open');
 }
 
+// ─── Disegna la card su canvas (risolve CORS e centra su ogni device) ───────
+async function renderIgCanvas({ tipo, quote, cardImages, cardNames, nameA, nameB, score }) {
+    const SIZE = 1080; // px — formato Instagram nativo
+    let canvas = document.getElementById('igCanvas');
+    if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.id = 'igCanvas';
+        canvas.style.cssText = `width:100%;max-width:400px;border-radius:20px;display:block;`;
+        document.getElementById('igCard').replaceWith(canvas);
+        canvas.id = 'igCard'; // mantieni lo stesso id per il resto del codice
+    }
+    canvas.width  = SIZE;
+    canvas.height = SIZE;
+    const ctx = canvas.getContext('2d');
+
+    // ── Sfondo ──────────────────────────────────────────────────────────────
+    const bg = ctx.createRadialGradient(SIZE*0.2, SIZE*0.2, 0, SIZE*0.5, SIZE*0.5, SIZE*0.85);
+    bg.addColorStop(0,   'rgba(107,63,160,0.6)');
+    bg.addColorStop(0.4, 'rgba(42,26,85,0.5)');
+    bg.addColorStop(1,   '#07050F');
+    ctx.fillStyle = '#07050F';
+    ctx.fillRect(0, 0, SIZE, SIZE);
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, SIZE, SIZE);
+
+    // ── Stelle procedurali ──────────────────────────────────────────────────
+    const rng = (seed) => { let x = Math.sin(seed)*10000; return x - Math.floor(x); };
+    for (let i = 0; i < 120; i++) {
+        const x = rng(i*3+1) * SIZE;
+        const y = rng(i*3+2) * SIZE;
+        const r = rng(i*3+3) * 1.8 + 0.3;
+        const a = rng(i*3+4) * 0.7 + 0.2;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(232,201,122,${a})`;
+        ctx.fill();
+    }
+
+    // ── Bordo esterno ───────────────────────────────────────────────────────
+    roundRect(ctx, 18, 18, SIZE-36, SIZE-36, 36, null, 'rgba(201,168,76,0.25)');
+    roundRect(ctx, 36, 36, SIZE-72, SIZE-72, 28, null, 'rgba(201,168,76,0.08)');
+
+    // ── Helper font ─────────────────────────────────────────────────────────
+    const cinzel  = (sz, w='400') => `${w} ${sz}px 'Cinzel', serif`;
+    const cormnt  = (sz, style='italic') => `${style} ${sz}px 'Cormorant Garamond', serif`;
+    const centerX = SIZE / 2;
+
+    // ── Logo SIDERA ─────────────────────────────────────────────────────────
+    ctx.fillStyle = '#C9A84C';
+    ctx.font = cinzel(52, '600');
+    ctx.textAlign = 'center';
+    ctx.letterSpacing = '8px';
+    ctx.fillText('SIDERA', centerX, 130);
+
+    ctx.fillStyle = 'rgba(138,122,94,0.7)';
+    ctx.font = cinzel(22);
+    ctx.letterSpacing = '6px';
+    ctx.fillText("L'ORACOLO DELLE STELLE", centerX, 168);
+
+    // ── Linea separatrice top ───────────────────────────────────────────────
+    drawGoldLine(ctx, centerX, 192, 160);
+
+    // ── Contenuto per tipo ──────────────────────────────────────────────────
+    if (tipo === 'tarocchi' && cardImages && cardImages.length === 3) {
+        // Titolo sezione
+        ctx.fillStyle = 'rgba(201,168,76,0.6)';
+        ctx.font = cinzel(20);
+        ctx.letterSpacing = '5px';
+        ctx.fillText('GLI ARCANI', centerX, 240);
+
+        // Carica e disegna le 3 carte
+        const labels = ['RADICI', 'PRESENTE', 'FUTURO'];
+        const cardW = 180, cardH = 310, gap = 36;
+        const totalW = cardW * 3 + gap * 2;
+        const startX = (SIZE - totalW) / 2;
+        const cardY  = 270;
+
+        for (let i = 0; i < 3; i++) {
+            const cx = startX + i * (cardW + gap);
+            try {
+                const img = await loadImage(cardImages[i]);
+                // Card background
+                roundRect(ctx, cx, cardY, cardW, cardH, 14, '#1A122E', 'rgba(201,168,76,0.5)');
+                // Immagine ritagliata con clip
+                ctx.save();
+                roundRectClip(ctx, cx+4, cardY+4, cardW-8, cardH-8, 11);
+                ctx.drawImage(img, cx+4, cardY+4, cardW-8, cardH-8);
+                ctx.restore();
+            } catch {
+                // Fallback se immagine non carica: placeholder dorato
+                roundRect(ctx, cx, cardY, cardW, cardH, 14, '#1A122E', 'rgba(201,168,76,0.5)');
+                ctx.fillStyle = 'rgba(201,168,76,0.15)';
+                ctx.font = cinzel(48);
+                ctx.fillText('✦', cx + cardW/2, cardY + cardH/2 + 16);
+            }
+            // Label sotto
+            ctx.fillStyle = 'rgba(201,168,76,0.55)';
+            ctx.font = cinzel(18);
+            ctx.letterSpacing = '3px';
+            ctx.fillText(labels[i], cx + cardW/2, cardY + cardH + 32);
+            // Nome carta
+            if (cardNames && cardNames[i]) {
+                ctx.fillStyle = 'rgba(237,224,196,0.5)';
+                ctx.font = cinzel(14);
+                ctx.letterSpacing = '1px';
+                ctx.fillText(cardNames[i].toUpperCase(), cx + cardW/2, cardY + cardH + 56);
+            }
+        }
+
+        // Quote
+        drawGoldLine(ctx, centerX, 660, 120);
+        drawWrappedText(ctx, `"${quote}"`, centerX, 708, SIZE-160, cormnt(32), '#EDE0C4', 1.45);
+
+    } else if (tipo === 'sogno') {
+        ctx.fillStyle = 'rgba(201,168,76,0.6)';
+        ctx.font = cinzel(20);
+        ctx.letterSpacing = '5px';
+        ctx.fillText('IL LIBRO DEI SOGNI', centerX, 240);
+
+        // Luna grande decorativa
+        ctx.font = `140px serif`;
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(201,168,76,0.15)';
+        ctx.fillText('🌙', centerX, 430);
+
+        drawGoldLine(ctx, centerX, 468, 120);
+        ctx.fillStyle = 'rgba(201,168,76,0.8)';
+        ctx.font = cinzel(24);
+        ctx.letterSpacing = '4px';
+        ctx.fillText('LA VISIONE', centerX, 516);
+        drawWrappedText(ctx, `"${quote}"`, centerX, 580, SIZE-160, cormnt(34), '#EDE0C4', 1.5);
+
+    } else if (tipo === 'sinastria') {
+        ctx.fillStyle = 'rgba(201,168,76,0.6)';
+        ctx.font = cinzel(20);
+        ctx.letterSpacing = '5px';
+        ctx.fillText('SINASTRIA', centerX, 240);
+
+        // Simboli animici
+        ctx.font = `110px serif`;
+        ctx.fillStyle = 'rgba(201,168,76,0.12)';
+        ctx.fillText('💞', centerX, 390);
+
+        // Nomi
+        ctx.fillStyle = '#C9A84C';
+        ctx.font = cinzel(36, '500');
+        ctx.letterSpacing = '3px';
+        const pair = `${nameA}  ✦  ${nameB}`;
+        ctx.fillText(pair, centerX, 440);
+
+        // Score ring disegnato su canvas
+        const ringX = centerX, ringY = 580, ringR = 90;
+        ctx.beginPath();
+        ctx.arc(ringX, ringY, ringR, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(201,168,76,0.12)';
+        ctx.lineWidth = 10;
+        ctx.stroke();
+
+        const pct = Math.min(parseInt(score)||75, 100) / 100;
+        ctx.beginPath();
+        ctx.arc(ringX, ringY, ringR, -Math.PI/2, -Math.PI/2 + Math.PI*2*pct);
+        ctx.strokeStyle = '#C9A84C';
+        ctx.lineWidth = 10;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+
+        ctx.fillStyle = '#E8C97A';
+        ctx.font = cinzel(54, '500');
+        ctx.letterSpacing = '0px';
+        ctx.fillText(score, ringX, ringY + 16);
+
+        ctx.fillStyle = 'rgba(138,122,94,0.7)';
+        ctx.font = cinzel(18);
+        ctx.letterSpacing = '3px';
+        ctx.fillText('AFFINITÀ COSMICA', ringX, ringY + 50);
+
+        drawGoldLine(ctx, centerX, 704, 120);
+        drawWrappedText(ctx, `"${quote}"`, centerX, 752, SIZE-160, cormnt(30), '#EDE0C4', 1.5);
+    }
+
+    // ── Footer ──────────────────────────────────────────────────────────────
+    drawGoldLine(ctx, centerX, SIZE-110, 160);
+    ctx.fillStyle = 'rgba(201,168,76,0.5)';
+    ctx.font = cinzel(20);
+    ctx.letterSpacing = '4px';
+    ctx.fillText('✦ scopri la tua rivelazione ✦', centerX, SIZE-74);
+    ctx.fillStyle = 'rgba(138,122,94,0.5)';
+    ctx.font = cinzel(17);
+    ctx.letterSpacing = '3px';
+    ctx.fillText('SIDERA.APP', centerX, SIZE-44);
+}
+
+// ── Helpers canvas ───────────────────────────────────────────────────────────
+function roundRect(ctx, x, y, w, h, r, fill, stroke) {
+    ctx.beginPath();
+    ctx.moveTo(x+r, y);
+    ctx.lineTo(x+w-r, y); ctx.arcTo(x+w,y, x+w,y+r, r);
+    ctx.lineTo(x+w, y+h-r); ctx.arcTo(x+w,y+h, x+w-r,y+h, r);
+    ctx.lineTo(x+r, y+h); ctx.arcTo(x,y+h, x,y+h-r, r);
+    ctx.lineTo(x, y+r); ctx.arcTo(x,y, x+r,y, r);
+    ctx.closePath();
+    if (fill)   { ctx.fillStyle = fill; ctx.fill(); }
+    if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 2; ctx.stroke(); }
+}
+
+function roundRectClip(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x+r, y);
+    ctx.lineTo(x+w-r, y); ctx.arcTo(x+w,y, x+w,y+r, r);
+    ctx.lineTo(x+w, y+h-r); ctx.arcTo(x+w,y+h, x+w-r,y+h, r);
+    ctx.lineTo(x+r, y+h); ctx.arcTo(x,y+h, x,y+h-r, r);
+    ctx.lineTo(x, y+r); ctx.arcTo(x,y, x+r,y, r);
+    ctx.closePath();
+    ctx.clip();
+}
+
+function drawGoldLine(ctx, cx, y, halfLen) {
+    const grad = ctx.createLinearGradient(cx-halfLen, y, cx+halfLen, y);
+    grad.addColorStop(0, 'transparent');
+    grad.addColorStop(0.5, 'rgba(201,168,76,0.45)');
+    grad.addColorStop(1, 'transparent');
+    ctx.beginPath();
+    ctx.moveTo(cx-halfLen, y); ctx.lineTo(cx+halfLen, y);
+    ctx.strokeStyle = grad; ctx.lineWidth = 1; ctx.stroke();
+}
+
+function drawWrappedText(ctx, text, cx, startY, maxW, font, color, lineH_mult) {
+    ctx.font = font;
+    ctx.fillStyle = color;
+    ctx.textAlign = 'center';
+    ctx.letterSpacing = '0px';
+    const words = text.split(' ');
+    const lineHeight = parseInt(font) * lineH_mult;
+    let line = '', y = startY;
+    for (const word of words) {
+        const test = line + (line ? ' ' : '') + word;
+        if (ctx.measureText(test).width > maxW && line) {
+            ctx.fillText(line, cx, y);
+            line = word; y += lineHeight;
+        } else { line = test; }
+    }
+    if (line) ctx.fillText(line, cx, y);
+}
+
+function loadImage(src) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        // Usa un proxy CORS per sacred-texts.com
+        img.src = `https://corsproxy.io/?${encodeURIComponent(src)}`;
+    });
+}
+
+
+
 function extractQuote(text, maxLen) {
-    // Prende la prima frase non troppo corta
-    const sentences = text.replace(/\n+/g, ' ').split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 40);
-    const best = sentences[0] || text.slice(0, maxLen);
+    const sentences = text.replace(/\n+/g, ' ').replace(/✦[^✦]*✦/g, '').split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 40);
+    const best = sentences[0] || text.replace(/✦[^✦]*✦/g,'').trim().slice(0, maxLen);
     return (best.length > maxLen ? best.slice(0, maxLen - 1) + '…' : best);
 }
 
@@ -3032,30 +3298,29 @@ function closeIgCard() {
 }
 
 async function downloadIgCard() {
-    const card = document.getElementById('igCard');
+    const canvas = document.getElementById('igCard');
+    if (!(canvas instanceof HTMLCanvasElement)) { showToast('Genera prima una card.'); return; }
     try {
-        const canvas = await html2canvas(card, { scale: 3, backgroundColor: '#07050F', useCORS: true, allowTaint: true });
         const link = document.createElement('a');
         link.download = 'Sidera-' + new Date().getTime() + '.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
         showToast('✨ Immagine salvata — pronta per Instagram e TikTok!');
-    } catch(e) { showToast('Errore nel salvataggio dell\'immagine.'); }
+    } catch(e) { showToast('Errore nel salvataggio.'); console.error(e); }
 }
 
 async function shareIgCard() {
-    const card = document.getElementById('igCard');
+    const canvas = document.getElementById('igCard');
+    if (!(canvas instanceof HTMLCanvasElement)) { showToast('Genera prima una card.'); return; }
     try {
-        const canvas = await html2canvas(card, { scale: 3, backgroundColor: '#07050F', useCORS: true, allowTaint: true });
         canvas.toBlob(async blob => {
             const file = new File([blob], 'Sidera.png', { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({ files: [file], title: 'La mia rivelazione su Sidera ✨', text: 'Scopri il tuo oracolo su sidera.app' });
-            } else { downloadCanvas(canvas); }
+            } else { downloadIgCard(); }
         }, 'image/png');
     } catch(e) { showToast('Errore nella condivisione.'); }
 }
-
 
 async function shareCard(elementId) {
     const card = document.getElementById(elementId);
@@ -3143,43 +3408,8 @@ function toggleMobileMenu() {
      INSTAGRAM SHARE MODAL
 ════════════════════════════════ -->
 <div id="igCardModal">
-    <!-- La card 1:1 catturata -->
-    <div id="igCard">
-        <div class="ig-bg"></div>
-        <div class="ig-stars"></div>
-        <div class="ig-border"></div>
-        <div class="ig-inner">
-            <div class="ig-top">
-                <span class="ig-logo">SIDERA</span>
-                <span class="ig-tagline">L'Oracolo delle Stelle</span>
-                <div class="ig-divider"></div>
-            </div>
-            <div class="ig-center">
-                <div class="ig-icon" id="igIcon">🎴</div>
-                <div class="ig-title" id="igType">Gli Arcani</div>
-                <!-- Cards row (solo per tarocchi) -->
-                <div class="ig-cards-row" id="igCardsRow" style="display:none;">
-                    <div style="display:flex;flex-direction:column;align-items:center;">
-                        <div class="ig-mini-card"><img id="igMini0" src="" alt=""></div>
-                        <span class="ig-card-label">Radici</span>
-                    </div>
-                    <div style="display:flex;flex-direction:column;align-items:center;">
-                        <div class="ig-mini-card"><img id="igMini1" src="" alt=""></div>
-                        <span class="ig-card-label">Presente</span>
-                    </div>
-                    <div style="display:flex;flex-direction:column;align-items:center;">
-                        <div class="ig-mini-card"><img id="igMini2" src="" alt=""></div>
-                        <span class="ig-card-label">Futuro</span>
-                    </div>
-                </div>
-                <div class="ig-quote" id="igQuote"></div>
-            </div>
-            <div class="ig-bottom">
-                <span class="ig-cta">✦ Scopri la tua rivelazione ✦</span>
-                <span class="ig-url">sidera.app</span>
-            </div>
-        </div>
-    </div>
+    <!-- Canvas 1:1 disegnato via JS — risolve CORS e centra perfettamente -->
+    <canvas id="igCard" style="width:100%;max-width:420px;border-radius:20px;display:block;border:1px solid rgba(201,168,76,0.2);"></canvas>
 
     <div class="ig-actions">
         <button class="btn-ig btn-ig-primary" onclick="downloadIgCard()">⬇️ Salva Immagine</button>
