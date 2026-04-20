@@ -322,7 +322,7 @@
         }
         .glass-card:hover { border-color: var(--border-hover); box-shadow: var(--glow); }
 
-        textarea, input[type="text"], input[type="email"], input[type="date"], input[type="time"] {
+        textarea, input[type="text"], input[type="email"], input[type="date"], input[type="time"], input[type="password"] {
             width: 100%;
             background: rgba(7, 5, 15, 0.7);
             border: 1px solid var(--border);
@@ -438,8 +438,28 @@
            CONSULENZA — SEZIONE RIPROGETTATA
         ══════════════════════════════════ */
         .consultation-grid {
-            display: grid; grid-template-columns: 1fr 1fr;
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
             gap: 20px; margin-bottom: 40px;
+        }
+
+        /* Slider orizzontale su mobile */
+        @media (max-width: 640px) {
+            .consultation-grid {
+                display: flex; gap: 14px;
+                overflow-x: auto; scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 14px; margin-bottom: 24px;
+                scrollbar-width: none;
+            }
+            .consultation-grid::-webkit-scrollbar { display: none; }
+            .consult-type-card {
+                flex: 0 0 76vw; max-width: 300px;
+                scroll-snap-align: start;
+            }
+            /* Indicatore scroll */
+            .consultation-grid::after {
+                content: ''; flex: 0 0 1px;
+            }
         }
         .consult-type-card {
             border: 1px solid var(--border);
@@ -657,21 +677,106 @@
         /* ══════════════════════════════════
            RESPONSIVE
         ══════════════════════════════════ */
+        /* ══════════════════════════════════
+           RESPONSIVE — MOBILE FIRST
+        ══════════════════════════════════ */
+
+        /* Tablet 768px */
         @media (max-width: 768px) {
             nav { padding: 10px 0; }
             .nav-inner { flex-wrap: wrap; gap: 8px; padding: 0 14px; }
             .nav-center { gap: 14px; order: 3; width: 100%; justify-content: center; }
             .nav-center a { font-size: 9px; }
             .nav-right { gap: 10px; }
-            .content-section { padding: 160px 0 60px; }
+            .btn-hamburger { display: flex; }
+            .nav-center { display: none !important; }
+            .credit-badge { font-size: 10px; padding: 5px 10px; }
+            .content-section { padding: 120px 0 60px; }
             .hero-stats { gap: 24px; }
-            .consultation-grid { grid-template-columns: 1fr; }
-            .cards-spread { gap: 10px; }
-            .tarot-card { width: 100px; height: 175px; }
+            .modal-box { padding: 24px 18px; }
+            .price-grid { grid-template-columns: repeat(3, 1fr); }
         }
-        @media (max-width: 480px) {
+
+        /* Mobile 640px */
+        @media (max-width: 640px) {
+            /* Titoli sezioni — meno spazio */
+            .page-title { margin-bottom: 8px; }
+            .page-subtitle { margin-bottom: 20px; font-size: 0.95rem; }
+            .hero-tagline { margin-bottom: 12px; }
             .hero-title { font-size: 52px; }
-            .hero-stats { flex-wrap: wrap; gap: 20px; justify-content: center; }
+            .hero-actions { gap: 10px; }
+            .btn-hero-primary, .btn-hero-secondary { padding: 13px 22px; font-size: 10px; }
+            .hero-stats { flex-wrap: wrap; gap: 16px; justify-content: center; padding-top: 28px; margin-top: 40px; }
+            .hero-stat-n { font-size: 1.3rem; }
+
+            /* Tarocchi */
+            .tarot-ritual-intro { grid-template-columns: 1fr; gap: 10px; }
+            .cards-row { gap: 10px; }
+            .tarot-card { width: 96px; height: 168px; }
+
+            /* Sogni */
+            .dream-prompt-hint { gap: 8px; }
+            .dream-prompt-btn { padding: 6px 12px; font-size: 0.74rem; }
+
+            /* Astrologia */
+            .astro-intro-cards { grid-template-columns: 1fr; gap: 10px; }
+            .astro-date-row { grid-template-columns: 1fr; }
+            .astro-triad { grid-template-columns: 1fr; gap: 10px; }
+            .depth-row { flex-direction: column; gap: 8px; }
+            .depth-option { height: auto; padding: 12px; flex-direction: row; gap: 12px; }
+
+            /* Sinastria */
+            .synastry-persons { grid-template-columns: 1fr; gap: 12px; }
+            .synastry-divider { flex-direction: row; padding: 0; margin-top: 0; }
+            .synastry-divider-line { width: 40px; height: 1px; }
+            .synastry-aspects { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .synastry-score-ring { width: 120px; height: 120px; }
+            .synastry-score-ring svg { width: 120px; height: 120px; }
+
+            /* Palmistry */
+            .palm-guide-grid { grid-template-columns: 1fr; gap: 10px; }
+            .palm-lines-ref { grid-template-columns: 1fr; }
+
+            /* Consulenza — slider orizzontale */
+            .consultation-grid {
+                display: flex; gap: 14px;
+                overflow-x: auto; scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 14px; margin-bottom: 24px;
+                scrollbar-width: none;
+                grid-template-columns: unset;
+            }
+            .consultation-grid::-webkit-scrollbar { display: none; }
+            .consult-type-card {
+                flex: 0 0 76vw; max-width: 300px;
+                scroll-snap-align: start; transform: none !important;
+            }
+
+            /* Modali */
+            .modal-box { padding: 20px 16px; border-radius: 18px; }
+            .price-grid { grid-template-columns: repeat(2, 1fr); }
+            .account-tabs .account-tab { font-size: 9px; padding: 10px 6px; }
+
+            /* Risultati */
+            .reading-result-header { padding: 16px 18px; }
+            .reading-result-body { padding: 18px; }
+            .astro-commentary-area-body { padding: 18px; }
+            .synastry-result-text { padding: 18px; }
+
+            /* IG Modal */
+            #igCardModal { padding: 12px; }
+            .ig-actions { gap: 8px; }
+            .btn-ig { padding: 10px 16px; font-size: 9px; }
+        }
+
+        /* Mobile piccolo 400px */
+        @media (max-width: 400px) {
+            .hero-title { font-size: 42px; }
+            .tarot-card { width: 82px; height: 144px; }
+            .synastry-aspects { grid-template-columns: 1fr; }
+            .page-title { font-size: 28px; }
+            .nav-logo { font-size: 13px; }
+            .credit-badge { font-size: 9px; padding: 4px 8px; }
         }
 
         /* ══════════════════════════════════
@@ -775,12 +880,126 @@
         }
         .synastry-result-text { padding: 28px; }
 
-        @media (max-width: 640px) {
-            .synastry-persons { grid-template-columns: 1fr; gap: 12px; }
-            .synastry-divider { flex-direction: row; padding: 0; margin-top: 0; }
-            .synastry-divider-line { width: 40px; height: 1px; }
-            .synastry-aspects { grid-template-columns: repeat(2, 1fr); }
+
+        /* ══════════════════════════════════
+           LETTURA DELLA MANO
+        ══════════════════════════════════ */
+        .palm-upload-area {
+            border: 2px dashed var(--border); border-radius: 20px;
+            padding: 48px 24px; text-align: center; cursor: pointer;
+            transition: 0.3s; background: rgba(20,14,40,0.3);
+            position: relative;
         }
+        .palm-upload-area:hover, .palm-upload-area.dragover {
+            border-color: var(--gold); background: rgba(201,168,76,0.05);
+        }
+        .palm-upload-area input[type="file"] {
+            position: absolute; inset: 0; opacity: 0; cursor: pointer;
+            width: 100%; height: 100%; margin: 0; padding: 0; border: none;
+            background: none;
+        }
+        .palm-upload-icon { font-size: 3.5rem; margin-bottom: 16px; display: block;
+            filter: drop-shadow(0 0 20px rgba(201,168,76,0.3)); }
+        .palm-upload-title {
+            font-family: 'Cinzel', serif; font-size: 0.9rem;
+            color: var(--gold-light); letter-spacing: 2px; margin-bottom: 8px;
+        }
+        .palm-upload-hint { font-size: 0.8rem; color: var(--text-muted); font-style: italic; }
+        .palm-upload-limit { font-size: 0.72rem; color: var(--text-muted);
+            margin-top: 8px; font-family: 'Cinzel', serif; letter-spacing: 1px; }
+
+        .palm-preview-wrap {
+            display: none; margin-top: 20px; text-align: center;
+        }
+        .palm-preview-img {
+            max-width: 340px; width: 100%; border-radius: 16px;
+            border: 1px solid var(--border); display: block; margin: 0 auto 16px;
+            box-shadow: 0 0 40px rgba(201,168,76,0.1);
+        }
+        .palm-remove-btn {
+            background: none; border: 1px solid var(--border); color: var(--text-muted);
+            padding: 6px 18px; border-radius: 50px; cursor: pointer;
+            font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .palm-remove-btn:hover { border-color: rgba(200,80,80,0.5); color: #e07070; }
+
+        .palm-guide-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+            margin-bottom: 20px;
+        }
+        .palm-guide-card {
+            text-align: center; padding: 20px 12px;
+            border: 1px solid var(--border); border-radius: 14px;
+            background: rgba(20,14,40,0.4); transition: 0.3s;
+        }
+        .palm-guide-card:hover { border-color: var(--border-hover); }
+        .palm-guide-card .icon { font-size: 1.8rem; display: block; margin-bottom: 8px; }
+        .palm-guide-card h4 {
+            font-family: 'Cinzel', serif; font-size: 0.75rem;
+            color: var(--gold-light); letter-spacing: 1px; margin-bottom: 4px;
+        }
+        .palm-guide-card p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; }
+
+        .palm-lines-ref {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;
+        }
+        .palm-line-item {
+            display: flex; gap: 10px; align-items: flex-start;
+            padding: 10px 14px; border-radius: 10px;
+            background: rgba(20,14,40,0.4); border: 1px solid var(--border);
+        }
+        .palm-line-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            flex-shrink: 0; margin-top: 4px;
+        }
+        .palm-line-item strong { font-family: 'Cinzel', serif; font-size: 0.78rem;
+            color: var(--gold-light); display: block; }
+        .palm-line-item span { font-size: 0.72rem; color: var(--text-muted); }
+
+        .palm-result-area { display: none; margin-top: 28px; animation: fadeUp 0.6s ease; }
+        .palm-result-header {
+            display: flex; gap: 16px; align-items: center;
+            padding: 20px 28px; background: rgba(42,26,85,0.2);
+            border: 1px solid var(--border); border-radius: 16px 16px 0 0; border-bottom: none;
+        }
+        .palm-result-body {
+            padding: 28px; border: 1px solid var(--border);
+            border-radius: 0 0 16px 16px; background: rgba(20,14,40,0.5);
+        }
+
+        @media (max-width: 640px) {
+            /* Guida foto — slider orizzontale invece di colonna */
+            .palm-guide-grid {
+                display: flex; gap: 10px;
+                overflow-x: auto; scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 8px; margin-bottom: 14px;
+                scrollbar-width: none;
+            }
+            .palm-guide-grid::-webkit-scrollbar { display: none; }
+            .palm-guide-card {
+                flex: 0 0 64vw; max-width: 240px;
+                scroll-snap-align: start; padding: 14px 12px;
+            }
+            /* Linee — 2 colonne strette invece di 1 colonna */
+            .palm-lines-ref {
+                grid-template-columns: 1fr 1fr; gap: 8px;
+                margin-bottom: 14px;
+            }
+            .palm-line-item { padding: 8px 10px; gap: 8px; }
+            .palm-line-item strong { font-size: 0.72rem; }
+            .palm-line-item span { font-size: 0.68rem; }
+        }
+
+        /* ── Swipe hint ── */
+        .swipe-hint {
+            display: none; text-align: center;
+            font-family: 'Cinzel', serif; font-size: 9px;
+            color: var(--text-muted); letter-spacing: 2px;
+            margin-bottom: 20px; opacity: 0.7;
+        }
+        @media (max-width: 640px) { .swipe-hint { display: block; } }
 
         /* ── Loading spinner ── */
         .loading-text { font-style: italic; color: var(--text-muted); text-align: center; padding: 24px 0; }
@@ -1333,6 +1552,7 @@
             <li><a onclick="showSection('sogni')" data-sec="sogni">Sogni</a></li>
             <li><a onclick="showSection('astrologia')" data-sec="astrologia">Astrologia</a></li>
             <li><a onclick="showSection('sinastria')" data-sec="sinastria">Sinastria</a></li>
+            <li><a onclick="showSection('palmistry')" data-sec="palmistry">Mano</a></li>
             <li><a onclick="showSection('contatto')" data-sec="contatto">Consulenza</a></li>
         </ul>
         <div class="nav-right">
@@ -1358,6 +1578,7 @@
             <a class="mobile-nav-link" onclick="showSection('sogni');toggleMobileMenu()">🌙 Sogni</a>
             <a class="mobile-nav-link" onclick="showSection('astrologia');toggleMobileMenu()">⭐ Astrologia</a>
             <a class="mobile-nav-link" onclick="showSection('sinastria');toggleMobileMenu()">💞 Sinastria</a>
+            <a class="mobile-nav-link" onclick="showSection('palmistry');toggleMobileMenu()">🤲 Lettura della Mano</a>
             <a class="mobile-nav-link" onclick="showSection('contatto');toggleMobileMenu()">🔮 Consulenza</a>
         </nav>
         <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px;">
@@ -1380,9 +1601,12 @@
         <p class="hero-quote">"L'inconscio parla per simboli. Noi siamo qui per tradurli."</p>
         <p class="hero-desc">Oltre il velo della realtà tangibile si cela un antico sapere. Questo santuario digitale è il tuo portale verso le risposte che l'universo custodisce per te.</p>
         <div class="hero-actions">
-            <button class="btn-hero-primary" onclick="showSection('oracolo')">🎴 Consulta gli Arcani</button>
-            <button class="btn-hero-primary" onclick="showSection('astrologia')">⭐ Mappa Astrale</button>
-            <button class="btn-hero-primary" onclick="showSection('sogni')">🌙 Libro dei Sogni</button>
+            <button class="btn-hero-primary" onclick="showSection('oracolo')">🎴 Tarocchi</button>
+            <button class="btn-hero-primary" onclick="showSection('astrologia')">⭐ Astrologia</button>
+            <button class="btn-hero-primary" onclick="showSection('sogni')">🌙 Sogni</button>
+            <button class="btn-hero-primary" onclick="showSection('sinastria')">💞 Sinastria</button>
+            <button class="btn-hero-primary" onclick="showSection('palmistry')">🤲 Lettura della Mano</button>
+            <button class="btn-hero-secondary" onclick="showSection('contatto')">🔮 Consulenza Privata</button>
         </div>
         <div class="hero-stats">
             <div class="hero-stat"><span class="hero-stat-n">∞</span><span class="hero-stat-l">Arcani disponibili</span></div>
@@ -1633,7 +1857,7 @@
                     <div class="summary-item"><span class="symbol">☽</span><div class="info"><strong>Luna in <span id="shareLuna">...</span></strong><p>Emozioni e Inconscio</p></div></div>
                     <div class="summary-item"><span class="symbol">↑</span><div class="info"><strong>Ascendente <span id="shareAsc">...</span></strong><p>Personalità esteriore</p></div></div>
                 </div>
-                <div class="card-footer" style="display:block;text-align:center;margin-top:16px;"><p style="font-family:'Cinzel';font-size:9px;color:var(--text-muted);">sidera.app</p></div>
+                <div class="card-footer" style="display:block;text-align:center;margin-top:16px;"><p style="font-family:'Cinzel';font-size:9px;color:var(--text-muted);">sidera7.vercel.app</p></div>
             </div>
 
             <div style="margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:14px;">
@@ -1784,6 +2008,131 @@
     </div>
 </section>
 
+<!-- LETTURA DELLA MANO -->
+<section id="palmistry" class="content-section">
+    <div class="container">
+        <p class="hero-tagline" style="opacity:1; animation:none;">✦ L'Arte della Chiromanza ✦</p>
+        <h2 class="page-title">LETTURA DELLA MANO</h2>
+        <p class="page-subtitle">Una lettura esclusiva, personale e irripetibile. L'Oracolo esamina le linee del tuo palmo e ti risponde entro 48 ore con un'analisi dedicata solo a te.</p>
+
+        <!-- Badge premium -->
+        <div style="text-align:center;margin-bottom:20px;">
+            <span style="display:inline-flex;align-items:center;gap:10px;padding:8px 20px;border:1px solid rgba(107,63,160,0.5);border-radius:50px;background:rgba(107,63,160,0.1);font-family:'Cinzel',serif;font-size:10px;color:#b08fe0;letter-spacing:2px;text-transform:uppercase;">
+                ✦ Servizio Premium · Lettura Personale · 48h ✦
+            </span>
+        </div>
+
+        <!-- Guida foto -->
+        <div class="palm-guide-grid">
+            <div class="palm-guide-card reveal">
+                <span class="icon">☀️</span>
+                <h4>Luce naturale</h4>
+                <p>Fotografa vicino a una finestra di giorno. Evita il flash — appiattisce le linee.</p>
+            </div>
+            <div class="palm-guide-card reveal">
+                <span class="icon">🤲</span>
+                <h4>Mano dominante</h4>
+                <p>Usa la mano con cui scrivi. Apri il palmo completamente, dita naturalmente unite.</p>
+            </div>
+            <div class="palm-guide-card reveal">
+                <span class="icon">🔍</span>
+                <h4>Nitida e a fuoco</h4>
+                <p>Le linee devono essere visibili. Scatta dall'alto, a 20–30cm dalla mano.</p>
+            </div>
+        </div>
+
+        <!-- Riferimento linee -->
+        <div class="palm-lines-ref">
+            <div class="palm-line-item">
+                <div class="palm-line-dot" style="background:#C9A84C;"></div>
+                <div><strong>Linea della Vita</strong><span>Vitalità, percorso e cambiamenti</span></div>
+            </div>
+            <div class="palm-line-item">
+                <div class="palm-line-dot" style="background:#9B7FCC;"></div>
+                <div><strong>Linea del Cuore</strong><span>Emozioni, amore e relazioni</span></div>
+            </div>
+            <div class="palm-line-item">
+                <div class="palm-line-dot" style="background:#6B8FB3;"></div>
+                <div><strong>Linea della Testa</strong><span>Intelligenza, pensiero e scelte</span></div>
+            </div>
+            <div class="palm-line-item">
+                <div class="palm-line-dot" style="background:#7AB57A;"></div>
+                <div><strong>Linea del Destino</strong><span>Vocazione e percorso di vita</span></div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div id="palmInputBox">
+
+            <!-- Upload area -->
+            <div class="palm-upload-area" id="palmDropZone">
+                <input type="file" id="palmFile" accept="image/jpeg,image/png,image/webp,image/heic"
+                       onchange="handlePalmFile(this.files[0])">
+                <span class="palm-upload-icon">🤲</span>
+                <p class="palm-upload-title">CARICA LA FOTO DEL PALMO</p>
+                <p class="palm-upload-hint">Trascina qui l'immagine oppure clicca per selezionarla</p>
+                <p class="palm-upload-limit">JPG · PNG · WEBP · Max 8MB</p>
+            </div>
+
+            <!-- Anteprima -->
+            <div class="palm-preview-wrap" id="palmPreviewWrap">
+                <img id="palmPreviewImg" class="palm-preview-img" src="" alt="Anteprima palmo">
+                <button class="palm-remove-btn" onclick="resetPalmUpload()">✕ Rimuovi foto</button>
+            </div>
+
+            <!-- Dati contatto -->
+            <div class="tarot-input-area" style="margin-top:20px;">
+                <label class="input-label">La tua email per ricevere la lettura</label>
+                <input type="email" id="palmEmail" placeholder="La tua email" autocomplete="email" style="margin-bottom:12px;">
+                <label class="input-label">Una domanda o area su cui vuoi che mi concentri (opzionale)</label>
+                <textarea id="palmQuestion" placeholder="Amore, lavoro, salute, un momento di svolta... oppure lascia che la mano parli liberamente." rows="3"></textarea>
+            </div>
+
+            <!-- Costo e pulsante -->
+            <div style="margin-top:20px;padding:20px 24px;border:1px solid rgba(107,63,160,0.3);border-radius:16px;background:rgba(107,63,160,0.06);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+                <div>
+                    <p style="font-family:'Cinzel',serif;font-size:11px;color:#b08fe0;letter-spacing:2px;margin-bottom:4px;">LETTURA PREMIUM</p>
+                    <p style="font-size:0.82rem;color:var(--text-muted);font-style:italic;">Lettura personale · Risposta via email entro 48h</p>
+                </div>
+                <div style="text-align:right;">
+                    <p style="font-family:'Cinzel',serif;font-size:1.4rem;color:var(--gold);line-height:1;">15</p>
+                    <p style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);letter-spacing:2px;">CREDITI</p>
+                </div>
+            </div>
+
+            <button class="btn-action" id="palmSubmitBtn" onclick="runPalmReading()" style="margin-top:16px;background:linear-gradient(135deg,rgba(107,63,160,0.7),rgba(42,26,85,0.9));">
+                ✦ Invia la Foto per la Lettura — 15 Crediti
+            </button>
+            <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-top:10px;font-style:italic;">
+                La tua foto viene trasmessa in modo sicuro e non viene conservata.<br>
+                Riceverai la lettura all'email indicata entro 48 ore.
+            </p>
+        </div>
+
+        <!-- Stato invio -->
+        <div id="palmSendingState" style="display:none;text-align:center;padding:60px 0;">
+            <div style="font-size:3rem;margin-bottom:16px;animation:floatSymbol 2s ease-in-out infinite;">🤲</div>
+            <p style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:3px;margin-bottom:8px;">TRASMISSIONE IN CORSO</p>
+            <p class="loading-text" style="color:var(--text-muted);">Invio della tua richiesta al tempio</p>
+        </div>
+
+        <!-- Conferma invio -->
+        <div id="palmConfirm" style="display:none;animation:fadeUp 0.6s ease;">
+            <div class="glass-card" style="max-width:500px;margin:0 auto;text-align:center;">
+                <div style="font-size:3.5rem;margin-bottom:16px;">🌟</div>
+                <h3 style="font-family:'Cinzel',serif;color:var(--gold-light);font-size:1.1rem;letter-spacing:2px;margin-bottom:14px;">RICHIESTA INVIATA</h3>
+                <p style="color:var(--text-muted);font-style:italic;line-height:1.8;margin-bottom:8px;">
+                    La tua immagine è giunta nel tempio. L'Oracolo esaminerà le linee del tuo palmo e ti invierà una lettura personale entro 48 ore.
+                </p>
+                <p style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:24px;" id="palmConfirmEmail"></p>
+                <button class="btn-action" onclick="resetPalmSection()" style="max-width:280px;background:linear-gradient(135deg,rgba(107,63,160,0.7),rgba(42,26,85,0.9));">
+                    ✦ Torna al Tempio
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- CONSULENZA -->
 <section id="contatto" class="content-section">
     <div class="container">
@@ -1793,7 +2142,7 @@
 
         <!-- Step 1: scelta tipo consulto -->
         <div id="consultStep1">
-            <div class="consultation-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="consultation-grid">
                 <div class="consult-type-card" onclick="selectConsult('tarocchi')">
                     <span class="icon">🎴</span>
                     <h3>Lettura Tarocchi</h3>
@@ -1813,6 +2162,8 @@
                     <span class="badge" style="border-color: rgba(107,63,160,0.6); color: #b08fe0;">40 Crediti · Premium</span>
                 </div>
             </div>
+            <!-- Swipe hint — visibile solo su mobile -->
+            <p class="swipe-hint">← scorri per vedere tutti i consulti →</p>
             <div style="margin-top:16px; padding:18px 22px; border:1px dashed rgba(107,63,160,0.3); border-radius:14px; background: rgba(107,63,160,0.04); display:flex; align-items:flex-start; gap:14px;">
                 <span style="font-size:1.4rem; flex-shrink:0;">🔮</span>
                 <div>
@@ -1877,18 +2228,50 @@
         <h2 class="modal-title">✨ Ricarica Energia</h2>
         <p class="modal-sub">Scegli il pacchetto più adatto al tuo cammino</p>
 
-        <div class="price-grid">
-            <button class="pay-tag-btn" id="btn3" onclick="setAmount(3, 5)"><strong>5 cr.</strong><br><small>3€</small></button>
-            <button class="pay-tag-btn" id="btn5" onclick="setAmount(5, 10)"><strong>10 cr.</strong><br><small>5€</small></button>
-            <button class="pay-tag-btn" id="btn9" onclick="setAmount(9, 20)"><strong>20 cr.</strong><br><small>9€</small></button>
-            <button class="pay-tag-btn" id="btn15" onclick="setAmount(15, 40)"><strong>40 cr.</strong><br><small>15€</small></button>
-            <button class="pay-tag-btn" id="btn25" onclick="setAmount(25, 75)"><strong>75 cr.</strong><br><small>25€</small></button>
-            <button class="pay-tag-btn" id="btn50" onclick="setAmount(50, 200)"><strong>200 cr.</strong><br><small>50€</small></button>
-            <button class="pay-infinity" id="btn19.99" onclick="setAmount(19.99, 100)">✦ Oracolo Infinito ✦<br><small style="letter-spacing:1px;opacity:0.7;">100 cr./mese — 19,99€</small></button>
+        <!-- Tab switcher: crediti / abbonamento -->
+        <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:18px;">
+            <button id="tabCrediti" onclick="switchPayTab('crediti')"
+                style="flex:1;background:none;border:none;padding:10px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;color:var(--gold);border-bottom:2px solid var(--gold);transition:0.3s;">
+                CREDITI
+            </button>
+            <button id="tabAbbonamento" onclick="switchPayTab('abbonamento')"
+                style="flex:1;background:none;border:none;padding:10px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;color:var(--text-muted);border-bottom:2px solid transparent;transition:0.3s;">
+                ABBONAMENTO
+            </button>
         </div>
 
-        <div class="pay-total">Totale: <span id="displayAmount">3</span>€</div>
-        <div id="paypal-button-container"></div>
+        <!-- Pannello crediti singoli -->
+        <div id="panelCrediti">
+            <div class="price-grid">
+                <button class="pay-tag-btn" id="btn3"  onclick="setAmount(3,5)"><strong>5 cr.</strong><br><small>3€</small></button>
+                <button class="pay-tag-btn" id="btn5"  onclick="setAmount(5,10)"><strong>10 cr.</strong><br><small>5€</small></button>
+                <button class="pay-tag-btn" id="btn9"  onclick="setAmount(9,20)"><strong>20 cr.</strong><br><small>9€</small></button>
+                <button class="pay-tag-btn" id="btn15" onclick="setAmount(15,40)"><strong>40 cr.</strong><br><small>15€</small></button>
+                <button class="pay-tag-btn" id="btn25" onclick="setAmount(25,75)"><strong>75 cr.</strong><br><small>25€</small></button>
+                <button class="pay-tag-btn" id="btn50" onclick="setAmount(50,200)"><strong>200 cr.</strong><br><small>50€</small></button>
+            </div>
+            <div class="pay-total">Totale: <span id="displayAmount">3</span>€</div>
+            <div id="paypal-button-container"></div>
+        </div>
+
+        <!-- Pannello abbonamento -->
+        <div id="panelAbbonamento" style="display:none;">
+            <div style="background:rgba(107,63,160,0.12);border:1px solid rgba(107,63,160,0.4);border-radius:16px;padding:24px;text-align:center;margin-bottom:18px;">
+                <p style="font-family:'Cinzel Decorative',cursive;font-size:1.1rem;color:var(--gold);margin-bottom:8px;">Oracolo Infinito</p>
+                <p style="font-family:'Cinzel',serif;font-size:2rem;color:var(--gold-light);line-height:1;margin-bottom:4px;">19,99€</p>
+                <p style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);letter-spacing:2px;margin-bottom:18px;">AL MESE · RINNOVO AUTOMATICO</p>
+                <div style="display:flex;flex-direction:column;gap:6px;text-align:left;margin-bottom:18px;">
+                    <p style="font-size:0.82rem;color:var(--text);">✦ <strong style="color:var(--gold-light);">100 crediti</strong> ogni mese</p>
+                    <p style="font-size:0.82rem;color:var(--text);">✦ Accesso a tutti gli oracoli</p>
+                    <p style="font-size:0.82rem;color:var(--text);">✦ Priorità sulle consulenze private</p>
+                    <p style="font-size:0.82rem;color:var(--text);">✦ Cancella quando vuoi</p>
+                </div>
+            </div>
+            <div id="paypal-subscription-container"></div>
+            <p style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:10px;font-style:italic;">
+                Il rinnovo avviene automaticamente ogni mese. Puoi cancellare dal tuo profilo PayPal in qualsiasi momento.
+            </p>
+        </div>
 
         <button onclick="closePayment()" class="modal-close-btn">✦ Torna al Sito ✦</button>
     </div>
@@ -1997,7 +2380,7 @@
 <!-- ════════════════════════════════
      SCRIPTS
 ════════════════════════════════ -->
-<script src="https://www.paypal.com/sdk/js?client-id=AZsxkgEdU7HJjgac8oVcEM4rfIsfLpFWyCISuRWUgIKIeEN4dFSqhoEUNAFF3EQAqZhCdPMhFavc1Qpk&currency=EUR"></script>
+<script id="paypal-sdk-script" src="https://www.paypal.com/sdk/js?client-id=AZsxkgEdU7HJjgac8oVcEM4rfIsfLpFWyCISuRWUgIKIeEN4dFSqhoEUNAFF3EQAqZhCdPMhFavc1Qpk&currency=EUR&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 <script>
 // ─────────────────────────────────────────────
 //  CONFIG
@@ -2006,10 +2389,37 @@ const MAKE_URL = "https://hook.eu1.make.com/wdc6niacrxs2vlmssjbd592ymzw2859w";
 const IMG_BASE = "https://www.sacred-texts.com/tarot/pkt/img/";
 
 // ── Astrologer API (RapidAPI) ──────────────────
-// Ottieni la tua chiave su: https://rapidapi.com/g-battaglia/api/astrologer
-// Piano gratuito: 100 richieste/mese. Piano base: ~$10/mese per 1000 richieste.
-const ASTROLOGER_API_KEY = "8ecb093643msh14158b060d9f54ap1cc2e8jsne21589d3a1b4";
+const ASTROLOGER_API_KEY  = "8ecb093643msh14158b060d9f54ap1cc2e8jsne21589d3a1b4";
 const ASTROLOGER_API_HOST = "astrologer.p.rapidapi.com";
+
+// ── PayPal — Switcher Sandbox / Live ──────────
+// Cambia PAYPAL_MODE tra 'sandbox' e 'live' per switchare ambiente.
+// 'sandbox' → test con conti finti, nessun addebito reale
+// 'live'    → produzione, addebita denaro reale
+const PAYPAL_MODE = 'live'; // ← cambia in 'sandbox' per testare
+
+const PAYPAL_CLIENT_ID_LIVE    = 'AZsxkgEdU7HJjgac8oVcEM4rfIsfLpFWyCISuRWUgIKIeEN4dFSqhoEUNAFF3EQAqZhCdPMhFavc1Qpk';
+const PAYPAL_CLIENT_ID_SANDBOX = 'INSERISCI_CLIENT_ID_SANDBOX'; // da developer.paypal.com → Apps & Credentials → Sandbox
+
+// Piano abbonamento — crea piani separati per sandbox e live
+const PAYPAL_PLAN_ID_LIVE    = 'P-INSERISCI_PLAN_ID_LIVE';
+const PAYPAL_PLAN_ID_SANDBOX = 'P-INSERISCI_PLAN_ID_SANDBOX';
+
+// Valori attivi
+const PAYPAL_ACTIVE_CLIENT_ID = PAYPAL_MODE === 'sandbox' ? PAYPAL_CLIENT_ID_SANDBOX : PAYPAL_CLIENT_ID_LIVE;
+const PAYPAL_PLAN_ID          = PAYPAL_MODE === 'sandbox' ? PAYPAL_PLAN_ID_SANDBOX    : PAYPAL_PLAN_ID_LIVE;
+
+// Carica SDK PayPal dinamicamente con il client-id corretto
+(function loadPayPalSDK() {
+    const existing = document.getElementById('paypal-sdk-script');
+    if (existing) existing.remove();
+    const s = document.createElement('script');
+    s.id  = 'paypal-sdk-script';
+    s.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_ACTIVE_CLIENT_ID}&currency=EUR&vault=true&intent=subscription`;
+    s.setAttribute('data-sdk-integration-source', 'button-factory');
+    s.onload = () => console.log(`[PayPal] SDK caricato in modalita: ${PAYPAL_MODE.toUpperCase()}`);
+    document.head.appendChild(s);
+})();
 const CARDS = [
     {n:"Il Matto",i:"ar00.jpg"},{n:"Il Mago",i:"ar01.jpg"},{n:"La Papessa",i:"ar02.jpg"},
     {n:"L'Imperatrice",i:"ar03.jpg"},{n:"L'Imperatore",i:"ar04.jpg"},{n:"Il Papa",i:"ar05.jpg"},
@@ -2029,6 +2439,19 @@ let currentUser = null;
 //  INIT — tutto dentro DOMContentLoaded
 // ─────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
+
+    // ── Drag & Drop Palmistry ───────────────────
+    const palmZone = document.getElementById('palmDropZone');
+    if (palmZone) {
+        palmZone.addEventListener('dragover', (e) => { e.preventDefault(); palmZone.classList.add('dragover'); });
+        palmZone.addEventListener('dragleave', () => palmZone.classList.remove('dragover'));
+        palmZone.addEventListener('drop', (e) => {
+            e.preventDefault(); palmZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) handlePalmFile(file);
+            else showToast('Carica un\'immagine (JPG, PNG, WEBP).');
+        });
+    }
 
     // ── Stelle Canvas ───────────────────────────
     (function initStars() {
@@ -2233,40 +2656,99 @@ function resetSection(id) {
 // ─────────────────────────────────────────────
 //  PAYMENT
 // ─────────────────────────────────────────────
-function openPayment() { document.getElementById('paymentModal').classList.add('open'); setAmount(3, 5); }
+function openPayment() {
+    document.getElementById('paymentModal').classList.add('open');
+    switchPayTab('crediti');
+    setAmount(3, 5);
+}
 function closePayment() { document.getElementById('paymentModal').classList.remove('open'); }
+
+function switchPayTab(tab) {
+    const isCrediti = tab === 'crediti';
+    document.getElementById('panelCrediti').style.display      = isCrediti ? 'block' : 'none';
+    document.getElementById('panelAbbonamento').style.display  = isCrediti ? 'none'  : 'block';
+    document.getElementById('tabCrediti').style.color          = isCrediti ? 'var(--gold)' : 'var(--text-muted)';
+    document.getElementById('tabAbbonamento').style.color      = isCrediti ? 'var(--text-muted)' : 'var(--gold)';
+    document.getElementById('tabCrediti').style.borderBottomColor    = isCrediti ? 'var(--gold)' : 'transparent';
+    document.getElementById('tabAbbonamento').style.borderBottomColor = isCrediti ? 'transparent' : 'var(--gold)';
+    if (!isCrediti) renderSubscriptionButton();
+}
 
 function setAmount(val, creds) {
     selectedAmount = val;
     selectedCredits = creds;
     document.getElementById('displayAmount').innerText = val;
-    document.querySelectorAll('.pay-tag-btn, .pay-infinity').forEach(b => b.classList.remove('active'));
-    const bid = 'btn' + val;
-    const btn = document.getElementById(bid);
+    document.querySelectorAll('.pay-tag-btn').forEach(b => b.classList.remove('active'));
+    const btn = document.getElementById('btn' + val);
     if (btn) btn.classList.add('active');
     renderPayPal();
 }
 
 function renderPayPal() {
     document.getElementById('paypal-button-container').innerHTML = '';
-    if (typeof paypal === 'undefined') return;
+    if (typeof paypal === 'undefined') { setTimeout(renderPayPal, 800); return; }
     paypal.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
-        createOrder: (data, actions) => actions.order.create({ purchase_units: [{ amount: { value: selectedAmount.toString() } }] }),
+        createOrder: (data, actions) => actions.order.create({
+            purchase_units: [{ amount: { value: selectedAmount.toString(), currency_code: 'EUR' } }]
+        }),
         onApprove: (data, actions) => actions.order.capture().then(() => {
-            let current = parseInt(localStorage.getItem('astral_credits')) || 0;
-            const newTotal = current + selectedCredits;
-            localStorage.setItem('astral_credits', newTotal.toString());
-            document.getElementById('creditCount').innerText = newTotal;
-            if (currentUser) {
-                currentUser.credits = newTotal;
-                localStorage.setItem('sidera_user', JSON.stringify(currentUser));
-                document.getElementById('profileCredits').innerText = newTotal;
-            }
+            addCredits(selectedCredits);
             closePayment();
             showToast('✨ Energia ricaricata! ' + selectedCredits + ' crediti aggiunti.');
-        })
+        }),
+        onError: (err) => { console.error('[PayPal] Errore pagamento:', err); showToast('Pagamento non completato. Riprova.'); }
     }).render('#paypal-button-container');
+}
+
+function renderSubscriptionButton() {
+    document.getElementById('paypal-subscription-container').innerHTML = '';
+    if (typeof paypal === 'undefined') { setTimeout(renderSubscriptionButton, 800); return; }
+    if (PAYPAL_PLAN_ID.includes('INSERISCI')) {
+        document.getElementById('paypal-subscription-container').innerHTML =
+            '<p style="font-family:\'Cinzel\',serif;font-size:9px;color:var(--text-muted);text-align:center;letter-spacing:1px;padding:16px;">Configura PAYPAL_PLAN_ID nel codice per attivare gli abbonamenti.</p>';
+        return;
+    }
+    paypal.Buttons({
+        style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'subscribe' },
+        createSubscription: (data, actions) => actions.subscription.create({ plan_id: PAYPAL_PLAN_ID }),
+        onApprove: (data, actions) => {
+            console.log('[PayPal] Abbonamento attivato:', data.subscriptionID);
+            addCredits(100);
+            if (currentUser) {
+                currentUser.subscriptionId = data.subscriptionID;
+                currentUser.isSubscribed = true;
+                localStorage.setItem('sidera_user', JSON.stringify(currentUser));
+            }
+            closePayment();
+            showToast('🌟 Oracolo Infinito attivato! 100 crediti aggiunti. Rinnovo automatico mensile.');
+            fetch(MAKE_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    tipo: 'abbonamento_nuovo',
+                    subscription_id: data.subscriptionID,
+                    email: currentUser?.email || '',
+                    nome: currentUser?.name || ''
+                })
+            }).catch(e => console.warn('[Make] Notifica abbonamento fallita:', e));
+        },
+        onError: (err) => { console.error('[PayPal] Errore abbonamento:', err); showToast('Pagamento non completato. Riprova.'); }
+    }).render('#paypal-subscription-container');
+}
+
+// Aggiunge crediti localmente e aggiorna UI
+function addCredits(amount) {
+    const current = parseInt(localStorage.getItem('astral_credits')) || 0;
+    const newTotal = current + amount;
+    localStorage.setItem('astral_credits', newTotal.toString());
+    document.getElementById('creditCount').innerText = newTotal;
+    if (currentUser) {
+        currentUser.credits = newTotal;
+        localStorage.setItem('sidera_user', JSON.stringify(currentUser));
+        const pc = document.getElementById('profileCredits');
+        if (pc) pc.innerText = newTotal;
+    }
 }
 
 // ─────────────────────────────────────────────
@@ -2495,20 +2977,51 @@ function backConsult() {
     document.querySelectorAll('.consult-type-card').forEach(c => c.classList.remove('selected'));
 }
 
-function sendConsult() {
+async function sendConsult() {
     const name = document.getElementById('cName').value.trim();
     const email = document.getElementById('cEmail').value.trim();
     const msg = document.getElementById('cMessage').value.trim();
     if (!name || !email || !msg) return showToast('Compila tutti i campi.');
+    if (!email.includes('@')) return showToast('Inserisci un\'email valida.');
+
     const cost = consultCosts[selectedConsult] || 10;
     let c = parseInt(localStorage.getItem('astral_credits')) || 0;
     if (c < cost) { openPayment(); return; }
+
+    // Disabilita il bottone durante l'invio
+    const btn = document.querySelector('#consultStep2 .btn-action');
+    if (btn) { btn.disabled = true; btn.innerText = '...'; }
+
+    try {
+        await fetch(MAKE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tipo: 'consulenza',
+                consulto: selectedConsult,
+                nome: name,
+                email: email,
+                messaggio: msg
+            })
+        });
+    } catch(e) {
+        console.warn('[Sidera] Consulenza webhook error:', e);
+        // Procedi comunque — non bloccare l'utente per un errore di rete
+    }
+
+    // Scala crediti e mostra conferma
     const newC = c - cost;
     localStorage.setItem('astral_credits', newC);
     document.getElementById('creditCount').innerText = newC;
+    if (currentUser) {
+        currentUser.credits = newC;
+        localStorage.setItem('sidera_user', JSON.stringify(currentUser));
+    }
     document.getElementById('consultStep2').classList.remove('visible');
     document.getElementById('consultStep3').classList.add('visible');
     saveToHistory('consulenza', msg, 'Consulenza: ' + selectedConsult);
+
+    if (btn) { btn.disabled = false; btn.innerText = '✦ Invia la Richiesta'; }
 }
 
 function resetConsult() {
@@ -2567,7 +3080,7 @@ async function runTarot() {
 
     let chosen = [...CARDS].sort(() => 0.5 - Math.random()).slice(0, 3);
     let resultsForMake = [];
-    _lastTarotCards = []; // reset per IG card
+    _lastTarotCards = [];
     for (let i = 0; i < 3; i++) {
         const isReversed = Math.random() < 0.5;
         const card = chosen[i];
@@ -2576,8 +3089,12 @@ async function runTarot() {
         const front = document.getElementById('cf' + i);
         container.classList.remove('is-reversed', 'flipped');
         if (isReversed) container.classList.add('is-reversed');
-        front.innerHTML = `<img src="${IMG_BASE + card.i}" class="tarot-image"><div class="card-name-label">${card.n.toUpperCase()}</div>`;
-        _lastTarotCards.push({ src: IMG_BASE + card.i, name: card.n, reversed: isReversed });
+        const imgSrc = IMG_BASE + card.i;
+        front.innerHTML = `<img src="${imgSrc}" class="tarot-image" crossorigin="anonymous"><div class="card-name-label">${card.n.toUpperCase()}</div>`;
+
+        // Pre-converti in base64 per la card Instagram (evita CORS al momento della condivisione)
+        const b64 = await imgToBase64(imgSrc).catch(() => null);
+        _lastTarotCards.push({ src: imgSrc, b64, name: card.n, reversed: isReversed });
         setTimeout(() => container.classList.add('flipped'), i * 700 + 300);
     }
 
@@ -2999,23 +3516,120 @@ function resetSynastry() {
 }
 
 // ─────────────────────────────────────────────
+//  LETTURA DELLA MANO — Premium manuale
+// ─────────────────────────────────────────────
+let _palmBase64 = null;
+let _palmMimeType = 'image/jpeg';
+
+function handlePalmFile(file) {
+    if (!file) return;
+    if (file.size > 8 * 1024 * 1024) { showToast('Immagine troppo grande. Massimo 8MB.'); return; }
+    _palmMimeType = file.type || 'image/jpeg';
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        _palmBase64 = e.target.result.split(',')[1];
+        document.getElementById('palmPreviewImg').src = e.target.result;
+        document.getElementById('palmPreviewWrap').style.display = 'block';
+        document.getElementById('palmDropZone').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+}
+
+function resetPalmUpload() {
+    _palmBase64 = null;
+    document.getElementById('palmFile').value = '';
+    document.getElementById('palmPreviewWrap').style.display = 'none';
+    document.getElementById('palmDropZone').style.display = 'block';
+}
+
+async function runPalmReading() {
+    if (!_palmBase64) { showToast('Carica prima la foto del tuo palmo.'); return; }
+
+    const email    = document.getElementById('palmEmail').value.trim();
+    const question = document.getElementById('palmQuestion').value.trim();
+
+    if (!email || !email.includes('@')) { showToast('Inserisci un\'email valida per ricevere la lettura.'); return; }
+
+    const COST = 15;
+    let c = parseInt(localStorage.getItem('astral_credits')) || 0;
+    if (c < COST) { openPayment(); return; }
+
+    // Mostra stato invio
+    document.getElementById('palmInputBox').style.display = 'none';
+    document.getElementById('palmSendingState').style.display = 'block';
+
+    try {
+        await fetch(MAKE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tipo: 'palmistry',
+                email_cliente: email,
+                domanda: question || '',
+                immagine_base64: _palmBase64,
+                mime_type: _palmMimeType
+            })
+        });
+    } catch(e) {
+        console.warn('[Sidera] Palmistry send error:', e);
+        // Procedi comunque — non bloccare l'utente
+    }
+
+    // Scala crediti
+    const newC = c - COST;
+    localStorage.setItem('astral_credits', newC);
+    document.getElementById('creditCount').innerText = newC;
+    if (currentUser) {
+        currentUser.credits = newC;
+        localStorage.setItem('sidera_user', JSON.stringify(currentUser));
+    }
+
+    // Mostra conferma
+    document.getElementById('palmSendingState').style.display = 'none';
+    document.getElementById('palmConfirm').style.display = 'block';
+    document.getElementById('palmConfirmEmail').innerText = '✦ ' + email + ' ✦';
+
+    saveToHistory('palmistry', question || 'Lettura del palmo', 'Richiesta inviata a ' + email);
+}
+
+function resetPalmSection() {
+    _palmBase64 = null;
+    const el = (id) => document.getElementById(id);
+    el('palmFile').value = '';
+    el('palmEmail').value = '';
+    el('palmQuestion').value = '';
+    el('palmPreviewWrap').style.display = 'none';
+    el('palmDropZone').style.display = 'block';
+    el('palmInputBox').style.display = 'block';
+    el('palmSendingState').style.display = 'none';
+    el('palmConfirm').style.display = 'none';
+}
+
+// ─────────────────────────────────────────────
 //  INSTAGRAM / TIKTOK SHARE CARD
 // ─────────────────────────────────────────────
 let _lastTarotCards = []; // memorizza le ultime carte estratte
 
+function refreshIgCard() {
+    // Ridisegna tenendo traccia del tipo corrente
+    if (window._igCurrentTipo) openIgCard(window._igCurrentTipo);
+}
+
 function openIgCard(tipo) {
+    window._igCurrentTipo = tipo;
     const modal = document.getElementById('igCardModal');
+    const showQuote = document.getElementById('igShowQuote')?.checked !== false;
 
     if (tipo === 'tarocchi') {
         const raw = document.getElementById('readingContent')?.innerText || '';
-        const quote = extractQuote(raw, 110);
-        const cardImages = _lastTarotCards.map(c => c.src);
+        const quote = showQuote ? extractQuote(raw, 110) : '';
+        const cardImages = _lastTarotCards.map(c => c.b64 || c.src);
         const cardNames  = _lastTarotCards.map(c => c.name);
         renderIgCanvas({ tipo: 'tarocchi', quote, cardImages, cardNames });
 
     } else if (tipo === 'sogno') {
         const raw = document.getElementById('dreamContent')?.innerText || '';
-        const quote = extractQuote(raw, 130);
+        const quote = showQuote ? extractQuote(raw, 130) : '';
         renderIgCanvas({ tipo: 'sogno', quote });
 
     } else if (tipo === 'sinastria') {
@@ -3023,7 +3637,7 @@ function openIgCard(tipo) {
         const nameB = document.getElementById('synaNameB')?.value || '';
         const score = document.getElementById('synaScoreNum')?.innerText || '—';
         const raw   = document.getElementById('synaContent')?.innerText || '';
-        const quote = extractQuote(raw, 110);
+        const quote = showQuote ? extractQuote(raw, 110) : '';
         renderIgCanvas({ tipo: 'sinastria', quote, nameA, nameB, score });
     }
 
@@ -3219,7 +3833,7 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, nameA, nameB
     ctx.fillStyle = 'rgba(138,122,94,0.5)';
     ctx.font = cinzel(17);
     ctx.letterSpacing = '3px';
-    ctx.fillText('SIDERA.APP', centerX, SIZE-44);
+    ctx.fillText('SIDERA7.VERCEL.APP', centerX, SIZE-44);
 }
 
 // ── Helpers canvas ───────────────────────────────────────────────────────────
@@ -3274,14 +3888,30 @@ function drawWrappedText(ctx, text, cx, startY, maxW, font, color, lineH_mult) {
     if (line) ctx.fillText(line, cx, y);
 }
 
-function loadImage(src) {
+// Converte un'immagine esterna in base64 via canvas (risolve CORS permanentemente)
+function imgToBase64(src) {
     return new Promise((resolve, reject) => {
         const img = new Image();
         img.crossOrigin = 'anonymous';
+        img.onload = () => {
+            try {
+                const c = document.createElement('canvas');
+                c.width = img.naturalWidth; c.height = img.naturalHeight;
+                c.getContext('2d').drawImage(img, 0, 0);
+                resolve(c.toDataURL('image/jpeg', 0.92));
+            } catch(e) { reject(e); }
+        };
+        img.onerror = reject;
+        img.src = src;
+    });
+}
+
+function loadImage(src) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
         img.onload = () => resolve(img);
         img.onerror = reject;
-        // Usa un proxy CORS per sacred-texts.com
-        img.src = `https://corsproxy.io/?${encodeURIComponent(src)}`;
+        img.src = src; // src è già base64 o URL diretto
     });
 }
 
@@ -3316,7 +3946,7 @@ async function shareIgCard() {
         canvas.toBlob(async blob => {
             const file = new File([blob], 'Sidera.png', { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                await navigator.share({ files: [file], title: 'La mia rivelazione su Sidera ✨', text: 'Scopri il tuo oracolo su sidera.app' });
+                await navigator.share({ files: [file], title: 'La mia rivelazione su Sidera ✨', text: 'Scopri il tuo oracolo su sidera7.vercel.app' });
             } else { downloadIgCard(); }
         }, 'image/png');
     } catch(e) { showToast('Errore nella condivisione.'); }
@@ -3411,6 +4041,12 @@ function toggleMobileMenu() {
     <!-- Canvas 1:1 disegnato via JS — risolve CORS e centra perfettamente -->
     <canvas id="igCard" style="width:100%;max-width:420px;border-radius:20px;display:block;border:1px solid rgba(201,168,76,0.2);"></canvas>
 
+    <!-- Toggle testo opzionale -->
+    <label id="igQuoteToggleWrap" style="display:flex;align-items:center;gap:10px;cursor:pointer;font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;">
+        <input type="checkbox" id="igShowQuote" checked onchange="refreshIgCard()" style="accent-color:var(--gold);width:16px;height:16px;cursor:pointer;">
+        INCLUDI FRASE DAL RESPONSO
+    </label>
+
     <div class="ig-actions">
         <button class="btn-ig btn-ig-primary" onclick="downloadIgCard()">⬇️ Salva Immagine</button>
         <button class="btn-ig btn-ig-primary" onclick="shareIgCard()">✨ Condividi</button>
@@ -3437,6 +4073,7 @@ function toggleMobileMenu() {
             <a onclick="showSection('sogni')" style="font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;cursor:pointer;transition:0.3s;text-decoration:none;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Sogni</a>
             <a onclick="showSection('astrologia')" style="font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;cursor:pointer;transition:0.3s;text-decoration:none;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Astrologia</a>
             <a onclick="showSection('sinastria')" style="font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;cursor:pointer;transition:0.3s;text-decoration:none;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Sinastria</a>
+            <a onclick="showSection('palmistry')" style="font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;cursor:pointer;transition:0.3s;text-decoration:none;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Lettura Mano</a>
             <a onclick="showSection('contatto')" style="font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;cursor:pointer;transition:0.3s;text-decoration:none;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Consulenza</a>
             <a onclick="openAccount()" style="font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;cursor:pointer;transition:0.3s;text-decoration:none;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Profilo</a>
         </div>
