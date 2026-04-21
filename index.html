@@ -726,12 +726,9 @@
             .depth-option { height: auto; padding: 12px; flex-direction: row; gap: 12px; }
 
             /* Sinastria */
-            .synastry-persons { grid-template-columns: 1fr; gap: 12px; }
-            .synastry-divider { flex-direction: row; padding: 0; margin-top: 0; }
-            .synastry-divider-line { width: 40px; height: 1px; }
-            .synastry-aspects { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .synastry-score-ring { width: 120px; height: 120px; }
             .synastry-score-ring svg { width: 120px; height: 120px; }
+            .synastry-aspects { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 
             /* Palmistry */
             .palm-guide-grid { grid-template-columns: 1fr; gap: 10px; }
@@ -794,12 +791,18 @@
         ══════════════════════════════════ */
         .synastry-persons {
             display: grid; grid-template-columns: 1fr auto 1fr; gap: 0;
-            align-items: start; margin-bottom: 28px;
+            align-items: stretch; margin-bottom: 28px;
         }
         .synastry-person-card {
             background: var(--surface); border: 1px solid var(--border);
             border-radius: 16px; padding: 24px; backdrop-filter: blur(12px);
             transition: border-color 0.3s;
+            /* Forza i due riquadri alla stessa altezza */
+            display: flex; flex-direction: column;
+        }
+        .synastry-person-card .astro-field-group { margin-bottom: 8px; }
+        .synastry-person-card .astro-date-row {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
         }
         .synastry-person-card:focus-within { border-color: var(--border-hover); }
         .synastry-person-label {
@@ -808,13 +811,34 @@
         }
         .synastry-divider {
             display: flex; flex-direction: column; align-items: center;
-            justify-content: center; gap: 8px; padding: 0 16px; margin-top: 36px;
+            justify-content: center; gap: 8px; padding: 0 16px; margin-top: 0;
         }
         .synastry-divider-line { width: 1px; height: 40px; background: var(--border); }
         .synastry-divider-sym {
             font-size: 22px; color: var(--gold);
             text-shadow: 0 0 20px rgba(201,168,76,0.5);
             animation: floatSymbol 3s ease-in-out infinite;
+        }
+
+        /* Mobile — slider orizzontale */
+        @media (max-width: 640px) {
+            .synastry-persons {
+                display: flex; gap: 0;
+                overflow-x: auto; scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; padding-bottom: 4px;
+                align-items: stretch;
+            }
+            .synastry-persons::-webkit-scrollbar { display: none; }
+            .synastry-person-card {
+                flex: 0 0 88vw; max-width: 340px;
+                scroll-snap-align: start; margin-right: 0;
+            }
+            .synastry-divider {
+                flex: 0 0 auto; flex-direction: column;
+                padding: 0 10px; align-self: center;
+            }
+            .synastry-divider-line { width: 1px; height: 30px; }
         }
 
         /* Score ring */
@@ -992,14 +1016,28 @@
             .palm-line-item span { font-size: 0.68rem; }
         }
 
-        /* ── Swipe hint ── */
+        /* ── Swipe hints ── */
         .swipe-hint {
             display: none; text-align: center;
-            font-family: 'Cinzel', serif; font-size: 9px;
-            color: var(--text-muted); letter-spacing: 2px;
-            margin-bottom: 20px; opacity: 0.7;
+            font-family: 'Cinzel', serif; font-size: 10px;
+            color: var(--gold); letter-spacing: 2px;
+            margin-bottom: 18px;
+            padding: 8px 20px; border: 1px solid rgba(201,168,76,0.25);
+            border-radius: 50px; background: rgba(201,168,76,0.05);
+            width: fit-content; margin-left: auto; margin-right: auto;
         }
-        @media (max-width: 640px) { .swipe-hint { display: block; } }
+        .swipe-hint-sinastria {
+            display: none; justify-content: space-between; align-items: center;
+            margin-bottom: 18px; margin-top: 8px;
+            padding: 10px 18px; border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 50px; background: rgba(201,168,76,0.04);
+            font-family: 'Cinzel', serif; font-size: 9px;
+            color: var(--text-muted); letter-spacing: 1.5px;
+        }
+        @media (max-width: 640px) {
+            .swipe-hint { display: block; }
+            .swipe-hint-sinastria { display: flex; }
+        }
 
         /* ── Loading spinner ── */
         .loading-text { font-style: italic; color: var(--text-muted); text-align: center; padding: 24px 0; }
@@ -1919,6 +1957,13 @@
                 </div>
             </div>
 
+            <!-- Swipe hint sinastria — solo mobile -->
+            <div class="swipe-hint-sinastria">
+                <span>☽ Prima Anima</span>
+                <span style="color:var(--gold);letter-spacing:3px;">← scorri →</span>
+                <span>☉ Seconda Anima</span>
+            </div>
+
             <!-- Tipo analisi -->
             <div class="depth-row" style="margin-bottom:20px;">
                 <label class="depth-option">
@@ -2380,7 +2425,7 @@
 <!-- ════════════════════════════════
      SCRIPTS
 ════════════════════════════════ -->
-<script id="paypal-sdk-script" src="https://www.paypal.com/sdk/js?client-id=AZsxkgEdU7HJjgac8oVcEM4rfIsfLpFWyCISuRWUgIKIeEN4dFSqhoEUNAFF3EQAqZhCdPMhFavc1Qpk&currency=EUR&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+<script id="paypal-sdk-script" src="https://www.paypal.com/sdk/js?client-id=AZsxkgEdU7HJjgac8oVcEM4rfIsfLpFWyCISuRWUgIKIeEN4dFSqhoEUNAFF3EQAqZhCdPMhFavc1Qpk&currency=EUR&components=buttons,funding-eligibility" data-sdk-integration-source="button-factory"></script>
 <script>
 // ─────────────────────────────────────────────
 //  CONFIG
@@ -2409,13 +2454,18 @@ const PAYPAL_PLAN_ID_SANDBOX = 'P-INSERISCI_PLAN_ID_SANDBOX';
 const PAYPAL_ACTIVE_CLIENT_ID = PAYPAL_MODE === 'sandbox' ? PAYPAL_CLIENT_ID_SANDBOX : PAYPAL_CLIENT_ID_LIVE;
 const PAYPAL_PLAN_ID          = PAYPAL_MODE === 'sandbox' ? PAYPAL_PLAN_ID_SANDBOX    : PAYPAL_PLAN_ID_LIVE;
 
-// Carica SDK PayPal dinamicamente con il client-id corretto
+// Carica SDK PayPal — senza intent fisso, funziona per entrambi createOrder e createSubscription
 (function loadPayPalSDK() {
     const existing = document.getElementById('paypal-sdk-script');
+    const clientId = PAYPAL_ACTIVE_CLIENT_ID;
+    if (existing && existing.src.includes(clientId)) {
+        console.log(`[PayPal] SDK gia caricato in modalita: ${PAYPAL_MODE.toUpperCase()}`);
+        return;
+    }
     if (existing) existing.remove();
     const s = document.createElement('script');
-    s.id  = 'paypal-sdk-script';
-    s.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_ACTIVE_CLIENT_ID}&currency=EUR&vault=true&intent=subscription`;
+    s.id  = 'paypal-sdk-script-dynamic';
+    s.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=EUR&components=buttons,funding-eligibility`;
     s.setAttribute('data-sdk-integration-source', 'button-factory');
     s.onload = () => console.log(`[PayPal] SDK caricato in modalita: ${PAYPAL_MODE.toUpperCase()}`);
     document.head.appendChild(s);
@@ -2711,7 +2761,10 @@ function renderSubscriptionButton() {
     }
     paypal.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'subscribe' },
-        createSubscription: (data, actions) => actions.subscription.create({ plan_id: PAYPAL_PLAN_ID }),
+        createSubscription: (data, actions) => actions.subscription.create({
+            plan_id: PAYPAL_PLAN_ID,
+            application_context: { shipping_preference: 'NO_SHIPPING' }
+        }),
         onApprove: (data, actions) => {
             console.log('[PayPal] Abbonamento attivato:', data.subscriptionID);
             addCredits(100);
