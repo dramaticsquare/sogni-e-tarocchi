@@ -3143,7 +3143,7 @@ async function runTarot() {
         container.classList.remove('is-reversed', 'flipped');
         if (isReversed) container.classList.add('is-reversed');
         const imgSrc = IMG_BASE + card.i;
-        front.innerHTML = `<img src="${imgSrc}" class="tarot-image" crossorigin="anonymous"><div class="card-name-label">${card.n.toUpperCase()}</div>`;
+        front.innerHTML = `<img src="${imgSrc}" class="tarot-image"><div class="card-name-label">${card.n.toUpperCase()}</div>`;
 
         // Pre-converti in base64 per la card Instagram (evita CORS al momento della condivisione)
         const b64 = await imgToBase64(imgSrc).catch(() => null);
@@ -3676,7 +3676,9 @@ function openIgCard(tipo) {
     if (tipo === 'tarocchi') {
         const raw = document.getElementById('readingContent')?.innerText || '';
         const quote = showQuote ? extractQuote(raw, 110) : '';
-        const cardImages = _lastTarotCards.map(c => c.b64 || c.src);
+        const cardImages = _lastTarotCards.map(c =>
+            c.b64 ? `data:image/jpeg;base64,${c.b64}` : c.src
+        );
         const cardNames  = _lastTarotCards.map(c => c.name);
         renderIgCanvas({ tipo: 'tarocchi', quote, cardImages, cardNames });
 
@@ -3941,22 +3943,41 @@ function drawWrappedText(ctx, text, cx, startY, maxW, font, color, lineH_mult) {
     if (line) ctx.fillText(line, cx, y);
 }
 
-// Converte un'immagine esterna in base64 via canvas (risolve CORS permanentemente)
-function imgToBase64(src) {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => {
-            try {
-                const c = document.createElement('canvas');
-                c.width = img.naturalWidth; c.height = img.naturalHeight;
-                c.getContext('2d').drawImage(img, 0, 0);
-                resolve(c.toDataURL('image/jpeg', 0.92));
-            } catch(e) { reject(e); }
-        };
-        img.onerror = reject;
-        img.src = src;
-    });
+// Converte immagine in base64 per la card Instagram
+// Usa allorigins.win come proxy CORS — solo per la conversione, non per il display
+async function imgToBase64(src) {
+    // Prova prima fetch diretto (funziona se il server ha CORS)
+    try {
+        const res = await fetch(src, { mode: 'cors' });
+        if (res.ok) {
+            const blob = await res.blob();
+            return await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        }
+    } catch(e) { /* CORS bloccato, prova proxy */ }
+
+    // Fallback: proxy CORS allorigins.win (gratuito, affidabile)
+    try {
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(src)}`;
+        const res = await fetch(proxyUrl);
+        if (res.ok) {
+            const blob = await res.blob();
+            return await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        }
+    } catch(e) { /* proxy non disponibile */ }
+
+    // Se tutto fallisce, ritorna null — la card IG mostrerà il placeholder
+    console.warn('[Sidera] imgToBase64 fallita per:', src);
+    return null;
 }
 
 function loadImage(src) {
