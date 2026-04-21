@@ -3680,14 +3680,30 @@ function openIgCard(tipo) {
     const modal = document.getElementById('igCardModal');
     const showQuote = document.getElementById('igShowQuote')?.checked !== false;
 
+    modal.classList.add('open');
+
+    // Mostra subito un messaggio di caricamento nel canvas
+    const canvas = document.getElementById('igCard');
+    if (canvas && canvas instanceof HTMLCanvasElement) {
+        const ctx = canvas.getContext('2d');
+        canvas.width = 400; canvas.height = 400;
+        ctx.fillStyle = '#07050F';
+        ctx.fillRect(0, 0, 400, 400);
+        ctx.fillStyle = 'rgba(201,168,76,0.5)';
+        ctx.font = '14px serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Preparazione card...', 200, 200);
+    }
+
     if (tipo === 'tarocchi') {
         const raw = document.getElementById('readingContent')?.innerText || '';
         const quote = showQuote ? extractQuote(raw, 110) : '';
-        const cardImages = _lastTarotCards.map(c =>
-            c.b64 ? `data:image/jpeg;base64,${c.b64}` : c.src
-        );
-        const cardNames  = _lastTarotCards.map(c => c.name);
-        renderIgCanvas({ tipo: 'tarocchi', quote, cardImages, cardNames });
+        const cardNames = _lastTarotCards.map(c => c.name);
+
+        // Aspetta che tutte le b64 siano pronte (max 8 secondi)
+        waitForB64(_lastTarotCards, 8000).then(cardImages => {
+            renderIgCanvas({ tipo: 'tarocchi', quote, cardImages, cardNames });
+        });
 
     } else if (tipo === 'sogno') {
         const raw = document.getElementById('dreamContent')?.innerText || '';
@@ -3702,8 +3718,25 @@ function openIgCard(tipo) {
         const quote = showQuote ? extractQuote(raw, 110) : '';
         renderIgCanvas({ tipo: 'sinastria', quote, nameA, nameB, score });
     }
+}
 
-    modal.classList.add('open');
+// Aspetta che le b64 siano disponibili, con polling e timeout
+function waitForB64(cards, maxWaitMs) {
+    return new Promise(resolve => {
+        const start = Date.now();
+        function check() {
+            const allReady = cards.every(c => c.b64 !== null);
+            if (allReady || Date.now() - start > maxWaitMs) {
+                // Usa b64 se disponibile, altrimenti null (canvas non userà src esterni)
+                resolve(cards.map(c =>
+                    c.b64 ? `data:image/jpeg;base64,${c.b64}` : null
+                ));
+            } else {
+                setTimeout(check, 300);
+            }
+        }
+        check();
+    });
 }
 
 // ─── Disegna la card su canvas (risolve CORS e centra su ogni device) ───────
@@ -3785,28 +3818,40 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, nameA, nameB
 
         for (let i = 0; i < 3; i++) {
             const cx = startX + i * (cardW + gap);
-            try {
-                const img = await loadImage(cardImages[i]);
-                // Card background
-                roundRect(ctx, cx, cardY, cardW, cardH, 14, '#1A122E', 'rgba(201,168,76,0.5)');
-                // Immagine ritagliata con clip
-                ctx.save();
-                roundRectClip(ctx, cx+4, cardY+4, cardW-8, cardH-8, 11);
-                ctx.drawImage(img, cx+4, cardY+4, cardW-8, cardH-8);
-                ctx.restore();
-            } catch {
-                // Fallback se immagine non carica: placeholder dorato
-                roundRect(ctx, cx, cardY, cardW, cardH, 14, '#1A122E', 'rgba(201,168,76,0.5)');
-                ctx.fillStyle = 'rgba(201,168,76,0.15)';
-                ctx.font = cinzel(48);
-                ctx.fillText('✦', cx + cardW/2, cardY + cardH/2 + 16);
+            // Disegna sempre il background della card
+            roundRect(ctx, cx, cardY, cardW, cardH, 14, '#1A122E', 'rgba(201,168,76,0.5)');
+
+            if (cardImages[i]) {
+                try {
+                    const img = await loadImage(cardImages[i]); // base64 — nessun CORS
+                    ctx.save();
+                    roundRectClip(ctx, cx+4, cardY+4, cardW-8, cardH-8, 11);
+                    ctx.drawImage(img, cx+4, cardY+4, cardW-8, cardH-8);
+                    ctx.restore();
+                } catch {
+                    // Placeholder se il base64 è corrotto
+                    ctx.fillStyle = 'rgba(201,168,76,0.12)';
+                    ctx.font = cinzel(48);
+                    ctx.fillText('✦', cx + cardW/2, cardY + cardH/2 + 16);
+                }
+            } else {
+                // Base64 non disponibile — placeholder elegante
+                ctx.fillStyle = 'rgba(201,168,76,0.08)';
+                ctx.fillRect(cx+4, cardY+4, cardW-8, cardH-8);
+                ctx.fillStyle = 'rgba(201,168,76,0.3)';
+                ctx.font = cinzel(40);
+                ctx.fillText('✦', cx + cardW/2, cardY + cardH/2 + 14);
+                ctx.fillStyle = 'rgba(201,168,76,0.2)';
+                ctx.font = cinzel(11);
+                ctx.letterSpacing = '1px';
+                ctx.fillText('ARCANO', cx + cardW/2, cardY + cardH/2 + 40);
             }
-            // Label sotto
+
+            // Label e nome carta
             ctx.fillStyle = 'rgba(201,168,76,0.55)';
             ctx.font = cinzel(18);
             ctx.letterSpacing = '3px';
             ctx.fillText(labels[i], cx + cardW/2, cardY + cardH + 32);
-            // Nome carta
             if (cardNames && cardNames[i]) {
                 ctx.fillStyle = 'rgba(237,224,196,0.5)';
                 ctx.font = cinzel(14);
