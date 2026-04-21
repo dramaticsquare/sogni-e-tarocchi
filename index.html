@@ -3134,6 +3134,8 @@ async function runTarot() {
     let chosen = [...CARDS].sort(() => 0.5 - Math.random()).slice(0, 3);
     let resultsForMake = [];
     _lastTarotCards = [];
+
+    // ── Step 1: mostra e gira le carte IMMEDIATAMENTE (non aspetta base64) ──
     for (let i = 0; i < 3; i++) {
         const isReversed = Math.random() < 0.5;
         const card = chosen[i];
@@ -3144,13 +3146,18 @@ async function runTarot() {
         if (isReversed) container.classList.add('is-reversed');
         const imgSrc = IMG_BASE + card.i;
         front.innerHTML = `<img src="${imgSrc}" class="tarot-image"><div class="card-name-label">${card.n.toUpperCase()}</div>`;
-
-        // Pre-converti in base64 per la card Instagram (evita CORS al momento della condivisione)
-        const b64 = await imgToBase64(imgSrc).catch(() => null);
-        _lastTarotCards.push({ src: imgSrc, b64, name: card.n, reversed: isReversed });
+        _lastTarotCards.push({ src: imgSrc, b64: null, name: card.n, reversed: isReversed });
         setTimeout(() => container.classList.add('flipped'), i * 700 + 300);
     }
 
+    // ── Step 2: converti in base64 IN BACKGROUND (non blocca il flip né Make) ──
+    chosen.forEach((card, i) => {
+        imgToBase64(IMG_BASE + card.i).then(b64 => {
+            if (_lastTarotCards[i]) _lastTarotCards[i].b64 = b64;
+        }).catch(() => {});
+    });
+
+    // ── Step 3: chiama Make in parallelo ──
     const resBox = document.getElementById('readingResult');
     const content = document.getElementById('readingContent');
     resBox.style.display = 'block';
