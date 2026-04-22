@@ -241,6 +241,7 @@
             letter-spacing: 0.3em; color: var(--gold);
             text-transform: uppercase; margin-bottom: 28px;
             opacity: 0; animation: fadeUp 1s ease 0.3s forwards;
+            text-align: center; width: 100%;
         }
         .hero-title {
             font-family: 'Cinzel Decorative', cursive;
@@ -338,6 +339,39 @@
             box-shadow: 0 0 0 3px rgba(201,168,76,0.06);
         }
         textarea { min-height: 120px; }
+
+        /* Placeholder carta tarocchi quando l'immagine non carica */
+        .card-placeholder {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 8px;
+            background: linear-gradient(160deg, #1A122E, #0D0820);
+        }
+        .card-placeholder-sym {
+            font-size: 2.5rem; color: rgba(201,168,76,0.5);
+            text-shadow: 0 0 20px rgba(201,168,76,0.3);
+            display: block;
+        }
+        .card-placeholder-name {
+            font-family: 'Cinzel', serif; font-size: 0.55rem;
+            color: rgba(201,168,76,0.4); letter-spacing: 2px;
+            text-align: center; padding: 0 6px;
+            display: block;
+        }
+
+        /* Autocomplete — mantiene il tema scuro */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 9999px rgba(7, 5, 15, 0.95) inset !important;
+            box-shadow: 0 0 0 9999px rgba(7, 5, 15, 0.95) inset !important;
+            -webkit-text-fill-color: var(--text) !important;
+            border-color: rgba(201,168,76,0.3) !important;
+            caret-color: var(--gold);
+            transition: background-color 99999s ease-in-out 0s;
+        }
 
         .btn-action {
             width: 100%; padding: 18px;
@@ -636,16 +670,17 @@
         #astroCommentary h4, #astroContent h4,
         #readingContent h4, #dreamContent h4, #synaContent h4 {
             font-family: 'Cinzel', serif;
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             font-weight: 500;
             color: var(--gold);
-            letter-spacing: 0.25em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             text-align: center;
             margin: 32px 0 18px;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         #astroCommentary h4::before, #astroContent h4::before,
         #readingContent h4::before, #dreamContent h4::before, #synaContent h4::before,
@@ -653,13 +688,18 @@
         #readingContent h4::after, #dreamContent h4::after, #synaContent h4::after {
             content: '';
             flex: 1;
+            min-width: 20px;
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(201,168,76,0.35), transparent);
         }
         #astroCommentary h4 span, #astroContent h4 span,
         #readingContent h4 span, #dreamContent h4 span, #synaContent h4 span {
-            white-space: nowrap;
-            flex-shrink: 0;
+            white-space: normal;
+            flex-shrink: 1;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            max-width: calc(100% - 60px);
+            text-align: center;
         }
         #astroCommentary p, #readingContent p, #dreamContent p,
         #synaContent p { margin-bottom: 10px; line-height: 1.65; }
@@ -804,6 +844,12 @@
         .synastry-person-card .astro-date-row {
             display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
         }
+        /* Su schermi stretti le colonne date+ora si impilano */
+        @media (max-width: 480px) {
+            .synastry-person-card .astro-date-row {
+                grid-template-columns: 1fr;
+            }
+        }
         .synastry-person-card:focus-within { border-color: var(--border-hover); }
         .synastry-person-label {
             font-family: 'Cinzel', serif; font-size: 9px; color: var(--gold);
@@ -844,6 +890,10 @@
         /* Score ring */
         .synastry-score-wrap {
             display: none; text-align: center; margin: 32px 0; animation: fadeUp 0.6s ease;
+            flex-direction: column; align-items: center; justify-content: center;
+        }
+        .synastry-score-wrap.visible {
+            display: flex;
         }
         .synastry-score-ring {
             width: 140px; height: 140px; margin: 0 auto 16px;
@@ -1900,7 +1950,8 @@
 
             <div style="margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:14px;">
                 <div class="share-buttons">
-                    <button class="btn-share" onclick="prepareAndShareCard()">✨ Condividi Mappa</button>
+                    <button class="btn-share" onclick="openIgCard('astrologia')">📸 Card Instagram</button>
+                    <button class="btn-share" onclick="shareAstroText()">✨ Condividi</button>
                     <button class="btn-share" onclick="copyText('astroCommentary')">Copia Testo</button>
                 </div>
                 <button class="btn-action" onclick="resetSection('astrologia')" style="max-width:320px;">⭐ Nuovo Calcolo</button>
@@ -2431,6 +2482,46 @@
 //  CONFIG
 // ─────────────────────────────────────────────
 const MAKE_URL = "https://hook.eu1.make.com/wdc6niacrxs2vlmssjbd592ymzw2859w";
+
+// Sorgenti immagini tarocchi — prova in sequenza fino a che una funziona
+const IMG_SOURCES = [
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/",
+    "https://www.sacred-texts.com/tarot/pkt/img/"
+];
+
+// Mappa Rider-Waite su Wikimedia (file con nomi completi)
+const WIKI_CARDS = {
+    "ar00.jpg": "9/90/RWS_Tarot_00_Fool.jpg/200px-RWS_Tarot_00_Fool.jpg",
+    "ar01.jpg": "1/10/Swords01.jpg/200px-Swords01.jpg",
+    "ar02.jpg": "8/88/RWS_Tarot_02_High_Priestess.jpg/200px-RWS_Tarot_02_High_Priestess.jpg",
+    "ar03.jpg": "d/d2/RWS_Tarot_03_Empress.jpg/200px-RWS_Tarot_03_Empress.jpg",
+    "ar04.jpg": "c/c3/RWS_Tarot_04_Emperor.jpg/200px-RWS_Tarot_04_Emperor.jpg",
+    "ar05.jpg": "8/8d/RWS_Tarot_05_Hierophant.jpg/200px-RWS_Tarot_05_Hierophant.jpg",
+    "ar06.jpg": "3/3a/TheLovers.jpg/200px-TheLovers.jpg",
+    "ar07.jpg": "9/9b/RWS_Tarot_07_Chariot.jpg/200px-RWS_Tarot_07_Chariot.jpg",
+    "ar08.jpg": "f/f5/RWS_Tarot_08_Strength.jpg/200px-RWS_Tarot_08_Strength.jpg",
+    "ar09.jpg": "4/4d/RWS_Tarot_09_Hermit.jpg/200px-RWS_Tarot_09_Hermit.jpg",
+    "ar10.jpg": "3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg/200px-RWS_Tarot_10_Wheel_of_Fortune.jpg",
+    "ar11.jpg": "e/e0/RWS_Tarot_11_Justice.jpg/200px-RWS_Tarot_11_Justice.jpg",
+    "ar12.jpg": "2/2b/RWS_Tarot_12_Hanged_Man.jpg/200px-RWS_Tarot_12_Hanged_Man.jpg",
+    "ar13.jpg": "d/d7/RWS_Tarot_13_Death.jpg/200px-RWS_Tarot_13_Death.jpg",
+    "ar14.jpg": "f/f8/RWS_Tarot_14_Temperance.jpg/200px-RWS_Tarot_14_Temperance.jpg",
+    "ar15.jpg": "5/55/RWS_Tarot_15_Devil.jpg/200px-RWS_Tarot_15_Devil.jpg",
+    "ar16.jpg": "5/53/RWS_Tarot_16_Tower.jpg/200px-RWS_Tarot_16_Tower.jpg",
+    "ar17.jpg": "d/db/RWS_Tarot_17_Star.jpg/200px-RWS_Tarot_17_Star.jpg",
+    "ar18.jpg": "7/7f/RWS_Tarot_18_Moon.jpg/200px-RWS_Tarot_18_Moon.jpg",
+    "ar19.jpg": "1/17/RWS_Tarot_19_Sun.jpg/200px-RWS_Tarot_19_Sun.jpg",
+    "ar20.jpg": "d/dd/RWS_Tarot_20_Judgement.jpg/200px-RWS_Tarot_20_Judgement.jpg",
+    "ar21.jpg": "f/ff/RWS_Tarot_21_World.jpg/200px-RWS_Tarot_21_World.jpg"
+};
+
+function getCardImgUrl(filename) {
+    if (WIKI_CARDS[filename]) {
+        return "https://upload.wikimedia.org/wikipedia/commons/thumb/" + WIKI_CARDS[filename];
+    }
+    return "https://www.sacred-texts.com/tarot/pkt/img/" + filename;
+}
+
 const IMG_BASE = "https://www.sacred-texts.com/tarot/pkt/img/";
 
 // ── Astrologer API (RapidAPI) ──────────────────
@@ -2962,42 +3053,38 @@ function setDreamPrompt(text) {
 }
 
 // ─────────────────────────────────────────────
-//  ASTROLOGIA SHARE
+//  ASTROLOGIA SHARE — condivisione diretta testo
 // ─────────────────────────────────────────────
-function prepareAndShareCard() {
-    const sole = document.getElementById('summarySoleSign').innerText;
-    const luna = document.getElementById('summaryLunaSign').innerText;
-    const asc  = document.getElementById('summaryAscSign').innerText;
+async function shareAstroText() {
+    const sole = document.getElementById('summarySoleSign')?.innerText || '—';
+    const luna = document.getElementById('summaryLunaSign')?.innerText || '—';
+    const asc  = document.getElementById('summaryAscSign')?.innerText || '—';
+    const raw  = document.getElementById('astroCommentary')?.innerText || '';
+    const excerpt = extractQuote(raw, 180);
 
-    // Aggiorna gli span nella capture card
-    const shareSole = document.getElementById('shareSole');
-    const shareLuna = document.getElementById('shareLuna');
-    const shareAsc  = document.getElementById('shareAsc');
-    if (shareSole) shareSole.innerText = sole;
-    if (shareLuna) shareLuna.innerText = luna;
-    if (shareAsc)  shareAsc.innerText  = asc;
+    const shareText = `✦ La mia Mappa Astrale su Sidera ✦\n\n☉ Sole in ${sole} · ☽ Luna in ${luna} · ↑ ${asc}\n\n"${excerpt}"\n\nScopri la tua mappa su https://sidera7.vercel.app/`;
 
-    // Mostra la capture card, aspetta che il DOM si aggiorni, poi cattura
-    const captureEl = document.getElementById('astroCaptureArea');
-    captureEl.style.display = 'block';
-    captureEl.style.position = 'fixed';
-    captureEl.style.left = '-9999px';
-    captureEl.style.top = '0';
-
-    // Aspetta un frame per assicurarsi che il DOM sia aggiornato
-    requestAnimationFrame(() => {
-        setTimeout(() => {
-            shareCard('astroCaptureArea');
-            // Nasconde dopo la cattura
-            setTimeout(() => {
-                captureEl.style.display = 'none';
-                captureEl.style.position = '';
-                captureEl.style.left = '';
-                captureEl.style.top = '';
-            }, 2000);
-        }, 100);
-    });
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: 'Sidera — La mia Mappa Astrale',
+                text: shareText,
+                url: 'https://sidera7.vercel.app/'
+            });
+            return;
+        } catch (err) {
+            if (err.name === 'AbortError') return; // utente ha annullato
+        }
+    }
+    // Fallback: copia negli appunti
+    try {
+        await navigator.clipboard.writeText(shareText);
+        showToast('✨ Testo copiato — incollalo dove vuoi!');
+    } catch(e) {
+        showToast('Copia il testo manualmente.');
+    }
 }
+
 
 // ─────────────────────────────────────────────
 //  CONSULENZA
@@ -3144,17 +3231,26 @@ async function runTarot() {
         const front = document.getElementById('cf' + i);
         container.classList.remove('is-reversed', 'flipped');
         if (isReversed) container.classList.add('is-reversed');
-        const imgSrc = IMG_BASE + card.i;
-        front.innerHTML = `<img src="${imgSrc}" class="tarot-image"><div class="card-name-label">${card.n.toUpperCase()}</div>`;
+        const imgSrc = getCardImgUrl(card.i);
+        const fallbackSrc = "https://www.sacred-texts.com/tarot/pkt/img/" + card.i;
+        front.innerHTML = `<img src="${imgSrc}" class="tarot-image"
+            onerror="this.onerror=null;this.src='${fallbackSrc}';this.onerror=function(){this.style.display='none';this.parentElement.querySelector('.card-placeholder')||this.insertAdjacentHTML('afterend','<div class=\\'card-placeholder\\'><span class=\\'card-placeholder-sym\\'>✦</span><span class=\\'card-placeholder-name\\'>${card.n.toUpperCase()}</span></div>')}"
+        ><div class="card-name-label">${card.n.toUpperCase()}</div>`;
         _lastTarotCards.push({ src: imgSrc, b64: null, name: card.n, reversed: isReversed });
         setTimeout(() => container.classList.add('flipped'), i * 700 + 300);
     }
 
     // ── Step 2: converti in base64 IN BACKGROUND (non blocca il flip né Make) ──
     chosen.forEach((card, i) => {
-        imgToBase64(IMG_BASE + card.i).then(b64 => {
+        const src = getCardImgUrl(card.i);
+        imgToBase64(src).then(b64 => {
             if (_lastTarotCards[i]) _lastTarotCards[i].b64 = b64;
-        }).catch(() => {});
+        }).catch(() => {
+            // Fallback: prova sacred-texts
+            imgToBase64(IMG_BASE + card.i).then(b64 => {
+                if (_lastTarotCards[i]) _lastTarotCards[i].b64 = b64;
+            }).catch(() => {});
+        });
     });
 
     // ── Step 3: chiama Make in parallelo ──
@@ -3527,7 +3623,7 @@ function inferScoresFromText(text) {
 // Anima il ring e le pillole con i punteggi
 function renderSynastryScores(total, scores, nameA, nameB) {
     const wrap = document.getElementById('synaScoreWrap');
-    wrap.style.display = 'block';
+    wrap.classList.add('visible');
 
     // Score ring
     document.getElementById('synaScoreNum').innerText = total;
@@ -3563,7 +3659,8 @@ function renderSynastryScores(total, scores, nameA, nameB) {
 function resetSynastry() {
     document.getElementById('synaInputBox').style.display = 'block';
     document.getElementById('synaResult').style.display = 'none';
-    document.getElementById('synaScoreWrap').style.display = 'none';
+    const wrap = document.getElementById('synaScoreWrap');
+    wrap.classList.remove('visible');
     document.getElementById('synaContent').innerHTML = '';
     ['Anima','Mente','Passione','Stabilita','Karma','Crescita'].forEach(k => {
         const el = document.getElementById('asp' + k + 'Val');
@@ -3717,6 +3814,14 @@ function openIgCard(tipo) {
         const raw   = document.getElementById('synaContent')?.innerText || '';
         const quote = showQuote ? extractQuote(raw, 110) : '';
         renderIgCanvas({ tipo: 'sinastria', quote, nameA, nameB, score });
+
+    } else if (tipo === 'astrologia') {
+        const sole = document.getElementById('summarySoleSign')?.innerText || '—';
+        const luna = document.getElementById('summaryLunaSign')?.innerText || '—';
+        const asc  = document.getElementById('summaryAscSign')?.innerText || '—';
+        const raw  = document.getElementById('astroCommentary')?.innerText || '';
+        const quote = showQuote ? extractQuote(raw, 130) : '';
+        renderIgCanvas({ tipo: 'astrologia', quote, sole, luna, asc });
     }
 }
 
@@ -3740,7 +3845,7 @@ function waitForB64(cards, maxWaitMs) {
 }
 
 // ─── Disegna la card su canvas (risolve CORS e centra su ogni device) ───────
-async function renderIgCanvas({ tipo, quote, cardImages, cardNames, nameA, nameB, score }) {
+async function renderIgCanvas({ tipo, quote, cardImages, cardNames, nameA, nameB, score, sole, luna, asc }) {
     const SIZE = 1080; // px — formato Instagram nativo
     let canvas = document.getElementById('igCanvas');
     if (!canvas) {
@@ -3863,6 +3968,47 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, nameA, nameB
         // Quote
         drawGoldLine(ctx, centerX, 660, 120);
         drawWrappedText(ctx, `"${quote}"`, centerX, 708, SIZE-160, cormnt(32), '#EDE0C4', 1.45);
+
+    } else if (tipo === 'astrologia') {
+        ctx.fillStyle = 'rgba(201,168,76,0.6)';
+        ctx.font = cinzel(20);
+        ctx.letterSpacing = '5px';
+        ctx.fillText('MAPPA ASTRALE', centerX, 240);
+
+        // Triade Sole / Luna / Ascendente
+        const triad = [
+            { sym: '☉', label: 'SOLE',       value: (sole||'—').toUpperCase() },
+            { sym: '☽', label: 'LUNA',       value: (luna||'—').toUpperCase() },
+            { sym: '↑',  label: 'ASCENDENTE', value: (asc||'—').toUpperCase() }
+        ];
+        const tW = 260, tH = 130, tGap = 28;
+        const tTotal = tW * 3 + tGap * 2;
+        const tStartX = (SIZE - tTotal) / 2;
+        const tY = 275;
+
+        triad.forEach((item, idx) => {
+            const tx = tStartX + idx * (tW + tGap);
+            roundRect(ctx, tx, tY, tW, tH, 14, 'rgba(20,14,40,0.75)', 'rgba(201,168,76,0.3)');
+            const gl2 = ctx.createLinearGradient(tx, tY, tx+tW, tY);
+            gl2.addColorStop(0,'transparent'); gl2.addColorStop(0.5,'rgba(201,168,76,0.6)'); gl2.addColorStop(1,'transparent');
+            ctx.fillStyle = gl2; ctx.fillRect(tx, tY, tW, 2);
+            ctx.fillStyle = 'rgba(201,168,76,0.8)';
+            ctx.font = `58px serif`; ctx.letterSpacing = '0';
+            ctx.fillText(item.sym, tx+tW/2, tY+62);
+            ctx.fillStyle = 'rgba(138,122,94,0.7)';
+            ctx.font = cinzel(16); ctx.letterSpacing = '3px';
+            ctx.fillText(item.label, tx+tW/2, tY+86);
+            ctx.fillStyle = '#E8C97A';
+            ctx.font = cinzel(24,'600'); ctx.letterSpacing = '2px';
+            ctx.fillText(item.value, tx+tW/2, tY+116);
+        });
+
+        drawGoldLine(ctx, centerX, 444, 140);
+        ctx.fillStyle = 'rgba(201,168,76,0.7)';
+        ctx.font = cinzel(20); ctx.letterSpacing = '4px';
+        ctx.fillText("IL COMMENTO DELL'ORACOLO", centerX, 490);
+        drawGoldLine(ctx, centerX, 510, 100);
+        drawWrappedText(ctx, `"${quote}"`, centerX, 568, SIZE-160, cormnt(32), '#EDE0C4', 1.5);
 
     } else if (tipo === 'sogno') {
         ctx.fillStyle = 'rgba(201,168,76,0.6)';
@@ -4072,7 +4218,7 @@ async function shareIgCard() {
         canvas.toBlob(async blob => {
             const file = new File([blob], 'Sidera.png', { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                await navigator.share({ files: [file], title: 'La mia rivelazione su Sidera ✨', text: 'Scopri il tuo oracolo su sidera7.vercel.app' });
+                await navigator.share({ files: [file], title: 'La mia rivelazione su Sidera ✨', text: 'Scopri il tuo oracolo su Sidera → https://sidera7.vercel.app/' });
             } else { downloadIgCard(); }
         }, 'image/png');
     } catch(e) { showToast('Errore nella condivisione.'); }
@@ -4178,6 +4324,14 @@ function toggleMobileMenu() {
         <button class="btn-ig btn-ig-primary" onclick="shareIgCard()">✨ Condividi</button>
         <button class="btn-ig btn-ig-secondary" onclick="closeIgCard()">✦ Chiudi</button>
     </div>
+    <a href="https://sidera7.vercel.app/" target="_blank" rel="noopener"
+       style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:3px;text-decoration:none;
+              border:1px solid rgba(201,168,76,0.3);padding:6px 20px;border-radius:50px;
+              background:rgba(201,168,76,0.06);transition:0.3s;display:inline-block;"
+       onmouseover="this.style.background='rgba(201,168,76,0.15)'"
+       onmouseout="this.style.background='rgba(201,168,76,0.06)'">
+        ✦ Sidera ✦
+    </a>
     <p style="font-family:'Cinzel',serif;font-size:9px;color:rgba(138,122,94,0.5);letter-spacing:2px;text-align:center;">Formato 1:1 · Ottimale per Instagram e TikTok</p>
 </div>
 
