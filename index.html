@@ -3859,6 +3859,16 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
     canvas.height = SIZE;
     const ctx = canvas.getContext('2d');
 
+    // ── Attendi caricamento font — CRITICO per measureText corretto ──────────
+    try {
+        await Promise.all([
+            document.fonts.load("italic 30px 'Cormorant Garamond'"),
+            document.fonts.load("400 30px 'Cormorant Garamond'"),
+            document.fonts.load("400 20px 'Cinzel'"),
+            document.fonts.load("600 52px 'Cinzel'"),
+        ]);
+    } catch(e) { /* prosegui comunque */ }
+
     // ── Sfondo ──────────────────────────────────────────────────────────────
     const bg = ctx.createRadialGradient(SIZE*0.2, SIZE*0.2, 0, SIZE*0.5, SIZE*0.5, SIZE*0.85);
     bg.addColorStop(0,   'rgba(107,63,160,0.6)');
@@ -3907,72 +3917,136 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
     drawGoldLine(ctx, centerX, 192, 160);
 
     // ── Contenuto per tipo ──────────────────────────────────────────────────
-    if (tipo === 'tarocchi' && cardImages && cardImages.length === 3) {
+    if (tipo === 'tarocchi') {
         // Titolo sezione
         ctx.fillStyle = 'rgba(201,168,76,0.6)';
         ctx.font = cinzel(20);
         ctx.letterSpacing = '5px';
+        ctx.textAlign = 'center';
         ctx.fillText('GLI ARCANI', centerX, 240);
 
-        // Carica e disegna le 3 carte — leggermente più alte
-        const labels = ['RADICI', 'PRESENTE', 'FUTURO'];
-        const cardW = 186, cardH = 300, gap = 32;
+        const labels  = ['RADICI', 'PRESENTE', 'FUTURO'];
+        const cardW = 194, cardH = 316, gap = 26;
         const totalW = cardW * 3 + gap * 2;
         const startX = (SIZE - totalW) / 2;
-        const cardY  = 268;
+        const cardY  = 264;
+
+        // Simboli e numeri romani per i 22 Arcani Maggiori
+        const ARCANA_META = {
+            'The Fool':          { num: '0',      sym: '☆' },
+            'The Magician':      { num: 'I',      sym: '✦' },
+            'The High Priestess':{ num: 'II',     sym: '☽' },
+            'The Empress':       { num: 'III',    sym: '♀' },
+            'The Emperor':       { num: 'IV',     sym: '♂' },
+            'The Hierophant':    { num: 'V',      sym: '†' },
+            'The Lovers':        { num: 'VI',     sym: '♡' },
+            'The Chariot':       { num: 'VII',    sym: '⚔' },
+            'Strength':          { num: 'VIII',   sym: '∞' },
+            'The Hermit':        { num: 'IX',     sym: '⊙' },
+            'Wheel of Fortune':  { num: 'X',      sym: '⊕' },
+            'Justice':           { num: 'XI',     sym: '⚖' },
+            'The Hanged Man':    { num: 'XII',    sym: '⏚' },
+            'Death':             { num: 'XIII',   sym: '⌛' },
+            'Temperance':        { num: 'XIV',    sym: '⚗' },
+            'The Devil':         { num: 'XV',     sym: '⛧' },
+            'The Tower':         { num: 'XVI',    sym: '⚡' },
+            'The Star':          { num: 'XVII',   sym: '★' },
+            'The Moon':          { num: 'XVIII',  sym: '☾' },
+            'The Sun':           { num: 'XIX',    sym: '☀' },
+            'Judgement':         { num: 'XX',     sym: '☩' },
+            'The World':         { num: 'XXI',    sym: '◉' },
+        };
+
+        // Palette colori per ogni carta — basata sull'arcano
+        const CARD_PALETTES = [
+            ['#1A0E2A','#2D1054'],['#0D1A2A','#0E2D40'],['#1A0E1E','#2A1040'],
+            ['#1A1208','#2D2008'],['#1A0808','#2D1008'],['#0D1A0D','#0E2D10'],
+            ['#1A0A14','#2D0E20'],['#0A0A1A','#100E2D'],['#1A0E0A','#2D1808'],
+            ['#0A1A0A','#0E2D10'],['#1A1A08','#2D2A08'],['#0A0A1A','#0E102D'],
+        ];
 
         for (let i = 0; i < 3; i++) {
             const cx = startX + i * (cardW + gap);
-            roundRect(ctx, cx, cardY, cardW, cardH, 14, '#1A122E', 'rgba(201,168,76,0.5)');
+            const cardInfo = _lastTarotCards[i];
+            const name = cardNames ? cardNames[i] : '';
+            const meta = ARCANA_META[name] || { num: '✦', sym: '✦' };
+            const pal  = CARD_PALETTES[i % CARD_PALETTES.length];
 
-            const imgEl = await loadCardForCanvas(
-                cardImages ? cardImages[i] : null,
-                cardUrls   ? cardUrls[i]   : null
-            );
-            if (imgEl) {
-                try {
-                    ctx.save();
-                    roundRectClip(ctx, cx+4, cardY+4, cardW-8, cardH-8, 11);
-                    ctx.drawImage(imgEl, cx+4, cardY+4, cardW-8, cardH-8);
-                    ctx.restore();
-                } catch {
-                    ctx.fillStyle = 'rgba(201,168,76,0.2)';
-                    ctx.font = cinzel(40); ctx.letterSpacing='0';
-                    ctx.fillText('✦', cx + cardW/2, cardY + cardH/2 + 14);
-                }
-            } else {
-                ctx.fillStyle = 'rgba(201,168,76,0.08)';
-                ctx.fillRect(cx+4, cardY+4, cardW-8, cardH-8);
-                ctx.fillStyle = 'rgba(201,168,76,0.3)';
-                ctx.font = cinzel(40); ctx.letterSpacing='0';
-                ctx.fillText('✦', cx + cardW/2, cardY + cardH/2 + 14);
-                ctx.fillStyle = 'rgba(201,168,76,0.2)';
-                ctx.font = cinzel(11); ctx.letterSpacing = '1px';
-                ctx.fillText('ARCANO', cx + cardW/2, cardY + cardH/2 + 40);
+            // Sfondo carta con gradiente verticale
+            const cg = ctx.createLinearGradient(cx, cardY, cx, cardY + cardH);
+            cg.addColorStop(0,   pal[1]);
+            cg.addColorStop(0.5, pal[0]);
+            cg.addColorStop(1,   '#07050F');
+            roundRect(ctx, cx, cardY, cardW, cardH, 14, null, null);
+            ctx.fillStyle = cg; ctx.fill();
+
+            // Bordo doppio dorato
+            ctx.strokeStyle = 'rgba(201,168,76,0.65)'; ctx.lineWidth = 2;
+            ctx.stroke();
+            roundRect(ctx, cx+7, cardY+7, cardW-14, cardH-14, 10, null, 'rgba(201,168,76,0.2)');
+
+            // Halo centrale
+            const halo = ctx.createRadialGradient(cx+cardW/2, cardY+cardH*0.42, 0, cx+cardW/2, cardY+cardH*0.42, 70);
+            halo.addColorStop(0, 'rgba(201,168,76,0.18)');
+            halo.addColorStop(1, 'transparent');
+            ctx.fillStyle = halo; ctx.fillRect(cx, cardY, cardW, cardH);
+
+            // Numero romano in cima
+            ctx.fillStyle = 'rgba(201,168,76,0.55)';
+            ctx.font = cinzel(18, '400'); ctx.letterSpacing = '3px';
+            ctx.textAlign = 'center';
+            ctx.fillText(meta.num, cx + cardW/2, cardY + 34);
+
+            // Simbolo grande al centro
+            ctx.fillStyle = 'rgba(201,168,76,0.88)';
+            ctx.font = `72px serif`; ctx.letterSpacing = '0';
+            ctx.fillText(meta.sym, cx + cardW/2, cardY + cardH*0.48 + 24);
+
+            // Linea decorativa sopra il nome
+            const lx1 = cx + 20, lx2 = cx + cardW - 20, ly = cardY + cardH - 52;
+            const lg = ctx.createLinearGradient(lx1, ly, lx2, ly);
+            lg.addColorStop(0,'transparent'); lg.addColorStop(0.5,'rgba(201,168,76,0.4)'); lg.addColorStop(1,'transparent');
+            ctx.beginPath(); ctx.moveTo(lx1, ly); ctx.lineTo(lx2, ly);
+            ctx.strokeStyle = lg; ctx.lineWidth = 1; ctx.stroke();
+
+            // Nome carta in basso
+            ctx.fillStyle = '#C9A84C';
+            ctx.font = cinzel(13, '500'); ctx.letterSpacing = '1px';
+            ctx.textAlign = 'center';
+            // Tronca se troppo lungo
+            const maxNameW = cardW - 24;
+            let displayName = name.toUpperCase();
+            ctx.font = cinzel(13, '500');
+            while (ctx.measureText(displayName).width > maxNameW && displayName.length > 3) {
+                displayName = displayName.slice(0, -1);
             }
+            ctx.fillText(displayName, cx + cardW/2, cardY + cardH - 22);
 
-            // Label posizione
-            ctx.fillStyle = 'rgba(201,168,76,0.6)';
-            ctx.font = cinzel(16);
-            ctx.letterSpacing = '3px';
-            ctx.fillText(labels[i], cx + cardW/2, cardY + cardH + 28);
-            // Nome carta
-            if (cardNames && cardNames[i]) {
-                ctx.fillStyle = 'rgba(237,224,196,0.45)';
-                ctx.font = cinzel(12);
-                ctx.letterSpacing = '1px';
-                ctx.fillText(cardNames[i].toUpperCase(), cx + cardW/2, cardY + cardH + 48);
+            // Indicatore Rovesciata
+            if (cardInfo && cardInfo.reversed) {
+                ctx.fillStyle = 'rgba(180,80,80,0.7)';
+                ctx.font = cinzel(10); ctx.letterSpacing = '1px';
+                ctx.fillText('ROVESCIATA', cx + cardW/2, cardY + cardH - 6);
             }
         }
 
-        // Riassunto 3-4 righe sotto le carte
-        const summaryY = cardY + cardH + 74;
+        // Label posizione sotto ogni carta
+        for (let i = 0; i < 3; i++) {
+            const cx = startX + i * (cardW + gap);
+            ctx.fillStyle = 'rgba(201,168,76,0.55)';
+            ctx.font = cinzel(15); ctx.letterSpacing = '3px';
+            ctx.textAlign = 'center';
+            ctx.fillText(labels[i], cx + cardW/2, cardY + cardH + 28);
+        }
+
+        // Riassunto testuale
+        const summaryY = cardY + cardH + 54;
         drawGoldLine(ctx, centerX, summaryY, 130);
         ctx.fillStyle = 'rgba(201,168,76,0.7)';
         ctx.font = cinzel(17); ctx.letterSpacing = '4px';
-        ctx.fillText('IL MESSAGGIO DEGLI ARCANI', centerX, summaryY + 38);
-        drawGoldLine(ctx, centerX, summaryY + 56, 90);
-        drawWrappedText(ctx, `"${quote}"`, centerX, summaryY + 108, SIZE-140, cormnt(30), '#EDE0C4', 1.48, SIZE-130);
+        ctx.fillText('IL MESSAGGIO DEGLI ARCANI', centerX, summaryY + 40);
+        drawGoldLine(ctx, centerX, summaryY + 58, 90);
+        drawWrappedText(ctx, `"${quote}"`, centerX, summaryY + 104, SIZE-140, cormnt(29), '#EDE0C4', 1.48, SIZE-130);
 
     } else if (tipo === 'astrologia') {
         // ── Layout verticale — come da design di riferimento ──────────────────
@@ -4170,20 +4244,26 @@ function drawGoldLine(ctx, cx, y, halfLen) {
 }
 
 function drawWrappedText(ctx, text, cx, startY, maxW, font, color, lineH_mult, maxY) {
+    // Reset PRIMA di settare il font — alcuni browser applicano letterSpacing a measureText
+    ctx.letterSpacing = '0px';
     ctx.font = font;
     ctx.fillStyle = color;
     ctx.textAlign = 'center';
-    ctx.letterSpacing = '0px';
-    const words = text.split(' ');
-    const lineHeight = parseInt(font) * lineH_mult;
+    const fontSize = parseInt(font) || 30;
+    const lineHeight = fontSize * lineH_mult;
     const limit = (maxY !== undefined) ? maxY : Infinity;
+    const words = text.split(' ');
     let line = '', y = startY;
     for (const word of words) {
-        const test = line + (line ? ' ' : '') + word;
+        const test = line ? line + ' ' + word : word;
+        // Misura senza letterSpacing — già a 0
         if (ctx.measureText(test).width > maxW && line) {
             if (y <= limit) ctx.fillText(line, cx, y);
-            line = word; y += lineHeight;
-        } else { line = test; }
+            line = word;
+            y += lineHeight;
+        } else {
+            line = test;
+        }
     }
     if (line && y <= limit) ctx.fillText(line, cx, y);
 }
