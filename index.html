@@ -3796,10 +3796,10 @@ function openIgCard(tipo) {
         const raw = document.getElementById('readingContent')?.innerText || '';
         const quote = showQuote ? extractQuote(raw, 240) : '';
         const cardNames = _lastTarotCards.map(c => c.name);
+        const cardUrls  = _lastTarotCards.map(c => c.src); // URL originali Wikimedia (CORS aperto)
 
-        // Aspetta che tutte le b64 siano pronte (max 8 secondi)
-        waitForB64(_lastTarotCards, 8000).then(cardImages => {
-            renderIgCanvas({ tipo: 'tarocchi', quote, cardImages, cardNames });
+        waitForB64(_lastTarotCards, 6000).then(cardImages => {
+            renderIgCanvas({ tipo: 'tarocchi', quote, cardImages, cardNames, cardUrls });
         });
 
     } else if (tipo === 'sogno') {
@@ -3845,7 +3845,7 @@ function waitForB64(cards, maxWaitMs) {
 }
 
 // ─── Disegna la card su canvas (risolve CORS e centra su ogni device) ───────
-async function renderIgCanvas({ tipo, quote, cardImages, cardNames, nameA, nameB, score, sole, luna, asc }) {
+async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, nameA, nameB, score, sole, luna, asc }) {
     const SIZE = 1080; // px — formato Instagram nativo
     let canvas = document.getElementById('igCanvas');
     if (!canvas) {
@@ -3925,27 +3925,29 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, nameA, nameB
             const cx = startX + i * (cardW + gap);
             roundRect(ctx, cx, cardY, cardW, cardH, 14, '#1A122E', 'rgba(201,168,76,0.5)');
 
-            if (cardImages[i]) {
+            const imgEl = await loadCardForCanvas(
+                cardImages ? cardImages[i] : null,
+                cardUrls   ? cardUrls[i]   : null
+            );
+            if (imgEl) {
                 try {
-                    const img = await loadImage(cardImages[i]);
                     ctx.save();
                     roundRectClip(ctx, cx+4, cardY+4, cardW-8, cardH-8, 11);
-                    ctx.drawImage(img, cx+4, cardY+4, cardW-8, cardH-8);
+                    ctx.drawImage(imgEl, cx+4, cardY+4, cardW-8, cardH-8);
                     ctx.restore();
                 } catch {
-                    ctx.fillStyle = 'rgba(201,168,76,0.12)';
-                    ctx.font = cinzel(48);
-                    ctx.fillText('✦', cx + cardW/2, cardY + cardH/2 + 16);
+                    ctx.fillStyle = 'rgba(201,168,76,0.2)';
+                    ctx.font = cinzel(40); ctx.letterSpacing='0';
+                    ctx.fillText('✦', cx + cardW/2, cardY + cardH/2 + 14);
                 }
             } else {
                 ctx.fillStyle = 'rgba(201,168,76,0.08)';
                 ctx.fillRect(cx+4, cardY+4, cardW-8, cardH-8);
                 ctx.fillStyle = 'rgba(201,168,76,0.3)';
-                ctx.font = cinzel(40);
+                ctx.font = cinzel(40); ctx.letterSpacing='0';
                 ctx.fillText('✦', cx + cardW/2, cardY + cardH/2 + 14);
                 ctx.fillStyle = 'rgba(201,168,76,0.2)';
-                ctx.font = cinzel(11);
-                ctx.letterSpacing = '1px';
+                ctx.font = cinzel(11); ctx.letterSpacing = '1px';
                 ctx.fillText('ARCANO', cx + cardW/2, cardY + cardH/2 + 40);
             }
 
@@ -3970,57 +3972,88 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, nameA, nameB
         ctx.font = cinzel(17); ctx.letterSpacing = '4px';
         ctx.fillText('IL MESSAGGIO DEGLI ARCANI', centerX, summaryY + 38);
         drawGoldLine(ctx, centerX, summaryY + 56, 90);
-        drawWrappedText(ctx, `"${quote}"`, centerX, summaryY + 108, SIZE-140, cormnt(30), '#EDE0C4', 1.48);
+        drawWrappedText(ctx, `"${quote}"`, centerX, summaryY + 108, SIZE-140, cormnt(30), '#EDE0C4', 1.48, SIZE-130);
 
     } else if (tipo === 'astrologia') {
-        ctx.fillStyle = 'rgba(201,168,76,0.6)';
-        ctx.font = cinzel(20);
-        ctx.letterSpacing = '5px';
-        ctx.fillText('MAPPA ASTRALE', centerX, 240);
+        // ── Layout verticale — come da design di riferimento ──────────────────
+        const MARGIN_X = 60;
 
-        // Triade Sole / Luna / Ascendente — formato "Sole in Gemelli"
-        const triad = [
-            { sym: '☉', full: 'SOLE IN',       value: (sole||'—').toUpperCase() },
-            { sym: '☽', full: 'LUNA IN',       value: (luna||'—').toUpperCase() },
-            { sym: '↑',  full: 'ASCENDENTE IN', value: (asc||'—').toUpperCase() }
+        // Sottotitolo sezione
+        ctx.fillStyle = 'rgba(201,168,76,0.5)';
+        ctx.font = cinzel(16); ctx.letterSpacing = '5px';
+        ctx.textAlign = 'center';
+        ctx.fillText('IL TUO ALLINEAMENTO', centerX, 232);
+        drawGoldLine(ctx, centerX, 256, 160);
+
+        // Subtitles standard per ogni elemento
+        const subs = { sole: 'Essenza e Vitalità', luna: 'Emozioni e Inconscio', asc: 'Personalità esteriore' };
+
+        const rows = [
+            { sym: '☉', label: 'SOLE IN',       val: (sole||'—').toUpperCase(), sub: subs.sole  },
+            { sym: '☽', label: 'LUNA IN',       val: (luna||'—').toUpperCase(), sub: subs.luna  },
+            { sym: '↑',  label: 'ASCENDENTE IN', val: (asc||'—').toUpperCase(),  sub: subs.asc   }
         ];
-        const tW = 260, tH = 148, tGap = 28;
-        const tTotal = tW * 3 + tGap * 2;
-        const tStartX = (SIZE - tTotal) / 2;
-        const tY = 270;
 
-        triad.forEach((item, idx) => {
-            const tx = tStartX + idx * (tW + tGap);
-            roundRect(ctx, tx, tY, tW, tH, 14, 'rgba(20,14,40,0.75)', 'rgba(201,168,76,0.3)');
-            const gl2 = ctx.createLinearGradient(tx, tY, tx+tW, tY);
-            gl2.addColorStop(0,'transparent'); gl2.addColorStop(0.5,'rgba(201,168,76,0.6)'); gl2.addColorStop(1,'transparent');
-            ctx.fillStyle = gl2; ctx.fillRect(tx, tY, tW, 2);
-            // Simbolo grande
-            ctx.fillStyle = 'rgba(201,168,76,0.85)';
-            ctx.font = `54px serif`; ctx.letterSpacing = '0';
-            ctx.fillText(item.sym, tx+tW/2, tY+58);
-            // "SOLE IN" — etichetta piccola
-            ctx.fillStyle = 'rgba(138,122,94,0.75)';
-            ctx.font = cinzel(14); ctx.letterSpacing = '3px';
-            ctx.fillText(item.full, tx+tW/2, tY+86);
-            // "GEMELLI" — valore grande
-            ctx.fillStyle = '#E8C97A';
-            ctx.font = cinzel(26,'600'); ctx.letterSpacing = '2px';
-            ctx.fillText(item.value, tx+tW/2, tY+124);
+        const rowTop0 = 272, rowH = 110, sepH = 1;
+
+        rows.forEach((row, i) => {
+            const rTop = rowTop0 + i * (rowH + 12);
+            const rMid = rTop + rowH / 2;
+
+            // Cerchio simbolo
+            const symX = MARGIN_X + 46, symY = rMid;
+            ctx.beginPath();
+            ctx.arc(symX, symY, 36, 0, Math.PI*2);
+            ctx.strokeStyle = 'rgba(201,168,76,0.4)';
+            ctx.lineWidth = 1.5; ctx.stroke();
+            ctx.fillStyle = 'rgba(201,168,76,0.07)';
+            ctx.fill();
+
+            // Simbolo
+            ctx.fillStyle = 'rgba(201,168,76,0.9)';
+            ctx.font = `42px serif`; ctx.letterSpacing = '0';
+            ctx.textAlign = 'center';
+            ctx.fillText(row.sym, symX, symY + 15);
+
+            // Titolo "SOLE IN TORO" — left aligned
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#C9A84C';
+            ctx.font = cinzel(30, '600'); ctx.letterSpacing = '2px';
+            ctx.fillText(`${row.label} ${row.val}`, MARGIN_X + 102, rMid - 4);
+
+            // Sottotitolo
+            ctx.fillStyle = 'rgba(219,200,160,0.55)';
+            ctx.font = cormnt(26, 'italic'); ctx.letterSpacing = '0';
+            ctx.fillText(row.sub, MARGIN_X + 104, rMid + 32);
+
+            // Separatore riga (solo tra le righe, non dopo l'ultima)
+            if (i < rows.length - 1) {
+                const sepY = rTop + rowH + 6;
+                const sepGrad = ctx.createLinearGradient(MARGIN_X, sepY, SIZE-MARGIN_X, sepY);
+                sepGrad.addColorStop(0, 'transparent');
+                sepGrad.addColorStop(0.15, 'rgba(201,168,76,0.2)');
+                sepGrad.addColorStop(0.85, 'rgba(201,168,76,0.2)');
+                sepGrad.addColorStop(1, 'transparent');
+                ctx.beginPath();
+                ctx.moveTo(MARGIN_X, sepY); ctx.lineTo(SIZE-MARGIN_X, sepY);
+                ctx.strokeStyle = sepGrad; ctx.lineWidth = 1; ctx.stroke();
+            }
         });
 
-        // Riga riassuntiva in orizzontale: "Sole in Gemelli · Luna in Leone · Ascendente in Cancro"
-        const summaryLine = `${sole||'—'}  ·  ${luna||'—'}  ·  ${asc||'—'}`;
-        ctx.fillStyle = 'rgba(201,168,76,0.45)';
-        ctx.font = cormnt(26, 'italic'); ctx.letterSpacing = '1px';
-        ctx.fillText(summaryLine.toLowerCase(), centerX, tY + tH + 36);
-
-        drawGoldLine(ctx, centerX, tY + tH + 62, 140);
-        ctx.fillStyle = 'rgba(201,168,76,0.7)';
-        ctx.font = cinzel(18); ctx.letterSpacing = '4px';
-        ctx.fillText("IL COMMENTO DELL'ORACOLO", centerX, tY + tH + 106);
-        drawGoldLine(ctx, centerX, tY + tH + 126, 100);
-        drawWrappedText(ctx, `"${quote}"`, centerX, tY + tH + 182, SIZE-160, cormnt(30), '#EDE0C4', 1.5);
+        // ── Commento testuale sotto i tre elementi ─────────────────────────
+        const textBlockTop = rowTop0 + 3 * rowH + 3 * 12 + 14; // ≈ 630
+        ctx.textAlign = 'center';
+        drawGoldLine(ctx, centerX, textBlockTop, 160);
+        ctx.fillStyle = 'rgba(201,168,76,0.65)';
+        ctx.font = cinzel(17); ctx.letterSpacing = '4px';
+        ctx.fillText("IL COMMENTO DELL'ORACOLO", centerX, textBlockTop + 40);
+        drawGoldLine(ctx, centerX, textBlockTop + 60, 90);
+        drawWrappedText(
+            ctx, `"${quote}"`,
+            centerX, textBlockTop + 106,
+            SIZE - 140, cormnt(30), '#EDE0C4', 1.5,
+            SIZE - 130 // maxY — non esce dal footer
+        );
 
     } else if (tipo === 'sogno') {
         ctx.fillStyle = 'rgba(201,168,76,0.6)';
@@ -4040,7 +4073,7 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, nameA, nameB
         ctx.font = cinzel(18); ctx.letterSpacing = '4px';
         ctx.fillText('LA VISIONE', centerX, 414);
         drawGoldLine(ctx, centerX, 434, 90);
-        drawWrappedText(ctx, `"${quote}"`, centerX, 490, SIZE-140, cormnt(32), '#EDE0C4', 1.52);
+        drawWrappedText(ctx, `"${quote}"`, centerX, 490, SIZE-140, cormnt(32), '#EDE0C4', 1.52, SIZE-130);
 
     } else if (tipo === 'sinastria') {
         ctx.fillStyle = 'rgba(201,168,76,0.6)';
@@ -4087,7 +4120,7 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, nameA, nameB
         ctx.fillText('AFFINITÀ COSMICA', ringX, ringY + 50);
 
         drawGoldLine(ctx, centerX, 704, 120);
-        drawWrappedText(ctx, `"${quote}"`, centerX, 752, SIZE-160, cormnt(30), '#EDE0C4', 1.5);
+        drawWrappedText(ctx, `"${quote}"`, centerX, 752, SIZE-160, cormnt(30), '#EDE0C4', 1.5, SIZE-130);
     }
 
     // ── Footer ──────────────────────────────────────────────────────────────
@@ -4136,22 +4169,23 @@ function drawGoldLine(ctx, cx, y, halfLen) {
     ctx.strokeStyle = grad; ctx.lineWidth = 1; ctx.stroke();
 }
 
-function drawWrappedText(ctx, text, cx, startY, maxW, font, color, lineH_mult) {
+function drawWrappedText(ctx, text, cx, startY, maxW, font, color, lineH_mult, maxY) {
     ctx.font = font;
     ctx.fillStyle = color;
     ctx.textAlign = 'center';
     ctx.letterSpacing = '0px';
     const words = text.split(' ');
     const lineHeight = parseInt(font) * lineH_mult;
+    const limit = (maxY !== undefined) ? maxY : Infinity;
     let line = '', y = startY;
     for (const word of words) {
         const test = line + (line ? ' ' : '') + word;
         if (ctx.measureText(test).width > maxW && line) {
-            ctx.fillText(line, cx, y);
+            if (y <= limit) ctx.fillText(line, cx, y);
             line = word; y += lineHeight;
         } else { line = test; }
     }
-    if (line) ctx.fillText(line, cx, y);
+    if (line && y <= limit) ctx.fillText(line, cx, y);
 }
 
 // Converte immagine in base64 per la card Instagram
@@ -4194,10 +4228,22 @@ async function imgToBase64(src) {
 function loadImage(src) {
     return new Promise((resolve, reject) => {
         const img = new Image();
+        img.crossOrigin = 'anonymous'; // richiesto per canvas non-tainted
         img.onload = () => resolve(img);
         img.onerror = reject;
-        img.src = src; // src è già base64 o URL diretto
+        img.src = src;
     });
+}
+
+// Prova b64 prima, poi URL diretto con crossOrigin (Wikimedia ha CORS aperto)
+async function loadCardForCanvas(b64DataUrl, fallbackUrl) {
+    if (b64DataUrl) {
+        try { return await loadImage(b64DataUrl); } catch {}
+    }
+    if (fallbackUrl) {
+        try { return await loadImage(fallbackUrl); } catch {}
+    }
+    return null;
 }
 
 
