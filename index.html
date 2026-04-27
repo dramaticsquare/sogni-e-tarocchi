@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sidera — L'Oracolo delle Stelle</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -3045,13 +3046,83 @@ function addCredits(amount) {
 }
 
 // ─────────────────────────────────────────────
+//  SUPABASE — PROFILO E CREDITI
+// ─────────────────────────────────────────────
+
+// Carica il profilo dalla tabella profiles
+async function loadProfile(userId) {
+    if (!window._supabase) return null;
+    try {
+        const { data, error } = await window._supabase
+            .from('profiles')
+            .select('credits, history')
+            .eq('user_id', userId)
+            .single();
+        if (error) { console.warn('[Supabase] loadProfile error:', error.message); return null; }
+        return data;
+    } catch(e) { return null; }
+}
+
+// Sincronizza crediti e cronologia su Supabase
+async function syncToSupabase() {
+    if (!window._supabase || !currentUser?.id) return;
+    try {
+        const credits = parseInt(localStorage.getItem('astral_credits')) || 0;
+        const history = JSON.stringify(currentUser.history || []);
+        await window._supabase.from('profiles').upsert({
+            user_id: currentUser.id,
+            credits,
+            history
+        });
+    } catch(e) { console.warn('[Supabase] sync error:', e); }
+}
+
+// Aggiunge crediti localmente e su Supabase
+function addCredits(amount) {
+    const current = parseInt(localStorage.getItem('astral_credits')) || 0;
+    const newTotal = current + amount;
+    localStorage.setItem('astral_credits', newTotal.toString());
+    document.getElementById('creditCount').innerText = newTotal;
+    if (currentUser) {
+        currentUser.credits = newTotal;
+        if (!currentUser.supabase) localStorage.setItem('sidera_user', JSON.stringify(currentUser));
+        const pc = document.getElementById('profileCredits');
+        if (pc) pc.innerText = newTotal;
+        syncToSupabase(); // sincrono in background
+    }
+}
+
+// Scala i crediti (chiamata interna dopo ogni consulto)
+function deductCredits(amount) {
+    const current = parseInt(localStorage.getItem('astral_credits')) || 0;
+    const newTotal = Math.max(0, current - amount);
+    localStorage.setItem('astral_credits', newTotal.toString());
+    document.getElementById('creditCount').innerText = newTotal;
+    if (currentUser) {
+        currentUser.credits = newTotal;
+        if (!currentUser.supabase) localStorage.setItem('sidera_user', JSON.stringify(currentUser));
+        const pc = document.getElementById('profileCredits');
+        if (pc) pc.innerText = newTotal;
+        syncToSupabase();
+    }
+}
+
+// Salva una lettura nello storico (locale + Supabase)
+
+// ─────────────────────────────────────────────
 //  ACCOUNT — AUTH
 //  Per sincronizzazione reale cross-device:
 //  1. Aggiungi l'SDK Supabase nell'head: cdn.jsdelivr.net/npm/@supabase/supabase-js@2
 //  2. const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-//  3. Sostituisci i blocchi [SUPABASE] nel codice qui sotto
+//  3. Imposta SUPABASE_ENABLED = true nella sezione CONFIG
 // ─────────────────────────────────────────────
-function openAccount() {
+// 2. Nella sezione CONFIG, inserisci le tue credenziali:
+const SUPABASE_URL  = 'https://dqxgmptfnlwanixiutzy.supabase.co';
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxeGdtcHRmbmx3YW5peGl1dHp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTYwMTQsImV4cCI6MjA5Mjg5MjAxNH0.EyphWXmvWlQBxJi0YyzOz7jihrvett8Hrl07H5C_qxM';
+
+// 3. Attiva:
+const SUPABASE_ENABLED = true;
+    function openAccount() {
     document.getElementById('accountModal').classList.add('open');
     if (currentUser) showProfileView();
     else showAuthView();
@@ -3097,25 +3168,51 @@ async function doLogin() {
     const btn = document.getElementById('loginBtn');
     btn.innerText = '...'; btn.disabled = true;
 
-    // [SUPABASE] Sostituisci con:
-    // const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
-    // if (error) { errEl.innerText='Credenziali non valide.'; errEl.style.display='block'; btn.innerText='✦ Accedi al Tempio'; btn.disabled=false; return; }
-    // currentUser = { name: data.user.user_metadata.name || email.split('@')[0], email: data.user.email, supabase: true, history: [] };
-
-    await new Promise(r => setTimeout(r, 600));
-    const saved = localStorage.getItem('sidera_user');
-    if (saved) {
-        const u = JSON.parse(saved);
-        if (u.email === email) {
-            currentUser = u;
-            updateAccountUI(); showProfileView();
-            btn.innerText='✦ Accedi al Tempio'; btn.disabled=false;
-            showToast('Bentornato, ' + currentUser.name + ' ✦');
+    if (window._supabase) {
+        // ── LOGIN CON SUPABASE ──────────────────────────────
+        const { data, error } = await window._supabase.auth.signInWithPassword({ email, password: pass });
+        if (error) {
+            errEl.innerText = 'Credenziali non valide.';
+            errEl.style.display = 'block';
+            btn.innerText = '✦ Accedi al Tempio'; btn.disabled = false;
             return;
         }
+        const profile = await loadProfile(data.user.id);
+        currentUser = {
+            id: data.user.id,
+            name: data.user.user_metadata?.name || email.split('@')[0],
+            email: data.user.email,
+            supabase: true,
+            history: profile?.history ? JSON.parse(profile.history) : []
+        };
+        // Sincronizza crediti: usa il valore Supabase se esiste, altrimenti il locale
+        const remoteCredits = profile?.credits ?? null;
+        const localCredits  = parseInt(localStorage.getItem('astral_credits')) || 0;
+        const finalCredits  = remoteCredits !== null ? remoteCredits : localCredits;
+        localStorage.setItem('astral_credits', finalCredits);
+    } else {
+        // ── FALLBACK LOCALE (senza Supabase) ────────────────
+        await new Promise(r => setTimeout(r, 600));
+        const saved = localStorage.getItem('sidera_user');
+        if (saved) {
+            const u = JSON.parse(saved);
+            if (u.email === email) {
+                currentUser = u;
+                updateAccountUI(); showProfileView();
+                btn.innerText = '✦ Accedi al Tempio'; btn.disabled = false;
+                showToast('Bentornato, ' + currentUser.name + ' ✦');
+                return;
+            }
+        }
+        errEl.innerText = 'Profilo non trovato. Crea un account.';
+        errEl.style.display = 'block';
+        btn.innerText = '✦ Accedi al Tempio'; btn.disabled = false;
+        return;
     }
-    errEl.innerText='Profilo non trovato. Crea un account.'; errEl.style.display='block';
-    btn.innerText='✦ Accedi al Tempio'; btn.disabled=false;
+
+    updateAccountUI(); showProfileView();
+    btn.innerText = '✦ Accedi al Tempio'; btn.disabled = false;
+    showToast('Bentornato, ' + currentUser.name + ' ✦');
 }
 
 async function doRegister() {
@@ -3128,19 +3225,35 @@ async function doRegister() {
     if (!email||!email.includes('@')) { errEl.innerText='Email non valida.'; errEl.style.display='block'; return; }
     if (pass.length < 6) { errEl.innerText='Password di almeno 6 caratteri.'; errEl.style.display='block'; return; }
 
-    // [SUPABASE] Sostituisci con:
-    // const { data, error } = await supabase.auth.signUp({ email, password: pass, options: { data: { name } } });
-    // if (error) { errEl.innerText=error.message; errEl.style.display='block'; return; }
-    // currentUser = { name, email, supabase: true, history: [] };
+    if (window._supabase) {
+        // ── REGISTRAZIONE CON SUPABASE ──────────────────────
+        const { data, error } = await window._supabase.auth.signUp({
+            email, password: pass,
+            options: { data: { name } }
+        });
+        if (error) { errEl.innerText = error.message; errEl.style.display='block'; return; }
 
-    currentUser = { name, email, credits: parseInt(localStorage.getItem('astral_credits'))||3, history: [] };
-    localStorage.setItem('sidera_user', JSON.stringify(currentUser));
+        // Crea il profilo nella tabella profiles
+        const initialCredits = parseInt(localStorage.getItem('astral_credits')) || 3;
+        await window._supabase.from('profiles').upsert({
+            user_id: data.user.id,
+            credits: initialCredits,
+            history: JSON.stringify([])
+        });
+
+        currentUser = { id: data.user.id, name, email, supabase: true, history: [] };
+    } else {
+        // ── FALLBACK LOCALE ──────────────────────────────────
+        currentUser = { name, email, credits: parseInt(localStorage.getItem('astral_credits'))||3, history: [] };
+        localStorage.setItem('sidera_user', JSON.stringify(currentUser));
+    }
+
     updateAccountUI(); showProfileView();
     showToast('🌟 Benvenuto nel tempio, ' + name + '!');
 }
 
-function doLogout() {
-    // [SUPABASE]: await supabase.auth.signOut();
+async function doLogout() {
+    if (window._supabase) await window._supabase.auth.signOut();
     currentUser = null;
     localStorage.removeItem('sidera_user');
     updateAccountUI();
@@ -3183,7 +3296,6 @@ function renderHistory() {
         </div>
     `).join('');
 }
-
 // ─────────────────────────────────────────────
 //  SOGNI HELPERS
 // ─────────────────────────────────────────────
