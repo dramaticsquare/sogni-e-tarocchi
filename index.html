@@ -3197,57 +3197,63 @@ async function doLogin() {
     const email = document.getElementById('loginEmail').value.trim();
     const pass  = document.getElementById('loginPass').value.trim();
     const errEl = document.getElementById('loginError');
+    const btn = document.getElementById('loginBtn');
     errEl.style.display = 'none';
     if (!email || !pass) { errEl.innerText='Inserisci email e password.'; errEl.style.display='block'; return; }
-    const btn = document.getElementById('loginBtn');
-    btn.innerText = '...'; btn.disabled = true;
+    btn.innerText = '...';
+    btn.disabled = true;
 
-    if (window._supabase) {
-        // ── LOGIN CON SUPABASE ──────────────────────────────
-        const { data, error } = await window._supabase.auth.signInWithPassword({ email, password: pass });
-        if (error) {
-            errEl.innerText = error.message || 'Accesso non riuscito.';
-            errEl.style.display = 'block';
-            btn.innerText = '✦ Accedi al Tempio'; btn.disabled = false;
-            return;
-        }
-        const profile = await loadProfile(data.user.id);
-        currentUser = {
-            id: data.user.id,
-            name: data.user.user_metadata?.name || email.split('@')[0],
-            email: data.user.email,
-            supabase: true,
-            // history è jsonb — Supabase lo restituisce già come array JS, non stringa
-            history: Array.isArray(profile?.history) ? profile.history : []
-        };
-        // Sincronizza crediti: usa il valore Supabase se esiste, altrimenti il locale
-        const remoteCredits = profile?.credits ?? null;
-        const localCredits  = parseInt(localStorage.getItem('astral_credits')) || 0;
-        const finalCredits  = remoteCredits !== null ? remoteCredits : localCredits;
-        localStorage.setItem('astral_credits', finalCredits);
-    } else {
-        // ── FALLBACK LOCALE (senza Supabase) ────────────────
-        await new Promise(r => setTimeout(r, 600));
-        const saved = localStorage.getItem('sidera_user');
-        if (saved) {
-            const u = JSON.parse(saved);
-            if (u.email === email) {
-                currentUser = u;
-                updateAccountUI(); showProfileView();
-                btn.innerText = '✦ Accedi al Tempio'; btn.disabled = false;
-                showToast('Bentornato, ' + currentUser.name + ' ✦');
+    try {
+        if (window._supabase) {
+            const { data, error } = await window._supabase.auth.signInWithPassword({ email, password: pass });
+            if (error) {
+                errEl.innerText = error.message || 'Accesso non riuscito.';
+                errEl.style.display = 'block';
                 return;
             }
-        }
-        errEl.innerText = 'Profilo non trovato. Crea un account.';
-        errEl.style.display = 'block';
-        btn.innerText = '✦ Accedi al Tempio'; btn.disabled = false;
-        return;
-    }
+            if (!data?.user) throw new Error('Accesso completato senza utente associato.');
 
-    updateAccountUI(); showProfileView();
-    btn.innerText = '✦ Accedi al Tempio'; btn.disabled = false;
-    showToast('Bentornato, ' + currentUser.name + ' ✦');
+            const profile = await loadProfile(data.user.id);
+            currentUser = {
+                id: data.user.id,
+                name: data.user.user_metadata?.name || email.split('@')[0],
+                email: data.user.email,
+                supabase: true,
+                history: Array.isArray(profile?.history) ? profile.history : []
+            };
+            const remoteCredits = profile?.credits ?? null;
+            const localCredits  = parseInt(localStorage.getItem('astral_credits')) || 0;
+            const finalCredits  = remoteCredits !== null ? remoteCredits : localCredits;
+            localStorage.setItem('astral_credits', finalCredits.toString());
+        } else {
+            await new Promise(r => setTimeout(r, 600));
+            const saved = localStorage.getItem('sidera_user');
+            if (saved) {
+                const u = JSON.parse(saved);
+                if (u.email === email) {
+                    currentUser = u;
+                    updateAccountUI();
+                    showProfileView();
+                    showToast('Bentornato, ' + currentUser.name + ' ✦');
+                    return;
+                }
+            }
+            errEl.innerText = 'Profilo non trovato. Crea un account.';
+            errEl.style.display = 'block';
+            return;
+        }
+
+        updateAccountUI();
+        showProfileView();
+        showToast('Bentornato, ' + currentUser.name + ' ✦');
+    } catch (e) {
+        console.error('[Sidera] Login error:', e);
+        errEl.innerText = e?.message || 'Si è verificato un errore durante l\'accesso.';
+        errEl.style.display = 'block';
+    } finally {
+        btn.innerText = '✦ Accedi al Tempio';
+        btn.disabled = false;
+    }
 }
 
 async function doRegister() {
@@ -3255,50 +3261,62 @@ async function doRegister() {
     const email = document.getElementById('regEmail').value.trim();
     const pass  = document.getElementById('regPass').value.trim();
     const errEl = document.getElementById('registerError');
+    const btn = document.querySelector('#registerTab button[type="submit"]');
     errEl.style.display = 'none';
     if (!name) { errEl.innerText='Inserisci un nome.'; errEl.style.display='block'; return; }
     if (!email||!email.includes('@')) { errEl.innerText='Email non valida.'; errEl.style.display='block'; return; }
     if (pass.length < 6) { errEl.innerText='Password di almeno 6 caratteri.'; errEl.style.display='block'; return; }
+    if (btn) { btn.innerText = '...'; btn.disabled = true; }
 
-    if (window._supabase) {
-        // ── REGISTRAZIONE CON SUPABASE ──────────────────────
-        const { data, error } = await window._supabase.auth.signUp({
-            email, password: pass,
-            options: { data: { name } }
-        });
-        if (error) { errEl.innerText = error.message; errEl.style.display='block'; return; }
+    try {
+        if (window._supabase) {
+            const { data, error } = await window._supabase.auth.signUp({
+                email, password: pass,
+                options: { data: { name } }
+            });
+            if (error) {
+                errEl.innerText = /already registered/i.test(error.message) ? 'Questa email è già registrata. Prova ad accedere.' : error.message;
+                errEl.style.display='block';
+                return;
+            }
 
-        if (!data.user) {
-            errEl.innerText = 'Registrazione non completata. Riprova.';
-            errEl.style.display='block';
-            return;
+            if (!data?.user) {
+                errEl.innerText = 'Registrazione non completata. Riprova.';
+                errEl.style.display='block';
+                return;
+            }
+
+            const initialCredits = parseInt(localStorage.getItem('astral_credits')) || 3;
+            await window._supabase.from('profiles').upsert({
+                user_id: data.user.id,
+                credits: initialCredits,
+                history: []
+            });
+
+            if (!data.session) {
+                switchAuthTab('login');
+                errEl.innerText = 'Account creato. Controlla la tua email e conferma l\'account prima di accedere.';
+                errEl.style.display='block';
+                showToast('Ti ho creato l\'account: adesso serve la conferma email.');
+                return;
+            }
+
+            currentUser = { id: data.user.id, name, email, supabase: true, history: [] };
+        } else {
+            currentUser = { name, email, credits: parseInt(localStorage.getItem('astral_credits'))||3, history: [] };
+            localStorage.setItem('sidera_user', JSON.stringify(currentUser));
         }
 
-        // Crea il profilo nella tabella profiles
-        const initialCredits = parseInt(localStorage.getItem('astral_credits')) || 3;
-        await window._supabase.from('profiles').upsert({
-            user_id: data.user.id,
-            credits: initialCredits,
-            history: []  // jsonb — array diretto, non stringa
-        });
-
-        if (!data.session) {
-            switchAuthTab('login');
-            errEl.innerText = 'Account creato. Controlla la tua email e conferma l\'account prima di accedere.';
-            errEl.style.display='block';
-            showToast('Ti ho creato l\'account: adesso serve la conferma email.');
-            return;
-        }
-
-        currentUser = { id: data.user.id, name, email, supabase: true, history: [] };
-    } else {
-        // ── FALLBACK LOCALE ──────────────────────────────────
-        currentUser = { name, email, credits: parseInt(localStorage.getItem('astral_credits'))||3, history: [] };
-        localStorage.setItem('sidera_user', JSON.stringify(currentUser));
+        updateAccountUI();
+        showProfileView();
+        showToast('🌟 Benvenuto nel tempio, ' + name + '!');
+    } catch (e) {
+        console.error('[Sidera] Register error:', e);
+        errEl.innerText = e?.message || 'Si è verificato un errore durante la registrazione.';
+        errEl.style.display='block';
+    } finally {
+        if (btn) { btn.innerText = '🌟 Crea il Tuo Profilo'; btn.disabled = false; }
     }
-
-    updateAccountUI(); showProfileView();
-    showToast('🌟 Benvenuto nel tempio, ' + name + '!');
 }
 
 async function doLogout() {
