@@ -3131,26 +3131,32 @@ if (SUPABASE_ENABLED && typeof supabase !== 'undefined') {
     window._supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // Ripristina sessione automaticamente al ricaricamento pagina
-    window._supabase.auth.onAuthStateChange(async (event, session) => {
-        if ((event === 'INITIAL_SESSION' || event === 'SIGNED_IN') && session?.user) {
-            const profile = await loadProfile(session.user.id);
-            currentUser = {
-                id:       session.user.id,
-                name:     session.user.user_metadata?.name || session.user.email.split('@')[0],
-                email:    session.user.email,
-                supabase: true,
-                history:  profile?.history ? (typeof profile.history === 'string' ? JSON.parse(profile.history) : profile.history) : []
-            };
-            const remoteCredits = profile?.credits ?? null;
-            if (remoteCredits !== null) localStorage.setItem('astral_credits', remoteCredits);
-            updateAccountUI();
-            document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
-            console.log('[Supabase] Sessione ripristinata per:', currentUser.email);
-        } else if (event === 'SIGNED_OUT') {
-            currentUser = null;
-            updateAccountUI();
+    window._supabase.auth.onAuthStateChange((event, session) => {
+    setTimeout(async () => {
+        try {
+            if ((event === 'INITIAL_SESSION' || event === 'SIGNED_IN') && session?.user) {
+                const profile = await loadProfile(session.user.id);
+                currentUser = {
+                    id: session.user.id,
+                    name: session.user.user_metadata?.name || session.user.email.split('@')[0],
+                    email: session.user.email,
+                    supabase: true,
+                    history: Array.isArray(profile?.history) ? profile.history : []
+                };
+                const remoteCredits = profile?.credits ?? null;
+                if (remoteCredits !== null) localStorage.setItem('astral_credits', remoteCredits.toString());
+                updateAccountUI();
+                document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
+                console.log('[Supabase] Sessione ripristinata per:', currentUser.email);
+            } else if (event === 'SIGNED_OUT') {
+                currentUser = null;
+                updateAccountUI();
+            }
+        } catch (e) {
+            console.error('[Supabase] Auth state handler error:', e);
         }
-    });
+    }, 0);
+});
     console.log('[Supabase] Client inizializzato ✅');
 } else {
     window._supabase = null;
