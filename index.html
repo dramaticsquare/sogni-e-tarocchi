@@ -3068,13 +3068,16 @@ async function syncToSupabase() {
     if (!window._supabase || !currentUser?.id) return;
     try {
         const credits = parseInt(localStorage.getItem('astral_credits')) || 0;
-        const history = JSON.stringify(currentUser.history || []);
-        await window._supabase.from('profiles').upsert({
+        // history è jsonb su Supabase — passa direttamente l'array, non una stringa
+        const history = currentUser.history || [];
+        const { error } = await window._supabase.from('profiles').upsert({
             user_id: currentUser.id,
             credits,
-            history
+            history  // jsonb accetta direttamente l'array JS
         });
-    } catch(e) { console.warn('[Supabase] sync error:', e); }
+        if (error) console.warn('[Supabase] sync error:', error.message);
+        else console.log('[Supabase] Sync OK — crediti:', credits);
+    } catch(e) { console.warn('[Supabase] sync exception:', e); }
 }
 
 // Aggiunge crediti localmente e su Supabase
@@ -3122,6 +3125,37 @@ const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 
 // 3. Attiva:
 const SUPABASE_ENABLED = true;
+
+// ── Inizializzazione Supabase ─────────────────
+if (SUPABASE_ENABLED && typeof supabase !== 'undefined') {
+    window._supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Ripristina sessione automaticamente al ricaricamento pagina
+    window._supabase.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'SIGNED_IN' && session && !currentUser) {
+            const profile = await loadProfile(session.user.id);
+            currentUser = {
+                id:       session.user.id,
+                name:     session.user.user_metadata?.name || session.user.email.split('@')[0],
+                email:    session.user.email,
+                supabase: true,
+                history:  profile?.history ? (typeof profile.history === 'string' ? JSON.parse(profile.history) : profile.history) : []
+            };
+            const remoteCredits = profile?.credits ?? null;
+            if (remoteCredits !== null) localStorage.setItem('astral_credits', remoteCredits);
+            updateAccountUI();
+            document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
+            console.log('[Supabase] Sessione ripristinata per:', currentUser.email);
+        } else if (event === 'SIGNED_OUT') {
+            currentUser = null;
+            updateAccountUI();
+        }
+    });
+    console.log('[Supabase] Client inizializzato ✅');
+} else {
+    window._supabase = null;
+    if (SUPABASE_ENABLED) console.warn('[Supabase] SDK non trovato — controlla lo script nell\'head');
+}
 function openAccount() {
     document.getElementById('accountModal').classList.add('open');
     if (currentUser) showProfileView();
@@ -3183,7 +3217,8 @@ async function doLogin() {
             name: data.user.user_metadata?.name || email.split('@')[0],
             email: data.user.email,
             supabase: true,
-            history: profile?.history ? JSON.parse(profile.history) : []
+            // history è jsonb — Supabase lo restituisce già come array JS, non stringa
+            history: Array.isArray(profile?.history) ? profile.history : []
         };
         // Sincronizza crediti: usa il valore Supabase se esiste, altrimenti il locale
         const remoteCredits = profile?.credits ?? null;
@@ -3238,7 +3273,7 @@ async function doRegister() {
         await window._supabase.from('profiles').upsert({
             user_id: data.user.id,
             credits: initialCredits,
-            history: JSON.stringify([])
+            history: []  // jsonb — array diretto, non stringa
         });
 
         currentUser = { id: data.user.id, name, email, supabase: true, history: [] };
