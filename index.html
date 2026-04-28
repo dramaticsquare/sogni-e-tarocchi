@@ -2508,7 +2508,9 @@
             <div id="settingsTab" class="account-tab-content">
                 <div style="margin-bottom:16px;padding:14px;border:1px solid var(--border);border-radius:12px;background:rgba(201,168,76,0.03);">
                     <p style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase;">Sincronizzazione Cross-Device</p>
-                    <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;font-style:italic;">Per attivare la sincronizzazione reale su più dispositivi, collega <strong style="color:var(--gold-light)">Supabase Auth</strong> o <strong style="color:var(--gold-light)">Firebase Auth</strong>. Vedi le istruzioni nel README del progetto.</p>
+                    <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;font-style:italic;" id="settingsSyncStatus">
+                        Supabase attivo. Se i crediti non si salvano, vai su Supabase → SQL Editor e incolla le RLS Policy dalla guida.
+                    </p>
                 </div>
                 <button class="btn-action" onclick="doLogout()" style="background:rgba(120,40,40,0.3);border-color:rgba(200,80,80,0.4);margin-bottom:10px;">Esci dal Tempio</button>
             </div>
@@ -3212,19 +3214,21 @@ async function doLogin() {
             return;
         }
         const profile = await loadProfile(data.user.id);
+        console.log('[Supabase] Login OK — profilo caricato:', profile);
         currentUser = {
             id: data.user.id,
             name: data.user.user_metadata?.name || email.split('@')[0],
             email: data.user.email,
             supabase: true,
-            // history è jsonb — Supabase lo restituisce già come array JS, non stringa
             history: Array.isArray(profile?.history) ? profile.history : []
         };
         // Sincronizza crediti: usa il valore Supabase se esiste, altrimenti il locale
         const remoteCredits = profile?.credits ?? null;
         const localCredits  = parseInt(localStorage.getItem('astral_credits')) || 0;
         const finalCredits  = remoteCredits !== null ? remoteCredits : localCredits;
+        console.log('[Supabase] Crediti — remoto:', remoteCredits, '| locale:', localCredits, '| usato:', finalCredits);
         localStorage.setItem('astral_credits', finalCredits);
+        document.getElementById('creditCount').innerText = finalCredits;
     } else {
         // ── FALLBACK LOCALE (senza Supabase) ────────────────
         await new Promise(r => setTimeout(r, 600));
@@ -3270,11 +3274,25 @@ async function doRegister() {
 
         // Crea il profilo nella tabella profiles
         const initialCredits = parseInt(localStorage.getItem('astral_credits')) || 3;
-        await window._supabase.from('profiles').upsert({
+        const { error: profileError } = await window._supabase.from('profiles').upsert({
             user_id: data.user.id,
             credits: initialCredits,
-            history: []  // jsonb — array diretto, non stringa
+            history: []
         });
+
+        if (profileError) {
+            console.error('[Supabase] ERRORE salvataggio profilo:', profileError.message, profileError.code);
+            // Mostra il messaggio di errore specifico
+            if (profileError.code === '42501') {
+                errEl.innerText = 'Errore permessi: configura le RLS Policy su Supabase (vedi guida).';
+            } else {
+                errEl.innerText = 'Profilo creato ma errore nel salvataggio: ' + profileError.message;
+            }
+            errEl.style.display = 'block';
+            // Continua comunque — l\'utente è registrato in auth anche se il profilo non è salvato
+        } else {
+            console.log('[Supabase] Profilo creato ✅ — user_id:', data.user.id, 'crediti:', initialCredits);
+        }
 
         currentUser = { id: data.user.id, name, email, supabase: true, history: [] };
     } else {
