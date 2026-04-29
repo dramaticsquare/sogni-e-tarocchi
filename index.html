@@ -2583,14 +2583,19 @@ const WIKI_CARDS = {
     "ar21.jpg": "f/ff/RWS_Tarot_21_World.jpg/200px-RWS_Tarot_21_World.jpg"
 };
 
+function getLocalCardImgUrl(filename) {
+    if (/^ar\d{2}\.jpg$/i.test(filename)) return './tarot-cards/' + filename;
+    if (/^(wa|cu|sw|pe)\d{2}\.jpg$/i.test(filename)) return './tarot-cards/' + filename.replace(/\.jpg$/i, '.png');
+    return null;
+}
+
 function getCardImgUrl(filename) {
-    // 1. Usa immagine incorporata base64 se disponibile (priorità massima)
     if (CARD_IMAGES_B64[filename]) return CARD_IMAGES_B64[filename];
-    // 2. Prova Wikimedia per gli Arcani Maggiori
+    const localSrc = getLocalCardImgUrl(filename);
+    if (localSrc) return localSrc;
     if (WIKI_CARDS[filename]) {
         return "https://upload.wikimedia.org/wikipedia/commons/thumb/" + WIKI_CARDS[filename];
     }
-    // 3. Fallback sacred-texts
     return "https://www.sacred-texts.com/tarot/pkt/img/" + filename;
 }
 
@@ -3633,9 +3638,11 @@ async function runTarot() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 tipo: "tarocchi",
+                modalita: _tarotMode === 'full' ? 'approfondita' : 'base',
                 domanda: q,
                 carte: resultsForMake.join(", "),
-                mazzo: deckLabel          // info per il prompt AI
+                mazzo: deckLabel,
+                carte_totali: deck.length
             })
         });
         const text = await response.text();
