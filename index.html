@@ -2993,7 +2993,7 @@ function renderPayPal() {
             closePayment();
             showToast('✨ Energia ricaricata! ' + selectedCredits + ' crediti aggiunti.');
         }),
-        onError: (err) => { console.error('[PayPal] Errore pagamento:', err); showToast('Pagamento non completato. Riprova.'); }
+        onError: (err) => { console.error('[PayPal] Errore pagamento:', err); showToast('Pagamento non completato. Nessun addebito e stato registrato. Riprova con calma.'); }
     }).render('#paypal-button-container');
 }
 
@@ -3032,7 +3032,7 @@ function renderSubscriptionButton() {
                 })
             }).catch(e => console.warn('[Make] Notifica abbonamento fallita:', e));
         },
-        onError: (err) => { console.error('[PayPal] Errore abbonamento:', err); showToast('Pagamento non completato. Riprova.'); }
+        onError: (err) => { console.error('[PayPal] Errore abbonamento:', err); showToast('Pagamento non completato. Nessun addebito e stato registrato. Riprova con calma.'); }
     }).render('#paypal-subscription-container');
 }
 
@@ -3218,7 +3218,7 @@ async function doLogin() {
         if (window._supabase) {
             const { data, error } = await window._supabase.auth.signInWithPassword({ email, password: pass });
             if (error) {
-                errEl.innerText = error.message || 'Accesso non riuscito.';
+                errEl.innerText = error.message || 'Accesso non riuscito. Controlla email e password e riprova.';
                 errEl.style.display = 'block';
                 return;
             }
@@ -3292,7 +3292,7 @@ async function doRegister() {
             }
 
             if (!data?.user) {
-                errEl.innerText = 'Registrazione non completata. Riprova.';
+                errEl.innerText = 'Registrazione non completata. Riprova tra un attimo.';
                 errEl.style.display='block';
                 return;
             }
@@ -3460,7 +3460,7 @@ async function sendConsult() {
     const name = document.getElementById('cName').value.trim();
     const email = document.getElementById('cEmail').value.trim();
     const msg = document.getElementById('cMessage').value.trim();
-    if (!name || !email || !msg) return showToast('Compila tutti i campi.');
+    if (!name || !email || !msg) return showToast('Compila nome, email e messaggio prima di inviare la richiesta.');
     if (!email.includes('@')) return showToast('Inserisci un\'email valida.');
 
     const cost = consultCosts[selectedConsult] || 10;
@@ -3575,7 +3575,7 @@ async function runTarot() {
     let c = parseInt(localStorage.getItem('astral_credits')) || 0;
     if (c < cost) return openPayment();
     const q = document.getElementById('questionInput').value.trim();
-    if (!q) return showToast('Inserisci una domanda per gli Arcani.');
+    if (!q) return showToast('Scrivi una domanda prima di estrarre le carte.');
 
     const deck = _tarotMode === 'full' ? CARDS_FULL : CARDS_MAJOR;
     const deckLabel = _tarotMode === 'full' ? 'mazzo completo (78 carte)' : 'Arcani Maggiori';
@@ -3652,7 +3652,7 @@ async function runTarot() {
         document.getElementById('creditCount').innerText = newC;
         saveToHistory('tarocchi', q, text);
     } catch (e) {
-        content.innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>Le energie sono disturbate. Riprova tra qualche istante.</p>";
+        content.innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>Non sono riuscita a ricevere la lettura. I crediti non sono stati scalati: riprova tra poco.</p>";
     }
 }
 
@@ -3693,7 +3693,7 @@ async function runDream() {
         localStorage.setItem('astral_credits', newC);
         document.getElementById('creditCount').innerText = newC;
         saveToHistory('sogno', d, text);
-    } catch (e) { content.innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>Il velo del sonno è troppo fitto. Riprova.</p>"; }
+    } catch (e) { content.innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>Non sono riuscita a interpretare il sogno in questo momento. Riprova tra poco.</p>"; }
 }
 
 // ─────────────────────────────────────────────
@@ -3857,7 +3857,7 @@ async function runAstrology() {
         localStorage.setItem('astral_credits', newC);
         document.getElementById('creditCount').innerText = newC;
         saveToHistory('astrologia', city + ' ' + date, text);
-    } catch (e) { commentary.innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>Le stelle sono offuscate. Riprova più tardi.</p>"; }
+    } catch (e) { commentary.innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>La mappa astrale non è arrivata completa. Riprova più tardi senza perdere i crediti.</p>"; }
 }
 
 // Traduce i segni zodiacali da inglese a italiano
@@ -3944,7 +3944,7 @@ async function runSynastry() {
         document.getElementById('creditCount').innerText = newC;
         saveToHistory('sinastria', `${nameA} + ${nameB}`, text);
     } catch(e) {
-        document.getElementById('synaContent').innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>Le energie cosmiche sono disturbate. Riprova tra poco.</p>";
+        document.getElementById('synaContent').innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>La sinastria non è arrivata fino in fondo. Riprova tra poco: i crediti restano al sicuro.</p>";
     }
 }
 
@@ -4118,7 +4118,7 @@ async function runPalmReading() {
         console.warn('[Sidera] Palmistry send error:', e);
         document.getElementById('palmSendingState').style.display = 'none';
         document.getElementById('palmInputBox').style.display = 'block';
-        showToast('Invio non riuscito. Riprova tra un attimo.');
+        showToast('La foto del palmo non è partita verso Make. Riprova tra un minuto.');
         return;
     }
 
@@ -4424,15 +4424,34 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
             ctx.beginPath(); ctx.moveTo(cx+20, ln1y); ctx.lineTo(cx+cardW-20, ln1y);
             ctx.strokeStyle = ln1g; ctx.lineWidth=1; ctx.stroke();
 
-            // Simbolo secondario piccolo sopra
-            ctx.fillStyle = 'rgba(201,168,76,0.3)';
-            ctx.font = `26px serif`; ctx.letterSpacing='0';
-            ctx.fillText(meta.sym2, cx + cardW/2, cardY + 92);
+            const cardImg = await loadCardForCanvas(cardImages ? cardImages[i] : null, cardUrls ? cardUrls[i] : null);
+            const imgX = cx + 14;
+            const imgY = cardY + 62;
+            const imgW = cardW - 28;
+            const imgH = cardH - 136;
 
-            // Simbolo principale GRANDE
-            ctx.fillStyle = 'rgba(220,185,90,0.95)';
-            ctx.font = `86px serif`; ctx.letterSpacing = '0';
-            ctx.fillText(meta.sym, cx + cardW/2, cardY + cardH*0.52 + 28);
+            if (cardImg) {
+                ctx.save();
+                roundRectClip(ctx, imgX, imgY, imgW, imgH, 12);
+                if (cardInfo && cardInfo.reversed) {
+                    ctx.translate(imgX + imgW / 2, imgY + imgH / 2);
+                    ctx.rotate(Math.PI);
+                    ctx.drawImage(cardImg, -imgW / 2, -imgH / 2, imgW, imgH);
+                } else {
+                    ctx.drawImage(cardImg, imgX, imgY, imgW, imgH);
+                }
+                ctx.restore();
+                roundRect(ctx, imgX, imgY, imgW, imgH, 12, null, 'rgba(201,168,76,0.22)');
+            } else {
+                // Fallback simbolico se l'immagine non è disponibile
+                ctx.fillStyle = 'rgba(201,168,76,0.3)';
+                ctx.font = 26px serif; ctx.letterSpacing='0';
+                ctx.fillText(meta.sym2, cx + cardW/2, cardY + 92);
+
+                ctx.fillStyle = 'rgba(220,185,90,0.95)';
+                ctx.font = 86px serif; ctx.letterSpacing = '0';
+                ctx.fillText(meta.sym, cx + cardW/2, cardY + cardH*0.52 + 28);
+            }
 
             // Linea sopra nome
             const ln2y = cardY + cardH - 58;
@@ -4774,7 +4793,7 @@ async function downloadIgCard() {
         link.href = canvas.toDataURL('image/png');
         link.click();
         showToast('✨ Immagine salvata — pronta per Instagram e TikTok!');
-    } catch(e) { showToast('Errore nel salvataggio.'); console.error(e); }
+    } catch(e) { showToast('Non sono riuscita a salvare l'immagine. Riprova tra un attimo.'); console.error(e); }
 }
 
 async function shareIgCard() {
@@ -4787,7 +4806,7 @@ async function shareIgCard() {
                 await navigator.share({ files: [file], title: 'La mia rivelazione su Sidera ✨', text: 'Scopri il tuo oracolo su Sidera → https://sidera7.vercel.app/' });
             } else { downloadIgCard(); }
         }, 'image/png');
-    } catch(e) { showToast('Errore nella condivisione.'); }
+    } catch(e) { showToast('Condivisione non riuscita. Puoi salvare l'immagine e inviarla manualmente.'); }
 }
 
 async function shareCard(elementId) {
