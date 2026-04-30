@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidera - L'Oracolo delle Stelle</title>
+    <title>Sidera — L'Oracolo delle Stelle</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -38,14 +38,14 @@
             min-height: 100vh;
         }
 
-        /* section */
+        /* ── CANVAS STELLE ── */
         #starCanvas {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -2; pointer-events: none;
         }
 
-        /* section */
+        /* ── NEBULA BG ── */
         body::before {
             content: '';
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -56,14 +56,14 @@
             z-index: -1; pointer-events: none;
         }
 
-        /* section */
+        /* ── SCROLLBAR ── */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: var(--deep); }
         ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
 
-        /* section */
+        /* ══════════════════════════════════
            ONBOARDING
-
+        ══════════════════════════════════ */
         #onboarding {
             position: fixed; inset: 0; z-index: 9000;
             background: var(--deep);
@@ -124,9 +124,9 @@
             margin-top: 16px; text-decoration: underline; text-underline-offset: 3px;
         }
 
-        /* section */
+        /* ══════════════════════════════════
            NAVBAR
-
+        ══════════════════════════════════ */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             background: rgba(7, 5, 15, 0.85);
@@ -191,9 +191,9 @@
         .btn-account:hover { border-color: var(--gold); background: rgba(201, 168, 76, 0.2); }
         .btn-account.logged { background: var(--gold); color: var(--deep); }
 
-        /* section */
+        /* ══════════════════════════════════
            LAYOUT SEZIONI
-
+        ══════════════════════════════════ */
         .container { max-width: 1000px; margin: 0 auto; padding: 0 22px; }
 
         .content-section {
@@ -205,9 +205,9 @@
         .content-section.active { display: block; }
         .content-section.visible { opacity: 1; transform: translateY(0); }
 
-        /* section */
+        /* ══════════════════════════════════
            TYPOGRAPHY
-
+        ══════════════════════════════════ */
         .page-title {
             font-family: 'Cinzel Decorative', cursive;
             color: var(--gold-light);
@@ -231,9 +231,9 @@
             content: ''; flex: 1; height: 1px; background: var(--border);
         }
 
-        /* section */
+        /* ══════════════════════════════════
            HERO
-
+        ══════════════════════════════════ */
         #home { padding: 0; min-height: 100vh; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         #home.active { display: flex; }
 
@@ -311,9 +311,9 @@
         }
         .hero-stat-l { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; letter-spacing: 1px; text-align: center; display: block; }
 
-        /* section */
+        /* ══════════════════════════════════
            GLASS CARD
-
+        ══════════════════════════════════ */
         .glass-card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -341,7 +341,7 @@
         }
         textarea { min-height: 120px; }
 
-        /* section */
+        /* ── SELETTORE MODALITÀ TAROCCHI ── */
         .tarot-mode-selector {
             display: grid; grid-template-columns: 1fr 1fr;
             gap: 14px; margin: 0 auto 32px; max-width: 600px;
@@ -413,7 +413,7 @@
             display: block;
         }
 
-        /* section */
+        /* Autocomplete — mantiene il tema scuro */
         input:-webkit-autofill,
         input:-webkit-autofill:hover,
         input:-webkit-autofill:focus,
@@ -460,9 +460,9 @@
         }
         .result-content p { margin-bottom: 1.2em; line-height: 1.7; }
 
-        /* section */
+        /* ══════════════════════════════════
            TAROCCHI
-
+        ══════════════════════════════════ */
         .cards-spread {
             display: flex; gap: 18px; justify-content: center;
             margin: 28px 0; flex-wrap: nowrap;
@@ -493,8 +493,9 @@
         }
         .tarot-card-wrap { display: flex; flex-direction: column; align-items: center; }
 
-        /* ASTROLOGIA - DEPTH OPTIONS */
-
+        /* ══════════════════════════════════
+           ASTROLOGIA - DEPTH OPTIONS
+        ══════════════════════════════════ */
         .depth-row { display: flex; gap: 12px; margin: 18px 0; }
         .depth-option {
             flex: 1; cursor: pointer;
@@ -510,9 +511,9 @@
         .depth-option small { font-size: 0.75rem; color: var(--text-muted); display: block; }
         .depth-option:has(input:checked) strong { color: var(--gold-light); }
 
-        /* section */
+        /* ══════════════════════════════════
            SUMMARY CARD ASTROLOGIA
-
+        ══════════════════════════════════ */
         .summary-card { margin: 24px auto; max-width: 420px; }
         .summary-item { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
         .summary-item:last-child { border-bottom: none; }
@@ -520,9 +521,9 @@
         .summary-item .info strong { font-size: 0.95rem; color: var(--text); text-transform: uppercase; letter-spacing: 1px; }
         .summary-item .info p { color: var(--text-muted); font-size: 0.78rem; margin-top: 2px; }
 
-        /* section */
-           CONSULENZA ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â SEZIONE RIPROGETTATA
-
+        /* ══════════════════════════════════
+           CONSULENZA — SEZIONE RIPROGETTATA
+        ══════════════════════════════════ */
         .consultation-grid {
             display: grid; grid-template-columns: 1fr 1fr 1fr;
             gap: 20px; margin-bottom: 40px;
@@ -595,9 +596,9 @@
         }
         .faq-item.open .faq-answer { max-height: 200px; padding-top: 12px; }
 
-        /* section */
+        /* ══════════════════════════════════
            SHARE
-
+        ══════════════════════════════════ */
         .share-container { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; }
         .share-title { color: var(--text-muted); font-size: 0.78rem; margin-bottom: 12px; letter-spacing: 2px; font-family: 'Cinzel', serif; text-transform: uppercase; }
         .share-buttons { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
@@ -609,9 +610,9 @@
         }
         .btn-share:hover { border-color: var(--gold); color: var(--gold-light); background: rgba(201,168,76,0.06); }
 
-        /* section */
+        /* ══════════════════════════════════
            PAYMENT MODAL
-
+        ══════════════════════════════════ */
         .modal-overlay {
             display: none; position: fixed; inset: 0;
             background: rgba(0,0,0,0.85); z-index: 2000;
@@ -662,9 +663,9 @@
             font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px;
         }
 
-        /* section */
+        /* ══════════════════════════════════
            ACCOUNT MODAL
-
+        ══════════════════════════════════ */
         .account-tabs { display: flex; gap: 0; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
         .account-tab {
             flex: 1; padding: 12px; background: none; border: none;
@@ -691,9 +692,9 @@
 
         .empty-history { text-align: center; padding: 40px 0; color: var(--text-muted); font-style: italic; font-size: 0.95rem; }
 
-        /* section */
+        /* ══════════════════════════════════
            INFO MODALS
-
+        ══════════════════════════════════ */
         .info-modal-box {
             background: #0E0B1E; border: 1px solid var(--border);
             padding: 36px; border-radius: 24px;
@@ -705,9 +706,9 @@
         .info-row strong { color: var(--gold-light); }
         .info-row span { color: var(--text-muted); }
 
-        /* section */
+        /* ══════════════════════════════════
            ASTRO RESULT TABLE
-
+        ══════════════════════════════════ */
         #astroCommentary table, #astroContent table {
             width: 100%; border-collapse: collapse; margin: 14px 0;
             background: rgba(20,14,40,0.7); border-radius: 10px; overflow: hidden;
@@ -718,7 +719,7 @@
             color: var(--text); font-size: 0.9rem;
         }
         #astroCommentary td:first-child, #astroContent td:first-child { color: var(--gold); font-family: 'Cinzel', serif; }
-        /* section */
+        /* ── Titoli sezioni nei responsi ── */
         #astroCommentary h4, #astroContent h4,
         #readingContent h4, #dreamContent h4, #synaContent h4 {
             font-family: 'Cinzel', serif;
@@ -756,8 +757,9 @@
         #astroCommentary p, #readingContent p, #dreamContent p,
         #synaContent p { margin-bottom: 10px; line-height: 1.65; }
 
-        /* CAPTURE CARD (per condivisione) */
-
+        /* ══════════════════════════════════
+           CAPTURE CARD (per condivisione)
+        ══════════════════════════════════ */
         .capture-card {
             background: #0d0d1a; padding: 28px; border-radius: 16px;
             border: 1px solid var(--gold); max-width: 420px; margin: 0 auto;
@@ -765,10 +767,12 @@
         .capture-card .card-header, .capture-card .card-footer { display: none; }
         .sidera-logo-small { font-family: 'Cinzel Decorative', cursive; color: var(--gold); font-size: 1.6rem; }
 
-        /* RESPONSIVE */
-
-        /* RESPONSIVE MOBILE FIRST */
-
+        /* ══════════════════════════════════
+           RESPONSIVE
+        ══════════════════════════════════ */
+        /* ══════════════════════════════════
+           RESPONSIVE — MOBILE FIRST
+        ══════════════════════════════════ */
 
         /* Tablet 768px */
         @media (max-width: 768px) {
@@ -788,7 +792,7 @@
 
         /* Mobile 640px */
         @media (max-width: 640px) {
-        /* section */
+            /* Titoli sezioni — meno spazio */
             .page-title { margin-bottom: 8px; }
             .page-subtitle { margin-bottom: 20px; font-size: 0.95rem; }
             .hero-tagline { margin-bottom: 12px; }
@@ -823,7 +827,7 @@
             .palm-guide-grid { grid-template-columns: 1fr; gap: 10px; }
             .palm-lines-ref { grid-template-columns: 1fr; }
 
-        /* section */
+            /* Consulenza — slider orizzontale */
             .consultation-grid {
                 display: flex; gap: 14px;
                 overflow-x: auto; scroll-snap-type: x mandatory;
@@ -865,9 +869,9 @@
             .credit-badge { font-size: 9px; padding: 4px 8px; }
         }
 
-        /* section */
+        /* ══════════════════════════════════
            UTILITY
-
+        ══════════════════════════════════ */
         .text-gold { color: var(--gold); }
         .text-muted { color: var(--text-muted); }
         .text-center { text-align: center; }
@@ -875,9 +879,9 @@
         .mt-16 { margin-top: 16px; }
         .mt-32 { margin-top: 32px; }
 
-        /* section */
+        /* ══════════════════════════════════
            SINASTRIA
-
+        ══════════════════════════════════ */
         .synastry-persons {
             display: grid; grid-template-columns: 1fr auto 1fr; gap: 0;
             align-items: stretch; margin-bottom: 28px;
@@ -915,7 +919,7 @@
             animation: floatSymbol 3s ease-in-out infinite;
         }
 
-        /* section */
+        /* Mobile — slider orizzontale */
         @media (max-width: 640px) {
             .synastry-persons {
                 display: flex; gap: 0;
@@ -965,7 +969,7 @@
             letter-spacing: 2px; text-transform: uppercase; margin-top: 6px;
         }
 
-        /* section */
+        /* Affinità pillole */
         .synastry-aspects {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
             margin: 24px 0;
@@ -1004,9 +1008,9 @@
         .synastry-result-text { padding: 28px; }
 
 
-        /* section */
+        /* ══════════════════════════════════
            LETTURA DELLA MANO
-
+        ══════════════════════════════════ */
         .palm-upload-area {
             border: 2px dashed var(--border); border-radius: 20px;
             padding: 48px 24px; text-align: center; cursor: pointer;
@@ -1092,7 +1096,7 @@
         }
 
         @media (max-width: 640px) {
-        /* section */
+            /* Guida foto — slider orizzontale invece di colonna */
             .palm-guide-grid {
                 display: flex; gap: 10px;
                 overflow-x: auto; scroll-snap-type: x mandatory;
@@ -1105,7 +1109,7 @@
                 flex: 0 0 64vw; max-width: 240px;
                 scroll-snap-align: start; padding: 14px 12px;
             }
-        /* section */
+            /* Linee — 2 colonne strette invece di 1 colonna */
             .palm-lines-ref {
                 grid-template-columns: 1fr 1fr; gap: 8px;
                 margin-bottom: 14px;
@@ -1115,7 +1119,7 @@
             .palm-line-item span { font-size: 0.68rem; }
         }
 
-        /* section */
+        /* ── Swipe hints ── */
         .swipe-hint {
             display: none; text-align: center;
             font-family: 'Cinzel', serif; font-size: 10px;
@@ -1138,7 +1142,7 @@
             .swipe-hint-sinastria { display: flex; }
         }
 
-        /* section */
+        /* ── Loading spinner ── */
         .loading-text { font-style: italic; color: var(--text-muted); text-align: center; padding: 24px 0; }
         .loading-text::after {
             content: ''; display: inline-block; width: 8px; height: 8px;
@@ -1147,9 +1151,9 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* section */
-           SEZIONE TAROCCHI ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â REDESIGN
-
+        /* ══════════════════════════════════
+           SEZIONE TAROCCHI — REDESIGN
+        ══════════════════════════════════ */
         .tarot-ritual-intro {
             display: grid; grid-template-columns: 1fr 1fr 1fr;
             gap: 16px; margin-bottom: 32px;
@@ -1255,9 +1259,9 @@
             background: rgba(10,7,20,0.4); display: flex; flex-direction: column; gap: 16px; align-items: center;
         }
 
-        /* section */
-           SEZIONE SOGNI ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â REDESIGN
-
+        /* ══════════════════════════════════
+           SEZIONE SOGNI — REDESIGN
+        ══════════════════════════════════ */
         .dream-symbols-bar {
             display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
         }
@@ -1303,9 +1307,9 @@
             letter-spacing: 1px;
         }
 
-        /* section */
-           SEZIONE ASTROLOGIA ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â REDESIGN
-
+        /* ══════════════════════════════════
+           SEZIONE ASTROLOGIA — REDESIGN
+        ══════════════════════════════════ */
         .astro-intro-cards {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px;
         }
@@ -1408,9 +1412,9 @@
             .cards-row { gap: 10px; }
             .tarot-card { width: 105px; height: 185px; }
         }
-        /* section */
+        /* ══════════════════════════════════
            INSTAGRAM SHARE CARD
-
+        ══════════════════════════════════ */
         #igCardModal {
             position: fixed; inset: 0; z-index: 8000;
             background: rgba(0,0,0,0.92); backdrop-filter: blur(20px);
@@ -1419,7 +1423,7 @@
         }
         #igCardModal.open { display: flex; }
 
-        /* section */
+        /* La card 1:1 che verrà catturata */
         #igCard {
             width: 480px; height: 480px;
             max-width: 90vw; max-height: 90vw;
@@ -1532,9 +1536,9 @@
         }
         .btn-ig-secondary:hover { border-color: var(--gold); color: var(--gold-light); }
 
-        /* section */
+        /* ══════════════════════════════════
            MOBILE HAMBURGER + SIDEBAR
-
+        ══════════════════════════════════ */
         .btn-hamburger {
             display: none;
             background: none; border: none; padding: 6px;
@@ -1582,7 +1586,7 @@
             .credit-badge { font-size: 10px; padding: 5px 10px; }
         }
 
-        /* section */
+        /* ── CURSORE PERSONALIZZATO ── */
         @media (pointer: fine) { * { cursor: none !important; } }
         #cursor {
             display: none;
@@ -1606,7 +1610,7 @@
             }
         }
 
-        /* section */
+        /* ── SPARK PARTICLES ── */
         .spark {
             position: fixed; pointer-events: none; z-index: 99997;
             width: 4px; height: 4px; border-radius: 50%;
@@ -1618,7 +1622,7 @@
             100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
         }
 
-        /* section */
+        /* ── SCROLL REVEAL ── */
         .reveal {
             opacity: 0; transform: translateY(24px);
             transition: opacity 0.7s ease, transform 0.7s ease;
@@ -1634,9 +1638,9 @@
 <!-- STELLE CANVAS -->
 <canvas id="starCanvas"></canvas>
 
-<!-- section -->
+<!-- ════════════════════════════════
      ONBOARDING
-
+════════════════════════════════ -->
 <div id="onboarding">
     <div class="onb-dots" id="onbDots">
         <div class="onb-dot active"></div>
@@ -1646,28 +1650,28 @@
     </div>
 
     <div class="onb-step active" id="onb0">
-        <div class="onb-symbol">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦</div>
+        <div class="onb-symbol">✦</div>
         <h2>Benvenuto in Sidera</h2>
         <p>Un santuario digitale dove l'antico sapere degli Arcani incontra la saggezza delle stelle. Qui, ogni domanda trova il suo specchio.</p>
         <button class="btn-onb-next" onclick="nextOnb()">Inizia il Viaggio</button>
     </div>
 
     <div class="onb-step" id="onb1">
-        <div class="onb-symbol">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â´</div>
+        <div class="onb-symbol">🎴</div>
         <h2>Gli Oracoli</h2>
         <p>Tre sentieri ti attendono: i <strong style="color:var(--gold)">Tarocchi</strong> per rivelare le trame del destino, il <strong style="color:var(--gold)">Libro dei Sogni</strong> per decifrare le visioni notturne, la <strong style="color:var(--gold)">Mappa Astrale</strong> per conoscere la tua essenza cosmica.</p>
         <button class="btn-onb-next" onclick="nextOnb()">Avanti</button>
     </div>
 
     <div class="onb-step" id="onb2">
-        <div class="onb-symbol">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨</div>
+        <div class="onb-symbol">✨</div>
         <h2>I Crediti Energia</h2>
         <p>Ogni consulto richiede un Credito Energia. Ricevi <strong style="color:var(--gold)">3 crediti gratuiti</strong> ora per iniziare il tuo percorso. Potrai ricaricare in qualsiasi momento.</p>
         <button class="btn-onb-next" onclick="nextOnb()">Comprendo</button>
     </div>
 
     <div class="onb-step" id="onb3">
-        <div class="onb-symbol">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢</div>
+        <div class="onb-symbol">🌙</div>
         <h2>Crea il tuo Profilo</h2>
         <p>Salva le tue letture, traccia il tuo cammino nel tempo. Un profilo ti permette di ritrovare ogni rivelazione e di non perdere i tuoi crediti.</p>
         <button class="btn-onb-next" onclick="endOnb(true)">Crea Profilo</button>
@@ -1676,13 +1680,13 @@
     </div>
 </div>
 
-<!-- section -->
+<!-- ════════════════════════════════
      NAVBAR
-
+════════════════════════════════ -->
 <nav id="mainNav">
     <div class="nav-inner">
         <a class="nav-logo" onclick="showSection('home')">
-            <span class="nav-logo-star">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦</span> SIDERA
+            <span class="nav-logo-star">✦</span> SIDERA
         </a>
         <ul class="nav-center" id="navLinks">
             <li><a onclick="showSection('oracolo')" data-sec="oracolo">Tarocchi</a></li>
@@ -1693,8 +1697,8 @@
             <li><a onclick="showSection('contatto')" data-sec="contatto">Consulenza</a></li>
         </ul>
         <div class="nav-right">
-            <div class="credit-badge" onclick="openPayment()">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ <span id="creditCount">3</span> Crediti</div>
-            <button class="btn-account" id="accountBtn" onclick="openAccount()" title="Account">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½</button>
+            <div class="credit-badge" onclick="openPayment()">✨ <span id="creditCount">3</span> Crediti</div>
+            <button class="btn-account" id="accountBtn" onclick="openAccount()" title="Account">☽</button>
             <button class="btn-hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu">
                 <span></span><span></span><span></span>
             </button>
@@ -1707,46 +1711,46 @@
     <div id="mobileSidebarInner">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
             <span style="font-family:'Cinzel Decorative',cursive;color:var(--gold);font-size:13px;letter-spacing:3px;">SIDERA</span>
-            <button onclick="toggleMobileMenu()" style="background:none;border:none;color:var(--text-muted);font-size:22px;cursor:pointer;line-height:1;">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢</button>
+            <button onclick="toggleMobileMenu()" style="background:none;border:none;color:var(--text-muted);font-size:22px;cursor:pointer;line-height:1;">✕</button>
         </div>
         <nav style="display:flex;flex-direction:column;gap:4px;">
-            <a class="mobile-nav-link" onclick="showSection('home');toggleMobileMenu()">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Home</a>
-            <a class="mobile-nav-link" onclick="showSection('oracolo');toggleMobileMenu()">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â´ Tarocchi</a>
-            <a class="mobile-nav-link" onclick="showSection('sogni');toggleMobileMenu()">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ Sogni</a>
-            <a class="mobile-nav-link" onclick="showSection('astrologia');toggleMobileMenu()">ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â­Ãƒâ€šÃ‚Â Astrologia</a>
-            <a class="mobile-nav-link" onclick="showSection('sinastria');toggleMobileMenu()">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€¦Ã‚Â¾ Sinastria</a>
-            <a class="mobile-nav-link" onclick="showSection('palmistry');toggleMobileMenu()">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â² Lettura della Mano</a>
-            <a class="mobile-nav-link" onclick="showSection('contatto');toggleMobileMenu()">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â® Consulenza</a>
+            <a class="mobile-nav-link" onclick="showSection('home');toggleMobileMenu()">✦ Home</a>
+            <a class="mobile-nav-link" onclick="showSection('oracolo');toggleMobileMenu()">🎴 Tarocchi</a>
+            <a class="mobile-nav-link" onclick="showSection('sogni');toggleMobileMenu()">🌙 Sogni</a>
+            <a class="mobile-nav-link" onclick="showSection('astrologia');toggleMobileMenu()">⭐ Astrologia</a>
+            <a class="mobile-nav-link" onclick="showSection('sinastria');toggleMobileMenu()">💞 Sinastria</a>
+            <a class="mobile-nav-link" onclick="showSection('palmistry');toggleMobileMenu()">🤲 Lettura della Mano</a>
+            <a class="mobile-nav-link" onclick="showSection('contatto');toggleMobileMenu()">🔮 Consulenza</a>
         </nav>
         <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px;">
-            <button class="btn-action" onclick="openPayment();toggleMobileMenu()">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ Ricarica Crediti</button>
-            <button onclick="openAccount();toggleMobileMenu()" style="background:none;border:1px solid var(--border);color:var(--text-muted);padding:12px;border-radius:10px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½ Il Mio Profilo</button>
+            <button class="btn-action" onclick="openPayment();toggleMobileMenu()">✨ Ricarica Crediti</button>
+            <button onclick="openAccount();toggleMobileMenu()" style="background:none;border:1px solid var(--border);color:var(--text-muted);padding:12px;border-radius:10px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;">☽ Il Mio Profilo</button>
         </div>
     </div>
 </div>
 <div id="sidebarOverlay" onclick="toggleMobileMenu()"></div>
 
-<!-- section -->
+<!-- ════════════════════════════════
      SEZIONI
-
+════════════════════════════════ -->
 
 <!-- HOME -->
 <section id="home" class="content-section active">
     <div class="container">
-        <p class="hero-tagline">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ L'Oracolo delle Stelle ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦</p>
+        <p class="hero-tagline">✦ L'Oracolo delle Stelle ✦</p>
         <h1 class="hero-title">SIDERA</h1>
         <p class="hero-quote">"L'inconscio parla per simboli. Noi siamo qui per tradurli."</p>
-        <p class="hero-desc">Oltre il velo della realtÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  tangibile si cela un antico sapere. Questo santuario digitale ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ il tuo portale verso le risposte che l'universo custodisce per te.</p>
+        <p class="hero-desc">Oltre il velo della realtà tangibile si cela un antico sapere. Questo santuario digitale è il tuo portale verso le risposte che l'universo custodisce per te.</p>
         <div class="hero-actions">
-            <button class="btn-hero-primary" onclick="showSection('oracolo')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â´ Tarocchi</button>
-            <button class="btn-hero-primary" onclick="showSection('astrologia')">ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â­Ãƒâ€šÃ‚Â Astrologia</button>
-            <button class="btn-hero-primary" onclick="showSection('sogni')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ Sogni</button>
-            <button class="btn-hero-primary" onclick="showSection('sinastria')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€¦Ã‚Â¾ Sinastria</button>
-            <button class="btn-hero-primary" onclick="showSection('palmistry')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â² Lettura della Mano</button>
-            <button class="btn-hero-secondary" onclick="showSection('contatto')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â® Consulenza Privata</button>
+            <button class="btn-hero-primary" onclick="showSection('oracolo')">🎴 Tarocchi</button>
+            <button class="btn-hero-primary" onclick="showSection('astrologia')">⭐ Astrologia</button>
+            <button class="btn-hero-primary" onclick="showSection('sogni')">🌙 Sogni</button>
+            <button class="btn-hero-primary" onclick="showSection('sinastria')">💞 Sinastria</button>
+            <button class="btn-hero-primary" onclick="showSection('palmistry')">🤲 Lettura della Mano</button>
+            <button class="btn-hero-secondary" onclick="showSection('contatto')">🔮 Consulenza Privata</button>
         </div>
         <div class="hero-stats">
-            <div class="hero-stat"><span class="hero-stat-n">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã¢â‚¬Â Ãƒâ€¦Ã‚Â¾</span><span class="hero-stat-l">Arcani disponibili</span></div>
+            <div class="hero-stat"><span class="hero-stat-n">∞</span><span class="hero-stat-l">Arcani disponibili</span></div>
             <div class="hero-stat"><span class="hero-stat-n">22</span><span class="hero-stat-l">Arcani Maggiori</span></div>
             <div class="hero-stat"><span class="hero-stat-n">3</span><span class="hero-stat-l">Crediti gratuiti</span></div>
         </div>
@@ -1756,21 +1760,21 @@
 <!-- TAROCCHI -->
 <section id="oracolo" class="content-section">
     <div class="container">
-        <p class="hero-tagline" style="opacity:1; animation:none;">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Gli Arcani ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦</p>
+        <p class="hero-tagline" style="opacity:1; animation:none;">✦ Gli Arcani ✦</p>
         <h2 class="page-title">CONSULTA GLI ARCANI</h2>
         <p class="page-subtitle">Chiudi gli occhi, respira profondamente e visualizza il tuo dubbio come se fosse una luce tra le mani.</p>
 
-<!-- section -->
+        <!-- Selettore modalità lettura -->
         <div class="tarot-mode-selector" id="tarotModeSelector">
             <button class="tarot-mode-btn active" id="modeBtnBase" onclick="selectTarotMode('base')">
-                <span class="mode-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢</span>
+                <span class="mode-icon">🌙</span>
                 <span class="mode-title">LETTURA BASE</span>
-                <span class="mode-desc">22 Arcani Maggiori ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 3 carte ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 1 Credito</span>
+                <span class="mode-desc">22 Arcani Maggiori · 3 carte · 1 Credito</span>
             </button>
             <button class="tarot-mode-btn premium" id="modeBtnFull" onclick="selectTarotMode('full')">
-                <span class="mode-icon">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦</span>
+                <span class="mode-icon">✦</span>
                 <span class="mode-title">LETTURA COMPLETA</span>
-                <span class="mode-desc">78 carte ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· tutti i semi ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 2 Crediti</span>
+                <span class="mode-desc">78 carte · tutti i semi · 2 Crediti</span>
                 <span class="mode-badge">ORACOLO INFINITO</span>
             </button>
         </div>
@@ -1779,17 +1783,17 @@
         <div class="tarot-ritual-intro">
             <div class="ritual-step">
                 <span class="ritual-step-num">Passo I</span>
-                <span class="ritual-step-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â</span>
-                <p>Concentrati su ciÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â² che vuoi comprendere. Formula la domanda con chiarezza e sinceritÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â .</p>
+                <span class="ritual-step-icon">🕯️</span>
+                <p>Concentrati su ciò che vuoi comprendere. Formula la domanda con chiarezza e sincerità.</p>
             </div>
             <div class="ritual-step">
                 <span class="ritual-step-num">Passo II</span>
-                <span class="ritual-step-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â´</span>
+                <span class="ritual-step-icon">🎴</span>
                 <p id="ritualStep2Desc">Scrivi la tua domanda. Tre Arcani Maggiori verranno estratti: Radici, Presente, Luce Futura.</p>
             </div>
             <div class="ritual-step">
                 <span class="ritual-step-num">Passo III</span>
-                <span class="ritual-step-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã¢â‚¬Å“</span>
+                <span class="ritual-step-icon">📜</span>
                 <p>Leggi il responso con attenzione. L'Oracolo parla per simboli, non per certezze.</p>
             </div>
         </div>
@@ -1798,7 +1802,7 @@
         <div id="tarotInputBox" class="tarot-input-area">
             <label class="input-label">La tua domanda agli Arcani</label>
             <textarea id="questionInput" placeholder="Cosa devo comprendere in questo momento? Quali energie circondano la mia situazione?" rows="4"></textarea>
-            <button class="btn-action" id="tarotRunBtn" onclick="runTarot()">✦ Estrai le Tre Carte - 1 Credito</button>
+            <button class="btn-action" id="tarotRunBtn" onclick="runTarot()">✦ Estrai le Tre Carte — 1 Credito</button>
         </div>
 
         <!-- Cards spread -->
@@ -1834,7 +1838,7 @@
             <div class="reading-result-footer">
                 <div class="share-buttons">
                     <button class="btn-share" onclick="openIgCard('tarocchi')">📸 Card Instagram</button>
-                    <button class="btn-share" onclick="nativeShare()">✧ Condividi</button>
+                    <button class="btn-share" onclick="nativeShare()">✨ Condividi</button>
                     <button class="btn-share" onclick="shareFB()">Facebook</button>
                     <button class="btn-share" onclick="sharePinterest()">Pinterest</button>
                     <button class="btn-share" onclick="copyText('readingContent')">Copia Testo</button>
@@ -1857,12 +1861,12 @@
             <div style="margin-bottom: 16px;">
                 <p style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Cosa descrivere nel sogno</p>
                 <div class="dream-symbols-bar">
-                    <span class="dream-symbol-chip" onclick="appendDreamHint('Colori: ')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¨ Colori</span>
-                    <span class="dream-symbol-chip" onclick="appendDreamHint('Persone presenti: ')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“Ãƒâ€šÃ‚Â¤ Persone</span>
-                    <span class="dream-symbol-chip" onclick="appendDreamHint('Luoghi: ')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Luoghi</span>
-                    <span class="dream-symbol-chip" onclick="appendDreamHint('Sensazioni: ')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â« Sensazioni</span>
-                    <span class="dream-symbol-chip" onclick="appendDreamHint('Animali: ')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ Animali</span>
-                    <span class="dream-symbol-chip" onclick="appendDreamHint('Oggetti simbolici: ')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Oggetti</span>
+                    <span class="dream-symbol-chip" onclick="appendDreamHint('Colori: ')">🎨 Colori</span>
+                    <span class="dream-symbol-chip" onclick="appendDreamHint('Persone presenti: ')">👤 Persone</span>
+                    <span class="dream-symbol-chip" onclick="appendDreamHint('Luoghi: ')">🏛️ Luoghi</span>
+                    <span class="dream-symbol-chip" onclick="appendDreamHint('Sensazioni: ')">💫 Sensazioni</span>
+                    <span class="dream-symbol-chip" onclick="appendDreamHint('Animali: ')">🦋 Animali</span>
+                    <span class="dream-symbol-chip" onclick="appendDreamHint('Oggetti simbolici: ')">🗝️ Oggetti</span>
                 </div>
             </div>
 
@@ -1871,20 +1875,20 @@
                 <textarea id="dreamInput" placeholder="Ero in un luogo che sembrava una foresta ma anche una casa... C'era una luce azzurra che proveniva da..." rows="6"></textarea>
 
                 <div class="dream-prompt-hint">
-                    <button class="dream-prompt-btn" onclick="setDreamPrompt('Ho sognato di volare...')">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€¹Ã¢â‚¬Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Volare</button>
-                    <button class="dream-prompt-btn" onclick="setDreamPrompt('Ho sognato qualcuno che ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ mancato...')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Una persona cara</button>
-                    <button class="dream-prompt-btn" onclick="setDreamPrompt('Ho sognato di inseguire qualcosa o di essere inseguito...')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Inseguimento</button>
-                    <button class="dream-prompt-btn" onclick="setDreamPrompt('Ho sognato l\'acqua...')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€¦Ã‚Â  Acqua</button>
+                    <button class="dream-prompt-btn" onclick="setDreamPrompt('Ho sognato di volare...')">✈️ Volare</button>
+                    <button class="dream-prompt-btn" onclick="setDreamPrompt('Ho sognato qualcuno che è mancato...')">🕯️ Una persona cara</button>
+                    <button class="dream-prompt-btn" onclick="setDreamPrompt('Ho sognato di inseguire qualcosa o di essere inseguito...')">🌀 Inseguimento</button>
+                    <button class="dream-prompt-btn" onclick="setDreamPrompt('Ho sognato l\'acqua...')">🌊 Acqua</button>
                 </div>
 
-                <button class="btn-action" onclick="runDream()">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ Interpreta la Visione ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 1 Credito</button>
+                <button class="btn-action" onclick="runDream()">🌙 Interpreta la Visione — 1 Credito</button>
             </div>
         </div>
 
         <!-- Result -->
         <div id="dreamResult" class="dream-result-card">
             <div class="dream-result-header">
-                <span class="dream-symbol-large">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢</span>
+                <span class="dream-symbol-large">🌙</span>
                 <div>
                     <h3 style="font-family:'Cinzel',serif;color:var(--gold-light);font-size:0.95rem;letter-spacing:1.5px;margin-bottom:4px;">INTERPRETAZIONE DEL SOGNO</h3>
                     <p style="font-size:0.8rem;color:var(--text-muted);font-style:italic;">L'oracolo ha letto tra le pieghe del tuo inconscio</p>
@@ -1896,11 +1900,11 @@
             </div>
             <div style="padding: 20px 28px; border-top: 1px solid var(--border); display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:center;">
                 <div class="share-buttons">
-                    <button class="btn-share" onclick="openIgCard('sogno')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¸ Card Instagram</button>
-                    <button class="btn-share" onclick="nativeShare()">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ Condividi</button>
+                    <button class="btn-share" onclick="openIgCard('sogno')">📸 Card Instagram</button>
+                    <button class="btn-share" onclick="nativeShare()">✨ Condividi</button>
                     <button class="btn-share" onclick="copyText('dreamContent')">Copia Testo</button>
                 </div>
-                <button class="btn-action" onclick="resetSection('sogni')" style="max-width:260px;">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ Nuova Visione</button>
+                <button class="btn-action" onclick="resetSection('sogni')" style="max-width:260px;">🌙 Nuova Visione</button>
             </div>
         </div>
     </div>
@@ -1909,23 +1913,23 @@
 <!-- ASTROLOGIA -->
 <section id="astrologia" class="content-section">
     <div class="container">
-        <p class="hero-tagline" style="opacity:1; animation:none;">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ La Mappa Astrale ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦</p>
+        <p class="hero-tagline" style="opacity:1; animation:none;">✦ La Mappa Astrale ✦</p>
         <h2 class="page-title">MAPPA DEGLI ASTRI</h2>
         <p class="page-subtitle">Nel momento del tuo primo respiro, l'universo ha scattato una fotografia eterna. Ogni stella aveva un posto riservato per te.</p>
 
         <div class="astro-intro-cards">
             <div class="astro-intro-card">
-                <span class="planet-sym">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°</span>
+                <span class="planet-sym">☉</span>
                 <h4>Sole</h4>
-                <p>L'essenza profonda, il nucleo della tua identitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  e la forza vitale che ti muove.</p>
+                <p>L'essenza profonda, il nucleo della tua identità e la forza vitale che ti muove.</p>
             </div>
             <div class="astro-intro-card">
-                <span class="planet-sym">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½</span>
+                <span class="planet-sym">☽</span>
                 <h4>Luna</h4>
                 <p>Le emozioni, l'inconscio e i ritmi interiori che guidano le tue reazioni.</p>
             </div>
             <div class="astro-intro-card">
-                <span class="planet-sym">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“</span>
+                <span class="planet-sym">↑</span>
                 <h4>Ascendente</h4>
                 <p>La maschera che mostri al mondo, il tuo modo di apparire agli altri.</p>
             </div>
@@ -1933,10 +1937,10 @@
 
         <div id="astroInputBox" class="astro-form-card">
             <div class="astro-form-header">
-                <span style="font-size:1.4rem;">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€¦Ã¢â‚¬â„¢</span>
+                <span style="font-size:1.4rem;">🌌</span>
                 <div>
                     <h3>Coordinate di Nascita</h3>
-                    <p style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">Ogni dato ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ una stella nel tuo cielo personale</p>
+                    <p style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">Ogni dato è una stella nel tuo cielo personale</p>
                 </div>
             </div>
             <div class="astro-form-body">
@@ -1957,42 +1961,42 @@
                 <div class="depth-row">
                     <label class="depth-option">
                         <input type="radio" name="astroDepth" value="base" checked>
-                        <span><strong>Essenziale</strong><small>Sole ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Luna ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Asc ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 1 Credito</small></span>
+                        <span><strong>Essenziale</strong><small>Sole · Luna · Asc — 1 Credito</small></span>
                     </label>
                     <label class="depth-option">
                         <input type="radio" name="astroDepth" value="profonda">
-                        <span><strong>Profonda</strong><small>Analisi completa ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 3 Crediti</small></span>
+                        <span><strong>Profonda</strong><small>Analisi completa — 3 Crediti</small></span>
                     </label>
                 </div>
-                <button class="btn-action" onclick="runAstrology()">ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â­Ãƒâ€šÃ‚Â Genera la Mappa Astrale</button>
-                <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;margin-top:12px;font-style:italic;">Senza l'ora esatta il calcolo dell'ascendente sarÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  approssimativo.</p>
+                <button class="btn-action" onclick="runAstrology()">⭐ Genera la Mappa Astrale</button>
+                <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;margin-top:12px;font-style:italic;">Senza l'ora esatta il calcolo dell'ascendente sarà approssimativo.</p>
             </div>
         </div>
 
         <div id="astroResult" class="astro-result-wrapper">
             <div class="astro-triad">
                 <div class="astro-triad-item">
-                    <span class="sym">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°</span>
+                    <span class="sym">☉</span>
                     <span class="label">Sole</span>
-                    <span class="value" id="summarySoleSign">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</span>
-                    <span class="desc">Essenza e VitalitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â </span>
+                    <span class="value" id="summarySoleSign">—</span>
+                    <span class="desc">Essenza e Vitalità</span>
                 </div>
                 <div class="astro-triad-item">
-                    <span class="sym">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½</span>
+                    <span class="sym">☽</span>
                     <span class="label">Luna</span>
-                    <span class="value" id="summaryLunaSign">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</span>
+                    <span class="value" id="summaryLunaSign">—</span>
                     <span class="desc">Emozioni e Inconscio</span>
                 </div>
                 <div class="astro-triad-item">
-                    <span class="sym">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“</span>
+                    <span class="sym">↑</span>
                     <span class="label">Ascendente</span>
-                    <span class="value" id="summaryAscSign">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</span>
-                    <span class="desc">PersonalitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  esteriore</span>
+                    <span class="value" id="summaryAscSign">—</span>
+                    <span class="desc">Personalità esteriore</span>
                 </div>
             </div>
 
             <div class="astro-commentary-area">
-                <div class="astro-commentary-area-header">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Il Commento dell'Oracolo</div>
+                <div class="astro-commentary-area-header">✦ Il Commento dell'Oracolo</div>
                 <div class="astro-commentary-area-body">
                     <div id="astroCommentary" class="result-content"></div>
                 </div>
@@ -2005,20 +2009,20 @@
                 </div>
                 <div>
                     <p style="font-family:'Cinzel';font-size:9px;color:var(--text-muted);letter-spacing:2px;text-align:center;margin-bottom:16px;">IL TUO ALLINEAMENTO</p>
-                    <div class="summary-item"><span class="symbol">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°</span><div class="info"><strong>Sole in <span id="shareSole">...</span></strong><p>Essenza e VitalitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â </p></div></div>
-                    <div class="summary-item"><span class="symbol">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½</span><div class="info"><strong>Luna in <span id="shareLuna">...</span></strong><p>Emozioni e Inconscio</p></div></div>
-                    <div class="summary-item"><span class="symbol">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“</span><div class="info"><strong>Ascendente <span id="shareAsc">...</span></strong><p>PersonalitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  esteriore</p></div></div>
+                    <div class="summary-item"><span class="symbol">☉</span><div class="info"><strong>Sole in <span id="shareSole">...</span></strong><p>Essenza e Vitalità</p></div></div>
+                    <div class="summary-item"><span class="symbol">☽</span><div class="info"><strong>Luna in <span id="shareLuna">...</span></strong><p>Emozioni e Inconscio</p></div></div>
+                    <div class="summary-item"><span class="symbol">↑</span><div class="info"><strong>Ascendente <span id="shareAsc">...</span></strong><p>Personalità esteriore</p></div></div>
                 </div>
                 <div class="card-footer" style="display:block;text-align:center;margin-top:16px;"><p style="font-family:'Cinzel';font-size:9px;color:var(--text-muted);">sidera7.vercel.app</p></div>
             </div>
 
             <div style="margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:14px;">
                 <div class="share-buttons">
-                    <button class="btn-share" onclick="openIgCard('astrologia')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¸ Card Instagram</button>
-                    <button class="btn-share" onclick="shareAstroText()">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ Condividi</button>
+                    <button class="btn-share" onclick="openIgCard('astrologia')">📸 Card Instagram</button>
+                    <button class="btn-share" onclick="shareAstroText()">✨ Condividi</button>
                     <button class="btn-share" onclick="copyText('astroCommentary')">Copia Testo</button>
                 </div>
-                <button class="btn-action" onclick="resetSection('astrologia')" style="max-width:320px;">ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â­Ãƒâ€šÃ‚Â Nuovo Calcolo</button>
+                <button class="btn-action" onclick="resetSection('astrologia')" style="max-width:320px;">⭐ Nuovo Calcolo</button>
             </div>
         </div>
     </div>
@@ -2027,7 +2031,7 @@
 <!-- SINASTRIA -->
 <section id="sinastria" class="content-section">
     <div class="container">
-        <p class="hero-tagline" style="opacity:1; animation:none;">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ L'Armonia delle Anime ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦</p>
+        <p class="hero-tagline" style="opacity:1; animation:none;">✦ L'Armonia delle Anime ✦</p>
         <h2 class="page-title">SINASTRIA</h2>
         <p class="page-subtitle">Due mappe astrali che si incontrano. Scopri le energie che legano la tua anima a un'altra e i fili karmici che vi uniscono.</p>
 
@@ -2036,7 +2040,7 @@
             <div class="synastry-persons">
                 <!-- Persona A -->
                 <div class="synastry-person-card">
-                    <span class="synastry-person-label">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½ Prima Anima</span>
+                    <span class="synastry-person-label">☽ Prima Anima</span>
                     <div class="astro-field-group"><label>Nome</label>
                         <input type="text" id="synaNameA" placeholder="Il tuo nome"></div>
                     <div class="astro-date-row">
@@ -2045,20 +2049,20 @@
                         <div class="astro-field-group"><label>Ora</label>
                             <input type="time" id="synaTimeA"></div>
                     </div>
-                    <div class="astro-field-group"><label>CittÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  di nascita</label>
+                    <div class="astro-field-group"><label>Città di nascita</label>
                         <input type="text" id="synaCityA" placeholder="es. Roma"></div>
                 </div>
 
                 <!-- Separatore -->
                 <div class="synastry-divider">
                     <div class="synastry-divider-line"></div>
-                    <span class="synastry-divider-sym">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€¦Ã‚Â¾</span>
+                    <span class="synastry-divider-sym">💞</span>
                     <div class="synastry-divider-line"></div>
                 </div>
 
                 <!-- Persona B -->
                 <div class="synastry-person-card">
-                    <span class="synastry-person-label">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â° Seconda Anima</span>
+                    <span class="synastry-person-label">☉ Seconda Anima</span>
                     <div class="astro-field-group"><label>Nome</label>
                         <input type="text" id="synaNameB" placeholder="Il nome dell'altra persona"></div>
                     <div class="astro-date-row">
@@ -2067,31 +2071,31 @@
                         <div class="astro-field-group"><label>Ora</label>
                             <input type="time" id="synaTimeB"></div>
                     </div>
-                    <div class="astro-field-group"><label>CittÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  di nascita</label>
+                    <div class="astro-field-group"><label>Città di nascita</label>
                         <input type="text" id="synaCityB" placeholder="es. Milano"></div>
                 </div>
             </div>
 
-<!-- section -->
+            <!-- Swipe hint sinastria — solo mobile -->
             <div class="swipe-hint-sinastria">
-                <span>ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½ Prima Anima</span>
-                <span style="color:var(--gold);letter-spacing:3px;">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Ãƒâ€šÃ‚Â scorri ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢</span>
-                <span>ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â° Seconda Anima</span>
+                <span>☽ Prima Anima</span>
+                <span style="color:var(--gold);letter-spacing:3px;">← scorri →</span>
+                <span>☉ Seconda Anima</span>
             </div>
 
             <!-- Tipo analisi -->
             <div class="depth-row" style="margin-bottom:20px;">
                 <label class="depth-option">
                     <input type="radio" name="synaDepth" value="base" checked>
-                    <span><strong>Essenziale</strong><small>CompatibilitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  di base ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 2 Crediti</small></span>
+                    <span><strong>Essenziale</strong><small>Compatibilità di base — 2 Crediti</small></span>
                 </label>
                 <label class="depth-option">
                     <input type="radio" name="synaDepth" value="profonda">
-                    <span><strong>Profonda</strong><small>Aspetti, case, karmatica ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 4 Crediti</small></span>
+                    <span><strong>Profonda</strong><small>Aspetti, case, karmatica — 4 Crediti</small></span>
                 </label>
             </div>
 
-            <button class="btn-action" onclick="runSynastry()">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€¦Ã‚Â¾ Calcola l'AffinitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â </button>
+            <button class="btn-action" onclick="runSynastry()">💞 Calcola l'Affinità</button>
         </div>
 
         <!-- RISULTATO -->
@@ -2105,51 +2109,51 @@
                         <circle class="synastry-score-ring-fill" id="synaRingFill" cx="70" cy="70" r="60"/>
                     </svg>
                     <div>
-                        <div class="synastry-score-num" id="synaScoreNum">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</div>
+                        <div class="synastry-score-num" id="synaScoreNum">—</div>
                         <div style="font-size:0.65rem;color:var(--text-muted);font-family:'Cinzel',serif;letter-spacing:1px;">/100</div>
                     </div>
                 </div>
-                <div class="synastry-score-label" id="synaScoreLabel">AffinitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  Cosmica</div>
+                <div class="synastry-score-label" id="synaScoreLabel">Affinità Cosmica</div>
                 <div id="synaPairNames" style="font-family:'Cinzel',serif;font-size:11px;color:var(--text-muted);margin-top:6px;letter-spacing:2px;"></div>
             </div>
 
             <!-- Aspetti pillole -->
             <div class="synastry-aspects" id="synaAspects">
                 <div class="synastry-aspect-pill" id="aspAnima">
-                    <span class="asp-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â«</span>
+                    <span class="asp-icon">💫</span>
                     <span class="asp-label">Anima</span>
-                    <span class="asp-value" id="aspAnimaVal">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</span>
+                    <span class="asp-value" id="aspAnimaVal">—</span>
                 </div>
                 <div class="synastry-aspect-pill" id="aspMente">
-                    <span class="asp-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Â </span>
+                    <span class="asp-icon">🧠</span>
                     <span class="asp-label">Mente</span>
-                    <span class="asp-value" id="aspMenteVal">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</span>
+                    <span class="asp-value" id="aspMenteVal">—</span>
                 </div>
                 <div class="synastry-aspect-pill" id="aspPassione">
-                    <span class="asp-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥</span>
+                    <span class="asp-icon">🔥</span>
                     <span class="asp-label">Passione</span>
-                    <span class="asp-value" id="aspPassioneVal">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</span>
+                    <span class="asp-value" id="aspPassioneVal">—</span>
                 </div>
                 <div class="synastry-aspect-pill" id="aspStabilita">
-                    <span class="asp-icon">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â</span>
-                    <span class="asp-label">StabilitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â </span>
-                    <span class="asp-value" id="aspStabilitaVal">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</span>
+                    <span class="asp-icon">⚖️</span>
+                    <span class="asp-label">Stabilità</span>
+                    <span class="asp-value" id="aspStabilitaVal">—</span>
                 </div>
                 <div class="synastry-aspect-pill" id="aspKarma">
-                    <span class="asp-icon">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â¯ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â</span>
+                    <span class="asp-icon">☯️</span>
                     <span class="asp-label">Karma</span>
-                    <span class="asp-value" id="aspKarmaVal">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</span>
+                    <span class="asp-value" id="aspKarmaVal">—</span>
                 </div>
                 <div class="synastry-aspect-pill" id="aspCrescita">
-                    <span class="asp-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â±</span>
+                    <span class="asp-icon">🌱</span>
                     <span class="asp-label">Crescita</span>
-                    <span class="asp-value" id="aspCrescitaVal">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</span>
+                    <span class="asp-value" id="aspCrescitaVal">—</span>
                 </div>
             </div>
 
             <!-- Commento testuale -->
             <div class="synastry-result-body">
-                <div class="synastry-result-header">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Il Racconto dell'Unione</div>
+                <div class="synastry-result-header">✦ Il Racconto dell'Unione</div>
                 <div class="synastry-result-text">
                     <div id="synaContent" class="result-content"></div>
                 </div>
@@ -2158,11 +2162,11 @@
             <!-- Actions -->
             <div style="margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:14px;">
                 <div class="share-buttons">
-                    <button class="btn-share" onclick="openIgCard('sinastria')">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¸ Card Instagram</button>
+                    <button class="btn-share" onclick="openIgCard('sinastria')">📸 Card Instagram</button>
                     <button class="btn-share" onclick="copyText('synaContent')">Copia Testo</button>
-                    <button class="btn-share" onclick="nativeShare()">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ Condividi</button>
+                    <button class="btn-share" onclick="nativeShare()">✨ Condividi</button>
                 </div>
-                <button class="btn-action" onclick="resetSynastry()" style="max-width:320px;">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€¦Ã‚Â¾ Nuova Sinastria</button>
+                <button class="btn-action" onclick="resetSynastry()" style="max-width:320px;">💞 Nuova Sinastria</button>
             </div>
         </div>
     </div>
@@ -2171,33 +2175,33 @@
 <!-- LETTURA DELLA MANO -->
 <section id="palmistry" class="content-section">
     <div class="container">
-        <p class="hero-tagline" style="opacity:1; animation:none;">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ L'Arte della Chiromanza ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦</p>
+        <p class="hero-tagline" style="opacity:1; animation:none;">✦ L'Arte della Chiromanza ✦</p>
         <h2 class="page-title">LETTURA DELLA MANO</h2>
         <p class="page-subtitle">Una lettura esclusiva, personale e irripetibile. L'Oracolo esamina le linee del tuo palmo e ti risponde entro 48 ore con un'analisi dedicata solo a te.</p>
 
         <!-- Badge premium -->
         <div style="text-align:center;margin-bottom:20px;">
             <span style="display:inline-flex;align-items:center;gap:10px;padding:8px 20px;border:1px solid rgba(107,63,160,0.5);border-radius:50px;background:rgba(107,63,160,0.1);font-family:'Cinzel',serif;font-size:10px;color:#b08fe0;letter-spacing:2px;text-transform:uppercase;">
-                ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Servizio Premium ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Lettura Personale ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 48h ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦
+                ✦ Servizio Premium · Lettura Personale · 48h ✦
             </span>
         </div>
 
         <!-- Guida foto -->
         <div class="palm-guide-grid">
             <div class="palm-guide-card reveal">
-                <span class="icon">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â</span>
+                <span class="icon">☀️</span>
                 <h4>Luce naturale</h4>
-                <p>Fotografa vicino a una finestra di giorno. Evita il flash ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â appiattisce le linee.</p>
+                <p>Fotografa vicino a una finestra di giorno. Evita il flash — appiattisce le linee.</p>
             </div>
             <div class="palm-guide-card reveal">
-                <span class="icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â²</span>
+                <span class="icon">🤲</span>
                 <h4>Mano dominante</h4>
                 <p>Usa la mano con cui scrivi. Apri il palmo completamente, dita naturalmente unite.</p>
             </div>
             <div class="palm-guide-card reveal">
-                <span class="icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â</span>
+                <span class="icon">🔍</span>
                 <h4>Nitida e a fuoco</h4>
-                <p>Le linee devono essere visibili. Scatta dall'alto, a 20ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ30cm dalla mano.</p>
+                <p>Le linee devono essere visibili. Scatta dall'alto, a 20–30cm dalla mano.</p>
             </div>
         </div>
 
@@ -2205,7 +2209,7 @@
         <div class="palm-lines-ref">
             <div class="palm-line-item">
                 <div class="palm-line-dot" style="background:#C9A84C;"></div>
-                <div><strong>Linea della Vita</strong><span>VitalitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â , percorso e cambiamenti</span></div>
+                <div><strong>Linea della Vita</strong><span>Vitalità, percorso e cambiamenti</span></div>
             </div>
             <div class="palm-line-item">
                 <div class="palm-line-dot" style="background:#9B7FCC;"></div>
@@ -2228,16 +2232,16 @@
             <div class="palm-upload-area" id="palmDropZone">
                 <input type="file" id="palmFile" accept="image/jpeg,image/png,image/webp,image/heic"
                        onchange="handlePalmFile(this.files[0])">
-                <span class="palm-upload-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â²</span>
+                <span class="palm-upload-icon">🤲</span>
                 <p class="palm-upload-title">CARICA LA FOTO DEL PALMO</p>
                 <p class="palm-upload-hint">Trascina qui l'immagine oppure clicca per selezionarla</p>
-                <p class="palm-upload-limit">JPG ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· PNG ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· WEBP ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Max 8MB</p>
+                <p class="palm-upload-limit">JPG · PNG · WEBP · Max 8MB</p>
             </div>
 
             <!-- Anteprima -->
             <div class="palm-preview-wrap" id="palmPreviewWrap">
                 <img id="palmPreviewImg" class="palm-preview-img" src="" alt="Anteprima palmo">
-                <button class="palm-remove-btn" onclick="resetPalmUpload()">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Rimuovi foto</button>
+                <button class="palm-remove-btn" onclick="resetPalmUpload()">✕ Rimuovi foto</button>
             </div>
 
             <!-- Dati contatto -->
@@ -2252,7 +2256,7 @@
             <div style="margin-top:20px;padding:20px 24px;border:1px solid rgba(107,63,160,0.3);border-radius:16px;background:rgba(107,63,160,0.06);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
                 <div>
                     <p style="font-family:'Cinzel',serif;font-size:11px;color:#b08fe0;letter-spacing:2px;margin-bottom:4px;">LETTURA PREMIUM</p>
-                    <p style="font-size:0.82rem;color:var(--text-muted);font-style:italic;">Lettura personale ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Risposta via email entro 48h</p>
+                    <p style="font-size:0.82rem;color:var(--text-muted);font-style:italic;">Lettura personale · Risposta via email entro 48h</p>
                 </div>
                 <div style="text-align:right;">
                     <p style="font-family:'Cinzel',serif;font-size:1.4rem;color:var(--gold);line-height:1;">15</p>
@@ -2261,7 +2265,7 @@
             </div>
 
             <button class="btn-action" id="palmSubmitBtn" onclick="runPalmReading()" style="margin-top:16px;background:linear-gradient(135deg,rgba(107,63,160,0.7),rgba(42,26,85,0.9));">
-                ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Invia la Foto per la Lettura ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 15 Crediti
+                ✦ Invia la Foto per la Lettura — 15 Crediti
             </button>
             <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-top:10px;font-style:italic;">
                 La tua foto viene trasmessa in modo sicuro e non viene conservata.<br>
@@ -2271,7 +2275,7 @@
 
         <!-- Stato invio -->
         <div id="palmSendingState" style="display:none;text-align:center;padding:60px 0;">
-            <div style="font-size:3rem;margin-bottom:16px;animation:floatSymbol 2s ease-in-out infinite;">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â²</div>
+            <div style="font-size:3rem;margin-bottom:16px;animation:floatSymbol 2s ease-in-out infinite;">🤲</div>
             <p style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:3px;margin-bottom:8px;">TRASMISSIONE IN CORSO</p>
             <p class="loading-text" style="color:var(--text-muted);">Invio della tua richiesta al tempio</p>
         </div>
@@ -2279,14 +2283,14 @@
         <!-- Conferma invio -->
         <div id="palmConfirm" style="display:none;animation:fadeUp 0.6s ease;">
             <div class="glass-card" style="max-width:500px;margin:0 auto;text-align:center;">
-                <div style="font-size:3.5rem;margin-bottom:16px;">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€¦Ã‚Â¸</div>
+                <div style="font-size:3.5rem;margin-bottom:16px;">🌟</div>
                 <h3 style="font-family:'Cinzel',serif;color:var(--gold-light);font-size:1.1rem;letter-spacing:2px;margin-bottom:14px;">RICHIESTA INVIATA</h3>
                 <p style="color:var(--text-muted);font-style:italic;line-height:1.8;margin-bottom:8px;">
-                    La tua immagine ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ giunta nel tempio. L'Oracolo esaminerÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  le linee del tuo palmo e ti invierÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  una lettura personale entro 48 ore.
+                    La tua immagine è giunta nel tempio. L'Oracolo esaminerà le linee del tuo palmo e ti invierà una lettura personale entro 48 ore.
                 </p>
                 <p style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:24px;" id="palmConfirmEmail"></p>
                 <button class="btn-action" onclick="resetPalmSection()" style="max-width:280px;background:linear-gradient(135deg,rgba(107,63,160,0.7),rgba(42,26,85,0.9));">
-                    ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Torna al Tempio
+                    ✦ Torna al Tempio
                 </button>
             </div>
         </div>
@@ -2296,64 +2300,64 @@
 <!-- CONSULENZA -->
 <section id="contatto" class="content-section">
     <div class="container">
-        <p class="hero-tagline" style="opacity:1; animation:none;">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Consulenza Privata ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦</p>
+        <p class="hero-tagline" style="opacity:1; animation:none;">✦ Consulenza Privata ✦</p>
         <h2 class="page-title">IL TEMPIO PRIVATO</h2>
-        <p class="page-subtitle">Un incontro uno-a-uno con le energie cosmiche. Scegli il tipo di consulto che senti piÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ vicino alla tua anima.</p>
+        <p class="page-subtitle">Un incontro uno-a-uno con le energie cosmiche. Scegli il tipo di consulto che senti più vicino alla tua anima.</p>
 
         <!-- Step 1: scelta tipo consulto -->
         <div id="consultStep1">
             <div class="consultation-grid">
                 <div class="consult-type-card" onclick="selectConsult('tarocchi')">
-                    <span class="icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â´</span>
+                    <span class="icon">🎴</span>
                     <h3>Lettura Tarocchi</h3>
                     <p>Un'analisi approfondita della tua situazione attraverso gli Arcani, con una sessione dedicata.</p>
                     <span class="badge">10 Crediti</span>
                 </div>
                 <div class="consult-type-card" onclick="selectConsult('amore')">
-                    <span class="icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â«</span>
+                    <span class="icon">💫</span>
                     <h3>Consulto Amore</h3>
                     <p>Esplora le energie relazionali e i nodi karmici che legano la tua anima a un'altra.</p>
                     <span class="badge">10 Crediti</span>
                 </div>
                 <div class="consult-type-card" onclick="selectConsult('rito')" style="border-color: rgba(107,63,160,0.4); background: rgba(107,63,160,0.06);">
-                    <span class="icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â®</span>
+                    <span class="icon">🔮</span>
                     <h3>Rito dell'Anima</h3>
-                    <p>Il consulto piÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ profondo. Tarocchi + Mappa Astrale + Sogni ricorrenti letti come un unico messaggio cosmico.</p>
-                    <span class="badge" style="border-color: rgba(107,63,160,0.6); color: #b08fe0;">40 Crediti ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Premium</span>
+                    <p>Il consulto più profondo. Tarocchi + Mappa Astrale + Sogni ricorrenti letti come un unico messaggio cosmico.</p>
+                    <span class="badge" style="border-color: rgba(107,63,160,0.6); color: #b08fe0;">40 Crediti · Premium</span>
                 </div>
             </div>
-<!-- section -->
-            <p class="swipe-hint">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Ãƒâ€šÃ‚Â scorri per vedere tutti i consulti ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢</p>
+            <!-- Swipe hint — visibile solo su mobile -->
+            <p class="swipe-hint">← scorri per vedere tutti i consulti →</p>
             <div style="margin-top:16px; padding:18px 22px; border:1px dashed rgba(107,63,160,0.3); border-radius:14px; background: rgba(107,63,160,0.04); display:flex; align-items:flex-start; gap:14px;">
-                <span style="font-size:1.4rem; flex-shrink:0;">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â®</span>
+                <span style="font-size:1.4rem; flex-shrink:0;">🔮</span>
                 <div>
                     <p style="font-family:'Cinzel',serif; font-size:10px; color:#b08fe0; letter-spacing:2px; text-transform:uppercase; margin-bottom:4px;">Il Rito dell'Anima</p>
-                    <p style="font-size:0.83rem; color:var(--text-muted); line-height:1.6;">Un'esperienza unica: l'Oracolo legge la tua mappa astrale, i tuoi Arcani del momento e i simboli ricorrenti nei tuoi sogni come un unico testo sacro. Il responso piÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ completo e personale che Sidera possa offrirti.</p>
+                    <p style="font-size:0.83rem; color:var(--text-muted); line-height:1.6;">Un'esperienza unica: l'Oracolo legge la tua mappa astrale, i tuoi Arcani del momento e i simboli ricorrenti nei tuoi sogni come un unico testo sacro. Il responso più completo e personale che Sidera possa offrirti.</p>
                 </div>
             </div>
         </div>
 
         <!-- Step 2: form -->
         <div id="consultStep2" class="consult-form-wrap">
-            <button onclick="backConsult()" style="background:none;border:none;color:var(--text-muted);font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;margin-bottom:20px;">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Ãƒâ€šÃ‚Â TORNA ALLA SCELTA</button>
+            <button onclick="backConsult()" style="background:none;border:none;color:var(--text-muted);font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;margin-bottom:20px;">← TORNA ALLA SCELTA</button>
             <div class="glass-card">
                 <p id="consultTypeLabel" style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;"></p>
                 <input type="text" id="cName" placeholder="Il tuo nome">
                 <input type="email" id="cEmail" placeholder="Email per ricevere il responso">
-                <textarea id="cMessage" placeholder="Descrivi la tua situazione con la massima sinceritÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ..." rows="5"></textarea>
-                <button class="btn-action" onclick="sendConsult()">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Invia la Richiesta</button>
+                <textarea id="cMessage" placeholder="Descrivi la tua situazione con la massima sincerità..." rows="5"></textarea>
+                <button class="btn-action" onclick="sendConsult()">✦ Invia la Richiesta</button>
                 <p id="consultCostNote" style="font-size:0.75rem;color:var(--text-muted);text-align:center;margin-top:10px;font-family:'Cinzel',serif;letter-spacing:1px;"></p>
-                <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-top:6px;">Il tuo consulto privato verrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  elaborato entro 48 ore.</p>
+                <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-top:6px;">Il tuo consulto privato verrà elaborato entro 48 ore.</p>
             </div>
         </div>
 
         <!-- Step 3: conferma -->
         <div id="consultStep3" class="consult-form-wrap" style="text-align:center;">
             <div class="glass-card" style="max-width:480px;margin:0 auto;">
-                <div style="font-size:3rem;margin-bottom:16px;">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€¦Ã‚Â¸</div>
+                <div style="font-size:3rem;margin-bottom:16px;">🌟</div>
                 <h3 style="font-family:'Cinzel',serif;color:var(--gold-light);margin-bottom:12px;font-size:1.2rem;">Richiesta Inviata</h3>
-                <p style="color:var(--text-muted);font-style:italic;line-height:1.7;">La tua energia ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ stata ricevuta nel tempio. Riceverai il responso entro 48 ore all'indirizzo indicato.</p>
-                <button class="btn-action" onclick="resetConsult()" style="margin-top:24px;">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Nuovo Consulto</button>
+                <p style="color:var(--text-muted);font-style:italic;line-height:1.7;">La tua energia è stata ricevuta nel tempio. Riceverai il responso entro 48 ore all'indirizzo indicato.</p>
+                <button class="btn-action" onclick="resetConsult()" style="margin-top:24px;">✦ Nuovo Consulto</button>
             </div>
         </div>
 
@@ -2362,11 +2366,11 @@
         <div class="glass-card">
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question"><span>Come viene elaborato il mio consulto?</span><span class="faq-toggle">+</span></div>
-                <div class="faq-answer">Una volta formulato il tuo quesito, le energie vengono elaborate attraverso l'intelligenza dell'Oracolo. Il responso che riceverai ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ una guida personalizzata, accessibile solo attraverso il tuo spirito e custodita nel tuo profilo personale.</div>
+                <div class="faq-answer">Una volta formulato il tuo quesito, le energie vengono elaborate attraverso l'intelligenza dell'Oracolo. Il responso che riceverai è una guida personalizzata, accessibile solo attraverso il tuo spirito e custodita nel tuo profilo personale.</div>
             </div>
             <div class="faq-item" onclick="toggleFaq(this)">
-                <div class="faq-question"><span>La mia essenza ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ al sicuro nel tempio?</span><span class="faq-toggle">+</span></div>
-                <div class="faq-answer">Questo spazio ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ un santuario digitale inviolabile. Ogni parola e ogni segreto rivelato rimangono confinati nel cerchio sacro del consulto. Non condividiamo mai i tuoi dati con terzi.</div>
+                <div class="faq-question"><span>La mia essenza è al sicuro nel tempio?</span><span class="faq-toggle">+</span></div>
+                <div class="faq-answer">Questo spazio è un santuario digitale inviolabile. Ogni parola e ogni segreto rivelato rimangono confinati nel cerchio sacro del consulto. Non condividiamo mai i tuoi dati con terzi.</div>
             </div>
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question"><span>Posso richiedere un approfondimento?</span><span class="faq-toggle">+</span></div>
@@ -2374,19 +2378,19 @@
             </div>
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question"><span>Come funziona il rimborso dei crediti?</span><span class="faq-toggle">+</span></div>
-                <div class="faq-answer">Se per qualsiasi motivo il tuo consulto non dovesse essere soddisfacente, i crediti vengono restituiti integralmente. La nostra fiducia nel percorso ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ totale.</div>
+                <div class="faq-answer">Se per qualsiasi motivo il tuo consulto non dovesse essere soddisfacente, i crediti vengono restituiti integralmente. La nostra fiducia nel percorso è totale.</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- section -->
+<!-- ════════════════════════════════
      PAYMENT MODAL
-
+════════════════════════════════ -->
 <div id="paymentModal" class="modal-overlay">
     <div class="modal-box">
-        <h2 class="modal-title">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ Ricarica Energia</h2>
-        <p class="modal-sub">Scegli il pacchetto piÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ adatto al tuo cammino</p>
+        <h2 class="modal-title">✨ Ricarica Energia</h2>
+        <p class="modal-sub">Scegli il pacchetto più adatto al tuo cammino</p>
 
         <!-- Tab switcher: crediti / abbonamento -->
         <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:18px;">
@@ -2403,12 +2407,12 @@
         <!-- Pannello crediti singoli -->
         <div id="panelCrediti">
             <div class="price-grid">
-                <button class="pay-tag-btn" id="btn3"  onclick="setAmount(3,5)"><strong>5 cr.</strong><br><small>3ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬</small></button>
-                <button class="pay-tag-btn" id="btn5"  onclick="setAmount(5,10)"><strong>10 cr.</strong><br><small>5ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬</small></button>
-                <button class="pay-tag-btn" id="btn9"  onclick="setAmount(9,20)"><strong>20 cr.</strong><br><small>9ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬</small></button>
-                <button class="pay-tag-btn" id="btn15" onclick="setAmount(15,40)"><strong>40 cr.</strong><br><small>15ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬</small></button>
-                <button class="pay-tag-btn" id="btn25" onclick="setAmount(25,75)"><strong>75 cr.</strong><br><small>25ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬</small></button>
-                <button class="pay-tag-btn" id="btn50" onclick="setAmount(50,200)"><strong>200 cr.</strong><br><small>50ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬</small></button>
+                <button class="pay-tag-btn" id="btn3"  onclick="setAmount(3,5)"><strong>5 cr.</strong><br><small>3€</small></button>
+                <button class="pay-tag-btn" id="btn5"  onclick="setAmount(5,10)"><strong>10 cr.</strong><br><small>5€</small></button>
+                <button class="pay-tag-btn" id="btn9"  onclick="setAmount(9,20)"><strong>20 cr.</strong><br><small>9€</small></button>
+                <button class="pay-tag-btn" id="btn15" onclick="setAmount(15,40)"><strong>40 cr.</strong><br><small>15€</small></button>
+                <button class="pay-tag-btn" id="btn25" onclick="setAmount(25,75)"><strong>75 cr.</strong><br><small>25€</small></button>
+                <button class="pay-tag-btn" id="btn50" onclick="setAmount(50,200)"><strong>200 cr.</strong><br><small>50€</small></button>
             </div>
             <div class="pay-total">Totale: <span id="displayAmount">3</span>€</div>
             <div id="paypal-button-container"></div>
@@ -2418,13 +2422,13 @@
         <div id="panelAbbonamento" style="display:none;">
             <div style="background:rgba(107,63,160,0.12);border:1px solid rgba(107,63,160,0.4);border-radius:16px;padding:24px;text-align:center;margin-bottom:18px;">
                 <p style="font-family:'Cinzel Decorative',cursive;font-size:1.1rem;color:var(--gold);margin-bottom:8px;">Oracolo Infinito</p>
-                <p style="font-family:'Cinzel',serif;font-size:2rem;color:var(--gold-light);line-height:1;margin-bottom:4px;">19,99ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬</p>
-                <p style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);letter-spacing:2px;margin-bottom:18px;">AL MESE ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· RINNOVO AUTOMATICO</p>
+                <p style="font-family:'Cinzel',serif;font-size:2rem;color:var(--gold-light);line-height:1;margin-bottom:4px;">19,99€</p>
+                <p style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);letter-spacing:2px;margin-bottom:18px;">AL MESE · RINNOVO AUTOMATICO</p>
                 <div style="display:flex;flex-direction:column;gap:6px;text-align:left;margin-bottom:18px;">
-                    <p style="font-size:0.82rem;color:var(--text);">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ <strong style="color:var(--gold-light);">100 crediti</strong> ogni mese</p>
-                    <p style="font-size:0.82rem;color:var(--text);">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Accesso a tutti gli oracoli</p>
-                    <p style="font-size:0.82rem;color:var(--text);">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ PrioritÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  sulle consulenze private</p>
-                    <p style="font-size:0.82rem;color:var(--text);">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Cancella quando vuoi</p>
+                    <p style="font-size:0.82rem;color:var(--text);">✦ <strong style="color:var(--gold-light);">100 crediti</strong> ogni mese</p>
+                    <p style="font-size:0.82rem;color:var(--text);">✦ Accesso a tutti gli oracoli</p>
+                    <p style="font-size:0.82rem;color:var(--text);">✦ Priorità sulle consulenze private</p>
+                    <p style="font-size:0.82rem;color:var(--text);">✦ Cancella quando vuoi</p>
                 </div>
             </div>
             <div id="paypal-subscription-container"></div>
@@ -2433,19 +2437,19 @@
             </p>
         </div>
 
-        <button onclick="closePayment()" class="modal-close-btn">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Torna al Sito ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦</button>
+        <button onclick="closePayment()" class="modal-close-btn">✦ Torna al Sito ✦</button>
     </div>
 </div>
 
-<!-- section -->
+<!-- ════════════════════════════════
      ACCOUNT MODAL
-
+════════════════════════════════ -->
 <div id="accountModal" class="modal-overlay">
     <div class="modal-box" style="max-width:520px;">
 
         <!-- Vista login/registrazione -->
         <div id="accountAuthView">
-            <h2 class="modal-title" style="margin-bottom:6px;">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½ Il Tuo Profilo</h2>
+            <h2 class="modal-title" style="margin-bottom:6px;">☽ Il Tuo Profilo</h2>
             <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-bottom:20px;">Accedi per sincronizzare crediti e letture su tutti i dispositivi</p>
             <div class="account-tabs">
                 <button class="account-tab active" onclick="switchAuthTab('login')">Accedi</button>
@@ -2457,12 +2461,12 @@
                 <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
                 <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password">
                 <div id="loginError" style="display:none;font-size:0.78rem;color:#e07070;text-align:center;margin:-8px 0 10px;font-family:'Cinzel',serif;letter-spacing:1px;"></div>
-                <button type="submit" class="btn-action" id="loginBtn">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Accedi al Tempio</button>
+                <button type="submit" class="btn-action" id="loginBtn">✦ Accedi al Tempio</button>
                 </form>
                 <p style="font-size:0.73rem;color:var(--text-muted);margin-top:14px;text-align:center;line-height:1.6;">
                     Crediti e letture sincronizzati su tutti i tuoi dispositivi.<br>
                     <span style="color:rgba(138,122,94,0.5);font-size:0.68rem;">
-                        ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¹Ã…â€œ Per abilitare la sincronizzazione reale, collega Supabase Auth nel file config.
+                        ⓘ Per abilitare la sincronizzazione reale, collega Supabase Auth nel file config.
                     </span>
                 </p>
             </div>
@@ -2473,7 +2477,7 @@
                 <input type="email" id="regEmail" placeholder="Email" autocomplete="email">
                 <input type="password" id="regPass" placeholder="Password (min. 6 caratteri)" autocomplete="new-password">
                 <div id="registerError" style="display:none;font-size:0.78rem;color:#e07070;text-align:center;margin:-8px 0 10px;font-family:'Cinzel',serif;letter-spacing:1px;"></div>
-                <button type="submit" class="btn-action">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€¦Ã‚Â¸ Crea il Tuo Profilo</button>
+                <button type="submit" class="btn-action">🌟 Crea il Tuo Profilo</button>
                 </form>
             </div>
         </div>
@@ -2481,11 +2485,11 @@
         <!-- Vista profilo loggato -->
         <div id="accountProfileView" style="display:none;">
             <div style="text-align:center;margin-bottom:20px;">
-                <div id="profileAvatar" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;font-family:'Cinzel',serif;color:var(--gold);">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½</div>
+                <div id="profileAvatar" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;font-family:'Cinzel',serif;color:var(--gold);">☽</div>
                 <p id="profileName" style="font-family:'Cinzel',serif;color:var(--gold-light);font-size:1.05rem;margin-bottom:2px;"></p>
                 <p id="profileEmail" style="font-size:0.78rem;color:var(--text-muted);"></p>
                 <div style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:6px 18px;border:1px solid var(--border);border-radius:50px;background:rgba(201,168,76,0.06);">
-                    <span style="font-size:14px;">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨</span>
+                    <span style="font-size:14px;">✨</span>
                     <span style="font-family:'Cinzel',serif;font-size:12px;color:var(--gold);"><span id="profileCredits">0</span> Crediti</span>
                     <button onclick="closeAccount();openPayment();" style="background:none;border:none;color:var(--text-muted);font-size:10px;cursor:pointer;font-family:'Cinzel',serif;letter-spacing:1px;padding-left:6px;border-left:1px solid var(--border);">+ Ricarica</button>
                 </div>
@@ -2504,50 +2508,50 @@
             <div id="settingsTab" class="account-tab-content">
                 <div style="margin-bottom:16px;padding:14px;border:1px solid var(--border);border-radius:12px;background:rgba(201,168,76,0.03);">
                     <p style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase;">Sincronizzazione Cross-Device</p>
-                    <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;font-style:italic;">Per attivare la sincronizzazione reale su piÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ dispositivi, collega <strong style="color:var(--gold-light)">Supabase Auth</strong> o <strong style="color:var(--gold-light)">Firebase Auth</strong>. Vedi le istruzioni nel README del progetto.</p>
+                    <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;font-style:italic;">Per attivare la sincronizzazione reale su più dispositivi, collega <strong style="color:var(--gold-light)">Supabase Auth</strong> o <strong style="color:var(--gold-light)">Firebase Auth</strong>. Vedi le istruzioni nel README del progetto.</p>
                 </div>
                 <button class="btn-action" onclick="doLogout()" style="background:rgba(120,40,40,0.3);border-color:rgba(200,80,80,0.4);margin-bottom:10px;">Esci dal Tempio</button>
             </div>
         </div>
 
-        <button onclick="closeAccount()" class="modal-close-btn" style="margin-top:16px;">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Torna al Sito ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦</button>
+        <button onclick="closeAccount()" class="modal-close-btn" style="margin-top:16px;">✦ Torna al Sito ✦</button>
     </div>
 </div>
 
-<!-- section -->
+<!-- ════════════════════════════════
      INFO MODALS
-
+════════════════════════════════ -->
 <div id="infoModal" class="modal-overlay">
     <div class="info-modal-box">
-        <h3>ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Saggezza dell'Oracolo</h3>
-        <div class="info-row"><span>ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨</span><div><strong>Cosa chiedere:</strong> <span>Evita domande secche (SÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬/No). Preferisci quesiti come <em>"Cosa devo capire..."</em> o <em>"Quali energie circondano..."</em></span></div></div>
-        <div class="info-row"><span>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â´</span><div><strong>Il Responso:</strong> <span>Estrarrai tre Arcani: il primo rivela le radici, il secondo l'ostacolo presente, il terzo la luce del possibile futuro.</span></div></div>
-        <div class="info-row"><span>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã¢â‚¬Å“</span><div><strong>La Visione:</strong> <span>Le risposte fluiscono da un'antica sapienza che intreccia il significato di ogni carta con le tue parole esatte.</span></div></div>
+        <h3>✦ Saggezza dell'Oracolo</h3>
+        <div class="info-row"><span>✨</span><div><strong>Cosa chiedere:</strong> <span>Evita domande secche (Sì/No). Preferisci quesiti come <em>"Cosa devo capire..."</em> o <em>"Quali energie circondano..."</em></span></div></div>
+        <div class="info-row"><span>🎴</span><div><strong>Il Responso:</strong> <span>Estrarrai tre Arcani: il primo rivela le radici, il secondo l'ostacolo presente, il terzo la luce del possibile futuro.</span></div></div>
+        <div class="info-row"><span>📜</span><div><strong>La Visione:</strong> <span>Le risposte fluiscono da un'antica sapienza che intreccia il significato di ogni carta con le tue parole esatte.</span></div></div>
         <button onclick="closeInfo()" class="btn-action" style="padding:14px;margin-top:20px;">HO COMPRESO</button>
     </div>
 </div>
 
 <div id="dreamInfoModal" class="modal-overlay">
     <div class="info-modal-box" style="border-color:rgba(107,63,160,0.5);">
-        <h3>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ L'Arte del Sognare</h3>
-        <div class="info-row"><span>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢</span><div><strong>Cosa narrare:</strong> <span>Non limitarti ai fatti. Descrivi i colori, le sensazioni e ciÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â² che hai provato. PiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ il racconto ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ vivido, piÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ la connessione sarÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  potente.</span></div></div>
-        <div class="info-row"><span>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â</span><div><strong>I Simboli:</strong> <span>L'Oracolo identificherÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  gli archetipi nascosti nelle tue visioni, svelando come influenzano la tua vita da sveglio.</span></div></div>
-        <div class="info-row"><span>ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨</span><div><strong>L'Eco del Sogno:</strong> <span>La risposta non ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ una veritÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  assoluta, ma uno specchio per aiutarti a guardare dentro di te con occhi nuovi.</span></div></div>
+        <h3>🌙 L'Arte del Sognare</h3>
+        <div class="info-row"><span>🌙</span><div><strong>Cosa narrare:</strong> <span>Non limitarti ai fatti. Descrivi i colori, le sensazioni e ciò che hai provato. Più il racconto è vivido, più la connessione sarà potente.</span></div></div>
+        <div class="info-row"><span>👁️</span><div><strong>I Simboli:</strong> <span>L'Oracolo identificherà gli archetipi nascosti nelle tue visioni, svelando come influenzano la tua vita da sveglio.</span></div></div>
+        <div class="info-row"><span>✨</span><div><strong>L'Eco del Sogno:</strong> <span>La risposta non è una verità assoluta, ma uno specchio per aiutarti a guardare dentro di te con occhi nuovi.</span></div></div>
         <button onclick="closeDreamInfo()" class="btn-action" style="padding:14px;margin-top:20px;background:linear-gradient(135deg,rgba(42,26,85,0.8),rgba(107,63,160,0.8));">ENTRA NEL SOGNO</button>
     </div>
 </div>
 
-<!-- section -->
+<!-- ════════════════════════════════
      SCRIPTS
-
+════════════════════════════════ -->
 <script id="paypal-sdk-script" src="https://www.paypal.com/sdk/js?client-id=AZsxkgEdU7HJjgac8oVcEM4rfIsfLpFWyCISuRWUgIKIeEN4dFSqhoEUNAFF3EQAqZhCdPMhFavc1Qpk&currency=EUR&components=buttons,funding-eligibility" data-sdk-integration-source="button-factory"></script>
 <script>
-
+// ─────────────────────────────────────────────
 //  CONFIG
-
+// ─────────────────────────────────────────────
 const MAKE_URL = "https://hook.eu1.make.com/wdc6niacrxs2vlmssjbd592ymzw2859w";
 
-// Sorgenti immagini tarocchi ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â prova in sequenza fino a che una funziona
+// Sorgenti immagini tarocchi — prova in sequenza fino a che una funziona
 const IMG_SOURCES = [
     "https://upload.wikimedia.org/wikipedia/commons/thumb/",
     "https://www.sacred-texts.com/tarot/pkt/img/"
@@ -2597,20 +2601,20 @@ function getCardImgUrl(filename) {
 
 const IMG_BASE = "https://www.sacred-texts.com/tarot/pkt/img/";
 
-// ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Astrologer API (RapidAPI) ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+// ── Astrologer API (RapidAPI) ──────────────────
 const ASTROLOGER_API_KEY  = "8ecb093643msh14158b060d9f54ap1cc2e8jsne21589d3a1b4";
 const ASTROLOGER_API_HOST = "astrologer.p.rapidapi.com";
 
-// ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ PayPal ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Switcher Sandbox / Live ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+// ── PayPal — Switcher Sandbox / Live ──────────
 // Cambia PAYPAL_MODE tra 'sandbox' e 'live' per switchare ambiente.
-// 'sandbox' ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ test con conti finti, nessun addebito reale
-// 'live'    ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ produzione, addebita denaro reale
-const PAYPAL_MODE = 'live'; // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Ãƒâ€šÃ‚Â cambia in 'sandbox' per testare
+// 'sandbox' → test con conti finti, nessun addebito reale
+// 'live'    → produzione, addebita denaro reale
+const PAYPAL_MODE = 'live'; // ← cambia in 'sandbox' per testare
 
 const PAYPAL_CLIENT_ID_LIVE    = 'AZsxkgEdU7HJjgac8oVcEM4rfIsfLpFWyCISuRWUgIKIeEN4dFSqhoEUNAFF3EQAqZhCdPMhFavc1Qpk';
-const PAYPAL_CLIENT_ID_SANDBOX = 'INSERISCI_CLIENT_ID_SANDBOX'; // da developer.paypal.com ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Apps & Credentials ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Sandbox
+const PAYPAL_CLIENT_ID_SANDBOX = 'INSERISCI_CLIENT_ID_SANDBOX'; // da developer.paypal.com → Apps & Credentials → Sandbox
 
-// Piano abbonamento ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â crea piani separati per sandbox e live
+// Piano abbonamento — crea piani separati per sandbox e live
 const PAYPAL_PLAN_ID_LIVE    = 'P-INSERISCI_PLAN_ID_LIVE';
 const PAYPAL_PLAN_ID_SANDBOX = 'P-INSERISCI_PLAN_ID_SANDBOX';
 
@@ -2618,7 +2622,7 @@ const PAYPAL_PLAN_ID_SANDBOX = 'P-INSERISCI_PLAN_ID_SANDBOX';
 const PAYPAL_ACTIVE_CLIENT_ID = PAYPAL_MODE === 'sandbox' ? PAYPAL_CLIENT_ID_SANDBOX : PAYPAL_CLIENT_ID_LIVE;
 const PAYPAL_PLAN_ID          = PAYPAL_MODE === 'sandbox' ? PAYPAL_PLAN_ID_SANDBOX    : PAYPAL_PLAN_ID_LIVE;
 
-// Carica SDK PayPal ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â senza intent fisso, funziona per entrambi createOrder e createSubscription
+// Carica SDK PayPal — senza intent fisso, funziona per entrambi createOrder e createSubscription
 (function loadPayPalSDK() {
     const existing = document.getElementById('paypal-sdk-script');
     const clientId = PAYPAL_ACTIVE_CLIENT_ID;
@@ -2634,9 +2638,9 @@ const PAYPAL_PLAN_ID          = PAYPAL_MODE === 'sandbox' ? PAYPAL_PLAN_ID_SANDB
     s.onload = () => console.log(`[PayPal] SDK caricato in modalita: ${PAYPAL_MODE.toUpperCase()}`);
     document.head.appendChild(s);
 })();
-
-//  MAZZO TAROCCHI ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 22 Arcani Maggiori
-
+// ─────────────────────────────────────────────
+//  MAZZO TAROCCHI — 22 Arcani Maggiori
+// ─────────────────────────────────────────────
 const CARDS_MAJOR = [
     {n:"Il Matto",       en:"The Fool",           i:"ar00.jpg", suit:"maggiori"},
     {n:"Il Mago",        en:"The Magician",        i:"ar01.jpg", suit:"maggiori"},
@@ -2662,14 +2666,14 @@ const CARDS_MAJOR = [
     {n:"Il Mondo",       en:"The World",           i:"ar21.jpg", suit:"maggiori"},
 ];
 
-
-//  56 Arcani Minori ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â convenzione nomi file:
-//  wa = Bacchette (Wands)   wa01.jpg ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ wa14.jpg
-//  cu = Coppe (Cups)        cu01.jpg ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ cu14.jpg
-//  sw = Spade (Swords)      sw01.jpg ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ sw14.jpg
-//  pe = Denari (Pentacles)  pe01.jpg ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ pe14.jpg
+// ─────────────────────────────────────────────
+//  56 Arcani Minori — convenzione nomi file:
+//  wa = Bacchette (Wands)   wa01.jpg … wa14.jpg
+//  cu = Coppe (Cups)        cu01.jpg … cu14.jpg
+//  sw = Spade (Swords)      sw01.jpg … sw14.jpg
+//  pe = Denari (Pentacles)  pe01.jpg … pe14.jpg
 //  01=Asso 02-10=Numerali 11=Fante 12=Cavaliere 13=Regina 14=Re
-
+// ─────────────────────────────────────────────
 function _minori(nomi, seme, codice) {
     return nomi.map((n, i) => ({
         n, en: n, i: `${codice}${String(i+1).padStart(2,'0')}.jpg`, suit: seme
@@ -2703,15 +2707,15 @@ const _denari = _minori([
 // Mazzo completo 78 carte
 const CARDS_FULL = [...CARDS_MAJOR, ..._bacchette, ..._coppe, ..._spade, ..._denari];
 
-// Alias retrocompatibilitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  (usato da runTarot)
+// Alias retrocompatibilità (usato da runTarot)
 const CARDS = CARDS_MAJOR;
 
-
-//  IMMAGINI INCORPORATE ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â slot pronti per le foto
+// ─────────────────────────────────────────────
+//  IMMAGINI INCORPORATE — slot pronti per le foto
 //  Quando carichi i file, il sistema usa questi
 //  base64 invece di fare richieste di rete.
 //  Chiave = nome file (es. "ar00.jpg")
-
+// ─────────────────────────────────────────────
 const CARD_IMAGES_B64 = {
     // Le immagini verranno aggiunte qui nel formato:
     // "ar00.jpg": "data:image/jpeg;base64,/9j/4AAQ...",
@@ -2723,12 +2727,12 @@ let selectedAmount = 3;
 let selectedCredits = 5;
 let currentUser = null;
 
-
-//  INIT ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â tutto dentro DOMContentLoaded
-
+// ─────────────────────────────────────────────
+//  INIT — tutto dentro DOMContentLoaded
+// ─────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Drag & Drop Palmistry ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Drag & Drop Palmistry ───────────────────
     const palmZone = document.getElementById('palmDropZone');
     if (palmZone) {
         palmZone.addEventListener('dragover', (e) => { e.preventDefault(); palmZone.classList.add('dragover'); });
@@ -2741,7 +2745,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Stelle Canvas ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Stelle Canvas ───────────────────────────
     (function initStars() {
         const canvas = document.getElementById('starCanvas');
         if (!canvas) return;
@@ -2785,13 +2789,13 @@ window.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(draw);
     })();
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Navbar scroll ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Navbar scroll ───────────────────────────
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('mainNav');
         if (nav) nav.classList.toggle('scrolled', window.scrollY > 40);
     });
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Cursore personalizzato ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Cursore personalizzato ──────────────────
     if (!window.matchMedia('(pointer: coarse)').matches) {
         const dot  = document.getElementById('cursor');
         const ring = document.getElementById('cursor-ring');
@@ -2821,7 +2825,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Scroll reveal ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Scroll reveal ───────────────────────────
     const revealObs = new IntersectionObserver(entries => {
         entries.forEach(e => {
             if (e.isIntersecting) { e.target.classList.add('in-view'); revealObs.unobserve(e.target); }
@@ -2832,7 +2836,7 @@ window.addEventListener('DOMContentLoaded', () => {
         revealObs.observe(el);
     });
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Onboarding / App init ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Onboarding / App init ───────────────────
     if (localStorage.getItem('sidera_onboarded')) {
         document.getElementById('onboarding').style.display = 'none';
         initApp();
@@ -2843,9 +2847,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 });
 
-
+// ─────────────────────────────────────────────
 //  ONBOARDING
-
+// ─────────────────────────────────────────────
 let onbStep = 0;
 const onbTotal = 4;
 
@@ -2866,9 +2870,9 @@ function endOnb(openAcc) {
     initApp();
 }
 
-
+// ─────────────────────────────────────────────
 //  INIT APP
-
+// ─────────────────────────────────────────────
 function initApp() {
     if (!localStorage.getItem('astral_credits')) localStorage.setItem('astral_credits', '3');
     document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
@@ -2884,9 +2888,9 @@ function initApp() {
     setTimeout(() => home.classList.add('visible'), 50);
 }
 
-
+// ─────────────────────────────────────────────
 //  NAVIGAZIONE SEZIONI
-
+// ─────────────────────────────────────────────
 function showSection(id) {
     document.querySelectorAll('.content-section').forEach(s => {
         s.classList.remove('active', 'visible');
@@ -2913,9 +2917,9 @@ function showSection(id) {
 function closeInfo() { document.getElementById('infoModal').classList.remove('open'); }
 function closeDreamInfo() { document.getElementById('dreamInfoModal').classList.remove('open'); }
 
-
+// ─────────────────────────────────────────────
 //  RESET SEZIONI
-
+// ─────────────────────────────────────────────
 function resetSection(id) {
     if (id === 'oracolo') {
         document.getElementById('tarotInputBox').style.display = 'block';
@@ -2945,9 +2949,9 @@ function resetSection(id) {
     }
 }
 
-
+// ─────────────────────────────────────────────
 //  PAYMENT
-
+// ─────────────────────────────────────────────
 function openPayment() {
     document.getElementById('paymentModal').classList.add('open');
     switchPayTab('crediti');
@@ -2987,7 +2991,7 @@ function renderPayPal() {
         onApprove: (data, actions) => actions.order.capture().then(() => {
             addCredits(selectedCredits);
             closePayment();
-            showToast('ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ Energia ricaricata! ' + selectedCredits + ' crediti aggiunti.');
+            showToast('✨ Energia ricaricata! ' + selectedCredits + ' crediti aggiunti.');
         }),
         onError: (err) => { console.error('[PayPal] Errore pagamento:', err); showToast('Pagamento non completato. Nessun addebito e stato registrato. Riprova con calma.'); }
     }).render('#paypal-button-container');
@@ -3016,7 +3020,7 @@ function renderSubscriptionButton() {
                 localStorage.setItem('sidera_user', JSON.stringify(currentUser));
             }
             closePayment();
-            showToast('ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€¦Ã‚Â¸ Oracolo Infinito attivato! 100 crediti aggiunti. Rinnovo automatico mensile.');
+            showToast('🌟 Oracolo Infinito attivato! 100 crediti aggiunti. Rinnovo automatico mensile.');
             fetch(MAKE_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -3046,9 +3050,9 @@ function addCredits(amount) {
     }
 }
 
-
-//  SUPABASE ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â PROFILO E CREDITI
-
+// ─────────────────────────────────────────────
+//  SUPABASE — PROFILO E CREDITI
+// ─────────────────────────────────────────────
 
 // Carica il profilo dalla tabella profiles
 async function loadProfile(userId) {
@@ -3069,7 +3073,7 @@ async function syncToSupabase() {
     if (!window._supabase || !currentUser?.id) return;
     try {
         const credits = parseInt(localStorage.getItem('astral_credits')) || 0;
-        // history ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ jsonb su Supabase ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â passa direttamente l'array, non una stringa
+        // history è jsonb su Supabase — passa direttamente l'array, non una stringa
         const history = currentUser.history || [];
         const { error } = await window._supabase.from('profiles').upsert({
             user_id: currentUser.id,
@@ -3077,7 +3081,7 @@ async function syncToSupabase() {
             history  // jsonb accetta direttamente l'array JS
         });
         if (error) console.warn('[Supabase] sync error:', error.message);
-        else console.log('[Supabase] Sync OK ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â crediti:', credits);
+        else console.log('[Supabase] Sync OK — crediti:', credits);
     } catch(e) { console.warn('[Supabase] sync exception:', e); }
 }
 
@@ -3113,13 +3117,13 @@ function deductCredits(amount) {
 
 // Salva una lettura nello storico (locale + Supabase)
 
-
-//  ACCOUNT ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â AUTH
+// ─────────────────────────────────────────────
+//  ACCOUNT — AUTH
 //  Per sincronizzazione reale cross-device:
 //  1. Aggiungi l'SDK Supabase nell'head: cdn.jsdelivr.net/npm/@supabase/supabase-js@2
 //  2. const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 //  3. Imposta SUPABASE_ENABLED = true nella sezione CONFIG
-
+// ─────────────────────────────────────────────
 // 2. Nella sezione CONFIG, inserisci le tue credenziali:
 const SUPABASE_URL  = 'https://dqxgmptfnlwanixiutzy.supabase.co';
 const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxeGdtcHRmbmx3YW5peGl1dHp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTYwMTQsImV4cCI6MjA5Mjg5MjAxNH0.EyphWXmvWlQBxJi0YyzOz7jihrvett8Hrl07H5C_qxM';
@@ -3127,7 +3131,7 @@ const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 // 3. Attiva:
 const SUPABASE_ENABLED = true;
 
-// ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Inizializzazione Supabase ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+// ── Inizializzazione Supabase ─────────────────
 if (SUPABASE_ENABLED && typeof supabase !== 'undefined') {
     window._supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -3158,10 +3162,10 @@ if (SUPABASE_ENABLED && typeof supabase !== 'undefined') {
         }
     }, 0);
 });
-    console.log('[Supabase] Client inizializzato ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦');
+    console.log('[Supabase] Client inizializzato ✅');
 } else {
     window._supabase = null;
-    if (SUPABASE_ENABLED) console.warn('[Supabase] SDK non trovato ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â controlla lo script nell\'head');
+    if (SUPABASE_ENABLED) console.warn('[Supabase] SDK non trovato — controlla lo script nell\'head');
 }
 function openAccount() {
     document.getElementById('accountModal').classList.add('open');
@@ -3184,7 +3188,7 @@ function showProfileView() {
     document.getElementById('profileEmail').innerText = currentUser.email;
     document.getElementById('profileCredits').innerText = localStorage.getItem('astral_credits');
     const syncBadge = document.getElementById('syncBadge');
-    if (syncBadge) syncBadge.innerText = currentUser.supabase ? 'ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¢ Sincronizzato' : 'ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¡ Locale ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â collega Supabase per la sync';
+    if (syncBadge) syncBadge.innerText = currentUser.supabase ? '🟢 Sincronizzato' : '🟡 Locale — collega Supabase per la sync';
     renderHistory();
 }
 
@@ -3241,7 +3245,7 @@ async function doLogin() {
                     currentUser = u;
                     updateAccountUI();
                     showProfileView();
-                    showToast('Bentornato, ' + currentUser.name + ' ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦');
+                    showToast('Bentornato, ' + currentUser.name + ' ✦');
                     return;
                 }
             }
@@ -3252,13 +3256,13 @@ async function doLogin() {
 
         updateAccountUI();
         showProfileView();
-        showToast('Bentornato, ' + currentUser.name + ' ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦');
+        showToast('Bentornato, ' + currentUser.name + ' ✦');
     } catch (e) {
         console.error('[Sidera] Login error:', e);
-        errEl.innerText = e?.message || 'Si ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ verificato un errore durante l\'accesso.';
+        errEl.innerText = e?.message || 'Si è verificato un errore durante l\'accesso.';
         errEl.style.display = 'block';
     } finally {
-        btn.innerText = 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Accedi al Tempio';
+        btn.innerText = '✦ Accedi al Tempio';
         btn.disabled = false;
     }
 }
@@ -3282,7 +3286,7 @@ async function doRegister() {
                 options: { data: { name } }
             });
             if (error) {
-                errEl.innerText = /already registered/i.test(error.message) ? 'Questa email ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ giÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  registrata. Prova ad accedere.' : error.message;
+                errEl.innerText = /already registered/i.test(error.message) ? 'Questa email è già registrata. Prova ad accedere.' : error.message;
                 errEl.style.display='block';
                 return;
             }
@@ -3316,13 +3320,13 @@ async function doRegister() {
 
         updateAccountUI();
         showProfileView();
-        showToast('ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€¦Ã‚Â¸ Benvenuto nel tempio, ' + name + '!');
+        showToast('🌟 Benvenuto nel tempio, ' + name + '!');
     } catch (e) {
         console.error('[Sidera] Register error:', e);
-        errEl.innerText = e?.message || 'Si ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ verificato un errore durante la registrazione.';
+        errEl.innerText = e?.message || 'Si è verificato un errore durante la registrazione.';
         errEl.style.display='block';
     } finally {
-        if (btn) { btn.innerText = 'ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€¦Ã‚Â¸ Crea il Tuo Profilo'; btn.disabled = false; }
+        if (btn) { btn.innerText = '🌟 Crea il Tuo Profilo'; btn.disabled = false; }
     }
 }
 
@@ -3332,7 +3336,7 @@ async function doLogout() {
     localStorage.removeItem('sidera_user');
     updateAccountUI();
     showAuthView();
-    showToast('Hai lasciato il tempio ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦');
+    showToast('Hai lasciato il tempio ✦');
 }
 
 function updateAccountUI() {
@@ -3342,7 +3346,7 @@ function updateAccountUI() {
         const initials = (currentUser.name||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
         btn.innerText = initials; btn.style.fontFamily="'Cinzel',serif"; btn.style.fontSize='11px';
     } else {
-        btn.innerText = 'ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½'; btn.style.fontSize='16px';
+        btn.innerText = '☽'; btn.style.fontSize='16px';
     }
 }
 
@@ -3370,9 +3374,9 @@ function renderHistory() {
         </div>
     `).join('');
 }
-
+// ─────────────────────────────────────────────
 //  SOGNI HELPERS
-
+// ─────────────────────────────────────────────
 function appendDreamHint(hint) {
     const ta = document.getElementById('dreamInput');
     const cur = ta.value;
@@ -3387,22 +3391,22 @@ function setDreamPrompt(text) {
     ta.setSelectionRange(text.length, text.length);
 }
 
-
-//  ASTROLOGIA SHARE ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â condivisione diretta testo
-
+// ─────────────────────────────────────────────
+//  ASTROLOGIA SHARE — condivisione diretta testo
+// ─────────────────────────────────────────────
 async function shareAstroText() {
-    const sole = document.getElementById('summarySoleSign')?.innerText || 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â';
-    const luna = document.getElementById('summaryLunaSign')?.innerText || 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â';
-    const asc  = document.getElementById('summaryAscSign')?.innerText || 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â';
+    const sole = document.getElementById('summarySoleSign')?.innerText || '—';
+    const luna = document.getElementById('summaryLunaSign')?.innerText || '—';
+    const asc  = document.getElementById('summaryAscSign')?.innerText || '—';
     const raw  = document.getElementById('astroCommentary')?.innerText || '';
     const excerpt = extractQuote(raw, 180);
 
-    const shareText = `ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ La mia Mappa Astrale su Sidera ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦\n\nÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â° Sole in ${sole} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½ Luna in ${luna} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ ${asc}\n\n"${excerpt}"\n\nScopri la tua mappa su https://sidera7.vercel.app/`;
+    const shareText = `✦ La mia Mappa Astrale su Sidera ✦\n\n☉ Sole in ${sole} · ☽ Luna in ${luna} · ↑ ${asc}\n\n"${excerpt}"\n\nScopri la tua mappa su https://sidera7.vercel.app/`;
 
     if (navigator.share) {
         try {
             await navigator.share({
-                title: 'Sidera ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â La mia Mappa Astrale',
+                title: 'Sidera — La mia Mappa Astrale',
                 text: shareText,
                 url: 'https://sidera7.vercel.app/'
             });
@@ -3414,18 +3418,18 @@ async function shareAstroText() {
     // Fallback: copia negli appunti
     try {
         await navigator.clipboard.writeText(shareText);
-        showToast('ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ Testo copiato ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â incollalo dove vuoi!');
+        showToast('✨ Testo copiato — incollalo dove vuoi!');
     } catch(e) {
         showToast('Copia il testo manualmente.');
     }
 }
 
 
-
+// ─────────────────────────────────────────────
 //  CONSULENZA
-
+// ─────────────────────────────────────────────
 let selectedConsult = '';
-const consultLabels = { tarocchi: 'Lettura Tarocchi', amore: 'Consulto Amore', rito: 'Rito dell\'Anima ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Premium' };
+const consultLabels = { tarocchi: 'Lettura Tarocchi', amore: 'Consulto Amore', rito: 'Rito dell\'Anima — Premium' };
 const consultCosts  = { tarocchi: 10, amore: 10, rito: 40 };
 
 function selectConsult(type) {
@@ -3439,7 +3443,7 @@ function selectConsult(type) {
     selectedConsult = type;
     document.querySelectorAll('.consult-type-card').forEach(card => card.classList.remove('selected'));
     event.currentTarget.classList.add('selected');
-    document.getElementById('consultTypeLabel').innerText = 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ ' + consultLabels[type];
+    document.getElementById('consultTypeLabel').innerText = '✦ ' + consultLabels[type];
     document.getElementById('consultCostNote').innerText = cost + ' crediti verranno scalati all\'invio.';
     document.getElementById('consultStep1').style.display = 'none';
     document.getElementById('consultStep2').classList.add('visible');
@@ -3481,7 +3485,7 @@ async function sendConsult() {
         });
     } catch(e) {
         console.warn('[Sidera] Consulenza webhook error:', e);
-        // Procedi comunque ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â non bloccare l'utente per un errore di rete
+        // Procedi comunque — non bloccare l'utente per un errore di rete
     }
 
     // Scala crediti e mostra conferma
@@ -3496,7 +3500,7 @@ async function sendConsult() {
     document.getElementById('consultStep3').classList.add('visible');
     saveToHistory('consulenza', msg, 'Consulenza: ' + selectedConsult);
 
-    if (btn) { btn.disabled = false; btn.innerText = 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Invia la Richiesta'; }
+    if (btn) { btn.disabled = false; btn.innerText = '✦ Invia la Richiesta'; }
 }
 
 function resetConsult() {
@@ -3512,12 +3516,12 @@ function toggleFaq(el) {
     el.classList.toggle('open');
 }
 
-
+// ─────────────────────────────────────────────
 //  FORMAT TEXT
-
+// ─────────────────────────────────────────────
 function formatText(text) {
     if (!text) return "";
-    let clean = text.replace(/###\s*(.*)/g, '<h4><span>ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ $1 ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦</span></h4>').trim().replace(/\n{3,}/g, '\n\n');
+    let clean = text.replace(/###\s*(.*)/g, '<h4><span>✦ $1 ✦</span></h4>').trim().replace(/\n{3,}/g, '\n\n');
     let html = clean.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     if (html.includes('|')) {
         const lines = html.split('\n');
@@ -3540,15 +3544,15 @@ function formatText(text) {
     return html.split('\n').filter(l => l.trim() !== "").map(l => l.trim().startsWith('<h4>') ? l : `<p>${l}</p>`).join('');
 }
 
-
-//  TAROCCHI ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â modalitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  base / completa
-
+// ─────────────────────────────────────────────
+//  TAROCCHI — modalità base / completa
+// ─────────────────────────────────────────────
 let _tarotMode = 'base'; // 'base' | 'full'
 
 function selectTarotMode(mode) {
     const isSubscribed = localStorage.getItem('sidera_subscribed') === 'true';
     if (mode === 'full' && !isSubscribed) {
-        showToast('La Lettura Completa ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ riservata agli abbonati Oracolo Infinito.');
+        showToast('La Lettura Completa è riservata agli abbonati Oracolo Infinito.');
         openPayment();
         return;
     }
@@ -3558,8 +3562,8 @@ function selectTarotMode(mode) {
     const cost = mode === 'full' ? 2 : 1;
     document.getElementById('tarotRunBtn').innerText =
         mode === 'full'
-            ? `ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Estrai le Tre Carte dal Mazzo Completo ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ${cost} Crediti`
-            : `ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Estrai le Tre Carte ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ${cost} Credito`;
+            ? `✦ Estrai le Tre Carte dal Mazzo Completo — ${cost} Crediti`
+            : `✦ Estrai le Tre Carte — ${cost} Credito`;
     document.getElementById('ritualStep2Desc').innerText =
         mode === 'full'
             ? 'Scrivi la tua domanda. Tre carte dal mazzo completo di 78 verranno estratte, compresi gli Arcani Minori.'
@@ -3584,7 +3588,7 @@ async function runTarot() {
     let resultsForMake = [];
     _lastTarotCards = [];
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Step 1: mostra e gira le carte ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Step 1: mostra e gira le carte ──────────────────────────────────────
     for (let i = 0; i < 3; i++) {
         const isReversed = Math.random() < 0.5;
         const card = chosen[i];
@@ -3596,13 +3600,13 @@ async function runTarot() {
         const imgSrc = getCardImgUrl(card.i);
         const fallbackSrc = "https://www.sacred-texts.com/tarot/pkt/img/" + card.i;
         front.innerHTML = `<img src="${imgSrc}" class="tarot-image"
-            onerror="this.onerror=null;this.src='${fallbackSrc}';this.onerror=function(){this.style.display='none';this.parentElement.querySelector('.card-placeholder')||this.insertAdjacentHTML('afterend','<div class=\\'card-placeholder\\'><span class=\\'card-placeholder-sym\\'>ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦</span><span class=\\'card-placeholder-name\\'>${card.n.toUpperCase()}</span></div>')}"
+            onerror="this.onerror=null;this.src='${fallbackSrc}';this.onerror=function(){this.style.display='none';this.parentElement.querySelector('.card-placeholder')||this.insertAdjacentHTML('afterend','<div class=\\'card-placeholder\\'><span class=\\'card-placeholder-sym\\'>✦</span><span class=\\'card-placeholder-name\\'>${card.n.toUpperCase()}</span></div>')}"
         ><div class="card-name-label">${card.n.toUpperCase()}</div>`;
         _lastTarotCards.push({ src: imgSrc, b64: null, name: card.en || card.n, reversed: isReversed });
         setTimeout(() => container.classList.add('flipped'), i * 700 + 300);
     }
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Step 2: base64 in background ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Step 2: base64 in background ────────────────────────────────────────
     chosen.forEach((card, i) => {
         const b64Direct = CARD_IMAGES_B64[card.i];
         if (b64Direct) {
@@ -3619,7 +3623,7 @@ async function runTarot() {
         });
     });
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Step 3: chiama Make ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Step 3: chiama Make ──────────────────────────────────────────────────
     const resBox = document.getElementById('readingResult');
     const content = document.getElementById('readingContent');
     resBox.style.display = 'block';
@@ -3652,9 +3656,9 @@ async function runTarot() {
     }
 }
 
-
+// ─────────────────────────────────────────────
 //  SOGNI
-
+// ─────────────────────────────────────────────
 async function runDream() {
     let c = parseInt(localStorage.getItem('astral_credits')) || 0;
     if (c <= 0) return openPayment();
@@ -3692,9 +3696,9 @@ async function runDream() {
     } catch (e) { content.innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>Non sono riuscita a interpretare il sogno in questo momento. Riprova tra poco.</p>"; }
 }
 
-
+// ─────────────────────────────────────────────
 //  ASTROLOGIA
-
+// ─────────────────────────────────────────────
 async function runAstrology() {
     const depth = document.querySelector('input[name="astroDepth"]:checked').value;
     const cost = depth === 'profonda' ? 3 : 1;
@@ -3718,13 +3722,13 @@ async function runAstrology() {
     if (depth === 'profonda' && ASTROLOGER_API_KEY !== "INSERISCI_LA_TUA_RAPIDAPI_KEY_QUI" && ASTROLOGER_API_KEY.length > 10) {
         try {
             console.log('[Sidera] Avvio chiamata Astrologer API per:', city);
-            // Geocoding cittÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ lat/lon (usa OpenStreetMap, gratuito)
+            // Geocoding città → lat/lon (usa OpenStreetMap, gratuito)
             const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1`);
             const geoData = await geoRes.json();
             if (geoData && geoData[0]) {
                 const lat = parseFloat(geoData[0].lat);
                 const lon = parseFloat(geoData[0].lon);
-                console.log('[Sidera] Geocoding OK ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â lat:', lat, 'lon:', lon);
+                console.log('[Sidera] Geocoding OK — lat:', lat, 'lon:', lon);
                 const [year, month, day] = date.split('-').map(Number);
                 const [hour, minute] = (time || '12:00').split(':').map(Number);
 
@@ -3796,7 +3800,7 @@ async function runAstrology() {
                     console.warn('[Sidera] Struttura non riconosciuta. chart_data completo:', JSON.stringify(realPlanets?.chart_data).slice(0, 300));
                 }
             } else {
-                console.warn('[Sidera] Geocoding fallito ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â cittÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  non trovata:', city);
+                console.warn('[Sidera] Geocoding fallito — città non trovata:', city);
             }
         } catch (e) { console.warn('[Sidera] Astrologer API non disponibile:', e); }
     } else {
@@ -3816,7 +3820,7 @@ async function runAstrology() {
             ascendente: realPlanets._subject?.first_house?.sign || realPlanets._subject?.ascendant?.sign || null,
             pianeti: Object.entries(realPlanets._subject)
                 .filter(([k,v]) => v && typeof v === 'object' && v.sign && v.position !== undefined)
-                .map(([k,v]) => `${k}: ${v.sign} ${Number(v.position).toFixed(1)}ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°`)
+                .map(([k,v]) => `${k}: ${v.sign} ${Number(v.position).toFixed(1)}°`)
                 .join(', ')
         })
     };
@@ -3853,7 +3857,7 @@ async function runAstrology() {
         localStorage.setItem('astral_credits', newC);
         document.getElementById('creditCount').innerText = newC;
         saveToHistory('astrologia', city + ' ' + date, text);
-    } catch (e) { commentary.innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>La mappa astrale non ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ arrivata completa. Riprova piÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ tardi senza perdere i crediti.</p>"; }
+    } catch (e) { commentary.innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>La mappa astrale non è arrivata completa. Riprova più tardi senza perdere i crediti.</p>"; }
 }
 
 // Traduce i segni zodiacali da inglese a italiano
@@ -3864,9 +3868,9 @@ function translateSign(sign) {
     return map[sign] || sign;
 }
 
-
+// ─────────────────────────────────────────────
 //  SINASTRIA
-
+// ─────────────────────────────────────────────
 async function runSynastry() {
     const depth = document.querySelector('input[name="synaDepth"]:checked').value;
     const cost = depth === 'profonda' ? 4 : 2;
@@ -3890,7 +3894,7 @@ async function runSynastry() {
     resBox.style.display = 'block';
     document.getElementById('synaContent').innerHTML = '<p class="loading-text">Intrecciando le mappe astrali</p>';
 
-    // Punteggi simulati ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â se hai l'API astrologica reale puoi passare i dati planetari
+    // Punteggi simulati — se hai l'API astrologica reale puoi passare i dati planetari
     // e lasciare che l'AI li elabori, oppure calcolarli lato server
     let planetsA = null, planetsB = null;
     if (ASTROLOGER_API_KEY !== "INSERISCI_LA_TUA_RAPIDAPI_KEY_QUI" && ASTROLOGER_API_KEY.length > 10) {
@@ -3940,7 +3944,7 @@ async function runSynastry() {
         document.getElementById('creditCount').innerText = newC;
         saveToHistory('sinastria', `${nameA} + ${nameB}`, text);
     } catch(e) {
-        document.getElementById('synaContent').innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>La sinastria non ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ arrivata fino in fondo. Riprova tra poco: i crediti restano al sicuro.</p>";
+        document.getElementById('synaContent').innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>La sinastria non è arrivata fino in fondo. Riprova tra poco: i crediti restano al sicuro.</p>";
     }
 }
 
@@ -3974,7 +3978,7 @@ function extractPlanetSummary(chart) {
     }
     if (!s) return null;
     const planets = ['sun','moon','mercury','venus','mars','jupiter','saturn'];
-    // ascendente: puÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â² essere first_house o ascendant
+    // ascendente: può essere first_house o ascendant
     const ascKey = s.first_house ? 'first_house' : s.ascendant ? 'ascendant' : null;
     const list = planets.filter(k => s[k]?.sign).map(k => `${k}: ${s[k].sign}`);
     if (ascKey && s[ascKey]?.sign) list.push(`ascendant: ${s[ascKey].sign}`);
@@ -4002,11 +4006,11 @@ function renderSynastryScores(total, scores, nameA, nameB) {
 
     // Score ring
     document.getElementById('synaScoreNum').innerText = total;
-    const label = total >= 80 ? 'AffinitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  Profonda' : total >= 65 ? 'Buona Armonia' : total >= 50 ? 'Legame in Crescita' : 'Anime in Apprendimento';
+    const label = total >= 80 ? 'Affinità Profonda' : total >= 65 ? 'Buona Armonia' : total >= 50 ? 'Legame in Crescita' : 'Anime in Apprendimento';
     document.getElementById('synaScoreLabel').innerText = label;
-    document.getElementById('synaPairNames').innerText = `${nameA.toUpperCase()} ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ ${nameB.toUpperCase()}`;
+    document.getElementById('synaPairNames').innerText = `${nameA.toUpperCase()} ✦ ${nameB.toUpperCase()}`;
 
-    // Anima ring: circumference ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°Ãƒâ€¹Ã¢â‚¬Â  376.99
+    // Anima ring: circumference ≈ 376.99
     const circ = 2 * Math.PI * 60;
     const fill = circ - (circ * total / 100);
     setTimeout(() => {
@@ -4019,7 +4023,7 @@ function renderSynastryScores(total, scores, nameA, nameB) {
 
     // Pillole
     const scoreMap = { anima: scores.anima, mente: scores.mente, passione: scores.passione, stabilita: scores.stabilita, karma: scores.karma, crescita: scores.crescita };
-    const displayMap = { anima:'Anima', mente:'Mente', passione:'Passione', stabilita:'StabilitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ', karma:'Karma', crescita:'Crescita' };
+    const displayMap = { anima:'Anima', mente:'Mente', passione:'Passione', stabilita:'Stabilità', karma:'Karma', crescita:'Crescita' };
 
     Object.entries(scoreMap).forEach(([key, val]) => {
         const pill = document.getElementById('asp' + key.charAt(0).toUpperCase() + key.slice(1));
@@ -4039,7 +4043,7 @@ function resetSynastry() {
     document.getElementById('synaContent').innerHTML = '';
     ['Anima','Mente','Passione','Stabilita','Karma','Crescita'].forEach(k => {
         const el = document.getElementById('asp' + k + 'Val');
-        if (el) el.innerText = 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â';
+        if (el) el.innerText = '—';
         const pill = document.getElementById('asp' + k.toLowerCase());
         if (pill) pill.style.setProperty('--fill', '0%');
     });
@@ -4047,9 +4051,9 @@ function resetSynastry() {
     if (ring) { ring.style.strokeDashoffset = 380; }
 }
 
-
-//  LETTURA DELLA MANO ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Premium manuale
-
+// ─────────────────────────────────────────────
+//  LETTURA DELLA MANO — Premium manuale
+// ─────────────────────────────────────────────
 let _palmBase64 = null;
 let _palmFile = null;
 let _palmMimeType = 'image/jpeg';
@@ -4114,7 +4118,7 @@ async function runPalmReading() {
         console.warn('[Sidera] Palmistry send error:', e);
         document.getElementById('palmSendingState').style.display = 'none';
         document.getElementById('palmInputBox').style.display = 'block';
-        showToast('La foto del palmo non ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ partita verso Make. Riprova tra un minuto.');
+        showToast('La foto del palmo non è partita verso Make. Riprova tra un minuto.');
         return;
     }
 
@@ -4123,7 +4127,7 @@ async function runPalmReading() {
     // Mostra conferma
     document.getElementById('palmSendingState').style.display = 'none';
     document.getElementById('palmConfirm').style.display = 'block';
-    document.getElementById('palmConfirmEmail').innerText = 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ ' + email + ' ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦';
+    document.getElementById('palmConfirmEmail').innerText = '✦ ' + email + ' ✦';
 
     saveToHistory('palmistry', question || 'Lettura del palmo', 'Richiesta inviata a ' + email);
 }
@@ -4142,9 +4146,9 @@ function resetPalmSection() {
     el('palmConfirm').style.display = 'none';
 }
 
-
+// ─────────────────────────────────────────────
 //  INSTAGRAM / TIKTOK SHARE CARD
-
+// ─────────────────────────────────────────────
 let _lastTarotCards = []; // memorizza le ultime carte estratte
 
 function refreshIgCard() {
@@ -4190,15 +4194,15 @@ function openIgCard(tipo) {
     } else if (tipo === 'sinastria') {
         const nameA = document.getElementById('synaNameA')?.value || '';
         const nameB = document.getElementById('synaNameB')?.value || '';
-        const score = document.getElementById('synaScoreNum')?.innerText || 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â';
+        const score = document.getElementById('synaScoreNum')?.innerText || '—';
         const raw   = document.getElementById('synaContent')?.innerText || '';
         const quote = showQuote ? extractQuote(raw, 110) : '';
         renderIgCanvas({ tipo: 'sinastria', quote, nameA, nameB, score });
 
     } else if (tipo === 'astrologia') {
-        const sole = document.getElementById('summarySoleSign')?.innerText || 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â';
-        const luna = document.getElementById('summaryLunaSign')?.innerText || 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â';
-        const asc  = document.getElementById('summaryAscSign')?.innerText || 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â';
+        const sole = document.getElementById('summarySoleSign')?.innerText || '—';
+        const luna = document.getElementById('summaryLunaSign')?.innerText || '—';
+        const asc  = document.getElementById('summaryAscSign')?.innerText || '—';
         const raw  = document.getElementById('astroCommentary')?.innerText || '';
         const quote = showQuote ? extractQuote(raw, 200) : '';
         renderIgCanvas({ tipo: 'astrologia', quote, sole, luna, asc });
@@ -4212,7 +4216,7 @@ function waitForB64(cards, maxWaitMs) {
         function check() {
             const allReady = cards.every(c => c.b64 !== null);
             if (allReady || Date.now() - start > maxWaitMs) {
-                // Usa b64 se disponibile, altrimenti null (canvas non userÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  src esterni)
+                // Usa b64 se disponibile, altrimenti null (canvas non userà src esterni)
                 resolve(cards.map(c =>
                     c.b64 ? `data:image/jpeg;base64,${c.b64}` : null
                 ));
@@ -4224,9 +4228,9 @@ function waitForB64(cards, maxWaitMs) {
     });
 }
 
-// ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Disegna la card su canvas (risolve CORS e centra su ogni device) ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+// ─── Disegna la card su canvas (risolve CORS e centra su ogni device) ───────
 async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, nameA, nameB, score, sole, luna, asc }) {
-    const SIZE = 1080; // px ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â formato Instagram nativo
+    const SIZE = 1080; // px — formato Instagram nativo
     let canvas = document.getElementById('igCanvas');
     if (!canvas) {
         canvas = document.createElement('canvas');
@@ -4239,7 +4243,7 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
     canvas.height = SIZE;
     const ctx = canvas.getContext('2d');
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Attendi caricamento font ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â CRITICO per measureText corretto ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Attendi caricamento font — CRITICO per measureText corretto ──────────
     try {
         await Promise.all([
             document.fonts.load("italic 30px 'Cormorant Garamond'"),
@@ -4249,7 +4253,7 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
         ]);
     } catch(e) { /* prosegui comunque */ }
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Sfondo ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Sfondo ──────────────────────────────────────────────────────────────
     const bg = ctx.createRadialGradient(SIZE*0.2, SIZE*0.2, 0, SIZE*0.5, SIZE*0.5, SIZE*0.85);
     bg.addColorStop(0,   'rgba(107,63,160,0.6)');
     bg.addColorStop(0.4, 'rgba(42,26,85,0.5)');
@@ -4259,7 +4263,7 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, SIZE, SIZE);
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Stelle procedurali ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Stelle procedurali ──────────────────────────────────────────────────
     const rng = (seed) => { let x = Math.sin(seed)*10000; return x - Math.floor(x); };
     for (let i = 0; i < 120; i++) {
         const x = rng(i*3+1) * SIZE;
@@ -4272,16 +4276,16 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
         ctx.fill();
     }
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Bordo esterno ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Bordo esterno ───────────────────────────────────────────────────────
     roundRect(ctx, 18, 18, SIZE-36, SIZE-36, 36, null, 'rgba(201,168,76,0.25)');
     roundRect(ctx, 36, 36, SIZE-72, SIZE-72, 28, null, 'rgba(201,168,76,0.08)');
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Helper font ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Helper font ─────────────────────────────────────────────────────────
     const cinzel  = (sz, w='400') => `${w} ${sz}px 'Cinzel', serif`;
     const cormnt  = (sz, style='italic') => `${style} ${sz}px 'Cormorant Garamond', serif`;
     const centerX = SIZE / 2;
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Logo SIDERA ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Logo SIDERA ─────────────────────────────────────────────────────────
     ctx.fillStyle = '#C9A84C';
     ctx.font = cinzel(52, '600');
     ctx.textAlign = 'center';
@@ -4293,10 +4297,10 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
     ctx.letterSpacing = '6px';
     ctx.fillText("L'ORACOLO DELLE STELLE", centerX, 168);
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Linea separatrice top ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Linea separatrice top ───────────────────────────────────────────────
     drawGoldLine(ctx, centerX, 192, 160);
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Contenuto per tipo ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Contenuto per tipo ──────────────────────────────────────────────────
     if (tipo === 'tarocchi') {
         // Titolo sezione
         ctx.fillStyle = 'rgba(201,168,76,0.6)';
@@ -4313,28 +4317,28 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
 
         // Simboli e numeri romani per i 22 Arcani Maggiori
         const ARCANA_META = {
-            'The Fool':          { num: '0',     sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', col: ['#1A0E38','#2E1A60','#4A2880'] },
-            'The Magician':      { num: 'I',     sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã¢â‚¬Â Ãƒâ€¦Ã‚Â¾', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢', col: ['#1A0A00','#3D1A00','#7A3800'] },
-            'The High Priestess':{ num: 'II',    sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', col: ['#0A0A2A','#0E1045','#1A1870'] },
-            'The Empress':       { num: 'III',   sym: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹', col: ['#0A1A00','#143000','#205200'] },
-            'The Emperor':       { num: 'IV',    sym: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡', sym2: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â²', col: ['#1A0000','#380000','#600A00'] },
-            'The Hierophant':    { num: 'V',     sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', col: ['#1A0E00','#382200','#604000'] },
-            'The Lovers':        { num: 'VI',    sym: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢Ãƒâ€šÃ‚Â¡', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', col: ['#1A0010','#380025','#600040'] },
-            'The Chariot':       { num: 'VII',   sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢', sym2: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â²', col: ['#001A1A','#003838','#006060'] },
-            'Strength':          { num: 'VIII',  sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã¢â‚¬Â Ãƒâ€¦Ã‚Â¾', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬', col: ['#1A1000','#382800','#604A00'] },
-            'The Hermit':        { num: 'IX',    sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', col: ['#0A0A0A','#181818','#282828'] },
-            'Wheel of Fortune':  { num: 'X',     sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢', sym2: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€¦Ã‚Â½', col: ['#0A0A1A','#141428','#202040'] },
-            'Justice':           { num: 'XI',    sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', col: ['#001A00','#003800','#006000'] },
-            'The Hanged Man':    { num: 'XII',   sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', col: ['#001010','#003030','#004848'] },
-            'Death':             { num: 'XIII',  sym: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', col: ['#000000','#0A0A0A','#141414'] },
-            'Temperance':        { num: 'XIV',   sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', sym2: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€¦Ã‚Â½', col: ['#001A1A','#003030','#005050'] },
-            'The Devil':         { num: 'XV',    sym: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â½', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬Ãƒâ€šÃ‚Â¡', col: ['#0A0000','#1A0000','#300000'] },
-            'The Tower':         { num: 'XVI',   sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡', sym2: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â²', col: ['#0A0500','#1A0A00','#301500'] },
-            'The Star':          { num: 'XVII',  sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', col: ['#000A1A','#001428','#002040'] },
-            'The Moon':          { num: 'XVIII', sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â¾', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', col: ['#04041A','#080830','#0C0C48'] },
-            'The Sun':           { num: 'XIX',   sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬', sym2: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€¦Ã‚Â½', col: ['#1A1400','#383000','#605400'] },
-            'Judgement':         { num: 'XX',    sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â©', sym2: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°', col: ['#00001A','#000030','#000048'] },
-            'The World':         { num: 'XXI',   sym: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°', sym2: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', col: ['#001A08','#003010','#005018'] },
+            'The Fool':          { num: '0',     sym: '☆', sym2: '✦', col: ['#1A0E38','#2E1A60','#4A2880'] },
+            'The Magician':      { num: 'I',     sym: '∞', sym2: '⊕', col: ['#1A0A00','#3D1A00','#7A3800'] },
+            'The High Priestess':{ num: 'II',    sym: '☽', sym2: '✦', col: ['#0A0A2A','#0E1045','#1A1870'] },
+            'The Empress':       { num: 'III',   sym: '♀', sym2: '❋', col: ['#0A1A00','#143000','#205200'] },
+            'The Emperor':       { num: 'IV',    sym: '♂', sym2: '▲', col: ['#1A0000','#380000','#600A00'] },
+            'The Hierophant':    { num: 'V',     sym: '✝', sym2: '✦', col: ['#1A0E00','#382200','#604000'] },
+            'The Lovers':        { num: 'VI',    sym: '♡', sym2: '✦', col: ['#1A0010','#380025','#600040'] },
+            'The Chariot':       { num: 'VII',   sym: '⊕', sym2: '▲', col: ['#001A1A','#003838','#006060'] },
+            'Strength':          { num: 'VIII',  sym: '∞', sym2: '☀', col: ['#1A1000','#382800','#604A00'] },
+            'The Hermit':        { num: 'IX',    sym: '⊙', sym2: '✦', col: ['#0A0A0A','#181818','#282828'] },
+            'Wheel of Fortune':  { num: 'X',     sym: '⊕', sym2: '◎', col: ['#0A0A1A','#141428','#202040'] },
+            'Justice':           { num: 'XI',    sym: '⚖', sym2: '✦', col: ['#001A00','#003800','#006000'] },
+            'The Hanged Man':    { num: 'XII',   sym: '☽', sym2: '✦', col: ['#001010','#003030','#004848'] },
+            'Death':             { num: 'XIII',  sym: '◑', sym2: '✦', col: ['#000000','#0A0A0A','#141414'] },
+            'Temperance':        { num: 'XIV',   sym: '✦', sym2: '◎', col: ['#001A1A','#003030','#005050'] },
+            'The Devil':         { num: 'XV',    sym: '▽', sym2: '⬡', col: ['#0A0000','#1A0000','#300000'] },
+            'The Tower':         { num: 'XVI',   sym: 'âš¡', sym2: 'â–²', col: ['#0A0500','#1A0A00','#301500'] },
+            'The Star':          { num: 'XVII',  sym: '★', sym2: '✦', col: ['#000A1A','#001428','#002040'] },
+            'The Moon':          { num: 'XVIII', sym: '☾', sym2: '✦', col: ['#04041A','#080830','#0C0C48'] },
+            'The Sun':           { num: 'XIX',   sym: '☀', sym2: '◎', col: ['#1A1400','#383000','#605400'] },
+            'Judgement':         { num: 'XX',    sym: '☩', sym2: '◉', col: ['#00001A','#000030','#000048'] },
+            'The World':         { num: 'XXI',   sym: '◉', sym2: '✦', col: ['#001A08','#003010','#005018'] },
         };
         // Nomi italiani
         const IT_NAMES = {
@@ -4352,10 +4356,10 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
             const cx = startX + i * (cardW + gap);
             const cardInfo = _lastTarotCards[i];
             const name = cardNames ? cardNames[i] : '';
-            const meta = ARCANA_META[name] || { num: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', sym2: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€¦Ã‚Â½', col: ['#1A0E2A','#2D1054','#4A1A80'] };
+            const meta = ARCANA_META[name] || { num: '✦', sym: '✦', sym2: '◎', col: ['#1A0E2A','#2D1054','#4A1A80'] };
             const itName = IT_NAMES[name] || name.toUpperCase();
 
-            // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Sfondo carta con doppio gradiente ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+            // ── Sfondo carta con doppio gradiente ──────────────────────────
             const cg = ctx.createLinearGradient(cx, cardY, cx+cardW, cardY+cardH);
             cg.addColorStop(0,   meta.col[2]);
             cg.addColorStop(0.4, meta.col[1]);
@@ -4398,13 +4402,13 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
             ctx.fillStyle = halo;
             ctx.fillRect(cx, cardY, cardW, cardH);
 
-            // Decorazioni angoli ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â piccoli rombi
+            // Decorazioni angoli — piccoli rombi
             const corners = [[cx+18,cardY+20],[cx+cardW-18,cardY+20],[cx+18,cardY+cardH-20],[cx+cardW-18,cardY+cardH-20]];
             corners.forEach(([ox,oy]) => {
                 ctx.fillStyle = 'rgba(201,168,76,0.4)';
                 ctx.font = `14px serif`; ctx.letterSpacing='0';
                 ctx.textAlign = 'center';
-                ctx.fillText('ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ', ox, oy+5);
+                ctx.fillText('â—†', ox, oy+5);
             });
 
             // Numero romano in cima
@@ -4439,7 +4443,7 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
                 ctx.restore();
                 roundRect(ctx, imgX, imgY, imgW, imgH, 12, null, 'rgba(201,168,76,0.22)');
             } else {
-                // Fallback simbolico se l'immagine non ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨ disponibile
+                // Fallback simbolico se l'immagine non è disponibile
                 ctx.fillStyle = 'rgba(201,168,76,0.3)';
                 ctx.font = `26px serif`; ctx.letterSpacing='0';
                 ctx.fillText(meta.sym2, cx + cardW/2, cardY + 92);
@@ -4491,7 +4495,7 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
         drawWrappedText(ctx, `"${quote}"`, centerX, summaryY + 104, SIZE-140, cormnt(29), '#EDE0C4', 1.48, SIZE-130);
 
     } else if (tipo === 'astrologia') {
-        // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Layout verticale ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â come da design di riferimento ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+        // ── Layout verticale — come da design di riferimento ──────────────────
         const MARGIN_X = 60;
 
         // Sottotitolo sezione
@@ -4502,12 +4506,12 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
         drawGoldLine(ctx, centerX, 256, 160);
 
         // Subtitles standard per ogni elemento
-        const subs = { sole: 'Essenza e VitalitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ', luna: 'Emozioni e Inconscio', asc: 'PersonalitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  esteriore' };
+        const subs = { sole: 'Essenza e Vitalità', luna: 'Emozioni e Inconscio', asc: 'Personalità esteriore' };
 
         const rows = [
-            { sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°', label: 'SOLE IN',       val: (sole||'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â').toUpperCase(), sub: subs.sole  },
-            { sym: 'ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â½', label: 'LUNA IN',       val: (luna||'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â').toUpperCase(), sub: subs.luna  },
-            { sym: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“',  label: 'ASCENDENTE IN', val: (asc||'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â').toUpperCase(),  sub: subs.asc   }
+            { sym: '☉', label: 'SOLE IN',       val: (sole||'—').toUpperCase(), sub: subs.sole  },
+            { sym: '☽', label: 'LUNA IN',       val: (luna||'—').toUpperCase(), sub: subs.luna  },
+            { sym: '↑',  label: 'ASCENDENTE IN', val: (asc||'—').toUpperCase(),  sub: subs.asc   }
         ];
 
         const rowTop0 = 272, rowH = 110, sepH = 1;
@@ -4531,7 +4535,7 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
             ctx.textAlign = 'center';
             ctx.fillText(row.sym, symX, symY + 15);
 
-            // Titolo "SOLE IN TORO" ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â left aligned
+            // Titolo "SOLE IN TORO" — left aligned
             ctx.textAlign = 'left';
             ctx.fillStyle = '#C9A84C';
             ctx.font = cinzel(30, '600'); ctx.letterSpacing = '2px';
@@ -4556,8 +4560,8 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
             }
         });
 
-        // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Commento testuale sotto i tre elementi ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
-        const textBlockTop = rowTop0 + 3 * rowH + 3 * 12 + 14; // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°Ãƒâ€¹Ã¢â‚¬Â  630
+        // ── Commento testuale sotto i tre elementi ─────────────────────────
+        const textBlockTop = rowTop0 + 3 * rowH + 3 * 12 + 14; // ≈ 630
         ctx.textAlign = 'center';
         drawGoldLine(ctx, centerX, textBlockTop, 160);
         ctx.fillStyle = 'rgba(201,168,76,0.65)';
@@ -4568,7 +4572,7 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
             ctx, `"${quote}"`,
             centerX, textBlockTop + 106,
             SIZE - 140, cormnt(30), '#EDE0C4', 1.5,
-            SIZE - 130 // maxY ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â non esce dal footer
+            SIZE - 130 // maxY — non esce dal footer
         );
 
     } else if (tipo === 'sogno') {
@@ -4577,11 +4581,11 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
         ctx.letterSpacing = '5px';
         ctx.fillText('IL LIBRO DEI SOGNI', centerX, 240);
 
-        // Luna decorativa piÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ piccola per fare spazio al testo
+        // Luna decorativa più piccola per fare spazio al testo
         ctx.font = `80px serif`;
         ctx.textAlign = 'center';
         ctx.fillStyle = 'rgba(201,168,76,0.18)';
-        ctx.fillText('ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢', centerX, 340);
+        ctx.fillText('🌙', centerX, 340);
 
         // Riassunto 3-4 righe del sogno
         drawGoldLine(ctx, centerX, 374, 120);
@@ -4600,13 +4604,13 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
         // Simboli animici
         ctx.font = `110px serif`;
         ctx.fillStyle = 'rgba(201,168,76,0.12)';
-        ctx.fillText('ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€¦Ã‚Â¾', centerX, 390);
+        ctx.fillText('💞', centerX, 390);
 
         // Nomi
         ctx.fillStyle = '#C9A84C';
         ctx.font = cinzel(36, '500');
         ctx.letterSpacing = '3px';
-        const pair = `${nameA}  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦  ${nameB}`;
+        const pair = `${nameA}  ✦  ${nameB}`;
         ctx.fillText(pair, centerX, 440);
 
         // Score ring disegnato su canvas
@@ -4633,25 +4637,25 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
         ctx.fillStyle = 'rgba(138,122,94,0.7)';
         ctx.font = cinzel(18);
         ctx.letterSpacing = '3px';
-        ctx.fillText('AFFINITÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ COSMICA', ringX, ringY + 50);
+        ctx.fillText('AFFINITÀ COSMICA', ringX, ringY + 50);
 
         drawGoldLine(ctx, centerX, 704, 120);
         drawWrappedText(ctx, `"${quote}"`, centerX, 752, SIZE-160, cormnt(30), '#EDE0C4', 1.5, SIZE-130);
     }
 
-    // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Footer ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+    // ── Footer ──────────────────────────────────────────────────────────────
     drawGoldLine(ctx, centerX, SIZE-110, 160);
     ctx.fillStyle = 'rgba(201,168,76,0.5)';
     ctx.font = cinzel(20);
     ctx.letterSpacing = '4px';
-    ctx.fillText('ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ scopri la tua rivelazione ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦', centerX, SIZE-74);
+    ctx.fillText('✦ scopri la tua rivelazione ✦', centerX, SIZE-74);
     ctx.fillStyle = 'rgba(138,122,94,0.5)';
     ctx.font = cinzel(17);
     ctx.letterSpacing = '3px';
     ctx.fillText('SIDERA7.VERCEL.APP', centerX, SIZE-44);
 }
 
-// ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Helpers canvas ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+// ── Helpers canvas ───────────────────────────────────────────────────────────
 function roundRect(ctx, x, y, w, h, r, fill, stroke) {
     ctx.beginPath();
     ctx.moveTo(x+r, y);
@@ -4686,7 +4690,7 @@ function drawGoldLine(ctx, cx, y, halfLen) {
 }
 
 function drawWrappedText(ctx, text, cx, startY, maxW, font, color, lineH_mult, maxY) {
-    // Reset PRIMA di settare il font ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â alcuni browser applicano letterSpacing a measureText
+    // Reset PRIMA di settare il font — alcuni browser applicano letterSpacing a measureText
     ctx.letterSpacing = '0px';
     ctx.font = font;
     ctx.fillStyle = color;
@@ -4698,7 +4702,7 @@ function drawWrappedText(ctx, text, cx, startY, maxW, font, color, lineH_mult, m
     let line = '', y = startY;
     for (const word of words) {
         const test = line ? line + ' ' + word : word;
-        // Misura senza letterSpacing ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â giÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  a 0
+        // Misura senza letterSpacing — già a 0
         if (ctx.measureText(test).width > maxW && line) {
             if (y <= limit) ctx.fillText(line, cx, y);
             line = word;
@@ -4711,7 +4715,7 @@ function drawWrappedText(ctx, text, cx, startY, maxW, font, color, lineH_mult, m
 }
 
 // Converte immagine in base64 per la card Instagram
-// Usa allorigins.win come proxy CORS ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â solo per la conversione, non per il display
+// Usa allorigins.win come proxy CORS — solo per la conversione, non per il display
 async function imgToBase64(src) {
     // Prova prima fetch diretto (funziona se il server ha CORS)
     try {
@@ -4742,7 +4746,7 @@ async function imgToBase64(src) {
         }
     } catch(e) { /* proxy non disponibile */ }
 
-    // Se tutto fallisce, ritorna null ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â la card IG mostrerÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  il placeholder
+    // Se tutto fallisce, ritorna null — la card IG mostrerà il placeholder
     console.warn('[Sidera] imgToBase64 fallita per:', src);
     return null;
 }
@@ -4771,9 +4775,9 @@ async function loadCardForCanvas(b64DataUrl, fallbackUrl) {
 
 
 function extractQuote(text, maxLen) {
-    const sentences = text.replace(/\n+/g, ' ').replace(/ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦[^ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦]*ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦/g, '').split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 40);
-    const best = sentences[0] || text.replace(/ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦[^ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦]*ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦/g,'').trim().slice(0, maxLen);
-    return (best.length > maxLen ? best.slice(0, maxLen - 1) + 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦' : best);
+    const sentences = text.replace(/\n+/g, ' ').replace(/✦[^✦]*✦/g, '').split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 40);
+    const best = sentences[0] || text.replace(/✦[^✦]*✦/g,'').trim().slice(0, maxLen);
+    return (best.length > maxLen ? best.slice(0, maxLen - 1) + '…' : best);
 }
 
 function closeIgCard() {
@@ -4788,7 +4792,7 @@ async function downloadIgCard() {
         link.download = 'Sidera-' + new Date().getTime() + '.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
-        showToast('ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ Immagine salvata ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â pronta per Instagram e TikTok!');
+        showToast('✨ Immagine salvata — pronta per Instagram e TikTok!');
     } catch(e) { showToast("Non sono riuscita a salvare l'immagine. Riprova tra un attimo."); console.error(e); }
 }
 
@@ -4799,7 +4803,7 @@ async function shareIgCard() {
         canvas.toBlob(async blob => {
             const file = new File([blob], 'Sidera.png', { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                await navigator.share({ files: [file], title: 'La mia rivelazione su Sidera ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨', text: 'Scopri il tuo oracolo su Sidera ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ https://sidera7.vercel.app/' });
+                await navigator.share({ files: [file], title: 'La mia rivelazione su Sidera ✨', text: 'Scopri il tuo oracolo su Sidera → https://sidera7.vercel.app/' });
             } else { downloadIgCard(); }
         }, 'image/png');
     } catch(e) { showToast("Condivisione non riuscita. Puoi salvare l'immagine e inviarla manualmente."); }
@@ -4818,7 +4822,7 @@ async function shareCard(elementId) {
         canvas.toBlob(async blob => {
             const file = new File([blob], 'Sidera-Mappa.png', { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                try { await navigator.share({ files: [file], title: 'Sidera - La mia Rivelazione', text: 'Il mio allineamento astrale su Sidera ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨' }); }
+                try { await navigator.share({ files: [file], title: 'Sidera - La mia Rivelazione', text: 'Il mio allineamento astrale su Sidera ✨' }); }
                 catch (err) { if (err.name !== "AbortError") downloadCanvas(canvas); }
             } else { downloadCanvas(canvas); }
         }, 'image/png');
@@ -4847,9 +4851,9 @@ async function nativeShare() {
 function shareFB() { window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href), '_blank'); }
 function sharePinterest() { window.open('https://pinterest.com/pin/create/button/?url=' + encodeURIComponent(window.location.href), '_blank'); }
 
-
+// ─────────────────────────────────────────────
 //  TOAST NOTIFICATION
-
+// ─────────────────────────────────────────────
 function showToast(msg) {
     let toast = document.getElementById('sideraToast');
     if (!toast) {
@@ -4874,9 +4878,9 @@ function showToast(msg) {
     }, 3000);
 }
 
-
+// ─────────────────────────────────────────────
 //  MOBILE MENU
-
+// ─────────────────────────────────────────────
 function toggleMobileMenu() {
     const sidebar  = document.getElementById('mobileSidebar');
     const overlay  = document.getElementById('sidebarOverlay');
@@ -4886,43 +4890,12 @@ function toggleMobileMenu() {
     hamburger.classList.toggle('open', isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
 }
-
-function __repairVisibleMojibake() {
-    const fix = (text) => {
-        if (!text) return text;
-        return text
-            .replace(/ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨/g, "è")
-            .replace(/ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â /g, "à")
-            .replace(/ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹/g, "ù")
-            .replace(/ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â²/g, "ò")
-            .replace(/ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬/g, "ì")
-            .replace(/ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬/g, "€")
-            .replace(/ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©/g, "©")
-            .replace(/ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â·/g, "·")
-            .replace(/ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦/g, "✦")
-            .replace(/ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨/g, "✧")
-            .replace(/ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¸/g, "📸")
-            .replace(/ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â/g, "-")
-            .replace(/Ãƒ|Ã‚|â€™|â€œ|â€|Â/g, "");
-    };
-
-    if (document.title) document.title = fix(document.title);
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    let node;
-    while ((node = walker.nextNode())) {
-        const original = node.nodeValue;
-        const repaired = fix(original);
-        if (repaired !== original) node.nodeValue = repaired;
-    }
-}
-
-requestAnimationFrame(__repairVisibleMojibake);
 </script>
-<!-- section -->
+<!-- ════════════════════════════════
      INSTAGRAM SHARE MODAL
-
+════════════════════════════════ -->
 <div id="igCardModal">
-<!-- section -->
+    <!-- Canvas 1:1 disegnato via JS — risolve CORS e centra perfettamente -->
     <canvas id="igCard" style="width:100%;max-width:420px;border-radius:20px;display:block;border:1px solid rgba(201,168,76,0.2);"></canvas>
 
     <!-- Toggle testo opzionale -->
@@ -4932,9 +4905,9 @@ requestAnimationFrame(__repairVisibleMojibake);
     </label>
 
     <div class="ig-actions">
-        <button class="btn-ig btn-ig-primary" onclick="downloadIgCard()">ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Salva Immagine</button>
-        <button class="btn-ig btn-ig-primary" onclick="shareIgCard()">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ Condividi</button>
-        <button class="btn-ig btn-ig-secondary" onclick="closeIgCard()">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Chiudi</button>
+        <button class="btn-ig btn-ig-primary" onclick="downloadIgCard()">⬇️ Salva Immagine</button>
+        <button class="btn-ig btn-ig-primary" onclick="shareIgCard()">✨ Condividi</button>
+        <button class="btn-ig btn-ig-secondary" onclick="closeIgCard()">✦ Chiudi</button>
     </div>
     <a href="https://sidera7.vercel.app/" target="_blank" rel="noopener"
        style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:3px;text-decoration:none;
@@ -4942,9 +4915,9 @@ requestAnimationFrame(__repairVisibleMojibake);
               background:rgba(201,168,76,0.06);transition:0.3s;display:inline-block;"
        onmouseover="this.style.background='rgba(201,168,76,0.15)'"
        onmouseout="this.style.background='rgba(201,168,76,0.06)'">
-        ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦ Sidera ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦
+        ✦ Sidera ✦
     </a>
-    <p style="font-family:'Cinzel',serif;font-size:9px;color:rgba(138,122,94,0.5);letter-spacing:2px;text-align:center;">Formato 1:1 ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Ottimale per Instagram e TikTok</p>
+    <p style="font-family:'Cinzel',serif;font-size:9px;color:rgba(138,122,94,0.5);letter-spacing:2px;text-align:center;">Formato 1:1 · Ottimale per Instagram e TikTok</p>
 </div>
 
 <!-- FOOTER -->
@@ -4985,5 +4958,4 @@ requestAnimationFrame(__repairVisibleMojibake);
 
 </body>
 </html>
-
 
