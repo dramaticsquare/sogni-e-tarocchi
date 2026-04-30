@@ -4886,6 +4886,37 @@ function toggleMobileMenu() {
     hamburger.classList.toggle('open', isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
 }
+
+function __repairVisibleMojibake() {
+    const fix = (text) => {
+        if (!text) return text;
+        return text
+            .replace(/ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨/g, "è")
+            .replace(/ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â /g, "à")
+            .replace(/ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹/g, "ù")
+            .replace(/ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â²/g, "ò")
+            .replace(/ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬/g, "ì")
+            .replace(/ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬/g, "€")
+            .replace(/ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©/g, "©")
+            .replace(/ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â·/g, "·")
+            .replace(/ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¦/g, "✦")
+            .replace(/ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨/g, "✧")
+            .replace(/ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¸/g, "📸")
+            .replace(/ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â/g, "-")
+            .replace(/Ãƒ|Ã‚|â€™|â€œ|â€|Â/g, "");
+    };
+
+    if (document.title) document.title = fix(document.title);
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+        const original = node.nodeValue;
+        const repaired = fix(original);
+        if (repaired !== original) node.nodeValue = repaired;
+    }
+}
+
+requestAnimationFrame(__repairVisibleMojibake);
 </script>
 <!-- section -->
      INSTAGRAM SHARE MODAL
