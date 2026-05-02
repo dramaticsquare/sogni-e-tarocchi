@@ -1142,6 +1142,88 @@
             .swipe-hint-sinastria { display: flex; }
         }
 
+        /* ══════════════════════════════════
+           CARTA DEL GIORNO
+        ══════════════════════════════════ */
+        .daily-card-section {
+            margin-top: 56px; padding-top: 48px;
+            border-top: 1px solid var(--border);
+            opacity: 0; animation: fadeUp 1s ease 1.5s forwards;
+        }
+        .daily-card-label {
+            font-family: 'Cinzel', serif; font-size: 9px;
+            color: var(--gold); letter-spacing: 4px;
+            text-transform: uppercase; text-align: center;
+            display: block; margin-bottom: 6px;
+        }
+        .daily-card-date {
+            font-family: 'Cinzel', serif; font-size: 8px;
+            color: var(--text-muted); letter-spacing: 2px;
+            text-align: center; display: block; margin-bottom: 28px;
+        }
+        .daily-card-inner {
+            display: flex; gap: 32px; align-items: flex-start;
+            max-width: 680px; margin: 0 auto;
+        }
+        .daily-card-img-wrap {
+            flex-shrink: 0; width: 120px;
+            position: relative;
+        }
+        .daily-card-img {
+            width: 120px; height: 207px;
+            border-radius: 10px; border: 1px solid rgba(201,168,76,0.4);
+            object-fit: cover; display: block;
+            box-shadow: 0 0 30px rgba(201,168,76,0.15);
+            transition: transform 0.3s;
+        }
+        .daily-card-img-wrap:hover .daily-card-img { transform: translateY(-4px); }
+        .daily-card-img.reversed { transform: rotate(180deg); }
+        .daily-card-img.reversed:hover { transform: rotate(180deg) translateY(-4px); }
+        .daily-card-name-badge {
+            font-family: 'Cinzel', serif; font-size: 8px;
+            color: var(--gold); letter-spacing: 2px;
+            text-align: center; display: block;
+            margin-top: 8px; text-transform: uppercase;
+        }
+        .daily-card-text { flex: 1; }
+        .daily-card-title {
+            font-family: 'Cinzel', serif; font-size: 1rem;
+            color: var(--gold-light); letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .daily-card-orientation {
+            font-family: 'Cinzel', serif; font-size: 8px;
+            color: var(--text-muted); letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 14px; display: block;
+        }
+        .daily-card-message {
+            font-size: 0.92rem; color: var(--text);
+            line-height: 1.75; font-style: italic;
+        }
+        .daily-card-message.loading-text { font-style: normal; }
+        .daily-card-keyword-row {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;
+        }
+        .daily-card-keyword {
+            padding: 3px 12px; border-radius: 50px;
+            border: 1px solid var(--border); font-size: 0.7rem;
+            font-family: 'Cinzel', serif; color: var(--text-muted); letter-spacing: 1px;
+        }
+        .daily-card-refresh {
+            background: none; border: none; color: var(--text-muted);
+            font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 2px;
+            cursor: pointer; margin-top: 18px; display: block;
+            transition: color 0.3s;
+        }
+        .daily-card-refresh:hover { color: var(--gold); }
+
+        @media (max-width: 640px) {
+            .daily-card-inner { flex-direction: column; align-items: center; gap: 20px; }
+            .daily-card-text { text-align: center; }
+            .daily-card-keyword-row { justify-content: center; }
+            .daily-card-refresh { margin: 18px auto 0; }
+        }
+
         /* ── Loading spinner ── */
         .loading-text { font-style: italic; color: var(--text-muted); text-align: center; padding: 24px 0; }
         .loading-text::after {
@@ -1753,6 +1835,25 @@
             <div class="hero-stat"><span class="hero-stat-n">∞</span><span class="hero-stat-l">Arcani disponibili</span></div>
             <div class="hero-stat"><span class="hero-stat-n">22</span><span class="hero-stat-l">Arcani Maggiori</span></div>
             <div class="hero-stat"><span class="hero-stat-n">3</span><span class="hero-stat-l">Crediti gratuiti</span></div>
+        </div>
+
+        <!-- CARTA DEL GIORNO -->
+        <div class="daily-card-section" id="dailyCardSection">
+            <span class="daily-card-label">✦ La Carta del Giorno ✦</span>
+            <span class="daily-card-date" id="dailyCardDate"></span>
+            <div class="daily-card-inner">
+                <div class="daily-card-img-wrap">
+                    <img id="dailyCardImg" class="daily-card-img" src="" alt="Carta del giorno">
+                    <span class="daily-card-name-badge" id="dailyCardName"></span>
+                </div>
+                <div class="daily-card-text">
+                    <h3 class="daily-card-title" id="dailyCardTitle"></h3>
+                    <span class="daily-card-orientation" id="dailyCardOrientation"></span>
+                    <p class="daily-card-message loading-text" id="dailyCardMessage">L'oracolo sta consultando gli Arcani</p>
+                    <div class="daily-card-keyword-row" id="dailyCardKeywords"></div>
+                    <button class="daily-card-refresh" onclick="loadDailyCard(true)">↺ Aggiorna il messaggio</button>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -2612,11 +2713,11 @@ const ASTROLOGER_API_HOST = "astrologer.p.rapidapi.com";
 const PAYPAL_MODE = 'live'; // ← cambia in 'sandbox' per testare
 
 const PAYPAL_CLIENT_ID_LIVE    = 'AZsxkgEdU7HJjgac8oVcEM4rfIsfLpFWyCISuRWUgIKIeEN4dFSqhoEUNAFF3EQAqZhCdPMhFavc1Qpk';
-const PAYPAL_CLIENT_ID_SANDBOX = 'A'; // da developer.paypal.com → Apps & Credentials → Sandbox
+const PAYPAL_CLIENT_ID_SANDBOX = 'INSERISCI_CLIENT_ID_SANDBOX'; // da developer.paypal.com → Apps & Credentials → Sandbox
 
 // Piano abbonamento — crea piani separati per sandbox e live
-const PAYPAL_PLAN_ID_LIVE    = 'P-4Y635153C0712870ENHZ4UUI';
-const PAYPAL_PLAN_ID_SANDBOX = 'NA';
+const PAYPAL_PLAN_ID_LIVE    = 'P-INSERISCI_PLAN_ID_LIVE';
+const PAYPAL_PLAN_ID_SANDBOX = 'P-INSERISCI_PLAN_ID_SANDBOX';
 
 // Valori attivi
 const PAYPAL_ACTIVE_CLIENT_ID = PAYPAL_MODE === 'sandbox' ? PAYPAL_CLIENT_ID_SANDBOX : PAYPAL_CLIENT_ID_LIVE;
@@ -2886,6 +2987,8 @@ function initApp() {
     const home = document.getElementById('home');
     home.classList.add('active');
     setTimeout(() => home.classList.add('visible'), 50);
+    // Carica carta del giorno (dopo 800ms per non bloccare il rendering iniziale)
+    setTimeout(() => loadDailyCard(), 800);
 }
 
 // ─────────────────────────────────────────────
@@ -2904,6 +3007,10 @@ function showSection(id) {
     window.scrollTo(0, 0);
     setTimeout(() => sec.classList.add('visible'), 60);
 
+    if (id === 'home') {
+        // Carica carta del giorno se non ancora mostrata
+        setTimeout(() => loadDailyCard(), 300);
+    }
     if (id === 'oracolo' && !localStorage.getItem('visited_tarot')) {
         document.getElementById('infoModal').classList.add('open');
         localStorage.setItem('visited_tarot', 'true');
@@ -3542,6 +3649,130 @@ function formatText(text) {
         return out;
     }
     return html.split('\n').filter(l => l.trim() !== "").map(l => l.trim().startsWith('<h4>') ? l : `<p>${l}</p>`).join('');
+}
+
+// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+//  CARTA DEL GIORNO
+// ─────────────────────────────────────────────
+const DAILY_CARD_KEYWORDS = {
+    "Il Matto":      ["Libertà","Nuovo inizio","Avventura"],
+    "Il Mago":       ["Volontà","Manifestazione","Abilità"],
+    "La Papessa":    ["Intuizione","Mistero","Saggezza interiore"],
+    "L'Imperatrice": ["Abbondanza","Fertilità","Nutrimento"],
+    "L'Imperatore":  ["Autorità","Struttura","Stabilità"],
+    "Il Papa":       ["Tradizione","Guida spirituale","Conformità"],
+    "Gli Amanti":    ["Amore","Scelta","Armonia"],
+    "Il Carro":      ["Determinazione","Controllo","Vittoria"],
+    "La Forza":      ["Coraggio","Pazienza","Forza interiore"],
+    "L'Eremita":     ["Solitudine","Ricerca interiore","Saggezza"],
+    "La Ruota":      ["Destino","Cicli","Svolta"],
+    "La Giustizia":  ["Equilibrio","Verità","Causa ed effetto"],
+    "L'Appeso":      ["Resa","Pausa","Nuova prospettiva"],
+    "Morte":         ["Trasformazione","Fine","Rinnovamento"],
+    "Temperanza":    ["Equilibrio","Pazienza","Moderazione"],
+    "Il Diavolo":    ["Dipendenza","Materialismo","Illusione"],
+    "La Torre":      ["Cambiamento improvviso","Rivelazione","Caos"],
+    "La Stella":     ["Speranza","Rinnovamento","Ispirazione"],
+    "La Luna":       ["Inconscio","Illusione","Paura"],
+    "Il Sole":       ["Gioia","Successo","Vitalità"],
+    "Giudizio":      ["Risveglio","Rinascita","Assoluzione"],
+    "Il Mondo":      ["Completezza","Integrazione","Traguardo"]
+};
+
+async function loadDailyCard(forceRefresh = false) {
+    const today = new Date().toISOString().split('T')[0];
+    const cacheKey = 'sidera_daily_' + today;
+    const cached = localStorage.getItem(cacheKey);
+
+    // Determina carta deterministica dalla data (stessa per tutti)
+    const dateNum = parseInt(today.replace(/-/g, ''));
+    const cardIndex = dateNum % 22;
+    const card = CARDS[cardIndex];
+    const digitSum = today.replace(/-/g,'').split('').reduce((a,b) => a + parseInt(b), 0);
+    const isReversed = digitSum % 2 === 1;
+
+    // Mostra subito la carta
+    const imgSrc = IMG_BASE + card.i;
+    document.getElementById('dailyCardImg').src = imgSrc;
+    document.getElementById('dailyCardImg').className = 'daily-card-img' + (isReversed ? ' reversed' : '');
+    document.getElementById('dailyCardName').innerText = card.n.toUpperCase();
+    document.getElementById('dailyCardTitle').innerText = card.n;
+    document.getElementById('dailyCardOrientation').innerText = isReversed ? '☽ Carta Rovesciata' : '☉ Carta Dritta';
+
+    const keywords = DAILY_CARD_KEYWORDS[card.n] || [];
+    document.getElementById('dailyCardKeywords').innerHTML = keywords
+        .map(k => `<span class="daily-card-keyword">${k}</span>`).join('');
+
+    const dateFormatted = new Date().toLocaleDateString('it-IT', {weekday:'long', day:'numeric', month:'long'});
+    document.getElementById('dailyCardDate').innerText = dateFormatted.charAt(0).toUpperCase() + dateFormatted.slice(1);
+
+    // Se in cache e non forzato, usa messaggio salvato
+    if (cached && !forceRefresh) {
+        const data = JSON.parse(cached);
+        document.getElementById('dailyCardMessage').innerText = data.message;
+        document.getElementById('dailyCardMessage').classList.remove('loading-text');
+        return;
+    }
+
+    // Chiama Make per il messaggio
+    document.getElementById('dailyCardMessage').classList.add('loading-text');
+    document.getElementById('dailyCardMessage').innerText = "L'oracolo sta consultando gli Arcani";
+
+    try {
+        const response = await fetch(MAKE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tipo: 'carta_del_giorno',
+                carta: card.n,
+                orientamento: isReversed ? 'rovesciata' : 'dritta',
+                data: today,
+                segno: currentUser?.sign || ''
+            })
+        });
+        const text = await response.text();
+        const clean = text.replace(/###[^\n]*/g,'').replace(/\n+/g,' ').trim();
+        const sentences = clean.split(/[.!?]+/).filter(s => s.trim().length > 20);
+        const message = sentences.slice(0,2).join('. ').trim() + '.';
+        const finalMsg = message.length > 220 ? message.slice(0,220) + '…' : message;
+
+        document.getElementById('dailyCardMessage').innerText = finalMsg;
+        document.getElementById('dailyCardMessage').classList.remove('loading-text');
+
+        // Salva in cache per oggi
+        localStorage.setItem(cacheKey, JSON.stringify({
+            card: card.n, reversed: isReversed, message: finalMsg, date: today
+        }));
+        // Pulisci cache di giorni precedenti
+        Object.keys(localStorage)
+            .filter(k => k.startsWith('sidera_daily_') && k !== cacheKey)
+            .forEach(k => localStorage.removeItem(k));
+
+    } catch(e) {
+        const msg = isReversed
+            ? `${card.n} rovesciata invita a guardare dentro di te. Qualcosa chiede attenzione oggi.`
+            : `${card.n} illumina questa giornata con la sua energia. Lasciati guidare dalla sua saggezza.`;
+        document.getElementById('dailyCardMessage').innerText = msg;
+        document.getElementById('dailyCardMessage').classList.remove('loading-text');
+    }
+}
+
+function renderDailyCard(data) {
+    const card = CARDS.find(c => c.n === data.card);
+    if (!card) return;
+    document.getElementById('dailyCardImg').src = IMG_BASE + card.i;
+    document.getElementById('dailyCardImg').className = 'daily-card-img' + (data.reversed ? ' reversed' : '');
+    document.getElementById('dailyCardName').innerText = card.n.toUpperCase();
+    document.getElementById('dailyCardTitle').innerText = card.n;
+    document.getElementById('dailyCardOrientation').innerText = data.reversed ? '☽ Carta Rovesciata' : '☉ Carta Dritta';
+    document.getElementById('dailyCardMessage').innerText = data.message;
+    document.getElementById('dailyCardMessage').classList.remove('loading-text');
+    const keywords = DAILY_CARD_KEYWORDS[card.n] || [];
+    document.getElementById('dailyCardKeywords').innerHTML = keywords
+        .map(k => `<span class="daily-card-keyword">${k}</span>`).join('');
+    const dateFormatted = new Date().toLocaleDateString('it-IT', {weekday:'long', day:'numeric', month:'long'});
+    document.getElementById('dailyCardDate').innerText = dateFormatted.charAt(0).toUpperCase() + dateFormatted.slice(1);
 }
 
 // ─────────────────────────────────────────────
