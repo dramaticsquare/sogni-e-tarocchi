@@ -1854,6 +1854,18 @@
         <div class="daily-card-section" id="dailyCardSection">
             <span class="daily-card-label">✦ La Carta del Giorno ✦</span>
             <span class="daily-card-date" id="dailyCardDate"></span>
+
+            <!-- Chip segno zodiacale — visibile solo se utente loggato con data di nascita -->
+            <div style="text-align:center;margin-bottom:20px;min-height:28px;">
+                <span id="dailyZodiacChip" style="
+                    display:none; align-items:center; gap:6px;
+                    padding:5px 18px; border:1px solid rgba(201,168,76,0.3);
+                    border-radius:50px; background:rgba(201,168,76,0.07);
+                    font-family:'Cinzel',serif; font-size:10px;
+                    color:var(--gold); letter-spacing:2px; text-transform:uppercase;
+                "></span>
+            </div>
+
             <div class="daily-card-inner">
                 <div class="daily-card-img-wrap">
                     <img id="dailyCardImg" class="daily-card-img" src="" alt="Carta del giorno">
@@ -1864,7 +1876,13 @@
                     <span class="daily-card-orientation" id="dailyCardOrientation"></span>
                     <p class="daily-card-message loading-text" id="dailyCardMessage">L'oracolo sta consultando gli Arcani</p>
                     <div class="daily-card-keyword-row" id="dailyCardKeywords"></div>
-                    <button class="daily-card-refresh" onclick="loadDailyCard(true)">↺ Aggiorna il messaggio</button>
+
+                    <!-- Azioni carta del giorno -->
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">
+                        <button class="btn-share" onclick="openIgCard('carta')" style="font-size:0.76rem;">📸 Card Instagram</button>
+                        <button class="btn-share" onclick="shareDailyCard()" style="font-size:0.76rem;">✨ Condividi</button>
+                        <button class="daily-card-refresh" onclick="loadDailyCard(true)" style="margin-top:0;border:1px solid var(--border);padding:7px 14px;border-radius:20px;font-size:0.76rem;">↺ Aggiorna</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2590,6 +2608,10 @@
                 <input type="text" id="regName" placeholder="Nome (o nome d'arte)" autocomplete="name">
                 <input type="email" id="regEmail" placeholder="Email" autocomplete="email">
                 <input type="password" id="regPass" placeholder="Password (min. 6 caratteri)" autocomplete="new-password">
+                <div style="margin-bottom:16px;">
+                    <label style="display:block;font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">Data di nascita <span style="color:rgba(138,122,94,0.5);font-size:8px;">(opzionale — personalizza la Carta del Giorno)</span></label>
+                    <input type="date" id="regBirth" autocomplete="bday" style="margin-bottom:0;">
+                </div>
                 <div id="registerError" style="display:none;font-size:0.78rem;color:#e07070;text-align:center;margin:-8px 0 10px;font-family:'Cinzel',serif;letter-spacing:1px;"></div>
                 <button type="submit" class="btn-action">🌟 Crea il Tuo Profilo</button>
                 </form>
@@ -2840,6 +2862,47 @@ const CARD_IMAGES_B64 = {
 let selectedAmount = 3;
 let selectedCredits = 5;
 let currentUser = null;
+
+// ─────────────────────────────────────────────
+//  ZODIAC HELPERS
+// ─────────────────────────────────────────────
+function getZodiacSign(dateStr) {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    if (parts.length < 3) return '';
+    const m = parseInt(parts[1]), d = parseInt(parts[2]);
+    if ((m===3&&d>=21)||(m===4&&d<=19)) return 'Ariete';
+    if ((m===4&&d>=20)||(m===5&&d<=20)) return 'Toro';
+    if ((m===5&&d>=21)||(m===6&&d<=20)) return 'Gemelli';
+    if ((m===6&&d>=21)||(m===7&&d<=22)) return 'Cancro';
+    if ((m===7&&d>=23)||(m===8&&d<=22)) return 'Leone';
+    if ((m===8&&d>=23)||(m===9&&d<=22)) return 'Vergine';
+    if ((m===9&&d>=23)||(m===10&&d<=22)) return 'Bilancia';
+    if ((m===10&&d>=23)||(m===11&&d<=21)) return 'Scorpione';
+    if ((m===11&&d>=22)||(m===12&&d<=21)) return 'Sagittario';
+    if ((m===12&&d>=22)||(m===1&&d<=19)) return 'Capricorno';
+    if ((m===1&&d>=20)||(m===2&&d<=18)) return 'Acquario';
+    return 'Pesci';
+}
+
+const ZODIAC_SYMBOLS = {
+    'Ariete':'♈','Toro':'♉','Gemelli':'♊','Cancro':'♋',
+    'Leone':'♌','Vergine':'♍','Bilancia':'♎','Scorpione':'♏',
+    'Sagittario':'♐','Capricorno':'♑','Acquario':'♒','Pesci':'♓'
+};
+
+// Aggiorna il chip segno zodiacale nella carta del giorno
+function updateZodiacChip() {
+    const chip = document.getElementById('dailyZodiacChip');
+    if (!chip) return;
+    if (currentUser?.sign) {
+        const sym = ZODIAC_SYMBOLS[currentUser.sign] || '✦';
+        chip.innerHTML = `${sym} ${currentUser.sign}`;
+        chip.style.display = 'inline-flex';
+    } else {
+        chip.style.display = 'none';
+    }
+}
 
 // ─────────────────────────────────────────────
 //  INIT — tutto dentro DOMContentLoaded
@@ -3180,7 +3243,7 @@ async function loadProfile(userId) {
     try {
         const { data, error } = await window._supabase
             .from('profiles')
-            .select('credits, history')
+            .select('credits, history, birth_date')
             .eq('user_id', userId)
             .single();
         if (error) { console.warn('[Supabase] loadProfile error:', error.message); return null; }
@@ -3198,7 +3261,8 @@ async function syncToSupabase() {
         const { error } = await window._supabase.from('profiles').upsert({
             user_id: currentUser.id,
             credits,
-            history  // jsonb accetta direttamente l'array JS
+            history,
+            birth_date: currentUser.birthDate || null
         });
         if (error) console.warn('[Supabase] sync error:', error.message);
         else console.log('[Supabase] Sync OK — crediti:', credits);
@@ -3261,18 +3325,23 @@ if (SUPABASE_ENABLED && typeof supabase !== 'undefined') {
         try {
             if ((event === 'INITIAL_SESSION' || event === 'SIGNED_IN') && session?.user) {
                 const profile = await loadProfile(session.user.id);
+                const birthDate = profile?.birth_date || null;
+                const sign = birthDate ? getZodiacSign(birthDate) : null;
                 currentUser = {
                     id: session.user.id,
                     name: session.user.user_metadata?.name || session.user.email.split('@')[0],
                     email: session.user.email,
                     supabase: true,
-                    history: Array.isArray(profile?.history) ? profile.history : []
+                    history: Array.isArray(profile?.history) ? profile.history : [],
+                    birthDate,
+                    sign
                 };
                 const remoteCredits = profile?.credits ?? null;
                 if (remoteCredits !== null) localStorage.setItem('astral_credits', remoteCredits.toString());
                 updateAccountUI();
+                updateZodiacChip();
                 document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
-                console.log('[Supabase] Sessione ripristinata per:', currentUser.email);
+                console.log('[Supabase] Sessione ripristinata per:', currentUser.email, sign ? `(${sign})` : '');
             } else if (event === 'SIGNED_OUT') {
                 currentUser = null;
                 updateAccountUI();
@@ -3308,7 +3377,10 @@ function showProfileView() {
     document.getElementById('profileEmail').innerText = currentUser.email;
     document.getElementById('profileCredits').innerText = localStorage.getItem('astral_credits');
     const syncBadge = document.getElementById('syncBadge');
-    if (syncBadge) syncBadge.innerText = currentUser.supabase ? '🟢 Sincronizzato' : '🟡 Locale — collega Supabase per la sync';
+    if (syncBadge) {
+        const signStr = currentUser.sign ? ` · ${ZODIAC_SYMBOLS[currentUser.sign]||''} ${currentUser.sign}` : '';
+        syncBadge.innerText = (currentUser.supabase ? '🟢 Sincronizzato' : '🟡 Locale — collega Supabase per la sync') + signStr;
+    }
     renderHistory();
 }
 
@@ -3345,12 +3417,16 @@ async function doLogin() {
             if (!data?.user) throw new Error('Accesso completato senza utente associato.');
 
             const profile = await loadProfile(data.user.id);
+            const birthDate = profile?.birth_date || null;
+            const sign = birthDate ? getZodiacSign(birthDate) : null;
             currentUser = {
                 id: data.user.id,
                 name: data.user.user_metadata?.name || email.split('@')[0],
                 email: data.user.email,
                 supabase: true,
-                history: Array.isArray(profile?.history) ? profile.history : []
+                history: Array.isArray(profile?.history) ? profile.history : [],
+                birthDate,
+                sign
             };
             const remoteCredits = profile?.credits ?? null;
             const localCredits  = parseInt(localStorage.getItem('astral_credits')) || 0;
@@ -3376,6 +3452,7 @@ async function doLogin() {
 
         updateAccountUI();
         showProfileView();
+        updateZodiacChip();
         showToast('Bentornato, ' + currentUser.name + ' ✦');
     } catch (e) {
         console.error('[Sidera] Login error:', e);
@@ -3391,6 +3468,8 @@ async function doRegister() {
     const name  = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     const pass  = document.getElementById('regPass').value.trim();
+    const birth = document.getElementById('regBirth')?.value || '';
+    const sign  = getZodiacSign(birth);
     const errEl = document.getElementById('registerError');
     const btn = document.querySelector('#registerTab button[type="submit"]');
     errEl.style.display = 'none';
@@ -3421,7 +3500,8 @@ async function doRegister() {
             await window._supabase.from('profiles').upsert({
                 user_id: data.user.id,
                 credits: initialCredits,
-                history: []
+                history: [],
+                birth_date: birth || null
             });
 
             if (!data.session) {
@@ -3432,15 +3512,16 @@ async function doRegister() {
                 return;
             }
 
-            currentUser = { id: data.user.id, name, email, supabase: true, history: [] };
+            currentUser = { id: data.user.id, name, email, supabase: true, history: [], birthDate: birth || null, sign: sign || null };
         } else {
-            currentUser = { name, email, credits: parseInt(localStorage.getItem('astral_credits'))||3, history: [] };
+            currentUser = { name, email, credits: parseInt(localStorage.getItem('astral_credits'))||3, history: [], birthDate: birth || null, sign: sign || null };
             localStorage.setItem('sidera_user', JSON.stringify(currentUser));
         }
 
         updateAccountUI();
         showProfileView();
-        showToast('🌟 Benvenuto nel tempio, ' + name + '!');
+        updateZodiacChip();
+        showToast('🌟 Benvenuto nel tempio, ' + name + (sign ? ` — ${ZODIAC_SYMBOLS[sign]||''} ${sign}` : '') + '!');
     } catch (e) {
         console.error('[Sidera] Register error:', e);
         errEl.innerText = e?.message || 'Si è verificato un errore durante la registrazione.';
@@ -3695,7 +3776,8 @@ const DAILY_CARD_KEYWORDS = {
 
 async function loadDailyCard(forceRefresh = false) {
     const today = new Date().toISOString().split('T')[0];
-    const cacheKey = 'sidera_daily_' + today;
+    const userSign = currentUser?.sign || '';
+    const cacheKey = 'sidera_daily_' + today + (userSign ? '_' + userSign : '');
     const cached = localStorage.getItem(cacheKey);
 
     // Determina carta deterministica dalla data (stessa per tutti)
@@ -3720,6 +3802,9 @@ async function loadDailyCard(forceRefresh = false) {
     const dateFormatted = new Date().toLocaleDateString('it-IT', {weekday:'long', day:'numeric', month:'long'});
     document.getElementById('dailyCardDate').innerText = dateFormatted.charAt(0).toUpperCase() + dateFormatted.slice(1);
 
+    // Aggiorna chip segno zodiacale
+    updateZodiacChip();
+
     // Se in cache e non forzato, usa messaggio salvato
     if (cached && !forceRefresh) {
         const data = JSON.parse(cached);
@@ -3728,9 +3813,11 @@ async function loadDailyCard(forceRefresh = false) {
         return;
     }
 
-    // Chiama Make per il messaggio
+    // Chiama Make per il messaggio — include il segno se disponibile
     document.getElementById('dailyCardMessage').classList.add('loading-text');
-    document.getElementById('dailyCardMessage').innerText = "L'oracolo sta consultando gli Arcani";
+    document.getElementById('dailyCardMessage').innerText = userSign
+        ? `L'oracolo prepara il messaggio per ${userSign}`
+        : "L'oracolo sta consultando gli Arcani";
 
     try {
         const response = await fetch(MAKE_URL, {
@@ -3741,19 +3828,20 @@ async function loadDailyCard(forceRefresh = false) {
                 carta: card.n,
                 orientamento: isReversed ? 'rovesciata' : 'dritta',
                 data: today,
-                segno: currentUser?.sign || ''
+                segno: userSign,
+                personalizzato: !!userSign
             })
         });
         const text = await response.text();
-        const clean = text.replace(/###[^\n]*/g,'').replace(/\n+/g,' ').trim();     
-        const finalMsg = clean
+        const clean = text.replace(/###[^\n]*/g,'').replace(/\n+/g,' ').trim();
+        const finalMsg = clean;
 
         document.getElementById('dailyCardMessage').innerText = finalMsg;
         document.getElementById('dailyCardMessage').classList.remove('loading-text');
 
-        // Salva in cache per oggi
+        // Salva in cache per oggi (chiave include il segno per utenti diversi)
         localStorage.setItem(cacheKey, JSON.stringify({
-            card: card.n, reversed: isReversed, message: finalMsg, date: today
+            card: card.n, reversed: isReversed, message: finalMsg, date: today, sign: userSign
         }));
         // Pulisci cache di giorni precedenti
         Object.keys(localStorage)
@@ -3762,11 +3850,31 @@ async function loadDailyCard(forceRefresh = false) {
 
     } catch(e) {
         const msg = isReversed
-            ? `${card.n} rovesciata invita a guardare dentro di te. Qualcosa chiede attenzione oggi.`
-            : `${card.n} illumina questa giornata con la sua energia. Lasciati guidare dalla sua saggezza.`;
+            ? `${card.n} rovesciata invita a guardare dentro di te${userSign ? `, ${userSign}` : ''}. Qualcosa chiede attenzione oggi.`
+            : `${card.n} illumina questa giornata${userSign ? `, ${userSign}` : ''}, con la sua energia. Lasciati guidare dalla sua saggezza.`;
         document.getElementById('dailyCardMessage').innerText = msg;
         document.getElementById('dailyCardMessage').classList.remove('loading-text');
     }
+}
+
+// Condivisione nativa per la carta del giorno
+async function shareDailyCard() {
+    const cardName = document.getElementById('dailyCardTitle')?.innerText || '';
+    const orientation = document.getElementById('dailyCardOrientation')?.innerText || '';
+    const message = document.getElementById('dailyCardMessage')?.innerText || '';
+    const sign = currentUser?.sign ? ` · ${ZODIAC_SYMBOLS[currentUser.sign]||''} ${currentUser.sign}` : '';
+    const dateStr = document.getElementById('dailyCardDate')?.innerText || '';
+    const shareText = `✦ La Carta del Giorno su Sidera ✦\n\n${dateStr}${sign}\n\n${cardName} — ${orientation}\n\n"${message.slice(0, 220)}"\n\nScopri il tuo oracolo → https://sidera7.vercel.app/`;
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: `Sidera — ${cardName}`, text: shareText, url: 'https://sidera7.vercel.app/' });
+            return;
+        } catch(err) { if (err.name === 'AbortError') return; }
+    }
+    try {
+        await navigator.clipboard.writeText(shareText);
+        showToast('✨ Testo copiato — incollalo dove vuoi!');
+    } catch(e) { showToast('Copia il testo manualmente.'); }
 }
 
 function renderDailyCard(data) {
@@ -4418,7 +4526,31 @@ function openIgCard(tipo) {
         ctx.fillText('Preparazione card...', 200, 200);
     }
 
-    if (tipo === 'tarocchi') {
+    if (tipo === 'carta') {
+        const cardName = document.getElementById('dailyCardTitle')?.innerText || '';
+        const orientation = document.getElementById('dailyCardOrientation')?.innerText || '';
+        const isReversed = orientation.includes('Rovesciata');
+        const message = document.getElementById('dailyCardMessage')?.innerText || '';
+        const quote = showQuote ? (message.length > 220 ? message.slice(0,219) + '…' : message) : '';
+        const dateStr = document.getElementById('dailyCardDate')?.innerText || '';
+        const sign = currentUser?.sign || null;
+        const cardImg = document.getElementById('dailyCardImg');
+        const cardSrc = cardImg?.src || null;
+        const today = new Date().toISOString().split('T')[0];
+        const dateNum = parseInt(today.replace(/-/g, ''));
+        const card = CARDS[dateNum % 22];
+        const b64Direct = CARD_IMAGES_B64[card.i];
+        if (b64Direct) {
+            renderIgCanvas({ tipo: 'carta', quote, cardImage: b64Direct, cardName, isReversed, dateStr, sign });
+        } else {
+            imgToBase64(cardSrc).then(b64 => {
+                renderIgCanvas({ tipo: 'carta', quote, cardImage: b64 ? `data:image/jpeg;base64,${b64}` : null, cardUrl: cardSrc, cardName, isReversed, dateStr, sign });
+            }).catch(() => {
+                renderIgCanvas({ tipo: 'carta', quote, cardImage: null, cardUrl: cardSrc, cardName, isReversed, dateStr, sign });
+            });
+        }
+
+    } else if (tipo === 'tarocchi') {
         const raw = document.getElementById('readingContent')?.innerText || '';
         const quote = showQuote ? extractQuote(raw, 240) : '';
         const cardNames = _lastTarotCards.map(c => c.name);
@@ -4543,7 +4675,72 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
     drawGoldLine(ctx, centerX, 192, 160);
 
     // ── Contenuto per tipo ──────────────────────────────────────────────────
-    if (tipo === 'tarocchi') {
+    if (tipo === 'carta') {
+        // ── CARTA DEL GIORNO — layout verticale centrato ──────────────────
+        const MARGIN = 60;
+
+        // Sottotitolo sezione
+        ctx.fillStyle = 'rgba(201,168,76,0.55)';
+        ctx.font = cinzel(18); ctx.letterSpacing = '6px'; ctx.textAlign = 'center';
+        ctx.fillText('LA CARTA DEL GIORNO', centerX, 232);
+
+        // Data + segno (se disponibile)
+        const signLine = sign ? `${ZODIAC_SYMBOLS[sign] || '✦'} ${sign.toUpperCase()}  ·  ${dateStr}` : dateStr;
+        ctx.fillStyle = 'rgba(138,122,94,0.65)';
+        ctx.font = cormnt(24, 'italic'); ctx.letterSpacing = '0px';
+        ctx.fillText(signLine, centerX, 270);
+
+        drawGoldLine(ctx, centerX, 292, 160);
+
+        // Immagine carta — grande, centrata
+        const imgAreaW = 240, imgAreaH = 420;
+        const imgX = centerX - imgAreaW/2;
+        const imgY = 314;
+
+        const cardImgEl = await loadCardForCanvas(cardImage || null, cardUrl || null);
+        if (cardImgEl) {
+            ctx.save();
+            roundRectClip(ctx, imgX, imgY, imgAreaW, imgAreaH, 16);
+            if (isReversed) {
+                ctx.translate(imgX + imgAreaW/2, imgY + imgAreaH/2);
+                ctx.rotate(Math.PI);
+                ctx.drawImage(cardImgEl, -imgAreaW/2, -imgAreaH/2, imgAreaW, imgAreaH);
+            } else {
+                ctx.drawImage(cardImgEl, imgX, imgY, imgAreaW, imgAreaH);
+            }
+            ctx.restore();
+            // Bordo dorato sulla carta
+            roundRect(ctx, imgX, imgY, imgAreaW, imgAreaH, 16, null, 'rgba(201,168,76,0.55)');
+        } else {
+            // Placeholder se immagine non disponibile
+            roundRect(ctx, imgX, imgY, imgAreaW, imgAreaH, 16, 'rgba(30,18,60,0.9)', 'rgba(201,168,76,0.4)');
+            ctx.fillStyle = 'rgba(201,168,76,0.6)';
+            ctx.font = `80px serif`; ctx.letterSpacing = '0'; ctx.textAlign = 'center';
+            ctx.fillText('✦', centerX, imgY + imgAreaH/2 + 28);
+        }
+
+        // Badge orientamento sotto la carta
+        const badgeY = imgY + imgAreaH + 22;
+        ctx.fillStyle = isReversed ? 'rgba(200,120,80,0.8)' : 'rgba(201,168,76,0.7)';
+        ctx.font = cinzel(16); ctx.letterSpacing = '3px'; ctx.textAlign = 'center';
+        ctx.fillText(isReversed ? '☽ CARTA ROVESCIATA' : '☉ CARTA DRITTA', centerX, badgeY);
+
+        // Nome carta
+        ctx.fillStyle = '#E8C97A';
+        ctx.font = cinzel(30, '600'); ctx.letterSpacing = '3px';
+        ctx.fillText(cardName.toUpperCase(), centerX, badgeY + 38);
+
+        // Messaggio del giorno
+        if (quote) {
+            drawGoldLine(ctx, centerX, badgeY + 62, 120);
+            ctx.fillStyle = 'rgba(201,168,76,0.6)';
+            ctx.font = cinzel(15); ctx.letterSpacing = '3px';
+            ctx.fillText('IL MESSAGGIO', centerX, badgeY + 94);
+            drawGoldLine(ctx, centerX, badgeY + 112, 80);
+            drawWrappedText(ctx, `"${quote}"`, centerX, badgeY + 158, SIZE - 140, cormnt(27), '#EDE0C4', 1.48, SIZE - 130);
+        }
+
+    } else if (tipo === 'tarocchi') {
         // Titolo sezione
         ctx.fillStyle = 'rgba(201,168,76,0.6)';
         ctx.font = cinzel(20);
