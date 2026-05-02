@@ -3745,10 +3745,8 @@ async function loadDailyCard(forceRefresh = false) {
             })
         });
         const text = await response.text();
-        const clean = text.replace(/###[^\n]*/g,'').replace(/\n+/g,' ').trim();
-        const sentences = clean.split(/[.!?]+/).filter(s => s.trim().length > 20);
-        const message = sentences.slice(0,2).join('. ').trim() + '.';
-        const finalMsg = message.length > 220 ? message.slice(0,220) + '…' : message;
+        const clean = text.replace(/###[^\n]*/g,'').replace(/\n+/g,' ').trim();     
+        const finalMsg = clean
 
         document.getElementById('dailyCardMessage').innerText = finalMsg;
         document.getElementById('dailyCardMessage').classList.remove('loading-text');
