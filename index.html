@@ -1865,6 +1865,17 @@
                     <p class="daily-card-message loading-text" id="dailyCardMessage">L'oracolo sta consultando gli Arcani</p>
                     <div class="daily-card-keyword-row" id="dailyCardKeywords"></div>
                     <button class="daily-card-refresh" onclick="loadDailyCard(true)">↺ Aggiorna il messaggio</button>
+                    <!-- Pulsanti di condivisione per la Carta del Giorno -->
+<div class="share-container" style="margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--border);">
+    <div class="share-title">✦ CONDIVIDI LA CARTA DEL GIORNO ✦</div>
+    <div class="share-buttons">
+        <button class="btn-share" onclick="shareDailyCardText()">📱 Condividi</button>
+        <button class="btn-share" onclick="shareDailyCardFB()">Facebook</button>
+        <button class="btn-share" onclick="shareDailyCardPinterest()">Pinterest</button>
+        <button class="btn-share" onclick="copyDailyCardText()">📋 Copia Testo</button>
+        <button class="btn-share" onclick="openIgCard('daily')">📸 Card Instagram</button>
+    </div>
+</div>
                 </div>
             </div>
         </div>
@@ -3543,7 +3554,68 @@ async function shareAstroText() {
         showToast('Copia il testo manualmente.');
     }
 }
+// Ottiene i dati attuali della Carta del Giorno (dall'HTML)
+function getDailyCardData() {
+    const name = document.getElementById('dailyCardTitle')?.innerText || 'Carta del Giorno';
+    const orientationElem = document.getElementById('dailyCardOrientation');
+    const orientation = orientationElem ? (orientationElem.innerText.includes('Rovesciata') ? 'rovesciata' : 'dritta') : 'dritta';
+    const message = document.getElementById('dailyCardMessage')?.innerText || '';
+    const date = document.getElementById('dailyCardDate')?.innerText || new Date().toLocaleDateString('it-IT');
+    return { name, orientation, message, date };
+}
 
+// Testo formattato per la condivisione
+function getDailyCardShareText() {
+    const { name, orientation, message, date } = getDailyCardData();
+    const orientationText = orientation === 'rovesciata' ? '☽ Carta Rovesciata' : '☉ Carta Dritta';
+    return `✦ La mia Carta del Giorno su Sidera ✦\n\n${name} — ${orientationText}\n\n“${message.substring(0, 240)}”\n\n${date}\n\nScopri la tua su https://sidera7.vercel.app/`;
+}
+
+// Condivisione nativa (Web Share API)
+async function shareDailyCardText() {
+    const text = getDailyCardShareText();
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: 'Sidera — Carta del Giorno',
+                text: text,
+                url: 'https://sidera7.vercel.app/'
+            });
+        } catch (err) {
+            if (err.name !== 'AbortError') copyDailyCardText();
+        }
+    } else {
+        copyDailyCardText();
+    }
+}
+
+// Copia negli appunti
+function copyDailyCardText() {
+    const text = getDailyCardShareText();
+    navigator.clipboard.writeText(text).then(() => {
+        showToast('✨ Testo copiato! Puoi incollarlo dove vuoi.');
+    }).catch(() => showToast('Non riesco a copiare, prova manualmente.'));
+}
+
+// Condivisione su Facebook
+function shareDailyCardFB() {
+    const text = getDailyCardShareText();
+    const url = `https://www.facebook.com/sharer/sharer.php?u=https://sidera7.vercel.app/&quote=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+}
+
+// Condivisione su Pinterest (pin dell'immagine della carta - usa l'immagine corrente)
+function shareDailyCardPinterest() {
+    const imgElement = document.getElementById('dailyCardImg');
+    const imgUrl = imgElement ? imgElement.src : '';
+    if (!imgUrl) {
+        showToast('Immagine non disponibile per Pinterest.');
+        return;
+    }
+    const text = getDailyCardShareText();
+    const pinUrl = `https://pinterest.com/pin/create/button/?url=https://sidera7.vercel.app/&media=${encodeURIComponent(imgUrl)}&description=${encodeURIComponent(text)}`;
+    window.open(pinUrl, '_blank');
+}
 
 // ─────────────────────────────────────────────
 //  CONSULENZA
@@ -4417,7 +4489,23 @@ function openIgCard(tipo) {
         ctx.textAlign = 'center';
         ctx.fillText('Preparazione card...', 200, 200);
     }
+    function openIgCard(tipo) {
+    window._igCurrentTipo = tipo;
+    const modal = document.getElementById('igCardModal');
+    modal.classList.add('open');
 
+    if (tipo === 'daily') {
+        // Prepara i dati della carta del giorno
+        const { name, orientation, message, date } = getDailyCardData();
+        const imgElement = document.getElementById('dailyCardImg');
+        const imgSrc = imgElement ? imgElement.src : '';
+        const isReversed = orientation === 'rovesciata';
+        // Usa la stessa logica di renderIgCanvas per 'daily'
+        renderIgCanvas({ tipo: 'daily', quote: message, cardName: name, reversed: isReversed, imgSrc: imgSrc, date: date });
+        return;
+    }
+    // ... resto del codice esistente per 'tarocchi', 'sogno', ecc.
+}
     if (tipo === 'tarocchi') {
         const raw = document.getElementById('readingContent')?.innerText || '';
         const quote = showQuote ? extractQuote(raw, 240) : '';
@@ -4471,9 +4559,15 @@ function waitForB64(cards, maxWaitMs) {
 }
 
 // ─── Disegna la card su canvas (risolve CORS e centra su ogni device) ───────
-async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, nameA, nameB, score, sole, luna, asc }) {
+async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, nameA, nameB, score, sole, luna, asc, cardName, reversed, imgSrc, date }) {
     const SIZE = 1080; // px — formato Instagram nativo
     let canvas = document.getElementById('igCanvas');
+    let cardImg = null;
+    if (tipo === 'daily' && imgSrc) {
+        try {
+            cardImg = await loadImage(imgSrc);
+        } catch(e) { console.warn('Immagine daily non caricabile'); }
+    }
     if (!canvas) {
         canvas = document.createElement('canvas');
         canvas.id = 'igCanvas';
@@ -4884,6 +4978,44 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
         drawGoldLine(ctx, centerX, 704, 120);
         drawWrappedText(ctx, `"${quote}"`, centerX, 752, SIZE-160, cormnt(30), '#EDE0C4', 1.5, SIZE-130);
     }
+    } else if (tipo === 'daily') {
+    // Layout Carta del Giorno
+    ctx.fillStyle = 'rgba(201,168,76,0.6)';
+    ctx.font = cinzel(20);
+    ctx.letterSpacing = '5px';
+    ctx.fillText('LA CARTA DEL GIORNO', centerX, 240);
+
+    // Mostra l'immagine della carta (se disponibile)
+    if (cardImg && !isNaN(cardImg.width)) {
+        const imgW = 240, imgH = 416;
+        const imgX = centerX - imgW/2, imgY = 260;
+        ctx.drawImage(cardImg, imgX, imgY, imgW, imgH);
+        if (reversed) {
+            ctx.save();
+            ctx.translate(centerX, imgY + imgH/2);
+            ctx.rotate(Math.PI);
+            ctx.drawImage(cardImg, -imgW/2, -imgH/2, imgW, imgH);
+            ctx.restore();
+        }
+    } else {
+        // Placeholder
+        ctx.font = `64px serif`;
+        ctx.fillStyle = 'rgba(201,168,76,0.3)';
+        ctx.fillText('🎴', centerX, 400);
+    }
+
+    // Nome carta e orientamento
+    ctx.fillStyle = '#C9A84C';
+    ctx.font = cinzel(32, '600');
+    ctx.fillText(cardName.toUpperCase(), centerX, 540);
+    ctx.font = cinzel(18);
+    ctx.fillStyle = reversed ? 'rgba(220,100,80,0.8)' : 'rgba(201,168,76,0.7)';
+    ctx.fillText(reversed ? 'ROVESCIATA' : 'DRITTA', centerX, 580);
+
+    // Messaggio (quote)
+    drawGoldLine(ctx, centerX, 620, 140);
+    drawWrappedText(ctx, `"${quote}"`, centerX, 660, SIZE-160, cormnt(30), '#EDE0C4', 1.5, SIZE-130);
+}
 
     // ── Footer ──────────────────────────────────────────────────────────────
     drawGoldLine(ctx, centerX, SIZE-110, 160);
