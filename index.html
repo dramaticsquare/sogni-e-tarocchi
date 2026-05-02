@@ -2747,7 +2747,7 @@ const PAYPAL_PLAN_ID          = PAYPAL_MODE === 'sandbox' ? PAYPAL_PLAN_ID_SANDB
     if (existing) existing.remove();
     const s = document.createElement('script');
     s.id  = 'paypal-sdk-script-dynamic';
-    s.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=EUR&components=buttons,funding-eligibility&vault=true`;
+    s.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=EUR&components=buttons,funding-eligibility&vault=true&intent=subscription`;
     s.setAttribute('data-sdk-integration-source', 'button-factory');
     s.onload = () => console.log(`[PayPal] SDK caricato in modalita: ${PAYPAL_MODE.toUpperCase()}`);
     document.head.appendChild(s);
