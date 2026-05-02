@@ -1200,8 +1200,18 @@
             text-transform: uppercase; margin-bottom: 14px; display: block;
         }
         .daily-card-message {
-            font-size: 0.92rem; color: var(--text);
-            line-height: 1.75; font-style: italic;
+    font-size: 0.92rem;
+    color: var(--text);
+    line-height: 1.75;
+    font-style: italic;
+    
+    /* --- Modifiche per mostrare tutto il testo --- */
+    white-space: normal !important;    /* Forza il testo ad andare a capo */
+    overflow: visible !important;     /* Rende visibile il testo che esce dai bordi */
+    display: block !important;        /* Rimuove eventuali restrizioni da "line-clamp" */
+    text-overflow: clip !important;   /* Elimina i tre puntini (...) */
+    max-height: none !important;      /* Rimuove limiti di altezza massima */
+}
         }
         .daily-card-message.loading-text { font-style: normal; }
         .daily-card-keyword-row {
