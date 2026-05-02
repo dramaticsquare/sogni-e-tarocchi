@@ -1185,7 +1185,10 @@
             text-align: center; display: block;
             margin-top: 8px; text-transform: uppercase;
         }
-        .daily-card-text { flex: 1; }
+        .daily-card-text {
+    flex: 1;
+    height: auto !important; /* Permette al contenitore di allungarsi col testo */
+}
         .daily-card-title {
             font-family: 'Cinzel', serif; font-size: 1rem;
             color: var(--gold-light); letter-spacing: 1px;
