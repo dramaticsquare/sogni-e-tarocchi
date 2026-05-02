@@ -4533,7 +4533,6 @@ function openIgCard(tipo) {
         const quote = showQuote ? extractQuote(raw, 200) : '';
         renderIgCanvas({ tipo: 'astrologia', quote, sole, luna, asc });
     }
-}
 
 // Aspetta che le b64 siano disponibili, con polling e timeout
 function waitForB64(cards, maxWaitMs) {
