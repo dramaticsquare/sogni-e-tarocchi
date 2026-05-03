@@ -1864,10 +1864,10 @@
                     <div class="daily-card-keyword-row" id="dailyCardKeywords"></div>
 
                     <!-- Azioni carta del giorno -->
-                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;justify-content:center;align-items:center;">
                         <button class="btn-share" onclick="openIgCard('carta')" style="font-size:0.76rem;">📸 Card Instagram</button>
                         <button class="btn-share" onclick="shareDailyCard()" style="font-size:0.76rem;">✨ Condividi</button>
-                        <button class="daily-card-refresh" onclick="loadDailyCard(true)" style="margin-top:0;border:1px solid var(--border);padding:7px 14px;border-radius:20px;font-size:0.76rem;">↺ Aggiorna</button>
+                        <button class="btn-share" onclick="loadDailyCard(true)" style="font-size:0.76rem;">↺ Aggiorna</button>
                     </div>
                 </div>
             </div>
@@ -4794,7 +4794,7 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
             }
         }
 
-
+    } else if (tipo === 'tarocchi') {
         // Titolo sezione
         ctx.fillStyle = 'rgba(201,168,76,0.6)';
         ctx.font = cinzel(20);
