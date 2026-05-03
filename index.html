@@ -3773,8 +3773,8 @@ async function loadDailyCard(forceRefresh = false) {
     const digitSum = today.replace(/-/g,'').split('').reduce((a,b) => a + parseInt(b), 0);
     const isReversed = digitSum % 2 === 1;
 
-    // Mostra subito la carta
-    const imgSrc = IMG_BASE + card.i;
+    // Mostra subito la carta — usa getCardImgUrl che preferisce ./tarot-cards/ (GitHub)
+    const imgSrc = getCardImgUrl(card.i);
     document.getElementById('dailyCardImg').src = imgSrc;
     document.getElementById('dailyCardImg').className = 'daily-card-img' + (isReversed ? ' reversed' : '');
     document.getElementById('dailyCardName').innerText = card.n.toUpperCase();
@@ -3866,7 +3866,7 @@ async function shareDailyCard() {
 function renderDailyCard(data) {
     const card = CARDS.find(c => c.n === data.card);
     if (!card) return;
-    document.getElementById('dailyCardImg').src = IMG_BASE + card.i;
+    document.getElementById('dailyCardImg').src = getCardImgUrl(card.i);
     document.getElementById('dailyCardImg').className = 'daily-card-img' + (data.reversed ? ' reversed' : '');
     document.getElementById('dailyCardName').innerText = card.n.toUpperCase();
     document.getElementById('dailyCardTitle').innerText = card.n;
@@ -4516,14 +4516,21 @@ function openIgCard(tipo) {
         const orientation = document.getElementById('dailyCardOrientation')?.innerText || '';
         const isReversed  = orientation.includes('Rovesciata');
         const message     = document.getElementById('dailyCardMessage')?.innerText || '';
-        const quote       = showQuote ? (message.length > 220 ? message.slice(0,219) + '…' : message) : '';
+        const isLoading   = message.includes('oracolo sta') || message.includes('prepara il messaggio');
+        const quote       = (showQuote && !isLoading) ? (message.length > 220 ? message.slice(0,219) + '…' : message) : '';
         const dateStr     = document.getElementById('dailyCardDate')?.innerText || '';
         const sign        = currentUser?.sign || null;
-        // Recupera oggetto carta dall'array — stesso algoritmo di loadDailyCard
-        const today   = new Date().toISOString().split('T')[0];
-        const card    = CARDS[parseInt(today.replace(/-/g, '')) % 22];
-        // Chiama subito — disegno interamente procedurale, nessun fetch
-        renderIgCanvas({ tipo: 'carta', quote, card, cardName: card.n, isReversed, dateStr, sign });
+        const today       = new Date().toISOString().split('T')[0];
+        const card        = CARDS[parseInt(today.replace(/-/g, '')) % 22];
+        // Usa getCardImgUrl: preferisce ./tarot-cards/ (GitHub/Vercel), poi Wikimedia
+        const localUrl    = getCardImgUrl(card.i);
+        // Converte in b64 come fa il blocco tarocchi — same-origin, fetch immediato
+        imgToBase64(localUrl).then(b64 => {
+            const cardImage = b64 ? `data:image/jpeg;base64,${b64}` : null;
+            renderIgCanvas({ tipo: 'carta', quote, card, cardName: card.n, isReversed, dateStr, sign, cardImage });
+        }).catch(() => {
+            renderIgCanvas({ tipo: 'carta', quote, card, cardName: card.n, isReversed, dateStr, sign, cardImage: null });
+        });
 
     } else if (tipo === 'tarocchi') {
         const raw = document.getElementById('readingContent')?.innerText || '';
@@ -4651,7 +4658,7 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
 
     // ── Contenuto per tipo ──────────────────────────────────────────────────
     if (tipo === 'carta') {
-        // ── ARCANA_META per disegno procedurale ───────────────────────────
+        // ── Meta procedurale per frame carta ─────────────────────────────────
         const ARCANA_META_LOCAL = {
             'The Fool':          { num: '0',     sym: '☆', col: ['#1A0E38','#2E1A60','#4A2880'] },
             'The Magician':      { num: 'I',     sym: '∞', col: ['#1A0A00','#3D1A00','#7A3800'] },
@@ -4676,121 +4683,130 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
             'Judgement':         { num: 'XX',    sym: '☩', col: ['#00001A','#000030','#000048'] },
             'The World':         { num: 'XXI',   sym: '◉', col: ['#001A08','#003010','#005018'] },
         };
-        const meta = (card && ARCANA_META_LOCAL[card.en]) || { num: '✦', sym: '✦', col: ['#1A0E2A','#2D1054','#4A1A80'] };
-        const itName = (cardName || (card && card.n) || '').toUpperCase();
+        const IT_NAMES_CARTA = {
+            'The Fool':'IL MATTO','The Magician':'IL MAGO','The High Priestess':'LA PAPESSA',
+            'The Empress':"L'IMPERATRICE",'The Emperor':"L'IMPERATORE",'The Hierophant':'IL PAPA',
+            'The Lovers':'GLI AMANTI','The Chariot':'IL CARRO','Strength':'LA FORZA',
+            'The Hermit':"L'EREMITA",'Wheel of Fortune':'LA RUOTA','Justice':'LA GIUSTIZIA',
+            'The Hanged Man':"L'APPESO",'Death':'MORTE','Temperance':'LA TEMPERANZA',
+            'The Devil':'IL DIAVOLO','The Tower':'LA TORRE','The Star':'LA STELLA',
+            'The Moon':'LA LUNA','The Sun':'IL SOLE','Judgement':'IL GIUDIZIO',
+            'The World':'IL MONDO'
+        };
+        const meta   = (card && ARCANA_META_LOCAL[card.en]) || { num:'✦', sym:'✦', col:['#1A0E2A','#2D1054','#4A1A80'] };
+        const itName = (card && IT_NAMES_CARTA[card.en]) || (cardName || '').toUpperCase();
 
-        // ── LAYOUT: header (200px) | card (440px) | info (440px) ────────────
-
-        // — Sezione header —
-        ctx.fillStyle = 'rgba(201,168,76,0.55)';
+        // ── Header ────────────────────────────────────────────────────────────
+        ctx.fillStyle = 'rgba(201,168,76,0.58)';
         ctx.font = cinzel(20); ctx.letterSpacing = '6px'; ctx.textAlign = 'center';
         ctx.fillText('LA CARTA DEL GIORNO', centerX, 232);
 
-        // Data + segno zodiacale
-        const signSym = (sign && ZODIAC_SYMBOLS[sign]) ? ZODIAC_SYMBOLS[sign] : '';
-        const signLine = sign ? `${signSym} ${sign.toUpperCase()}  ·  ${dateStr}` : dateStr;
-        ctx.fillStyle = 'rgba(200,185,145,0.65)';
-        ctx.font = cormnt(26, 'italic'); ctx.letterSpacing = '0px';
-        ctx.fillText(signLine || '', centerX, 278);
-        drawGoldLine(ctx, centerX, 300, 140);
+        const signSym  = (sign && ZODIAC_SYMBOLS[sign]) ? ZODIAC_SYMBOLS[sign] : '';
+        const signLine = sign ? `${signSym} ${sign.toUpperCase()}  ·  ${dateStr}` : (dateStr || '');
+        ctx.fillStyle  = 'rgba(200,185,145,0.65)';
+        ctx.font       = cormnt(26, 'italic'); ctx.letterSpacing = '0px';
+        ctx.fillText(signLine, centerX, 270);
+        drawGoldLine(ctx, centerX, 288, 140);
 
-        // — Carta procedurale —
-        const cW = 300, cH = 490;
-        const cX = centerX - cW/2;
-        const cY = 320;
+        // ── Carta — layout compatto: 240×390, cY=304 ─────────────────────────
+        const cW = 240, cH = 390;
+        const cX = centerX - cW / 2;
+        const cY = 304;
 
-        // Sfondo carta con gradiente colori dell'arcano
-        const cg = ctx.createLinearGradient(cX, cY, cX+cW, cY+cH);
-        cg.addColorStop(0,   meta.col[2]);
+        // Sfondo frame con colori dell'arcano
+        const cg = ctx.createLinearGradient(cX, cY, cX + cW, cY + cH);
+        cg.addColorStop(0,    meta.col[2]);
         cg.addColorStop(0.45, meta.col[1]);
-        cg.addColorStop(1,   meta.col[0]);
-        roundRect(ctx, cX, cY, cW, cH, 18, cg, null);
-        // Bordo dorato
-        roundRect(ctx, cX, cY, cW, cH, 18, null, 'rgba(201,168,76,0.7)');
-        // Bordo interno
-        roundRect(ctx, cX+10, cY+10, cW-20, cH-20, 12, null, 'rgba(201,168,76,0.2)');
+        cg.addColorStop(1,    meta.col[0]);
+        roundRect(ctx, cX, cY, cW, cH, 16, cg, null);
+        roundRect(ctx, cX, cY, cW, cH, 16, null, 'rgba(201,168,76,0.75)');
+        roundRect(ctx, cX+8, cY+8, cW-16, cH-16, 10, null, 'rgba(201,168,76,0.2)');
 
-        // Halo radiale al centro
-        const halo = ctx.createRadialGradient(centerX, cY+cH*0.44, 0, centerX, cY+cH*0.44, 130);
-        halo.addColorStop(0,   'rgba(201,168,76,0.3)');
-        halo.addColorStop(0.5, 'rgba(201,168,76,0.08)');
-        halo.addColorStop(1,   'transparent');
-        ctx.fillStyle = halo;
-        ctx.fillRect(cX, cY, cW, cH);
+        // Numero romano
+        ctx.fillStyle = 'rgba(201,168,76,0.8)';
+        ctx.font = cinzel(18, '400'); ctx.letterSpacing = '4px'; ctx.textAlign = 'center';
+        ctx.fillText(meta.num, centerX, cY + 38);
+        drawGoldLine(ctx, centerX, cY + 46, 60);
 
-        // Numero romano in cima
-        ctx.fillStyle = 'rgba(201,168,76,0.75)';
-        ctx.font = cinzel(22, '400'); ctx.letterSpacing = '4px'; ctx.textAlign = 'center';
-        ctx.fillText(meta.num, centerX, cY + 52);
-        // Linea sottile
-        drawGoldLine(ctx, centerX, cY + 62, 80);
+        // Area immagine
+        const imgX = cX + 12, imgY = cY + 56;
+        const imgW = cW - 24,  imgH = cH - 108;
 
-        // Se la carta è rovesciata, ruota il simbolo
-        if (isReversed) {
+        // Tenta caricamento immagine da b64 (già convertita in openIgCard)
+        const cardImgEl = cardImage ? await loadCardForCanvas(cardImage, null) : null;
+
+        if (cardImgEl) {
             ctx.save();
-            ctx.translate(centerX, cY + cH*0.46);
-            ctx.rotate(Math.PI);
-            ctx.fillStyle = 'rgba(220,185,90,0.92)';
-            ctx.font = `110px serif`; ctx.letterSpacing = '0';
-            ctx.textAlign = 'center';
-            ctx.fillText(meta.sym, 0, 40);
+            roundRectClip(ctx, imgX, imgY, imgW, imgH, 10);
+            if (isReversed) {
+                ctx.translate(imgX + imgW / 2, imgY + imgH / 2);
+                ctx.rotate(Math.PI);
+                ctx.drawImage(cardImgEl, -imgW / 2, -imgH / 2, imgW, imgH);
+            } else {
+                ctx.drawImage(cardImgEl, imgX, imgY, imgW, imgH);
+            }
             ctx.restore();
+            roundRect(ctx, imgX, imgY, imgW, imgH, 10, null, 'rgba(201,168,76,0.3)');
         } else {
-            ctx.fillStyle = 'rgba(220,185,90,0.92)';
-            ctx.font = `110px serif`; ctx.letterSpacing = '0'; ctx.textAlign = 'center';
-            ctx.fillText(meta.sym, centerX, cY + cH*0.46 + 40);
+            // Fallback procedurale se l'immagine non carica
+            const halo = ctx.createRadialGradient(centerX, imgY+imgH*0.44, 0, centerX, imgY+imgH*0.44, 100);
+            halo.addColorStop(0, 'rgba(201,168,76,0.28)');
+            halo.addColorStop(1, 'transparent');
+            ctx.fillStyle = halo; ctx.fillRect(imgX, imgY, imgW, imgH);
+            ctx.fillStyle = 'rgba(220,185,90,0.88)';
+            ctx.font = `90px serif`; ctx.letterSpacing = '0'; ctx.textAlign = 'center';
+            ctx.fillText(meta.sym, centerX, imgY + imgH * 0.54 + 32);
         }
 
-        // Decorazioni angoli
-        [[cX+22, cY+24],[cX+cW-22, cY+24],[cX+22, cY+cH-24],[cX+cW-22, cY+cH-24]].forEach(([ox,oy]) => {
-            ctx.fillStyle = 'rgba(201,168,76,0.35)';
-            ctx.font = `16px serif`; ctx.letterSpacing='0'; ctx.textAlign='center';
-            ctx.fillText('◆', ox, oy+5);
+        // Angoli decorativi
+        [[cX+18,cY+20],[cX+cW-18,cY+20],[cX+18,cY+cH-20],[cX+cW-18,cY+cH-20]].forEach(([ox,oy]) => {
+            ctx.fillStyle = 'rgba(201,168,76,0.38)';
+            ctx.font = `14px serif`; ctx.letterSpacing = '0'; ctx.textAlign = 'center';
+            ctx.fillText('◆', ox, oy + 5);
         });
 
-        // Linea sopra il nome
-        drawGoldLine(ctx, centerX, cY + cH - 68, 90);
-        // Nome carta (in italiano)
+        // Nome carta
+        drawGoldLine(ctx, centerX, cY + cH - 56, 80);
         ctx.fillStyle = '#D4A832';
-        ctx.font = cinzel(16, '500'); ctx.letterSpacing = '2px'; ctx.textAlign = 'center';
-        let dispName = itName;
-        while (ctx.measureText(dispName).width > cW - 32 && dispName.length > 2) dispName = dispName.slice(0,-1);
-        ctx.fillText(dispName, centerX, cY + cH - 38);
-        // Indicatore rovesciata
+        ctx.font = cinzel(14, '500'); ctx.letterSpacing = '2px'; ctx.textAlign = 'center';
+        let dispItName = itName;
+        while (ctx.measureText(dispItName).width > cW - 28 && dispItName.length > 2) dispItName = dispItName.slice(0,-1);
+        ctx.fillText(dispItName, centerX, cY + cH - 32);
         if (isReversed) {
-            ctx.fillStyle = 'rgba(220,100,80,0.7)';
-            ctx.font = cinzel(11); ctx.letterSpacing = '1px';
-            ctx.fillText('ROVESCIATA', centerX, cY + cH - 16);
+            ctx.fillStyle = 'rgba(220,100,80,0.72)';
+            ctx.font = cinzel(10); ctx.letterSpacing = '1px';
+            ctx.fillText('ROVESCIATA', centerX, cY + cH - 14);
         }
 
-        // — Sezione info sotto la carta —
-        const infoY = cY + cH + 28;
+        // ── Sezione testo sotto la carta ─────────────────────────────────────
+        // infoY = cY + cH + 18 = 304 + 390 + 18 = 712
+        const infoY = cY + cH + 18;
 
-        // Orientamento badge
-        ctx.fillStyle = isReversed ? 'rgba(200,120,80,0.75)' : 'rgba(201,168,76,0.65)';
-        ctx.font = cinzel(17); ctx.letterSpacing = '3px'; ctx.textAlign = 'center';
+        // Orientamento
+        ctx.fillStyle = isReversed ? 'rgba(200,120,80,0.78)' : 'rgba(201,168,76,0.68)';
+        ctx.font = cinzel(16); ctx.letterSpacing = '3px'; ctx.textAlign = 'center';
         ctx.fillText(isReversed ? '☽ CARTA ROVESCIATA' : '☉ CARTA DRITTA', centerX, infoY);
 
-        // Messaggio del giorno
         if (quote) {
-            drawGoldLine(ctx, centerX, infoY + 26, 100);
-            ctx.fillStyle = 'rgba(201,168,76,0.6)';
-            ctx.font = cinzel(15); ctx.letterSpacing = '3px';
-            ctx.fillText('IL MESSAGGIO', centerX, infoY + 58);
-            drawGoldLine(ctx, centerX, infoY + 76, 70);
+            drawGoldLine(ctx, centerX, infoY + 22, 90);
+            ctx.fillStyle = 'rgba(201,168,76,0.62)';
+            ctx.font = cinzel(14); ctx.letterSpacing = '3px';
+            ctx.fillText('IL MESSAGGIO', centerX, infoY + 50);
+            drawGoldLine(ctx, centerX, infoY + 66, 65);
+            // text starts at infoY+100 ≈ 812, maxY = SIZE-130 = 950 → 3 righe da ~40px ciascuna
             drawWrappedText(
                 ctx, `"${quote}"`,
-                centerX, infoY + 122,
-                SIZE - 160, cormnt(28), '#EDE0C4', 1.5,
+                centerX, infoY + 100,
+                SIZE - 180, cormnt(27), '#EDE0C4', 1.48,
                 SIZE - 130
             );
         } else {
-            // Nessun messaggio: mostra solo keywords
-            const kw = DAILY_CARD_KEYWORDS[card?.n] || [];
+            // Nessun messaggio: keywords
+            const kw = (card && DAILY_CARD_KEYWORDS[card.n]) || [];
             if (kw.length) {
-                ctx.fillStyle = 'rgba(138,122,94,0.6)';
-                ctx.font = cormnt(26, 'italic'); ctx.letterSpacing = '0';
-                ctx.fillText(kw.join('  ·  '), centerX, infoY + 60);
+                ctx.fillStyle = 'rgba(138,122,94,0.65)';
+                ctx.font = cormnt(25, 'italic'); ctx.letterSpacing = '0';
+                ctx.fillText(kw.join('  ·  '), centerX, infoY + 56);
             }
         }
 
