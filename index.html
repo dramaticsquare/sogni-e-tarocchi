@@ -1162,23 +1162,23 @@
             text-align: center; display: block; margin-bottom: 28px;
         }
         .daily-card-inner {
-            display: flex; gap: 32px; align-items: flex-start;
-            max-width: 680px; margin: 0 auto;
+            display: flex; flex-direction: column; align-items: center;
+            gap: 20px; max-width: 600px; margin: 0 auto; text-align: center;
         }
         .daily-card-img-wrap {
-            flex-shrink: 0; width: 120px;
+            flex-shrink: 0; width: 130px;
             position: relative;
         }
         .daily-card-img {
-            width: 120px; height: 207px;
-            border-radius: 10px; border: 1px solid rgba(201,168,76,0.4);
+            width: 130px; height: 224px;
+            border-radius: 12px; border: 1px solid rgba(201,168,76,0.4);
             object-fit: cover; display: block;
-            box-shadow: 0 0 30px rgba(201,168,76,0.15);
-            transition: transform 0.3s;
+            box-shadow: 0 0 40px rgba(201,168,76,0.18);
+            transition: transform 0.3s; margin: 0 auto;
         }
-        .daily-card-img-wrap:hover .daily-card-img { transform: translateY(-4px); }
+        .daily-card-img-wrap:hover .daily-card-img { transform: translateY(-5px); }
         .daily-card-img.reversed { transform: rotate(180deg); }
-        .daily-card-img.reversed:hover { transform: rotate(180deg) translateY(-4px); }
+        .daily-card-img.reversed:hover { transform: rotate(180deg) translateY(-5px); }
         .daily-card-name-badge {
             font-family: 'Cinzel', serif; font-size: 8px;
             color: var(--gold); letter-spacing: 2px;
@@ -1186,37 +1186,31 @@
             margin-top: 8px; text-transform: uppercase;
         }
         .daily-card-text {
-    flex: 1;
-    height: auto !important; /* Permette al contenitore di allungarsi col testo */
-}
+            width: 100%; text-align: center;
+        }
         .daily-card-title {
-            font-family: 'Cinzel', serif; font-size: 1rem;
-            color: var(--gold-light); letter-spacing: 1px;
-            margin-bottom: 4px;
+            font-family: 'Cinzel', serif; font-size: 1.15rem;
+            color: var(--gold-light); letter-spacing: 2px;
+            margin-bottom: 4px; text-transform: uppercase;
         }
         .daily-card-orientation {
             font-family: 'Cinzel', serif; font-size: 8px;
             color: var(--text-muted); letter-spacing: 2px;
             text-transform: uppercase; margin-bottom: 14px; display: block;
         }
-        .daily-card-message {
-    font-size: 0.92rem;
-    color: var(--text);
-    line-height: 1.75;
-    font-style: italic;
-    
-    /* --- Modifiche per mostrare tutto il testo --- */
-    white-space: normal !important;    /* Forza il testo ad andare a capo */
-    overflow: visible !important;     /* Rende visibile il testo che esce dai bordi */
-    display: block !important;        /* Rimuove eventuali restrizioni da "line-clamp" */
-    text-overflow: clip !important;   /* Elimina i tre puntini (...) */
-    max-height: none !important;      /* Rimuove limiti di altezza massima */
-}
-        }
-        .daily-card-message.loading-text { font-style: normal; }
         .daily-card-keyword-row {
             display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;
+            justify-content: center;
         }
+        .daily-card-message {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.75;
+            font-style: italic;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+        .daily-card-message.loading-text { font-style: normal; }
         .daily-card-keyword {
             padding: 3px 12px; border-radius: 50px;
             border: 1px solid var(--border); font-size: 0.7rem;
@@ -1225,17 +1219,9 @@
         .daily-card-refresh {
             background: none; border: none; color: var(--text-muted);
             font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 2px;
-            cursor: pointer; margin-top: 18px; display: block;
-            transition: color 0.3s;
+            cursor: pointer; transition: color 0.3s;
         }
         .daily-card-refresh:hover { color: var(--gold); }
-
-        @media (max-width: 640px) {
-            .daily-card-inner { flex-direction: column; align-items: center; gap: 20px; }
-            .daily-card-text { text-align: center; }
-            .daily-card-keyword-row { justify-content: center; }
-            .daily-card-refresh { margin: 18px auto 0; }
-        }
 
         /* ── Loading spinner ── */
         .loading-text { font-style: italic; color: var(--text-muted); text-align: center; padding: 24px 0; }
@@ -4527,28 +4513,17 @@ function openIgCard(tipo) {
     }
 
     if (tipo === 'carta') {
-        const cardName = document.getElementById('dailyCardTitle')?.innerText || '';
         const orientation = document.getElementById('dailyCardOrientation')?.innerText || '';
-        const isReversed = orientation.includes('Rovesciata');
-        const message = document.getElementById('dailyCardMessage')?.innerText || '';
-        const quote = showQuote ? (message.length > 220 ? message.slice(0,219) + '…' : message) : '';
-        const dateStr = document.getElementById('dailyCardDate')?.innerText || '';
-        const sign = currentUser?.sign || null;
-        const cardImg = document.getElementById('dailyCardImg');
-        const cardSrc = cardImg?.src || null;
-        const today = new Date().toISOString().split('T')[0];
-        const dateNum = parseInt(today.replace(/-/g, ''));
-        const card = CARDS[dateNum % 22];
-        const b64Direct = CARD_IMAGES_B64[card.i];
-        if (b64Direct) {
-            renderIgCanvas({ tipo: 'carta', quote, cardImage: b64Direct, cardName, isReversed, dateStr, sign });
-        } else {
-            imgToBase64(cardSrc).then(b64 => {
-                renderIgCanvas({ tipo: 'carta', quote, cardImage: b64 ? `data:image/jpeg;base64,${b64}` : null, cardUrl: cardSrc, cardName, isReversed, dateStr, sign });
-            }).catch(() => {
-                renderIgCanvas({ tipo: 'carta', quote, cardImage: null, cardUrl: cardSrc, cardName, isReversed, dateStr, sign });
-            });
-        }
+        const isReversed  = orientation.includes('Rovesciata');
+        const message     = document.getElementById('dailyCardMessage')?.innerText || '';
+        const quote       = showQuote ? (message.length > 220 ? message.slice(0,219) + '…' : message) : '';
+        const dateStr     = document.getElementById('dailyCardDate')?.innerText || '';
+        const sign        = currentUser?.sign || null;
+        // Recupera oggetto carta dall'array — stesso algoritmo di loadDailyCard
+        const today   = new Date().toISOString().split('T')[0];
+        const card    = CARDS[parseInt(today.replace(/-/g, '')) % 22];
+        // Chiama subito — disegno interamente procedurale, nessun fetch
+        renderIgCanvas({ tipo: 'carta', quote, card, cardName: card.n, isReversed, dateStr, sign });
 
     } else if (tipo === 'tarocchi') {
         const raw = document.getElementById('readingContent')?.innerText || '';
@@ -4603,7 +4578,7 @@ function waitForB64(cards, maxWaitMs) {
 }
 
 // ─── Disegna la card su canvas (risolve CORS e centra su ogni device) ───────
-async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, nameA, nameB, score, sole, luna, asc }) {
+async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, nameA, nameB, score, sole, luna, asc, card, cardName, isReversed, dateStr, sign }) {
     const SIZE = 1080; // px — formato Instagram nativo
     let canvas = document.getElementById('igCanvas');
     if (!canvas) {
@@ -4676,71 +4651,150 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
 
     // ── Contenuto per tipo ──────────────────────────────────────────────────
     if (tipo === 'carta') {
-        // ── CARTA DEL GIORNO — layout verticale centrato ──────────────────
-        const MARGIN = 60;
+        // ── ARCANA_META per disegno procedurale ───────────────────────────
+        const ARCANA_META_LOCAL = {
+            'The Fool':          { num: '0',     sym: '☆', col: ['#1A0E38','#2E1A60','#4A2880'] },
+            'The Magician':      { num: 'I',     sym: '∞', col: ['#1A0A00','#3D1A00','#7A3800'] },
+            'The High Priestess':{ num: 'II',    sym: '☽', col: ['#0A0A2A','#0E1045','#1A1870'] },
+            'The Empress':       { num: 'III',   sym: '♀', col: ['#0A1A00','#143000','#205200'] },
+            'The Emperor':       { num: 'IV',    sym: '♂', col: ['#1A0000','#380000','#600A00'] },
+            'The Hierophant':    { num: 'V',     sym: '✝', col: ['#1A0E00','#382200','#604000'] },
+            'The Lovers':        { num: 'VI',    sym: '♡', col: ['#1A0010','#380025','#600040'] },
+            'The Chariot':       { num: 'VII',   sym: '⊕', col: ['#001A1A','#003838','#006060'] },
+            'Strength':          { num: 'VIII',  sym: '∞', col: ['#1A1000','#382800','#604A00'] },
+            'The Hermit':        { num: 'IX',    sym: '⊙', col: ['#0A0A0A','#181818','#282828'] },
+            'Wheel of Fortune':  { num: 'X',     sym: '◎', col: ['#0A0A1A','#141428','#202040'] },
+            'Justice':           { num: 'XI',    sym: '⚖', col: ['#001A00','#003800','#006000'] },
+            'The Hanged Man':    { num: 'XII',   sym: '☽', col: ['#001010','#003030','#004848'] },
+            'Death':             { num: 'XIII',  sym: '◑', col: ['#080808','#101010','#1A1A1A'] },
+            'Temperance':        { num: 'XIV',   sym: '✦', col: ['#001A1A','#003030','#005050'] },
+            'The Devil':         { num: 'XV',    sym: '▽', col: ['#180000','#300000','#480000'] },
+            'The Tower':         { num: 'XVI',   sym: '⚡', col: ['#1A0A00','#2C1400','#4A2000'] },
+            'The Star':          { num: 'XVII',  sym: '★', col: ['#000A1A','#001428','#002040'] },
+            'The Moon':          { num: 'XVIII', sym: '☾', col: ['#04041A','#080830','#0C0C48'] },
+            'The Sun':           { num: 'XIX',   sym: '☀', col: ['#1A1400','#383000','#605400'] },
+            'Judgement':         { num: 'XX',    sym: '☩', col: ['#00001A','#000030','#000048'] },
+            'The World':         { num: 'XXI',   sym: '◉', col: ['#001A08','#003010','#005018'] },
+        };
+        const meta = (card && ARCANA_META_LOCAL[card.en]) || { num: '✦', sym: '✦', col: ['#1A0E2A','#2D1054','#4A1A80'] };
+        const itName = (cardName || (card && card.n) || '').toUpperCase();
 
-        // Sottotitolo sezione
+        // ── LAYOUT: header (200px) | card (440px) | info (440px) ────────────
+
+        // — Sezione header —
         ctx.fillStyle = 'rgba(201,168,76,0.55)';
-        ctx.font = cinzel(18); ctx.letterSpacing = '6px'; ctx.textAlign = 'center';
+        ctx.font = cinzel(20); ctx.letterSpacing = '6px'; ctx.textAlign = 'center';
         ctx.fillText('LA CARTA DEL GIORNO', centerX, 232);
 
-        // Data + segno (se disponibile)
-        const signLine = sign ? `${ZODIAC_SYMBOLS[sign] || '✦'} ${sign.toUpperCase()}  ·  ${dateStr}` : dateStr;
-        ctx.fillStyle = 'rgba(138,122,94,0.65)';
-        ctx.font = cormnt(24, 'italic'); ctx.letterSpacing = '0px';
-        ctx.fillText(signLine, centerX, 270);
+        // Data + segno zodiacale
+        const signSym = (sign && ZODIAC_SYMBOLS[sign]) ? ZODIAC_SYMBOLS[sign] : '';
+        const signLine = sign ? `${signSym} ${sign.toUpperCase()}  ·  ${dateStr}` : dateStr;
+        ctx.fillStyle = 'rgba(200,185,145,0.65)';
+        ctx.font = cormnt(26, 'italic'); ctx.letterSpacing = '0px';
+        ctx.fillText(signLine || '', centerX, 278);
+        drawGoldLine(ctx, centerX, 300, 140);
 
-        drawGoldLine(ctx, centerX, 292, 160);
+        // — Carta procedurale —
+        const cW = 300, cH = 490;
+        const cX = centerX - cW/2;
+        const cY = 320;
 
-        // Immagine carta — grande, centrata
-        const imgAreaW = 240, imgAreaH = 420;
-        const imgX = centerX - imgAreaW/2;
-        const imgY = 314;
+        // Sfondo carta con gradiente colori dell'arcano
+        const cg = ctx.createLinearGradient(cX, cY, cX+cW, cY+cH);
+        cg.addColorStop(0,   meta.col[2]);
+        cg.addColorStop(0.45, meta.col[1]);
+        cg.addColorStop(1,   meta.col[0]);
+        roundRect(ctx, cX, cY, cW, cH, 18, cg, null);
+        // Bordo dorato
+        roundRect(ctx, cX, cY, cW, cH, 18, null, 'rgba(201,168,76,0.7)');
+        // Bordo interno
+        roundRect(ctx, cX+10, cY+10, cW-20, cH-20, 12, null, 'rgba(201,168,76,0.2)');
 
-        const cardImgEl = await loadCardForCanvas(cardImage || null, cardUrl || null);
-        if (cardImgEl) {
+        // Halo radiale al centro
+        const halo = ctx.createRadialGradient(centerX, cY+cH*0.44, 0, centerX, cY+cH*0.44, 130);
+        halo.addColorStop(0,   'rgba(201,168,76,0.3)');
+        halo.addColorStop(0.5, 'rgba(201,168,76,0.08)');
+        halo.addColorStop(1,   'transparent');
+        ctx.fillStyle = halo;
+        ctx.fillRect(cX, cY, cW, cH);
+
+        // Numero romano in cima
+        ctx.fillStyle = 'rgba(201,168,76,0.75)';
+        ctx.font = cinzel(22, '400'); ctx.letterSpacing = '4px'; ctx.textAlign = 'center';
+        ctx.fillText(meta.num, centerX, cY + 52);
+        // Linea sottile
+        drawGoldLine(ctx, centerX, cY + 62, 80);
+
+        // Se la carta è rovesciata, ruota il simbolo
+        if (isReversed) {
             ctx.save();
-            roundRectClip(ctx, imgX, imgY, imgAreaW, imgAreaH, 16);
-            if (isReversed) {
-                ctx.translate(imgX + imgAreaW/2, imgY + imgAreaH/2);
-                ctx.rotate(Math.PI);
-                ctx.drawImage(cardImgEl, -imgAreaW/2, -imgAreaH/2, imgAreaW, imgAreaH);
-            } else {
-                ctx.drawImage(cardImgEl, imgX, imgY, imgAreaW, imgAreaH);
-            }
+            ctx.translate(centerX, cY + cH*0.46);
+            ctx.rotate(Math.PI);
+            ctx.fillStyle = 'rgba(220,185,90,0.92)';
+            ctx.font = `110px serif`; ctx.letterSpacing = '0';
+            ctx.textAlign = 'center';
+            ctx.fillText(meta.sym, 0, 40);
             ctx.restore();
-            // Bordo dorato sulla carta
-            roundRect(ctx, imgX, imgY, imgAreaW, imgAreaH, 16, null, 'rgba(201,168,76,0.55)');
         } else {
-            // Placeholder se immagine non disponibile
-            roundRect(ctx, imgX, imgY, imgAreaW, imgAreaH, 16, 'rgba(30,18,60,0.9)', 'rgba(201,168,76,0.4)');
-            ctx.fillStyle = 'rgba(201,168,76,0.6)';
-            ctx.font = `80px serif`; ctx.letterSpacing = '0'; ctx.textAlign = 'center';
-            ctx.fillText('✦', centerX, imgY + imgAreaH/2 + 28);
+            ctx.fillStyle = 'rgba(220,185,90,0.92)';
+            ctx.font = `110px serif`; ctx.letterSpacing = '0'; ctx.textAlign = 'center';
+            ctx.fillText(meta.sym, centerX, cY + cH*0.46 + 40);
         }
 
-        // Badge orientamento sotto la carta
-        const badgeY = imgY + imgAreaH + 22;
-        ctx.fillStyle = isReversed ? 'rgba(200,120,80,0.8)' : 'rgba(201,168,76,0.7)';
-        ctx.font = cinzel(16); ctx.letterSpacing = '3px'; ctx.textAlign = 'center';
-        ctx.fillText(isReversed ? '☽ CARTA ROVESCIATA' : '☉ CARTA DRITTA', centerX, badgeY);
+        // Decorazioni angoli
+        [[cX+22, cY+24],[cX+cW-22, cY+24],[cX+22, cY+cH-24],[cX+cW-22, cY+cH-24]].forEach(([ox,oy]) => {
+            ctx.fillStyle = 'rgba(201,168,76,0.35)';
+            ctx.font = `16px serif`; ctx.letterSpacing='0'; ctx.textAlign='center';
+            ctx.fillText('◆', ox, oy+5);
+        });
 
-        // Nome carta
-        ctx.fillStyle = '#E8C97A';
-        ctx.font = cinzel(30, '600'); ctx.letterSpacing = '3px';
-        ctx.fillText(cardName.toUpperCase(), centerX, badgeY + 38);
+        // Linea sopra il nome
+        drawGoldLine(ctx, centerX, cY + cH - 68, 90);
+        // Nome carta (in italiano)
+        ctx.fillStyle = '#D4A832';
+        ctx.font = cinzel(16, '500'); ctx.letterSpacing = '2px'; ctx.textAlign = 'center';
+        let dispName = itName;
+        while (ctx.measureText(dispName).width > cW - 32 && dispName.length > 2) dispName = dispName.slice(0,-1);
+        ctx.fillText(dispName, centerX, cY + cH - 38);
+        // Indicatore rovesciata
+        if (isReversed) {
+            ctx.fillStyle = 'rgba(220,100,80,0.7)';
+            ctx.font = cinzel(11); ctx.letterSpacing = '1px';
+            ctx.fillText('ROVESCIATA', centerX, cY + cH - 16);
+        }
+
+        // — Sezione info sotto la carta —
+        const infoY = cY + cH + 28;
+
+        // Orientamento badge
+        ctx.fillStyle = isReversed ? 'rgba(200,120,80,0.75)' : 'rgba(201,168,76,0.65)';
+        ctx.font = cinzel(17); ctx.letterSpacing = '3px'; ctx.textAlign = 'center';
+        ctx.fillText(isReversed ? '☽ CARTA ROVESCIATA' : '☉ CARTA DRITTA', centerX, infoY);
 
         // Messaggio del giorno
         if (quote) {
-            drawGoldLine(ctx, centerX, badgeY + 62, 120);
+            drawGoldLine(ctx, centerX, infoY + 26, 100);
             ctx.fillStyle = 'rgba(201,168,76,0.6)';
             ctx.font = cinzel(15); ctx.letterSpacing = '3px';
-            ctx.fillText('IL MESSAGGIO', centerX, badgeY + 94);
-            drawGoldLine(ctx, centerX, badgeY + 112, 80);
-            drawWrappedText(ctx, `"${quote}"`, centerX, badgeY + 158, SIZE - 140, cormnt(27), '#EDE0C4', 1.48, SIZE - 130);
+            ctx.fillText('IL MESSAGGIO', centerX, infoY + 58);
+            drawGoldLine(ctx, centerX, infoY + 76, 70);
+            drawWrappedText(
+                ctx, `"${quote}"`,
+                centerX, infoY + 122,
+                SIZE - 160, cormnt(28), '#EDE0C4', 1.5,
+                SIZE - 130
+            );
+        } else {
+            // Nessun messaggio: mostra solo keywords
+            const kw = DAILY_CARD_KEYWORDS[card?.n] || [];
+            if (kw.length) {
+                ctx.fillStyle = 'rgba(138,122,94,0.6)';
+                ctx.font = cormnt(26, 'italic'); ctx.letterSpacing = '0';
+                ctx.fillText(kw.join('  ·  '), centerX, infoY + 60);
+            }
         }
 
-    } else if (tipo === 'tarocchi') {
+
         // Titolo sezione
         ctx.fillStyle = 'rgba(201,168,76,0.6)';
         ctx.font = cinzel(20);
