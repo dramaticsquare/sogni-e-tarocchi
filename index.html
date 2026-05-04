@@ -4951,7 +4951,7 @@ function waitForB64(cards, maxWaitMs) {
 }
 
 // ─── Disegna la card su canvas (risolve CORS e centra su ogni device) ───────
-async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, nameA, nameB, score, sole, luna, asc, card, cardName, isReversed, dateStr, sign, cardImage, cardUrl }) {
+async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, nameA, nameB, score, sole, luna, asc, card, cardName, isReversed, dateStr, sign, cardImage, cardUrl, moonSign, phase, viewSign, resonance }) {
     const SIZE = 1080; // px — formato Instagram nativo
     let canvas = document.getElementById('igCanvas');
     if (!canvas) {
@@ -5539,44 +5539,54 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
 }
 
 } else if (tipo === 'lunare') {
-    const moonData  = MOON_SIGN_DATA[moonSign] || {};
-    const zodSym    = ZODIAC_SYMBOLS[viewSign] || '✦';
-    const resBadge  = { armonia:'◇ Armonia', sfida:'⊗ Sfida Creativa', neutro:'✦ Flusso Neutro' };
+    const moonData = MOON_SIGN_DATA[moonSign] || {};
+    const zodSym   = ZODIAC_SYMBOLS[viewSign] || '✦';
+    const resBadge = { armonia:'◇ Armonia', sfida:'⊗ Sfida Creativa', neutro:'✦ Flusso Neutro' };
 
-    ctx.fillStyle = 'rgba(201,168,76,0.6)';
-    ctx.font = cinzel(20); ctx.letterSpacing = '5px'; ctx.textAlign = 'center';
+    ctx.fillStyle  = 'rgba(201,168,76,0.6)';
+    ctx.font       = cinzel(20);
+    ctx.letterSpacing = '5px';
+    ctx.textAlign  = 'center';
     ctx.fillText('INFLUENZA LUNARE', centerX, 240);
 
-    // Fase + segno
-    ctx.font = `90px serif`; ctx.letterSpacing = '0';
-    ctx.fillStyle = 'rgba(201,168,76,0.15)';
+    ctx.font       = '90px serif';
+    ctx.letterSpacing = '0';
+    ctx.fillStyle  = 'rgba(201,168,76,0.15)';
     ctx.fillText(phase.sym, centerX, 370);
 
-    ctx.fillStyle = 'rgba(201,168,76,0.75)';
-    ctx.font = cinzel(28, '500'); ctx.letterSpacing = '3px';
-    ctx.fillText(`${phase.name}`, centerX, 430);
+    ctx.fillStyle  = 'rgba(201,168,76,0.75)';
+    ctx.font       = cinzel(28, '500');
+    ctx.letterSpacing = '3px';
+    ctx.fillText(phase.name, centerX, 430);
 
-    ctx.fillStyle = 'rgba(200,185,145,0.6)';
-    ctx.font = cinzel(18); ctx.letterSpacing = '3px';
-    ctx.fillText(`Luna in ${moonSign}  ·  ${zodSym} ${viewSign}`, centerX, 470);
+    ctx.fillStyle  = 'rgba(200,185,145,0.6)';
+    ctx.font       = cinzel(18);
+    ctx.letterSpacing = '3px';
+    ctx.fillText('Luna in ' + moonSign + '  ·  ' + zodSym + ' ' + viewSign, centerX, 470);
 
-    // Badge risonanza
-    ctx.fillStyle = 'rgba(201,168,76,0.45)';
-    ctx.font = cinzel(15); ctx.letterSpacing = '4px';
-    ctx.fillText((resBadge[resonance?.type] || '✦'), centerX, 520);
+    ctx.fillStyle  = 'rgba(201,168,76,0.45)';
+    ctx.font       = cinzel(15);
+    ctx.letterSpacing = '4px';
+    ctx.fillText(resBadge[resonance && resonance.type] || '✦', centerX, 520);
 
     drawGoldLine(ctx, centerX, 550, 130);
 
-    ctx.fillStyle = 'rgba(201,168,76,0.65)';
-    ctx.font = cinzel(17); ctx.letterSpacing = '3px';
+    ctx.fillStyle  = 'rgba(201,168,76,0.65)';
+    ctx.font       = cinzel(17);
+    ctx.letterSpacing = '3px';
     ctx.fillText('IL MESSAGGIO DEL GIORNO', centerX, 592);
 
     drawGoldLine(ctx, centerX, 612, 90);
 
     drawWrappedText(
-        ctx, `"${quote}"`,
+        ctx,
+        '"' + quote + '"',
         centerX, 670,
-        SIZE - 140, cormnt(30), '#EDE0C4', 1.52, SIZE - 130
+        SIZE - 140,
+        cormnt(30),
+        '#EDE0C4',
+        1.52,
+        SIZE - 130
     );
 }
 
