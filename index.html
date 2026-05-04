@@ -4949,7 +4949,107 @@ function waitForB64(cards, maxWaitMs) {
         check();
     });
 }
+// ── Luna disegnata proceduralmente — niente emoji, sempre nitida ──────────
+function drawMoonProc(ctx, cx, cy, r, phaseName) {
+    const phaseData = {
+        'Luna Nuova':        { f: 0,    wax: true  },
+        'Luna Crescente':    { f: 0.25, wax: true  },
+        'Primo Quarto':      { f: 0.5,  wax: true  },
+        'Gibbosa Crescente': { f: 0.75, wax: true  },
+        'Luna Piena':        { f: 1,    wax: true  },
+        'Gibbosa Calante':   { f: 0.75, wax: false },
+        'Ultimo Quarto':     { f: 0.5,  wax: false },
+        'Luna Calante':      { f: 0.25, wax: false }
+    };
+    const { f, wax } = phaseData[phaseName] || { f: 1, wax: true };
+    const STEPS = 72;
+    // tx = lean del terminatore: +r=luna nuova (niente luce), 0=quarto, -r=luna piena
+    const tx = r * Math.cos(f * Math.PI);
 
+    ctx.save();
+
+    // Aloni concentrici
+    [2.8, 2.0, 1.45].forEach((scale, i) => {
+        const alpha = [0.05, 0.08, 0.13][i];
+        const gr = ctx.createRadialGradient(cx, cy, r * 0.4, cx, cy, r * scale);
+        gr.addColorStop(0,   `rgba(201,168,76,${alpha})`);
+        gr.addColorStop(1,   'transparent');
+        ctx.fillStyle = gr;
+        ctx.beginPath(); ctx.arc(cx, cy, r * scale, 0, Math.PI * 2); ctx.fill();
+    });
+
+    // Clip al cerchio lunare
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip();
+
+    // Lato buio
+    const darkG = ctx.createRadialGradient(cx - r*0.15, cy - r*0.2, 0, cx, cy, r);
+    darkG.addColorStop(0, '#2E2055'); darkG.addColorStop(1, '#060310');
+    ctx.fillStyle = darkG;
+    ctx.fillRect(cx - r - 1, cy - r - 1, r * 2 + 2, r * 2 + 2);
+
+    if (f > 0.015) {
+        // Gradiente lato illuminato
+        const litG = ctx.createRadialGradient(
+            cx + (wax ? 0.22 : -0.22) * r, cy - r * 0.22, 0,
+            cx, cy, r * 1.12
+        );
+        litG.addColorStop(0,   '#FFFBE8');
+        litG.addColorStop(0.35,'#F2DA88');
+        litG.addColorStop(0.75,'#CAA244');
+        litG.addColorStop(1,   '#906018');
+
+        ctx.fillStyle = litG;
+        ctx.beginPath();
+
+        if (wax) {
+            // Lembo destro → terminatore di ritorno
+            for (let i = 0; i <= STEPS; i++) {
+                const t = -Math.PI / 2 + Math.PI * i / STEPS;
+                const px = cx + r  * Math.cos(t);
+                const py = cy + r  * Math.sin(t);
+                i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+            }
+            for (let i = STEPS; i >= 0; i--) {
+                const t = -Math.PI / 2 + Math.PI * i / STEPS;
+                ctx.lineTo(cx + tx * Math.cos(t), cy + r * Math.sin(t));
+            }
+        } else {
+            // Lembo sinistro → terminatore di ritorno
+            for (let i = 0; i <= STEPS; i++) {
+                const t = -Math.PI / 2 - Math.PI * i / STEPS;
+                const px = cx + r  * Math.cos(t);
+                const py = cy + r  * Math.sin(t);
+                i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+            }
+            for (let i = STEPS; i >= 0; i--) {
+                const t = -Math.PI / 2 - Math.PI * i / STEPS;
+                ctx.lineTo(cx + tx * Math.cos(t), cy + r * Math.sin(t));
+            }
+        }
+        ctx.closePath();
+        ctx.fill();
+
+        // Crateri sottili (solo lato illuminato)
+        ctx.save();
+        ctx.globalAlpha = 0.09;
+        [[0.22, -0.28, 0.10], [0.14, 0.20, 0.068], [0.38, 0.07, 0.052]].forEach(([ox, oy, cr]) => {
+            const sign = wax ? 1 : -1;
+            ctx.beginPath();
+            ctx.arc(cx + sign * ox * r, cy + oy * r, cr * r, 0, Math.PI * 2);
+            ctx.fillStyle = '#7A5010'; ctx.fill();
+        });
+        ctx.restore();
+    }
+
+    ctx.restore(); // rimuove clip
+
+    // Bordo luminoso
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(201,168,76,0.58)'; ctx.lineWidth = 2.5; ctx.stroke();
+
+    ctx.restore();
+}
 // ─── Disegna la card su canvas (risolve CORS e centra su ogni device) ───────
 async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, nameA, nameB, score, sole, luna, asc, card, cardName, isReversed, dateStr, sign, cardImage, cardUrl, moonSign, phase, viewSign, resonance }) {
     const SIZE = 1080; // px — formato Instagram nativo
@@ -5526,68 +5626,86 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
         drawWrappedText(ctx, `"${quote}"`, centerX, 752, SIZE-160, cormnt(30), '#EDE0C4', 1.5, SIZE-130);
     
     } else if (tipo === 'lunare') {
-    const moonData = MOON_SIGN_DATA[moonSign] || {};
+
     const zodSym   = ZODIAC_SYMBOLS[viewSign] || '✦';
-    const resBadge = { armonia:'◇ Armonia', sfida:'⊗ Sfida Creativa', neutro:'✦ Flusso Neutro' };
+    const resType  = (resonance && resonance.type) || 'neutro';
+    const resBadge = { armonia:'◇  ARMONIA ELEMENTALE', sfida:'⊗  TENSIONE CREATIVA', neutro:'✦  FLUSSO ARMONICO' };
 
-    ctx.fillStyle  = 'rgba(201,168,76,0.6)';
-    ctx.font       = cinzel(20);
-    ctx.letterSpacing = '5px';
-    ctx.textAlign  = 'center';
-    ctx.fillText('INFLUENZA LUNARE', centerX, 240);
+    // ── Sfondo cosmico ad hoc — leggermente più freddo/lunare ────────────
+    ctx.clearRect(0, 0, SIZE, SIZE);
+    const bgLunar = ctx.createRadialGradient(SIZE*0.5, SIZE*0.12, 0, SIZE*0.5, SIZE*0.55, SIZE*0.9);
+    bgLunar.addColorStop(0,   'rgba(35,16,72,0.95)');
+    bgLunar.addColorStop(0.5, 'rgba(15,8,38,0.9)');
+    bgLunar.addColorStop(1,   '#07050F');
+    ctx.fillStyle = '#07050F'; ctx.fillRect(0, 0, SIZE, SIZE);
+    ctx.fillStyle = bgLunar;  ctx.fillRect(0, 0, SIZE, SIZE);
 
-    ctx.font       = '90px serif';
-    ctx.letterSpacing = '0';
-    ctx.fillStyle  = 'rgba(201,168,76,0.15)';
-    ctx.fillText(phase.sym, centerX, 370);
+    // Stelle
+    for (let i = 0; i < 150; i++) {
+        const sx = rng(i*3+1)*SIZE, sy = rng(i*3+2)*SIZE;
+        const sr = rng(i*3+3)*1.7+0.3, sa = rng(i*3+4)*0.65+0.2;
+        ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(220,200,130,${sa})`; ctx.fill();
+    }
 
-    ctx.fillStyle  = 'rgba(201,168,76,0.75)';
-    ctx.font       = cinzel(28, '500');
-    ctx.letterSpacing = '3px';
-    ctx.fillText(phase.name, centerX, 430);
+    // Bordi card
+    roundRect(ctx, 18, 18, SIZE-36, SIZE-36, 36, null, 'rgba(201,168,76,0.22)');
+    roundRect(ctx, 40, 40, SIZE-80, SIZE-80, 26, null, 'rgba(201,168,76,0.07)');
 
-    ctx.fillStyle  = 'rgba(200,185,145,0.6)';
-    ctx.font       = cinzel(18);
-    ctx.letterSpacing = '3px';
-    ctx.fillText('Luna in ' + moonSign + '  ·  ' + zodSym + ' ' + viewSign, centerX, 470);
+    // ── Logo ─────────────────────────────────────────────────────────────
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#C9A84C'; ctx.font = cinzel(52,'600'); ctx.letterSpacing = '8px';
+    ctx.fillText('SIDERA', centerX, 128);
+    ctx.fillStyle = 'rgba(138,122,94,0.62)'; ctx.font = cinzel(20); ctx.letterSpacing = '5px';
+    ctx.fillText("L'ORACOLO DELLE STELLE", centerX, 165);
 
-    ctx.fillStyle  = 'rgba(201,168,76,0.45)';
-    ctx.font       = cinzel(15);
-    ctx.letterSpacing = '4px';
-    ctx.fillText(resBadge[resonance && resonance.type] || '✦', centerX, 520);
+    drawGoldLine(ctx, centerX, 192, 160);
 
-    drawGoldLine(ctx, centerX, 550, 130);
+    // Etichetta sezione
+    ctx.fillStyle = 'rgba(201,168,76,0.52)'; ctx.font = cinzel(19); ctx.letterSpacing = '7px';
+    ctx.fillText('INFLUENZA LUNARE', centerX, 232);
 
-    ctx.fillStyle  = 'rgba(201,168,76,0.65)';
-    ctx.font       = cinzel(17);
-    ctx.letterSpacing = '3px';
-    ctx.fillText('IL MESSAGGIO DEL GIORNO', centerX, 592);
+    // ── Luna procedurale (r=138) ─────────────────────────────────────────
+    drawMoonProc(ctx, centerX, 400, 138, phase.name);
 
-    drawGoldLine(ctx, centerX, 612, 90);
+    // Nome fase
+    ctx.fillStyle = 'rgba(245,225,165,0.92)'; ctx.font = cinzel(31,'500'); ctx.letterSpacing = '5px';
+    ctx.fillText(phase.name.toUpperCase(), centerX, 582);
 
+    // Segno lunare · segno utente
+    ctx.fillStyle = 'rgba(175,155,115,0.68)'; ctx.font = cinzel(19); ctx.letterSpacing = '3px';
+    ctx.fillText('Luna in ' + moonSign + '   ·   ' + zodSym + ' ' + viewSign, centerX, 622);
+
+    // ── Separatore ───────────────────────────────────────────────────────
+    drawGoldLine(ctx, centerX, 652, 130);
+
+    // Badge risonanza
+    ctx.fillStyle = 'rgba(201,168,76,0.52)'; ctx.font = cinzel(17); ctx.letterSpacing = '4px';
+    ctx.fillText(resBadge[resType] || '✦', centerX, 694);
+
+    drawGoldLine(ctx, centerX, 718, 100);
+
+    // Titolo messaggio
+    ctx.fillStyle = 'rgba(201,168,76,0.65)'; ctx.font = cinzel(16); ctx.letterSpacing = '4px';
+    ctx.fillText('IL MESSAGGIO DEL GIORNO', centerX, 758);
+
+    drawGoldLine(ctx, centerX, 778, 82);
+
+    // Quote — largo, leggibile
     drawWrappedText(
         ctx,
-        '"' + quote + '"',
-        centerX, 670,
-        SIZE - 140,
-        cormnt(30),
-        '#EDE0C4',
-        1.52,
-        SIZE - 130
+        '\u201C' + quote + '\u201D',
+        centerX, 836,
+        SIZE - 160, cormnt(31), '#EDE0C4', 1.54,
+        SIZE - 108
     );
-}
 
-
-    // ── Footer ──────────────────────────────────────────────────────────────
-    drawGoldLine(ctx, centerX, SIZE-110, 160);
-    ctx.fillStyle = 'rgba(201,168,76,0.5)';
-    ctx.font = cinzel(20);
-    ctx.letterSpacing = '4px';
-    ctx.fillText('✦ scopri la tua rivelazione ✦', centerX, SIZE-74);
-    ctx.fillStyle = 'rgba(138,122,94,0.5)';
-    ctx.font = cinzel(17);
-    ctx.letterSpacing = '3px';
-    ctx.fillText('SIDERA7.VERCEL.APP', centerX, SIZE-44);
+    // ── Footer ───────────────────────────────────────────────────────────
+    drawGoldLine(ctx, centerX, SIZE - 112, 150);
+    ctx.fillStyle = 'rgba(201,168,76,0.48)'; ctx.font = cinzel(19); ctx.letterSpacing = '4px';
+    ctx.fillText('✦  scopri la tua rivelazione  ✦', centerX, SIZE - 74);
+    ctx.fillStyle = 'rgba(138,122,94,0.48)'; ctx.font = cinzel(17); ctx.letterSpacing = '3px';
+    ctx.fillText('SIDERA7.VERCEL.APP', centerX, SIZE - 44);
 }
 
 
