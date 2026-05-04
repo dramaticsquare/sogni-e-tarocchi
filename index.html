@@ -3885,7 +3885,66 @@ function setDreamPrompt(text) {
     ta.focus();
     ta.setSelectionRange(text.length, text.length);
 }
+// ── Condivisione influenza lunare ─────────────────────────────────────────
+function getLunarShareText() {
+    const moonSign  = getCurrentMoonSign();
+    const phase     = getMoonPhase();
+    const viewSign  = _lunarViewSign || currentUser?.sign || '';
+    const resonance = getMoonResonance(viewSign, moonSign);
+    const oggi      = new Date();
+    const giornoAnno = Math.floor((oggi - new Date(oggi.getFullYear(), 0, 0)) / 86400000);
+    const pool      = RESONANCE_MSGS[resonance.type];
+    const offset    = viewSign ? viewSign.charCodeAt(0) % pool.length : 0;
+    const resoMsg   = pool[(giornoAnno + offset) % pool.length];
+    const zodSym    = ZODIAC_SYMBOLS[viewSign] || '✦';
 
+    return `✦ Influenza Lunare · Sidera ✦\n\n` +
+        `${phase.sym} ${phase.name} · Luna in ${moonSign}\n` +
+        `${zodSym} ${viewSign}\n\n` +
+        `"${resoMsg}"\n\n` +
+        `Scopri la tua influenza lunare → https://sidera7.vercel.app/`;
+}
+
+async function shareLunarInfluence() {
+    const text = getLunarShareText();
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: 'Sidera — Influenza Lunare',
+                text,
+                url: 'https://sidera7.vercel.app/'
+            });
+            return;
+        } catch(e) { if (e.name === 'AbortError') return; }
+    }
+    try {
+        await navigator.clipboard.writeText(text);
+        showToast('✨ Testo copiato — incollalo dove vuoi!');
+    } catch(e) { showToast('Copia il testo manualmente.'); }
+}
+
+async function copyLunarText() {
+    try {
+        await navigator.clipboard.writeText(getLunarShareText());
+        showToast('Testo copiato negli appunti.');
+    } catch(e) { showToast('Copia il testo manualmente.'); }
+}
+
+function openLunarIgCard() {
+    const moonSign  = getCurrentMoonSign();
+    const phase     = getMoonPhase();
+    const viewSign  = _lunarViewSign || currentUser?.sign || '';
+    const resonance = getMoonResonance(viewSign, moonSign);
+    const oggi      = new Date();
+    const giornoAnno = Math.floor((oggi - new Date(oggi.getFullYear(), 0, 0)) / 86400000);
+    const pool      = RESONANCE_MSGS[resonance.type];
+    const offset    = viewSign ? viewSign.charCodeAt(0) % pool.length : 0;
+    const resoMsg   = pool[(giornoAnno + offset) % pool.length];
+
+    // Riusa il sistema igCard esistente passando tipo 'lunare'
+    window._lunarIgData = { moonSign, phase, viewSign, resonance, resoMsg };
+    openIgCard('lunare');
+}
 // ─────────────────────────────────────────────
 //  ASTROLOGIA SHARE — condivisione diretta testo
 // ─────────────────────────────────────────────
@@ -4852,6 +4911,16 @@ function openIgCard(tipo) {
         const quote = showQuote ? extractQuote(raw, 110) : '';
         renderIgCanvas({ tipo: 'sinastria', quote, nameA, nameB, score });
 
+    } else if (tipo === 'lunare') {
+    const d = window._lunarIgData || {};
+    renderIgCanvas({
+        tipo:    'lunare',
+        quote:   d.resoMsg   || '',
+        moonSign: d.moonSign || '',
+        phase:   d.phase     || getMoonPhase(),
+        viewSign: d.viewSign || '',
+        resonance: d.resonance || { label:'', icon:'✦', type:'neutro' }});
+    
     } else if (tipo === 'astrologia') {
         const sole = document.getElementById('summarySoleSign')?.innerText || '—';
         const luna = document.getElementById('summaryLunaSign')?.innerText || '—';
@@ -5469,6 +5538,48 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
     ctx.fillText('SIDERA7.VERCEL.APP', centerX, SIZE-44);
 }
 
+} else if (tipo === 'lunare') {
+    const moonData  = MOON_SIGN_DATA[moonSign] || {};
+    const zodSym    = ZODIAC_SYMBOLS[viewSign] || '✦';
+    const resBadge  = { armonia:'◇ Armonia', sfida:'⊗ Sfida Creativa', neutro:'✦ Flusso Neutro' };
+
+    ctx.fillStyle = 'rgba(201,168,76,0.6)';
+    ctx.font = cinzel(20); ctx.letterSpacing = '5px'; ctx.textAlign = 'center';
+    ctx.fillText('INFLUENZA LUNARE', centerX, 240);
+
+    // Fase + segno
+    ctx.font = `90px serif`; ctx.letterSpacing = '0';
+    ctx.fillStyle = 'rgba(201,168,76,0.15)';
+    ctx.fillText(phase.sym, centerX, 370);
+
+    ctx.fillStyle = 'rgba(201,168,76,0.75)';
+    ctx.font = cinzel(28, '500'); ctx.letterSpacing = '3px';
+    ctx.fillText(`${phase.name}`, centerX, 430);
+
+    ctx.fillStyle = 'rgba(200,185,145,0.6)';
+    ctx.font = cinzel(18); ctx.letterSpacing = '3px';
+    ctx.fillText(`Luna in ${moonSign}  ·  ${zodSym} ${viewSign}`, centerX, 470);
+
+    // Badge risonanza
+    ctx.fillStyle = 'rgba(201,168,76,0.45)';
+    ctx.font = cinzel(15); ctx.letterSpacing = '4px';
+    ctx.fillText((resBadge[resonance?.type] || '✦'), centerX, 520);
+
+    drawGoldLine(ctx, centerX, 550, 130);
+
+    ctx.fillStyle = 'rgba(201,168,76,0.65)';
+    ctx.font = cinzel(17); ctx.letterSpacing = '3px';
+    ctx.fillText('IL MESSAGGIO DEL GIORNO', centerX, 592);
+
+    drawGoldLine(ctx, centerX, 612, 90);
+
+    drawWrappedText(
+        ctx, `"${quote}"`,
+        centerX, 670,
+        SIZE - 140, cormnt(30), '#EDE0C4', 1.52, SIZE - 130
+    );
+}
+
 // ── Helpers canvas ───────────────────────────────────────────────────────────
 function roundRect(ctx, x, y, w, h, r, fill, stroke) {
     ctx.beginPath();
@@ -5935,30 +6046,59 @@ function renderLunarSection() {
 
     if (!viewSign) {
         // Registrato senza data di nascita
-        infBox.innerHTML = `
-            <p style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold);
-               letter-spacing:2px;text-align:center;margin-bottom:12px;">✦ PERSONALIZZA LA TUA INFLUENZA ✦</p>
-            <p style="text-align:center;color:var(--text-muted);font-style:italic;
-               font-size:0.88rem;line-height:1.75;margin-bottom:16px;">
-                Aggiungi la tua data di nascita nel profilo per ricevere l'analisi
-                personalizzata dell'influenza lunare sul tuo segno zodiacale.
-            </p>
-            <p style="text-align:center;margin-bottom:20px;">
-                <button class="btn-share" style="font-size:0.76rem;" onclick="closeAccount();setTimeout(openAccount,100);">
-                    ☽ Aggiorna il Profilo
-                </button>
-            </p>
-            <div style="padding-top:16px;border-top:1px solid var(--border);">
-                <p style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);
-                   letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:10px;">
-                    Energia del Momento
-                </p>
-                <p style="color:var(--text);font-style:italic;font-size:0.92rem;
-                   line-height:1.75;text-align:center;">${moonData.desc}</p>
-                <div class="lunar-keywords" style="justify-content:center;margin-top:12px;">
-                    ${moonData.keywords.map(k => `<span class="lunar-keyword">${k}</span>`).join('')}
-                </div>
-            </div>`;
+infBox.innerHTML = `
+    <div style="text-align:center; margin-bottom:20px;">
+        <div style="font-size:2.2rem; margin-bottom:10px;">${viewData.sym}</div>
+        <h4 style="font-family:'Cinzel',serif; font-size:1rem; color:var(--gold-light);
+            letter-spacing:2px; margin-bottom:6px;">
+            ${isPersonal ? 'La tua influenza personale' : `Influenza per ${viewSign}`}
+        </h4>
+        <p style="font-family:'Cinzel',serif; font-size:0.72rem; color:var(--text-muted);
+            letter-spacing:1.5px;">
+            ${isPersonal
+                ? `${zodSym} ${viewSign} · Luna in ${moonSign} · ${phase.name}`
+                : `Segno esplorato: ${zodSym} ${viewSign} · Luna in ${moonSign}`}
+        </p>
+        <div style="margin-top:14px; display:flex; justify-content:center;">
+            <span class="lunar-resonance-badge resonance-${resonance.type}">
+                ${resonance.icon} ${resonance.label}
+            </span>
+        </div>
+    </div>
+
+    <div style="height:1px; background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25),transparent); margin-bottom:20px;"></div>
+
+    <p style="font-style:italic; font-size:1.05rem; color:var(--text); line-height:1.85;
+        text-align:center; margin-bottom:20px; padding:0 8px;">
+        "${resoMsg}"
+    </p>
+
+    <div style="height:1px; background:linear-gradient(90deg,transparent,rgba(201,168,76,0.15),transparent); margin-bottom:18px;"></div>
+
+    <p class="lunar-inf-body" style="text-align:center; color:var(--text-muted);
+        font-size:0.9rem; margin-bottom:18px;">
+        ${moonData.desc}
+    </p>
+
+    <div class="lunar-keywords" style="justify-content:center; margin-bottom:20px;">
+        ${moonData.keywords.map(k => `<span class="lunar-keyword">${k}</span>`).join('')}
+        <span class="lunar-keyword" style="color:var(--gold); border-color:rgba(201,168,76,0.3);">
+            ${phase.sym} ${phase.name}
+        </span>
+    </div>
+
+    <div style="padding-top:16px; border-top:1px solid var(--border);
+        display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+        <button class="btn-share" onclick="openLunarIgCard()" style="font-size:0.76rem;">
+            📸 Card Instagram
+        </button>
+        <button class="btn-share" onclick="shareLunarInfluence()" style="font-size:0.76rem;">
+            ✨ Condividi
+        </button>
+        <button class="btn-share" onclick="copyLunarText()" style="font-size:0.76rem;">
+            Copia Testo
+        </button>
+    </div>`;
         return;
     }
 
