@@ -1710,6 +1710,159 @@
         }
         .reveal.in-view { opacity: 1; transform: translateY(0); }
 
+        /* ══════════════════════════════════
+   INFLUENZE LUNARI
+══════════════════════════════════ */
+.lunar-section {
+    margin-top: 56px; padding-top: 48px;
+    border-top: 1px solid var(--border);
+    opacity: 0; animation: fadeUp 1s ease 1.7s forwards;
+}
+.lunar-phase-display {
+    display: flex; align-items: center; justify-content: center;
+    gap: 28px; margin-bottom: 24px; flex-wrap: wrap;
+}
+.lunar-phase-orb {
+    width: 90px; height: 90px;
+    position: relative; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.lunar-orb-glow {
+    position: absolute; inset: -12px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.18) 0%, transparent 70%);
+    animation: lunarPulse 3.5s ease-in-out infinite;
+}
+@keyframes lunarPulse {
+    0%,100% { transform: scale(1); opacity: 0.5; }
+    50%      { transform: scale(1.2); opacity: 1; }
+}
+.lunar-phase-sym   { font-size: 72px; line-height: 1; position: relative; z-index: 1; }
+.lunar-phase-meta  { text-align: center; }
+.lunar-phase-name  {
+    font-family: 'Cinzel', serif; font-size: 11px;
+    color: var(--gold); letter-spacing: 3px; text-transform: uppercase;
+    display: block; margin-bottom: 4px;
+}
+.lunar-phase-sub   {
+    font-family: 'Cinzel', serif; font-size: 9px;
+    color: var(--text-muted); letter-spacing: 2px; display: block;
+}
+.lunar-sign-pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 10px 24px; border-radius: 50px;
+    border: 1px solid rgba(201,168,76,0.3);
+    background: rgba(201,168,76,0.06);
+    font-family: 'Cinzel', serif; font-size: 12px;
+    color: var(--gold-light); letter-spacing: 2px; margin-bottom: 6px;
+}
+.lunar-energy-line {
+    font-size: 0.78rem; color: var(--text-muted); font-style: italic;
+    letter-spacing: 1px; font-family: 'Cinzel', serif;
+    display: block; text-align: center; margin-bottom: 28px;
+}
+/* Scheda influenza registrati */
+.lunar-influence-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 28px 30px;
+    backdrop-filter: blur(12px); position: relative; overflow: hidden;
+    max-width: 720px; margin: 0 auto 20px;
+    transition: border-color 0.3s;
+}
+.lunar-influence-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.5), transparent);
+}
+.lunar-influence-card:hover { border-color: var(--border-hover); }
+.lunar-inf-header {
+    display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+.lunar-inf-sym {
+    font-size: 2rem; color: var(--gold); flex-shrink: 0;
+    text-shadow: 0 0 20px rgba(201,168,76,0.4);
+}
+.lunar-inf-meta h4 {
+    font-family: 'Cinzel', serif; font-size: 0.85rem;
+    color: var(--gold-light); letter-spacing: 1.5px; margin-bottom: 3px;
+}
+.lunar-inf-meta p {
+    font-size: 0.73rem; color: var(--text-muted);
+    font-family: 'Cinzel', serif; letter-spacing: 1px;
+}
+.lunar-resonance-badge {
+    margin-left: auto; display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 13px; border-radius: 50px; font-family: 'Cinzel', serif;
+    font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase;
+    white-space: nowrap; flex-shrink: 0;
+}
+.resonance-armonia { background: rgba(107,160,80,0.12); border: 1px solid rgba(107,160,80,0.35); color: #90c870; }
+.resonance-sfida   { background: rgba(160,80,80,0.12);  border: 1px solid rgba(160,80,80,0.35);  color: #d08070; }
+.resonance-neutro  { background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.25); color: var(--gold); }
+.lunar-inf-body {
+    font-size: 0.93rem; color: var(--text); line-height: 1.8;
+    font-style: italic; margin-bottom: 10px;
+}
+.lunar-inf-reso {
+    font-size: 0.86rem; color: var(--text-muted);
+    line-height: 1.7; margin-bottom: 14px; font-style: italic;
+}
+.lunar-keywords {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    padding-top: 14px; border-top: 1px solid var(--border);
+}
+.lunar-keyword {
+    padding: 3px 12px; border-radius: 50px; border: 1px solid var(--border);
+    font-size: 0.7rem; font-family: 'Cinzel', serif;
+    color: var(--text-muted); letter-spacing: 1px;
+}
+/* CTA ospiti */
+.lunar-guest-cta {
+    text-align: center; padding: 36px 24px;
+    border: 1px dashed rgba(201,168,76,0.22);
+    border-radius: 20px; max-width: 520px; margin: 0 auto;
+    background: rgba(201,168,76,0.03);
+}
+.lunar-guest-cta .gcta-icon { font-size: 2.4rem; margin-bottom: 14px; display: block; }
+.lunar-guest-cta h3 {
+    font-family: 'Cinzel', serif; color: var(--gold-light);
+    font-size: 1rem; letter-spacing: 2px; margin-bottom: 10px;
+}
+.lunar-guest-cta .gcta-moon-desc {
+    color: var(--text); font-style: italic; font-size: 0.9rem;
+    line-height: 1.75; margin-bottom: 12px;
+}
+.lunar-guest-cta .gcta-hint {
+    font-size: 0.78rem; color: rgba(138,122,94,0.6); font-style: italic; margin-bottom: 20px;
+}
+/* Selettore segni */
+.lunar-sign-selector {
+    max-width: 720px; margin: 0 auto;
+    padding-top: 22px; border-top: 1px solid var(--border);
+}
+.lunar-sign-selector-label {
+    font-family: 'Cinzel', serif; font-size: 9px; color: var(--text-muted);
+    letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 14px; display: block; text-align: center;
+}
+.lunar-sign-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+}
+.lunar-sign-btn {
+    background: rgba(20,14,40,0.5); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 6px; cursor: pointer;
+    text-align: center; transition: 0.25s; color: var(--text-muted);
+    font-family: 'Cinzel', serif; font-size: 8.5px; letter-spacing: 0.5px;
+}
+.lunar-sign-btn:hover { border-color: var(--border-hover); color: var(--gold-light); }
+.lunar-sign-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
+.lunar-sign-btn .sign-sym { font-size: 1.1rem; display: block; margin-bottom: 3px; }
+@media (max-width: 640px) {
+    .lunar-sign-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+}
+@media (max-width: 400px) {
+    .lunar-sign-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
     </style>
 </head>
 <body>
@@ -1869,6 +2022,73 @@
                         <button class="btn-share" onclick="shareDailyCard()" style="font-size:0.76rem;">✨ Condividi</button>
                         <button class="btn-share" onclick="loadDailyCard(true)" style="font-size:0.76rem;">↺ Aggiorna</button>
                     </div>
+                    <!-- ════════════════════════════════
+     INFLUENZE LUNARI
+════════════════════════════════ -->
+<div class="lunar-section" id="lunarSection">
+    <span class="daily-card-label">✦ Influenze Lunari ✦</span>
+
+    <!-- Fase + segno corrente -->
+    <div class="lunar-phase-display">
+        <div class="lunar-phase-orb">
+            <div class="lunar-orb-glow"></div>
+            <span class="lunar-phase-sym" id="lunarPhaseSym">🌕</span>
+        </div>
+        <div class="lunar-phase-meta">
+            <span class="lunar-phase-name" id="lunarPhaseName">Luna Piena</span>
+            <span class="lunar-phase-sub">Fase lunare di oggi</span>
+        </div>
+    </div>
+
+    <div style="text-align:center; margin-bottom:24px;">
+        <div class="lunar-sign-pill">
+            <span id="lunarSignSym">☽</span>
+            <span id="lunarSignName">Luna in Scorpione</span>
+        </div><br>
+        <span class="lunar-energy-line" id="lunarEnergyLine">Energia: acqua e trasformazione</span>
+    </div>
+
+    <!-- Scheda influenza (utenti registrati) -->
+    <div class="lunar-influence-card" id="lunarInfluenceBox" style="display:none;"></div>
+
+    <!-- CTA ospiti -->
+    <div class="lunar-guest-cta" id="lunarGuestCta">
+        <span class="gcta-icon">🌙</span>
+        <h3>La Luna parla al tuo segno</h3>
+        <p class="gcta-moon-desc" id="lunarGuestMoonDesc"></p>
+        <p class="gcta-hint">
+            Registrati gratuitamente per scoprire come la fase lunare<br>
+            influenza il tuo segno e per esplorare tutti gli altri.
+        </p>
+        <button class="btn-hero-primary" onclick="openAccount()" style="font-size:10px;padding:12px 28px;">
+            ✦ Crea il tuo Profilo Gratuito
+        </button>
+    </div>
+
+    <!-- Selettore altri segni (solo utenti registrati) -->
+    <div class="lunar-sign-selector" id="lunarSignSelector" style="display:none;">
+        <span class="lunar-sign-selector-label">✦ Esplora l'influenza sugli altri segni ✦</span>
+        <div class="lunar-sign-grid">
+            <button class="lunar-sign-btn" data-sign="Ariete"     onclick="selectLunarSign('Ariete')">    <span class="sign-sym">♈</span>Ariete</button>
+            <button class="lunar-sign-btn" data-sign="Toro"       onclick="selectLunarSign('Toro')">      <span class="sign-sym">♉</span>Toro</button>
+            <button class="lunar-sign-btn" data-sign="Gemelli"    onclick="selectLunarSign('Gemelli')">   <span class="sign-sym">♊</span>Gemelli</button>
+            <button class="lunar-sign-btn" data-sign="Cancro"     onclick="selectLunarSign('Cancro')">    <span class="sign-sym">♋</span>Cancro</button>
+            <button class="lunar-sign-btn" data-sign="Leone"      onclick="selectLunarSign('Leone')">     <span class="sign-sym">♌</span>Leone</button>
+            <button class="lunar-sign-btn" data-sign="Vergine"    onclick="selectLunarSign('Vergine')">   <span class="sign-sym">♍</span>Vergine</button>
+            <button class="lunar-sign-btn" data-sign="Bilancia"   onclick="selectLunarSign('Bilancia')">  <span class="sign-sym">♎</span>Bilancia</button>
+            <button class="lunar-sign-btn" data-sign="Scorpione"  onclick="selectLunarSign('Scorpione')"> <span class="sign-sym">♏</span>Scorpione</button>
+            <button class="lunar-sign-btn" data-sign="Sagittario" onclick="selectLunarSign('Sagittario')"><span class="sign-sym">♐</span>Sagittario</button>
+            <button class="lunar-sign-btn" data-sign="Capricorno" onclick="selectLunarSign('Capricorno')"><span class="sign-sym">♑</span>Capricorno</button>
+            <button class="lunar-sign-btn" data-sign="Acquario"   onclick="selectLunarSign('Acquario')">  <span class="sign-sym">♒</span>Acquario</button>
+            <button class="lunar-sign-btn" data-sign="Pesci"      onclick="selectLunarSign('Pesci')">     <span class="sign-sym">♓</span>Pesci</button>
+        </div>
+        <div style="text-align:center; margin-top:14px;">
+            <button class="btn-share" style="font-size:0.72rem;" onclick="selectLunarSign(null)">
+                ☽ Il mio segno
+            </button>
+        </div>
+    </div>
+</div>
                 </div>
             </div>
         </div>
@@ -3051,6 +3271,7 @@ function initApp() {
     setTimeout(() => home.classList.add('visible'), 50);
     // Carica carta del giorno (dopo 800ms per non bloccare il rendering iniziale)
     setTimeout(() => loadDailyCard(), 800);
+    setTimeout(() => renderLunarSection(), 900);
 }
 
 // ─────────────────────────────────────────────
@@ -3072,6 +3293,7 @@ function showSection(id) {
     if (id === 'home') {
         // Carica carta del giorno se non ancora mostrata
         setTimeout(() => loadDailyCard(), 300);
+        setTimeout(() => renderLunarSection(), 400);
     }
     if (id === 'oracolo' && !localStorage.getItem('visited_tarot')) {
         document.getElementById('infoModal').classList.add('open');
@@ -5481,6 +5703,211 @@ function toggleMobileMenu() {
     overlay.classList.toggle('open', isOpen);
     hamburger.classList.toggle('open', isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+
+    // ─────────────────────────────────────────────
+//  INFLUENZE LUNARI — dati e calcoli
+// ─────────────────────────────────────────────
+
+const MOON_SIGN_DATA = {
+    'Ariete':     { sym:'♈', col:'#E87070', energy:'fuoco e impulso',        desc:'La Luna accende l\'energia dell\'azione. Osa, inizia, segui l\'istinto senza esitare. Il coraggio premia chi agisce in questo momento.',                              keywords:['Azione','Coraggio','Impulso'] },
+    'Toro':       { sym:'♉', col:'#A0C070', energy:'terra e piacere',        desc:'La Luna invita alla stabilità e al piacere dei sensi. Nutri il corpo, cerca la bellezza, rallenta. Momento ideale per decisioni concrete e durature.',             keywords:['Stabilità','Piacere','Radicamento'] },
+    'Gemelli':    { sym:'♊', col:'#E8C870', energy:'aria e comunicazione',   desc:'La Luna anima la mente con curiosità e versatilità. Parla, scrivi, connettiti. Le idee fluiscono veloci come il vento — coglile prima che svaniscano.',           keywords:['Comunicazione','Curiosità','Adattamento'] },
+    'Cancro':     { sym:'♋', col:'#70B4E8', energy:'acqua e memoria',        desc:'La Luna è nel suo domicilio: le emozioni sono amplificate. Il passato emerge e la famiglia chiama. Ascolta il tuo intuito — raramente ti delude.',               keywords:['Emozioni','Intuito','Protezione'] },
+    'Leone':      { sym:'♌', col:'#E8A030', energy:'fuoco e creatività',     desc:'La Luna scalda il cuore e invita all\'espressione. Brillare, creare, amare con generosità. Il palcoscenico della vita ti aspetta: calca la scena.',              keywords:['Creatività','Generosità','Gioia'] },
+    'Vergine':    { sym:'♍', col:'#98C898', energy:'terra e analisi',        desc:'La Luna porta attenzione ai dettagli e al servizio. Organizza, analizza, prenditi cura del corpo e della mente. La precisione porta ordine interiore.',           keywords:['Analisi','Cura','Ordine'] },
+    'Bilancia':   { sym:'♎', col:'#C8A8E8', energy:'aria e armonia',         desc:'La Luna chiede equilibrio e bellezza nelle relazioni. Cerca il dialogo, evita gli estremi. L\'armonia non è assenza di conflitto, ma saperlo attraversare.',      keywords:['Equilibrio','Armonia','Relazioni'] },
+    'Scorpione':  { sym:'♏', col:'#8060A0', energy:'acqua e trasformazione', desc:'La Luna scende negli abissi dell\'anima. Trasformazione, intensità, rivelazioni nascoste. Momento potente per lasciar andare ciò che non serve più.',            keywords:['Trasformazione','Intensità','Profondità'] },
+    'Sagittario': { sym:'♐', col:'#E88040', energy:'fuoco e avventura',      desc:'La Luna espande gli orizzonti con ottimismo e sete di conoscenza. Viaggia, studia, filosofa. La libertà interiore è il dono più prezioso di questo momento.',   keywords:['Avventura','Ottimismo','Conoscenza'] },
+    'Capricorno': { sym:'♑', col:'#9090A8', energy:'terra e ambizione',      desc:'La Luna porta disciplina e ambizione silenziosa. Lavora con metodo, persegui i tuoi obiettivi. La pazienza costruisce ciò che il tempo non può distruggere.',   keywords:['Disciplina','Ambizione','Perseveranza'] },
+    'Acquario':   { sym:'♒', col:'#60B0D0', energy:'aria e innovazione',     desc:'La Luna libera la mente verso l\'originale e l\'universale. Innovazione, umanità, rottura degli schemi. Pensa fuori dal comune: l\'insolito diventa possibile.', keywords:['Innovazione','Libertà','Originalità'] },
+    'Pesci':      { sym:'♓', col:'#8090D0', energy:'acqua e sogno',          desc:'La Luna dissolve i confini tra sogno e realtà. Intuizione, spiritualità, compassione. Ascolta i sogni e la voce silenziosa dell\'anima profonda.',              keywords:['Sogno','Spiritualità','Compassione'] }
+};
+
+const SIGN_ELEMENTS = {
+    'Ariete':'fuoco','Leone':'fuoco','Sagittario':'fuoco',
+    'Toro':'terra','Vergine':'terra','Capricorno':'terra',
+    'Gemelli':'aria','Bilancia':'aria','Acquario':'aria',
+    'Cancro':'acqua','Scorpione':'acqua','Pesci':'acqua'
+};
+
+const SIGN_OPPOSITES = {
+    'Ariete':'Bilancia','Toro':'Scorpione','Gemelli':'Sagittario',
+    'Cancro':'Capricorno','Leone':'Acquario','Vergine':'Pesci',
+    'Bilancia':'Ariete','Scorpione':'Toro','Sagittario':'Gemelli',
+    'Capricorno':'Cancro','Acquario':'Leone','Pesci':'Vergine'
+};
+
+const SIGN_SQUARES = {
+    'Ariete':['Cancro','Capricorno'],'Toro':['Leone','Acquario'],
+    'Gemelli':['Vergine','Pesci'],'Cancro':['Ariete','Bilancia'],
+    'Leone':['Toro','Scorpione'],'Vergine':['Gemelli','Sagittario'],
+    'Bilancia':['Cancro','Capricorno'],'Scorpione':['Leone','Acquario'],
+    'Sagittario':['Vergine','Pesci'],'Capricorno':['Ariete','Bilancia'],
+    'Acquario':['Toro','Scorpione'],'Pesci':['Gemelli','Sagittario']
+};
+
+const RESONANCE_MSGS = {
+    armonia: [
+        'La Luna canta nella stessa frequenza della tua anima. Le energie si amplificano: questo è il momento per agire con fiducia.',
+        'Il tuo essere risuona con l\'energia lunare. Le tue intuizioni sono particolarmente acute — fidati di ciò che senti.',
+        'Un\'armonia cosmica ti sostiene. Ciò che inizi oggi porta il sigillo delle stelle.'
+    ],
+    sfida: [
+        'La Luna crea tensione creativa con la tua essenza. Da questa frizione nasce la crescita — non resistere, trasformati.',
+        'Un\'energia sfidante ti chiede di espandere i confini del tuo modo abituale di essere. La difficoltà è il tuo insegnante.',
+        'La polarità attiva tra la Luna e il tuo segno porta rivelazioni inaspettate. Resta aperto a ciò che emerge.'
+    ],
+    neutro: [
+        'Le energie lunari fluiscono intorno a te con delicatezza. Un momento propizio per osservare senza giudicare.',
+        'Un flusso equilibrato accompagna questa giornata. La quiete è forza — ascolta prima di agire.',
+        'La Luna ti offre una pausa tra le correnti. Il silenzio interiore è il terreno dove crescono le grandi decisioni.'
+    ]
+};
+
+function getMoonResonance(natalSign, moonSign) {
+    if (!natalSign || !moonSign) return { type:'neutro', label:'Energia Neutra', icon:'✦' };
+    if (natalSign === moonSign)                        return { type:'armonia', label:'Risonanza Totale',    icon:'◎' };
+    if (SIGN_ELEMENTS[natalSign] === SIGN_ELEMENTS[moonSign]) return { type:'armonia', label:'Armonia Elementale', icon:'◇' };
+    if (SIGN_OPPOSITES[natalSign] === moonSign)        return { type:'sfida',   label:'Polarità Attiva',    icon:'⊗' };
+    if (SIGN_SQUARES[natalSign]?.includes(moonSign))   return { type:'sfida',   label:'Tensione Creativa',  icon:'△' };
+    return                                                    { type:'neutro',   label:'Flusso Armonico',    icon:'✦' };
+}
+
+// Fase lunare (riferimento: Luna Nuova 29 Gen 2025)
+function getMoonPhase() {
+    const REF = new Date('2025-01-29T12:00:00Z');
+    const SYNODIC = 29.53059;
+    const phase = (((new Date() - REF) / 86400000) % SYNODIC + SYNODIC) % SYNODIC;
+    if (phase <  1.85) return { name:'Luna Nuova',         sym:'🌑' };
+    if (phase <  7.38) return { name:'Luna Crescente',     sym:'🌒' };
+    if (phase <  9.22) return { name:'Primo Quarto',       sym:'🌓' };
+    if (phase < 14.77) return { name:'Gibbosa Crescente',  sym:'🌔' };
+    if (phase < 16.61) return { name:'Luna Piena',         sym:'🌕' };
+    if (phase < 22.15) return { name:'Gibbosa Calante',    sym:'🌖' };
+    if (phase < 23.99) return { name:'Ultimo Quarto',      sym:'🌗' };
+    return                    { name:'Luna Calante',        sym:'🌘' };
+}
+
+// Segno lunare corrente (approssimazione ~2.3 giorni/segno)
+function getCurrentMoonSign() {
+    const REF  = new Date('2025-01-29T12:00:00Z');
+    const SIGNS = ['Ariete','Toro','Gemelli','Cancro','Leone','Vergine',
+                   'Bilancia','Scorpione','Sagittario','Capricorno','Acquario','Pesci'];
+    const days = (new Date() - REF) / 86400000;
+    const idx  = ((10 + Math.floor(days / (27.32166 / 12))) % 12 + 12) % 12;
+    return SIGNS[idx];
+}
+
+// Segno visualizzato nel widget (null → natale dell'utente)
+let _lunarViewSign = null;
+
+function renderLunarSection() {
+    const section = document.getElementById('lunarSection');
+    if (!section) return;
+
+    const phase    = getMoonPhase();
+    const moonSign = getCurrentMoonSign();
+    const moonData = MOON_SIGN_DATA[moonSign];
+    const natalSign = currentUser?.sign || null;
+    const viewSign  = _lunarViewSign || natalSign;
+
+    // Fase + segno
+    document.getElementById('lunarPhaseSym').innerText  = phase.sym;
+    document.getElementById('lunarPhaseName').innerText = phase.name;
+    document.getElementById('lunarSignSym').innerText   = moonData.sym;
+    document.getElementById('lunarSignName').innerText  = `Luna in ${moonSign}`;
+    document.getElementById('lunarEnergyLine').innerText = `Energia: ${moonData.energy}`;
+
+    const infBox   = document.getElementById('lunarInfluenceBox');
+    const guestCta = document.getElementById('lunarGuestCta');
+    const selector = document.getElementById('lunarSignSelector');
+
+    if (!currentUser) {
+        // ── Ospite ──────────────────────────────────────────────────────────
+        infBox.style.display   = 'none';
+        guestCta.style.display = 'block';
+        selector.style.display = 'none';
+        document.getElementById('lunarGuestMoonDesc').innerText = moonData.desc;
+        return;
+    }
+
+    // ── Registrato ──────────────────────────────────────────────────────────
+    guestCta.style.display   = 'none';
+    infBox.style.display     = 'block';
+    selector.style.display   = 'block';
+
+    // Aggiorna pulsanti segno selezionato
+    document.querySelectorAll('.lunar-sign-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.sign === viewSign)
+    );
+
+    if (!viewSign) {
+        // Registrato senza data di nascita
+        infBox.innerHTML = `
+            <p style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold);
+               letter-spacing:2px;text-align:center;margin-bottom:12px;">✦ PERSONALIZZA LA TUA INFLUENZA ✦</p>
+            <p style="text-align:center;color:var(--text-muted);font-style:italic;
+               font-size:0.88rem;line-height:1.75;margin-bottom:16px;">
+                Aggiungi la tua data di nascita nel profilo per ricevere l'analisi
+                personalizzata dell'influenza lunare sul tuo segno zodiacale.
+            </p>
+            <p style="text-align:center;margin-bottom:20px;">
+                <button class="btn-share" style="font-size:0.76rem;" onclick="closeAccount();setTimeout(openAccount,100);">
+                    ☽ Aggiorna il Profilo
+                </button>
+            </p>
+            <div style="padding-top:16px;border-top:1px solid var(--border);">
+                <p style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);
+                   letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:10px;">
+                    Energia del Momento
+                </p>
+                <p style="color:var(--text);font-style:italic;font-size:0.92rem;
+                   line-height:1.75;text-align:center;">${moonData.desc}</p>
+                <div class="lunar-keywords" style="justify-content:center;margin-top:12px;">
+                    ${moonData.keywords.map(k => `<span class="lunar-keyword">${k}</span>`).join('')}
+                </div>
+            </div>`;
+        return;
+    }
+
+    // Influenza personalizzata
+    const resonance = getMoonResonance(viewSign, moonSign);
+    const seed      = new Date().getDate() + viewSign.charCodeAt(0) + moonSign.charCodeAt(0);
+    const resoMsg   = RESONANCE_MSGS[resonance.type][seed % 3];
+    const viewData  = MOON_SIGN_DATA[viewSign];
+    const isPersonal = (!_lunarViewSign || _lunarViewSign === natalSign);
+    const zodSym    = ZODIAC_SYMBOLS[viewSign] || '';
+
+    infBox.innerHTML = `
+        <div class="lunar-inf-header">
+            <span class="lunar-inf-sym">${viewData.sym}</span>
+            <div class="lunar-inf-meta">
+                <h4>${isPersonal ? 'La tua influenza personale' : `Influenza per ${viewSign}`}</h4>
+                <p>${isPersonal
+                    ? `${zodSym} ${viewSign} · Luna in ${moonSign} · ${phase.name}`
+                    : `Segno esplorato: ${zodSym} ${viewSign} · Luna in ${moonSign}`}</p>
+            </div>
+            <span class="lunar-resonance-badge resonance-${resonance.type}">
+                ${resonance.icon} ${resonance.label}
+            </span>
+        </div>
+        <p class="lunar-inf-body">${moonData.desc}</p>
+        <p class="lunar-inf-reso">${resoMsg}</p>
+        <div class="lunar-keywords">
+            ${moonData.keywords.map(k => `<span class="lunar-keyword">${k}</span>`).join('')}
+            <span class="lunar-keyword" style="color:var(--gold);border-color:rgba(201,168,76,0.3);">
+                ${phase.sym} ${phase.name}
+            </span>
+        </div>`;
+}
+
+function selectLunarSign(sign) {
+    if (!currentUser) { openAccount(); return; }
+    _lunarViewSign = sign; // null → torna al segno natale
+    renderLunarSection();
+    const label = sign || currentUser?.sign || 'il tuo segno';
+    showToast(`Influenza per ${label} ✦`);
 }
 </script>
 <!-- ════════════════════════════════
