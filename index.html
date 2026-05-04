@@ -3540,24 +3540,110 @@ function updateAccountUI() {
 function saveToHistory(tipo, question, result) {
     if (!currentUser) return;
     if (!currentUser.history) currentUser.history = [];
-    currentUser.history.unshift({ tipo, question: question.slice(0, 80), result: result.slice(0, 200), date: new Date().toLocaleDateString('it') });
+    currentUser.history.unshift({
+        tipo,
+        question: question.slice(0, 120),
+        result: result.slice(0, 3000), // Salva abbastanza testo per il dettaglio
+        date: new Date().toLocaleDateString('it')
+    });
     if (currentUser.history.length > 30) currentUser.history = currentUser.history.slice(0, 30);
-    localStorage.setItem('sidera_user', JSON.stringify(currentUser));
+    if (!currentUser.supabase) localStorage.setItem('sidera_user', JSON.stringify(currentUser));
+    syncToSupabase(); // Sincronizza sempre su Supabase dopo ogni lettura
+}
+
+// ─── DETTAGLIO LETTURA — apre modale con domanda + responso completo ─────────
+function openHistoryDetail(index) {
+    if (!currentUser?.history?.[index]) return;
+    const h = currentUser.history[index];
+
+    const icons = { tarocchi:'🎴', sogno:'🌙', astrologia:'⭐', sinastria:'💞', palmistry:'🤲', consulenza:'🔮' };
+    const icon  = icons[h.tipo] || '✦';
+
+    let modal = document.getElementById('historyDetailModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'historyDetailModal';
+        modal.style.cssText = `
+            display:none; position:fixed; inset:0; z-index:3000;
+            background:rgba(0,0,0,0.88); backdrop-filter:blur(14px);
+            align-items:center; justify-content:center; padding:20px;
+        `;
+        modal.innerHTML = `
+            <div style="background:#0E0B1E; border:1px solid rgba(201,168,76,0.4);
+                        border-radius:22px; max-width:560px; width:100%;
+                        max-height:88vh; overflow-y:auto; padding:32px; position:relative;
+                        animation:modalIn 0.35s cubic-bezier(0.23,1,0.32,1);">
+                <div id="hdIcon" style="font-size:2.4rem; text-align:center; margin-bottom:10px;"></div>
+                <p id="hdTipo" style="font-family:'Cinzel',serif; font-size:9px; color:var(--gold);
+                   letter-spacing:3px; text-transform:uppercase; text-align:center; margin-bottom:4px;"></p>
+                <p id="hdDate" style="font-family:'Cinzel',serif; font-size:8px; color:var(--text-muted);
+                   letter-spacing:2px; text-align:center; margin-bottom:20px;"></p>
+
+                <div style="background:rgba(201,168,76,0.05); border:1px solid rgba(201,168,76,0.15);
+                            border-radius:12px; padding:16px 18px; margin-bottom:20px;">
+                    <p style="font-family:'Cinzel',serif; font-size:8px; color:var(--gold);
+                       letter-spacing:3px; text-transform:uppercase; margin-bottom:8px;">✦ La Domanda</p>
+                    <p id="hdQuestion" style="font-style:italic; color:var(--text); font-size:0.92rem; line-height:1.65;"></p>
+                </div>
+
+                <div style="border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+                    <div style="padding:12px 18px; background:rgba(20,14,40,0.6);
+                                border-bottom:1px solid var(--border); font-family:'Cinzel',serif;
+                                font-size:8px; color:var(--text-muted); letter-spacing:3px; text-transform:uppercase;">
+                        ✦ Il Responso
+                    </div>
+                    <div id="hdResult" style="padding:22px; color:var(--text); font-size:0.9rem;
+                                             line-height:1.7; max-height:340px; overflow-y:auto;"></div>
+                </div>
+
+                <button onclick="closeHistoryDetail()"
+                    style="width:100%; margin-top:20px; padding:14px;
+                           background:linear-gradient(135deg,rgba(61,43,107,0.7),rgba(92,61,154,0.7));
+                           border:1px solid var(--gold); border-radius:10px; color:var(--gold-pale);
+                           font-family:'Cinzel',serif; font-size:11px; letter-spacing:2px; cursor:pointer;">
+                    ✦ Chiudi
+                </button>
+            </div>
+        `;
+        // Chiudi cliccando fuori
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeHistoryDetail(); });
+        document.body.appendChild(modal);
+    }
+
+    document.getElementById('hdIcon').innerText     = icon;
+    document.getElementById('hdTipo').innerText     = h.tipo.toUpperCase();
+    document.getElementById('hdDate').innerText     = h.date;
+    document.getElementById('hdQuestion').innerText = h.question;
+    document.getElementById('hdResult').innerHTML   = h.result ? formatText(h.result) : '<p style="color:var(--text-muted);font-style:italic;">Testo non disponibile per questa lettura precedente.</p>';
+
+    modal.style.display = 'flex';
+}
+
+function closeHistoryDetail() {
+    const modal = document.getElementById('historyDetailModal');
+    if (modal) modal.style.display = 'none';
 }
 
 function renderHistory() {
     const list = document.getElementById('historyList');
-    if (!currentUser || !currentUser.history || currentUser.history.length === 0) {
+    if (!currentUser?.history?.length) {
         list.innerHTML = '<div class="empty-history">Nessuna lettura ancora. Le tue rivelazioni appariranno qui.</div>';
         return;
     }
-    list.innerHTML = currentUser.history.map(h => `
-        <div class="history-item">
+
+    const icons = { tarocchi:'🎴', sogno:'🌙', astrologia:'⭐', sinastria:'💞', palmistry:'🤲', consulenza:'🔮' };
+
+    list.innerHTML = currentUser.history.map((h, i) => `
+        <div class="history-item" onclick="openHistoryDetail(${i})" title="Clicca per leggere il dettaglio">
             <div class="history-item-header">
-                <span class="history-item-type">${h.tipo.toUpperCase()}</span>
+                <span class="history-item-type">${icons[h.tipo] || '✦'} ${h.tipo.toUpperCase()}</span>
                 <span class="history-item-date">${h.date}</span>
             </div>
             <div class="history-item-preview">${h.question}</div>
+            <div style="margin-top:6px; font-family:'Cinzel',serif; font-size:8px;
+                        color:rgba(201,168,76,0.45); letter-spacing:1px; text-align:right;">
+                Leggi il responso →
+            </div>
         </div>
     `).join('');
 }
@@ -3983,10 +4069,8 @@ async function runTarot() {
         });
         const text = await response.text();
         content.innerHTML = formatText(text);
-        const newC = c - cost;
-        localStorage.setItem('astral_credits', newC);
-        document.getElementById('creditCount').innerText = newC;
         saveToHistory('tarocchi', q, text);
+        deductCredits(cost);
     } catch (e) {
         content.innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>Non sono riuscita a ricevere la lettura. I crediti non sono stati scalati: riprova tra poco.</p>";
     }
@@ -4025,10 +4109,8 @@ async function runDream() {
                 found.slice(0, 6).map(w => `<span class="dream-tag">${w}</span>`).join('');
         }
 
-        const newC = c - 1;
-        localStorage.setItem('astral_credits', newC);
-        document.getElementById('creditCount').innerText = newC;
         saveToHistory('sogno', d, text);
+        deductCredits(1);
     } catch (e) { content.innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>Non sono riuscita a interpretare il sogno in questo momento. Riprova tra poco.</p>"; }
 }
 
@@ -4189,10 +4271,8 @@ async function runAstrology() {
         } else {
             commentary.innerHTML = formatText(text);
         }
-        const newC = c - cost;
-        localStorage.setItem('astral_credits', newC);
-        document.getElementById('creditCount').innerText = newC;
         saveToHistory('astrologia', city + ' ' + date, text);
+        deductCredits(cost);
     } catch (e) { commentary.innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>La mappa astrale non è arrivata completa. Riprova più tardi senza perdere i crediti.</p>"; }
 }
 
@@ -4275,10 +4355,8 @@ async function runSynastry() {
         renderSynastryScores(total, scores, nameA, nameB);
         document.getElementById('synaContent').innerHTML = formatText(mainText);
 
-        const newC = c - cost;
-        localStorage.setItem('astral_credits', newC);
-        document.getElementById('creditCount').innerText = newC;
         saveToHistory('sinastria', `${nameA} + ${nameB}`, text);
+        deductCredits(cost);
     } catch(e) {
         document.getElementById('synaContent').innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>La sinastria non è arrivata fino in fondo. Riprova tra poco: i crediti restano al sicuro.</p>";
     }
