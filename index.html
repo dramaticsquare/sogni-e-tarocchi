@@ -4885,71 +4885,7 @@ function openIgCard(tipo) {
         const isLoading = !message || message.includes('oracolo sta') || message.includes('prepara il messaggio') || message.includes('consultando');
         const quote     = (showQuote && !isLoading) ? (message.length > 220 ? message.slice(0, 219) + '…' : message) : '';
 
-        // Chiama renderIgCanvas direttamente — cardUrl same-origin, loadCardForCanvas la gestisce
-        renderIgCanvas({ tipo: 'carta', quote, card, cardName: card.n, isReversed, dateStr, sign, cardUrl: localUrl });
-
-    } else if (tipo === 'tarocchi') {
-        const raw = document.getElementById('readingContent')?.innerText || '';
-        const quote = showQuote ? extractQuote(raw, 240) : '';
-        const cardNames = _lastTarotCards.map(c => c.name);
-        const cardUrls  = _lastTarotCards.map(c => c.src); // URL originali Wikimedia (CORS aperto)
-
-        waitForB64(_lastTarotCards, 6000).then(cardImages => {
-            renderIgCanvas({ tipo: 'tarocchi', quote, cardImages, cardNames, cardUrls });
-        });
-
-    } else if (tipo === 'sogno') {
-        const raw = document.getElementById('dreamContent')?.innerText || '';
-        const quote = showQuote ? extractQuote(raw, 240) : '';
-        renderIgCanvas({ tipo: 'sogno', quote });
-
-    } else if (tipo === 'sinastria') {
-        const nameA = document.getElementById('synaNameA')?.value || '';
-        const nameB = document.getElementById('synaNameB')?.value || '';
-        const score = document.getElementById('synaScoreNum')?.innerText || '—';
-        const raw   = document.getElementById('synaContent')?.innerText || '';
-        const quote = showQuote ? extractQuote(raw, 110) : '';
-        renderIgCanvas({ tipo: 'sinastria', quote, nameA, nameB, score });
-
-    } else if (tipo === 'lunare') {
-    const d = window._lunarIgData || {};
-    renderIgCanvas({
-        tipo:    'lunare',
-        quote:   d.resoMsg   || '',
-        moonSign: d.moonSign || '',
-        phase:   d.phase     || getMoonPhase(),
-        viewSign: d.viewSign || '',
-        resonance: d.resonance || { label:'', icon:'✦', type:'neutro' }});
-    
-    } else if (tipo === 'astrologia') {
-        const sole = document.getElementById('summarySoleSign')?.innerText || '—';
-        const luna = document.getElementById('summaryLunaSign')?.innerText || '—';
-        const asc  = document.getElementById('summaryAscSign')?.innerText || '—';
-        const raw  = document.getElementById('astroCommentary')?.innerText || '';
-        const quote = showQuote ? extractQuote(raw, 200) : '';
-        renderIgCanvas({ tipo: 'astrologia', quote, sole, luna, asc });
-    }
-}
-
-// Aspetta che le b64 siano disponibili, con polling e timeout
-function waitForB64(cards, maxWaitMs) {
-    return new Promise(resolve => {
-        const start = Date.now();
-        function check() {
-            const allReady = cards.every(c => c.b64 !== null);
-            if (allReady || Date.now() - start > maxWaitMs) {
-                // Usa b64 se disponibile, altrimenti null (canvas non userà src esterni)
-                resolve(cards.map(c =>
-                    c.b64 ? `data:image/jpeg;base64,${c.b64}` : null
-                ));
-            } else {
-                setTimeout(check, 300);
-            }
-        }
-        check();
-    });
-}
-// ── Luna disegnata proceduralmente — niente emoji, sempre nitida ──────────
+        // ── Luna disegnata proceduralmente — niente emoji, sempre nitida ──────────
 function drawMoonProc(ctx, cx, cy, r, phaseName) {
     const phaseData = {
         'Luna Nuova':        { f: 0,    wax: true  },
@@ -5050,6 +4986,72 @@ function drawMoonProc(ctx, cx, cy, r, phaseName) {
 
     ctx.restore();
 }
+        
+        // Chiama renderIgCanvas direttamente — cardUrl same-origin, loadCardForCanvas la gestisce
+        renderIgCanvas({ tipo: 'carta', quote, card, cardName: card.n, isReversed, dateStr, sign, cardUrl: localUrl });
+
+    } else if (tipo === 'tarocchi') {
+        const raw = document.getElementById('readingContent')?.innerText || '';
+        const quote = showQuote ? extractQuote(raw, 240) : '';
+        const cardNames = _lastTarotCards.map(c => c.name);
+        const cardUrls  = _lastTarotCards.map(c => c.src); // URL originali Wikimedia (CORS aperto)
+
+        waitForB64(_lastTarotCards, 6000).then(cardImages => {
+            renderIgCanvas({ tipo: 'tarocchi', quote, cardImages, cardNames, cardUrls });
+        });
+
+    } else if (tipo === 'sogno') {
+        const raw = document.getElementById('dreamContent')?.innerText || '';
+        const quote = showQuote ? extractQuote(raw, 240) : '';
+        renderIgCanvas({ tipo: 'sogno', quote });
+
+    } else if (tipo === 'sinastria') {
+        const nameA = document.getElementById('synaNameA')?.value || '';
+        const nameB = document.getElementById('synaNameB')?.value || '';
+        const score = document.getElementById('synaScoreNum')?.innerText || '—';
+        const raw   = document.getElementById('synaContent')?.innerText || '';
+        const quote = showQuote ? extractQuote(raw, 110) : '';
+        renderIgCanvas({ tipo: 'sinastria', quote, nameA, nameB, score });
+
+    } else if (tipo === 'lunare') {
+    const d = window._lunarIgData || {};
+    renderIgCanvas({
+        tipo:    'lunare',
+        quote:   d.resoMsg   || '',
+        moonSign: d.moonSign || '',
+        phase:   d.phase     || getMoonPhase(),
+        viewSign: d.viewSign || '',
+        resonance: d.resonance || { label:'', icon:'✦', type:'neutro' }});
+    
+    } else if (tipo === 'astrologia') {
+        const sole = document.getElementById('summarySoleSign')?.innerText || '—';
+        const luna = document.getElementById('summaryLunaSign')?.innerText || '—';
+        const asc  = document.getElementById('summaryAscSign')?.innerText || '—';
+        const raw  = document.getElementById('astroCommentary')?.innerText || '';
+        const quote = showQuote ? extractQuote(raw, 200) : '';
+        renderIgCanvas({ tipo: 'astrologia', quote, sole, luna, asc });
+    }
+}
+
+// Aspetta che le b64 siano disponibili, con polling e timeout
+function waitForB64(cards, maxWaitMs) {
+    return new Promise(resolve => {
+        const start = Date.now();
+        function check() {
+            const allReady = cards.every(c => c.b64 !== null);
+            if (allReady || Date.now() - start > maxWaitMs) {
+                // Usa b64 se disponibile, altrimenti null (canvas non userà src esterni)
+                resolve(cards.map(c =>
+                    c.b64 ? `data:image/jpeg;base64,${c.b64}` : null
+                ));
+            } else {
+                setTimeout(check, 300);
+            }
+        }
+        check();
+    });
+}
+
 // ─── Disegna la card su canvas (risolve CORS e centra su ogni device) ───────
 async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, nameA, nameB, score, sole, luna, asc, card, cardName, isReversed, dateStr, sign, cardImage, cardUrl, moonSign, phase, viewSign, resonance }) {
     const SIZE = 1080; // px — formato Instagram nativo
