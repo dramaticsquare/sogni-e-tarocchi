@@ -4513,24 +4513,21 @@ function openIgCard(tipo) {
     }
 
     if (tipo === 'carta') {
-        const orientation = document.getElementById('dailyCardOrientation')?.innerText || '';
-        const isReversed  = orientation.includes('Rovesciata');
-        const message     = document.getElementById('dailyCardMessage')?.innerText || '';
-        const isLoading   = message.includes('oracolo sta') || message.includes('prepara il messaggio');
-        const quote       = (showQuote && !isLoading) ? (message.length > 220 ? message.slice(0,219) + '…' : message) : '';
-        const dateStr     = document.getElementById('dailyCardDate')?.innerText || '';
-        const sign        = currentUser?.sign || null;
         const today       = new Date().toISOString().split('T')[0];
         const card        = CARDS[parseInt(today.replace(/-/g, '')) % 22];
-        // Usa getCardImgUrl: preferisce ./tarot-cards/ (GitHub/Vercel), poi Wikimedia
         const localUrl    = getCardImgUrl(card.i);
-        // Converte in b64 come fa il blocco tarocchi — same-origin, fetch immediato
-        imgToBase64(localUrl).then(b64 => {
-            const cardImage = b64 ? `data:image/jpeg;base64,${b64}` : null;
-            renderIgCanvas({ tipo: 'carta', quote, card, cardName: card.n, isReversed, dateStr, sign, cardImage });
-        }).catch(() => {
-            renderIgCanvas({ tipo: 'carta', quote, card, cardName: card.n, isReversed, dateStr, sign, cardImage: null });
-        });
+        const dateStr     = document.getElementById('dailyCardDate')?.innerText || '';
+        const sign        = currentUser?.sign || null;
+        const orientation = document.getElementById('dailyCardOrientation')?.innerText || '';
+        const isReversed  = orientation.includes('Rovesciata');
+
+        // Legge il messaggio al momento del click — se non ancora pronto usa stringa vuota
+        const message   = document.getElementById('dailyCardMessage')?.innerText || '';
+        const isLoading = !message || message.includes('oracolo sta') || message.includes('prepara il messaggio') || message.includes('consultando');
+        const quote     = (showQuote && !isLoading) ? (message.length > 220 ? message.slice(0, 219) + '…' : message) : '';
+
+        // Chiama renderIgCanvas direttamente — cardUrl same-origin, loadCardForCanvas la gestisce
+        renderIgCanvas({ tipo: 'carta', quote, card, cardName: card.n, isReversed, dateStr, sign, cardUrl: localUrl });
 
     } else if (tipo === 'tarocchi') {
         const raw = document.getElementById('readingContent')?.innerText || '';
@@ -4585,7 +4582,7 @@ function waitForB64(cards, maxWaitMs) {
 }
 
 // ─── Disegna la card su canvas (risolve CORS e centra su ogni device) ───────
-async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, nameA, nameB, score, sole, luna, asc, card, cardName, isReversed, dateStr, sign }) {
+async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, nameA, nameB, score, sole, luna, asc, card, cardName, isReversed, dateStr, sign, cardImage, cardUrl }) {
     const SIZE = 1080; // px — formato Instagram nativo
     let canvas = document.getElementById('igCanvas');
     if (!canvas) {
@@ -4732,8 +4729,8 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
         const imgX = cX + 12, imgY = cY + 56;
         const imgW = cW - 24,  imgH = cH - 108;
 
-        // Tenta caricamento immagine da b64 (già convertita in openIgCard)
-        const cardImgEl = cardImage ? await loadCardForCanvas(cardImage, null) : null;
+        // Carica immagine: prima b64 se disponibile, poi URL same-origin direttamente
+        const cardImgEl = await loadCardForCanvas(cardImage || null, cardUrl || null);
 
         if (cardImgEl) {
             ctx.save();
@@ -4748,14 +4745,22 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
             ctx.restore();
             roundRect(ctx, imgX, imgY, imgW, imgH, 10, null, 'rgba(201,168,76,0.3)');
         } else {
-            // Fallback procedurale se l'immagine non carica
-            const halo = ctx.createRadialGradient(centerX, imgY+imgH*0.44, 0, centerX, imgY+imgH*0.44, 100);
-            halo.addColorStop(0, 'rgba(201,168,76,0.28)');
+            // Fallback procedurale — sfondo scuro + simbolo grande ben visibile
+            ctx.fillStyle = 'rgba(10,6,24,0.6)';
+            ctx.fillRect(imgX, imgY, imgW, imgH);
+            // Halo radiale
+            const halo = ctx.createRadialGradient(centerX, imgY+imgH*0.44, 0, centerX, imgY+imgH*0.44, 95);
+            halo.addColorStop(0, 'rgba(201,168,76,0.22)');
             halo.addColorStop(1, 'transparent');
             ctx.fillStyle = halo; ctx.fillRect(imgX, imgY, imgW, imgH);
-            ctx.fillStyle = 'rgba(220,185,90,0.88)';
-            ctx.font = `90px serif`; ctx.letterSpacing = '0'; ctx.textAlign = 'center';
-            ctx.fillText(meta.sym, centerX, imgY + imgH * 0.54 + 32);
+            // Numero romano grande al centro (sempre leggibile)
+            ctx.fillStyle = 'rgba(220,185,90,0.70)';
+            ctx.font = `bold 72px 'Cinzel', serif`; ctx.letterSpacing = '6px'; ctx.textAlign = 'center';
+            ctx.fillText(meta.num, centerX, imgY + imgH * 0.38 + 36);
+            // Nome in italiano sotto il numero
+            ctx.fillStyle = 'rgba(220,185,90,0.50)';
+            ctx.font = `18px 'Cinzel', serif`; ctx.letterSpacing = '3px';
+            ctx.fillText(itName, centerX, imgY + imgH * 0.38 + 72);
         }
 
         // Angoli decorativi
