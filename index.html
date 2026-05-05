@@ -5707,6 +5707,7 @@ async function renderIgCanvas({ tipo, quote, cardImages, cardNames, cardUrls, na
     ctx.fillStyle = 'rgba(138,122,94,0.48)'; ctx.font = cinzel(17); ctx.letterSpacing = '3px';
     ctx.fillText('SIDERA7.VERCEL.APP', centerX, SIZE - 44);
 }
+} // ── chiude renderIgCanvas ────────────────────────────────────────────────
 
 
 // ── Helpers canvas ───────────────────────────────────────────────────────────
@@ -6269,8 +6270,8 @@ function renderLunarSection() {
             </button>
         </div>`;
     
-}
-}
+} // ── chiude renderLunarSection ──────────────────────────────────────────────
+
 function selectLunarSign(sign) {
     if (!currentUser) { openAccount(); return; }
     _lunarViewSign = sign; // null → torna al segno natale
