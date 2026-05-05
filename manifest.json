@@ -1,0 +1,50 @@
+{
+  "name": "Sidera — L'Oracolo delle Stelle",
+  "short_name": "Sidera",
+  "description": "Il tuo oracolo personale: Tarocchi, Astrologia, Sogni, Sinastria e Influenze Lunari.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07050F",
+  "theme_color": "#07050F",
+  "orientation": "portrait-primary",
+  "lang": "it",
+  "categories": ["lifestyle", "entertainment"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/icons/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Tarocchi",
+      "short_name": "Tarocchi",
+      "description": "Consulta gli Arcani",
+      "url": "/?section=oracolo",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Astrologia",
+      "short_name": "Astrologia",
+      "description": "La tua mappa astrale",
+      "url": "/?section=astrologia",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
