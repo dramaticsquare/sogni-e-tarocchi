@@ -234,7 +234,7 @@
         /* ══════════════════════════════════
            HERO
         ══════════════════════════════════ */
-        #home { padding: 0; min-height: 100vh; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        #home { padding: 80px 0 40px; min-height: 100vh; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         #home.active { display: flex; }
 
         .hero-tagline {
@@ -785,6 +785,7 @@
             .nav-center { display: none !important; }
             .credit-badge { font-size: 10px; padding: 5px 10px; }
             .content-section { padding: 120px 0 60px; }
+            #home { padding-top: 90px; }
             .hero-stats { gap: 24px; }
             .modal-box { padding: 24px 18px; }
             .price-grid { grid-template-columns: repeat(3, 1fr); }
@@ -1790,7 +1791,7 @@
     font-family: 'Cinzel', serif; letter-spacing: 1px;
 }
 .lunar-resonance-badge {
-    margin-left: auto; display: inline-flex; align-items: center; gap: 6px;
+    display: inline-flex; align-items: center; gap: 6px;
     padding: 4px 13px; border-radius: 50px; font-family: 'Cinzel', serif;
     font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase;
     white-space: nowrap; flex-shrink: 0;
@@ -2802,10 +2803,7 @@
                 <button type="submit" class="btn-action" id="loginBtn">✦ Accedi al Tempio</button>
                 </form>
                 <p style="font-size:0.73rem;color:var(--text-muted);margin-top:14px;text-align:center;line-height:1.6;">
-                    Crediti e letture sincronizzati su tutti i tuoi dispositivi.<br>
-                    <span style="color:rgba(138,122,94,0.5);font-size:0.68rem;">
-                        ⓘ Per abilitare la sincronizzazione reale, collega Supabase Auth nel file config.
-                    </span>
+                    Crediti e letture sincronizzati su tutti i tuoi dispositivi.
                 </p>
             </div>
 
@@ -2815,7 +2813,10 @@
                 <input type="email" id="regEmail" placeholder="Email" autocomplete="email">
                 <input type="password" id="regPass" placeholder="Password (min. 6 caratteri)" autocomplete="new-password">
                 <div style="margin-bottom:16px;">
-                    <label style="display:block;font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">Data di nascita <span style="color:rgba(138,122,94,0.5);font-size:8px;">(opzionale — personalizza la Carta del Giorno)</span></label>
+                    <label style="display:block;font-family:'Cinzel',serif;font-size:9px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">
+                        ✦ Data di nascita
+                        <span style="color:var(--text-muted);font-size:8px;letter-spacing:1px;"> — personalizza Carta del Giorno e Influenze Lunari</span>
+                    </label>
                     <input type="date" id="regBirth" autocomplete="bday" style="margin-bottom:0;">
                 </div>
                 <div id="registerError" style="display:none;font-size:0.78rem;color:#e07070;text-align:center;margin:-8px 0 10px;font-family:'Cinzel',serif;letter-spacing:1px;"></div>
@@ -2848,10 +2849,19 @@
             </div>
 
             <div id="settingsTab" class="account-tab-content">
-                <div style="margin-bottom:16px;padding:14px;border:1px solid var(--border);border-radius:12px;background:rgba(201,168,76,0.03);">
-                    <p style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase;">Sincronizzazione Cross-Device</p>
-                    <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;font-style:italic;">Per attivare la sincronizzazione reale su più dispositivi, collega <strong style="color:var(--gold-light)">Supabase Auth</strong> o <strong style="color:var(--gold-light)">Firebase Auth</strong>. Vedi le istruzioni nel README del progetto.</p>
+
+                <!-- Data di nascita -->
+                <div style="margin-bottom:16px;padding:16px;border:1px solid var(--border);border-radius:12px;background:rgba(201,168,76,0.03);">
+                    <p style="font-family:'Cinzel',serif;font-size:9px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">✦ Data di Nascita</p>
+                    <p style="font-size:0.75rem;color:var(--text-muted);font-style:italic;margin-bottom:12px;line-height:1.5;">Usata per personalizzare la Carta del Giorno e le Influenze Lunari.</p>
+                    <div id="birthDateDisplay" style="margin-bottom:10px;"></div>
+                    <input type="date" id="settingsBirth" style="margin-bottom:10px;">
+                    <button onclick="saveBirthDate()" class="btn-action" style="padding:12px;font-size:10px;">
+                        ✦ Salva Data di Nascita
+                    </button>
+                    <p id="birthSaveMsg" style="display:none;font-family:'Cinzel',serif;font-size:9px;color:#90c870;letter-spacing:1px;text-align:center;margin-top:8px;"></p>
                 </div>
+
                 <button class="btn-action" onclick="doLogout()" style="background:rgba(120,40,40,0.3);border-color:rgba(200,80,80,0.4);margin-bottom:10px;">Esci dal Tempio</button>
             </div>
         </div>
@@ -3586,8 +3596,27 @@ function showProfileView() {
     document.getElementById('profileCredits').innerText = localStorage.getItem('astral_credits');
     const syncBadge = document.getElementById('syncBadge');
     if (syncBadge) {
-        const signStr = currentUser.sign ? ` · ${ZODIAC_SYMBOLS[currentUser.sign]||''} ${currentUser.sign}` : '';
-        syncBadge.innerText = (currentUser.supabase ? '🟢 Sincronizzato' : '🟡 Locale — collega Supabase per la sync') + signStr;
+        if (currentUser.sign) {
+            syncBadge.innerText = `${ZODIAC_SYMBOLS[currentUser.sign]||''} ${currentUser.sign}`;
+            syncBadge.style.color = 'var(--gold)';
+        } else {
+            syncBadge.innerText = '✦ Aggiungi la data di nascita nelle Impostazioni';
+            syncBadge.style.color = 'var(--text-muted)';
+        }
+    }
+    // Popola il campo data nelle impostazioni se già presente
+    const sb = document.getElementById('settingsBirth');
+    if (sb && currentUser.birthDate) sb.value = currentUser.birthDate;
+    const bd = document.getElementById('birthDateDisplay');
+    if (bd) {
+        if (currentUser.birthDate) {
+            const d = new Date(currentUser.birthDate + 'T12:00:00');
+            const formatted = d.toLocaleDateString('it-IT', { day:'numeric', month:'long', year:'numeric' });
+            const sign = currentUser.sign ? ` · ${ZODIAC_SYMBOLS[currentUser.sign]||''} ${currentUser.sign}` : '';
+            bd.innerHTML = `<p style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold-light);letter-spacing:1px;">${formatted}${sign}</p>`;
+        } else {
+            bd.innerHTML = `<p style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);font-style:italic;">Nessuna data inserita</p>`;
+        }
     }
     renderHistory();
 }
@@ -3737,6 +3766,46 @@ async function doRegister() {
     } finally {
         if (btn) { btn.innerText = '🌟 Crea il Tuo Profilo'; btn.disabled = false; }
     }
+}
+
+async function saveBirthDate() {
+    const input = document.getElementById('settingsBirth');
+    const msgEl = document.getElementById('birthSaveMsg');
+    if (!input || !input.value) {
+        if (msgEl) { msgEl.innerText = 'Inserisci una data valida.'; msgEl.style.color = '#e07070'; msgEl.style.display = 'block'; }
+        return;
+    }
+    const birth = input.value;
+    const sign  = getZodiacSign(birth);
+    currentUser.birthDate = birth;
+    currentUser.sign      = sign;
+
+    // Salva in locale
+    if (!currentUser.supabase) localStorage.setItem('sidera_user', JSON.stringify(currentUser));
+
+    // Salva su Supabase se connesso
+    if (window._supabase && currentUser.id) {
+        try {
+            await window._supabase.from('profiles').update({ birth_date: birth }).eq('user_id', currentUser.id);
+        } catch(e) { console.warn('[Supabase] birth_date update error:', e); }
+    }
+
+    // Aggiorna UI
+    updateZodiacChip();
+    renderLunarSection();
+    const d = new Date(birth + 'T12:00:00');
+    const formatted = d.toLocaleDateString('it-IT', { day:'numeric', month:'long', year:'numeric' });
+    const bd = document.getElementById('birthDateDisplay');
+    if (bd) bd.innerHTML = `<p style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold-light);letter-spacing:1px;">${formatted} · ${ZODIAC_SYMBOLS[sign]||''} ${sign}</p>`;
+    if (msgEl) {
+        msgEl.innerText = `✦ Salvato — segno: ${ZODIAC_SYMBOLS[sign]||''} ${sign}`;
+        msgEl.style.color = '#90c870';
+        msgEl.style.display = 'block';
+        setTimeout(() => { msgEl.style.display = 'none'; }, 3000);
+    }
+    const syncBadge = document.getElementById('syncBadge');
+    if (syncBadge) { syncBadge.innerText = `${ZODIAC_SYMBOLS[sign]||''} ${sign}`; syncBadge.style.color = 'var(--gold)'; }
+    showToast(`✦ Data salvata — ${ZODIAC_SYMBOLS[sign]||''} ${sign}`);
 }
 
 async function doLogout() {
