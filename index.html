@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sidera — L'Oracolo delle Stelle</title>
+
+    <!-- ── PWA ── -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#07050F">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sidera">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+    <!-- ── SEO / Social ── -->
+    <meta name="description" content="Il tuo oracolo personale: Tarocchi, Astrologia, Sogni, Sinastria e Influenze Lunari.">
+    <meta property="og:title" content="Sidera — L'Oracolo delle Stelle">
+    <meta property="og:description" content="Tarocchi, Mappa Astrale, Sogni e Influenze Lunari personalizzate.">
+    <meta property="og:image" content="/icons/icon-512.png">
+    <meta property="og:url" content="https://sidera7.vercel.app">
+    <meta name="twitter:card" content="summary_large_image">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -2021,6 +2038,7 @@
                     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;justify-content:center;align-items:center;">
                         <button class="btn-share" onclick="openIgCard('carta')" style="font-size:0.76rem;">📸 Card Instagram</button>
                         <button class="btn-share" onclick="shareDailyCard()" style="font-size:0.76rem;">✨ Condividi</button>
+                        <button class="btn-share" onclick="loadDailyCard(true)" style="font-size:0.76rem;">↺ Aggiorna</button>
                     </div>
                     <!-- ════════════════════════════════
      INFLUENZE LUNARI
@@ -2113,7 +2131,7 @@
                 <span class="mode-icon">✦</span>
                 <span class="mode-title">LETTURA COMPLETA</span>
                 <span class="mode-desc">78 carte · tutti i semi · 4 Crediti</span>
-                <span class="mode-badge">ORACOLO INFINITO - Solo per utenti abbonati</span>
+                <span class="mode-badge">🔒 ORACOLO INFINITO</span>
             </button>
         </div>
 
@@ -2301,9 +2319,13 @@
                         <input type="radio" name="astroDepth" value="base" checked>
                         <span><strong>Essenziale</strong><small>Sole · Luna · Asc — 2 Crediti</small></span>
                     </label>
-                    <label class="depth-option">
+                    <label class="depth-option" onclick="checkAstroDepth(event)">
                         <input type="radio" name="astroDepth" value="profonda">
-                        <span><strong>Profonda</strong><small>Analisi completa — 4 Crediti</small></span>
+                        <span>
+                            <strong>Profonda</strong>
+                            <small>Analisi completa — 4 Crediti</small>
+                            <span style="display:block;font-family:'Cinzel',serif;font-size:8px;color:#b08fe0;letter-spacing:1px;margin-top:3px;">🔒 ORACOLO INFINITO</span>
+                        </span>
                     </label>
                 </div>
                 <button class="btn-action" onclick="runAstrology()">⭐ Genera la Mappa Astrale</button>
@@ -2427,9 +2449,13 @@
                     <input type="radio" name="synaDepth" value="base" checked>
                     <span><strong>Essenziale</strong><small>Compatibilità di base — 2 Crediti</small></span>
                 </label>
-                <label class="depth-option">
+                <label class="depth-option" onclick="checkSynaDepth(event)">
                     <input type="radio" name="synaDepth" value="profonda">
-                    <span><strong>Profonda</strong><small>Aspetti, case, karmatica — 4 Crediti</small></span>
+                    <span>
+                        <strong>Profonda</strong>
+                        <small>Aspetti, case, karmatica — 4 Crediti</small>
+                        <span style="display:block;font-family:'Cinzel',serif;font-size:8px;color:#b08fe0;letter-spacing:1px;margin-top:3px;">🔒 ORACOLO INFINITO</span>
+                    </span>
                 </label>
             </div>
 
@@ -3352,10 +3378,105 @@ function resetSection(id) {
 // ─────────────────────────────────────────────
 //  PAYMENT
 // ─────────────────────────────────────────────
+// ── Banner abbonamento ────────────────────────────────────────────────────
+function showSubscriptionBanner(title, desc) {
+    // Rimuovi eventuale banner precedente
+    const old = document.getElementById('subBanner');
+    if (old) old.remove();
+
+    const banner = document.createElement('div');
+    banner.id = 'subBanner';
+    banner.style.cssText = `
+        position:fixed; inset:0; z-index:7000;
+        background:rgba(0,0,0,0.85); backdrop-filter:blur(16px);
+        display:flex; align-items:center; justify-content:center; padding:20px;
+    `;
+    banner.innerHTML = `
+        <div style="
+            background:#0E0B1E; border:1px solid rgba(107,63,160,0.7);
+            border-radius:24px; padding:36px 28px; max-width:420px; width:100%;
+            text-align:center; animation:modalIn 0.4s cubic-bezier(0.23,1,0.32,1);
+            box-shadow: 0 0 60px rgba(107,63,160,0.25);
+        ">
+            <div style="font-size:2.4rem;margin-bottom:14px;">✦</div>
+            <p style="font-family:'Cinzel',serif;font-size:10px;color:#b08fe0;
+                letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;">
+                Contenuto Riservato
+            </p>
+            <h3 style="font-family:'Cinzel',serif;color:var(--gold-light);
+                font-size:1.05rem;letter-spacing:1.5px;margin-bottom:14px;line-height:1.4;">
+                ${title}
+            </h3>
+            <p style="color:var(--text-muted);font-size:0.88rem;line-height:1.75;
+                font-style:italic;margin-bottom:24px;">${desc}</p>
+
+            <div style="background:rgba(107,63,160,0.12);border:1px solid rgba(107,63,160,0.35);
+                border-radius:14px;padding:16px;margin-bottom:22px;">
+                <p style="font-family:'Cinzel Decorative',cursive;font-size:1rem;
+                    color:var(--gold);margin-bottom:4px;">Oracolo Infinito</p>
+                <p style="font-family:'Cinzel',serif;font-size:1.5rem;color:var(--gold-light);
+                    line-height:1;">19,99€ <span style="font-size:0.7rem;color:var(--text-muted);">/ mese</span></p>
+                <p style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;font-style:italic;">
+                    100 crediti mensili · accesso a tutte le funzioni · cancelli quando vuoi
+                </p>
+            </div>
+
+            <button onclick="document.getElementById('subBanner').remove();openSubscription();"
+                style="width:100%;padding:16px;background:linear-gradient(135deg,rgba(107,63,160,0.9),rgba(42,26,85,1));
+                border:1px solid var(--gold);border-radius:12px;color:var(--gold-pale);
+                font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;cursor:pointer;
+                margin-bottom:10px;transition:0.3s;"
+                onmouseover="this.style.boxShadow='0 0 24px rgba(201,168,76,0.25)'"
+                onmouseout="this.style.boxShadow='none'">
+                ✦ Abbonati a Oracolo Infinito
+            </button>
+            <button onclick="document.getElementById('subBanner').remove();"
+                style="background:none;border:none;color:var(--text-muted);font-family:'Cinzel',serif;
+                font-size:10px;letter-spacing:2px;cursor:pointer;padding:8px;">
+                Continua senza abbonamento
+            </button>
+        </div>
+    `;
+    // Chiudi cliccando fuori
+    banner.addEventListener('click', e => { if (e.target === banner) banner.remove(); });
+    document.body.appendChild(banner);
+}
+
+function checkAstroDepth(e) {
+    const isSubscribed = localStorage.getItem('sidera_subscribed') === 'true';
+    if (!isSubscribed) {
+        e.preventDefault();
+        // Ripristina "base"
+        document.querySelector('input[name="astroDepth"][value="base"]').checked = true;
+        showSubscriptionBanner(
+            '🔒 Analisi Profonda riservata agli abbonati',
+            'Con Oracolo Infinito ottieni l\'analisi completa della tua mappa astrale: pianeti personali, tensioni interiori e percorso dell\'anima.'
+        );
+    }
+}
+
+function checkSynaDepth(e) {
+    const isSubscribed = localStorage.getItem('sidera_subscribed') === 'true';
+    if (!isSubscribed) {
+        e.preventDefault();
+        // Ripristina "base"
+        document.querySelector('input[name="synaDepth"][value="base"]').checked = true;
+        showSubscriptionBanner(
+            '🔒 Sinastria Profonda riservata agli abbonati',
+            'Con Oracolo Infinito esplori aspetti karmici, case astrologiche e il filo invisibile che lega le due anime.'
+        );
+    }
+}
+
 function openPayment() {
     document.getElementById('paymentModal').classList.add('open');
     switchPayTab('crediti');
     setAmount(3, 5);
+}
+function openSubscription() {
+    document.getElementById('paymentModal').classList.add('open');
+    switchPayTab('abbonamento');
+    renderSubscriptionButton();
 }
 function closePayment() { document.getElementById('paymentModal').classList.remove('open'); }
 
@@ -3559,6 +3680,10 @@ if (SUPABASE_ENABLED && typeof supabase !== 'undefined') {
                 updateZodiacChip();
                 document.getElementById('creditCount').innerText = localStorage.getItem('astral_credits');
                 console.log('[Supabase] Sessione ripristinata per:', currentUser.email, sign ? `(${sign})` : '');
+                // ── Aggiorna sezione lunare e carta del giorno col segno reale ──
+                _lunarViewSign = null; // mostra sempre il segno natale all'apertura
+                renderLunarSection();
+                loadDailyCard();
             } else if (event === 'SIGNED_OUT') {
                 currentUser = null;
                 updateAccountUI();
@@ -4323,18 +4448,20 @@ let _tarotMode = 'base'; // 'base' | 'full'
 function selectTarotMode(mode) {
     const isSubscribed = localStorage.getItem('sidera_subscribed') === 'true';
     if (mode === 'full' && !isSubscribed) {
-        showToast('La Lettura Completa è riservata agli abbonati Oracolo Infinito.');
-        openPayment();
+        showSubscriptionBanner(
+            '🔒 Lettura Completa riservata agli abbonati',
+            'Con Oracolo Infinito accedi al mazzo completo di 78 carte, compresi tutti gli Arcani Minori.'
+        );
         return;
     }
     _tarotMode = mode;
     document.getElementById('modeBtnBase').classList.toggle('active', mode === 'base');
     document.getElementById('modeBtnFull').classList.toggle('active', mode === 'full');
-    const cost = mode === 'full' ? 2 : 1;
+    const cost = mode === 'full' ? 4 : 2;
     document.getElementById('tarotRunBtn').innerText =
         mode === 'full'
             ? `✦ Estrai le Tre Carte dal Mazzo Completo — ${cost} Crediti`
-            : `✦ Estrai le Tre Carte — ${cost} Credito`;
+            : `✦ Estrai le Tre Carte — ${cost} Crediti`;
     document.getElementById('ritualStep2Desc').innerText =
         mode === 'full'
             ? 'Scrivi la tua domanda. Tre carte dal mazzo completo di 78 verranno estratte, compresi gli Arcani Minori.'
@@ -6347,6 +6474,71 @@ function selectLunarSign(sign) {
     const label = sign || currentUser?.sign || 'il tuo segno';
     showToast(`Influenza per ${label} ✦`);
 }
+
+// ── Registrazione Service Worker (PWA) ───────────────────────────────────
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('[PWA] Service Worker registrato:', reg.scope))
+            .catch(err => console.warn('[PWA] Registrazione fallita:', err));
+    });
+}
+
+// ── Prompt installazione PWA ──────────────────────────────────────────────
+let _pwaInstallPrompt = null;
+
+window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    _pwaInstallPrompt = e;
+    // Mostra un banner discreto dopo 30 secondi se non ancora installata
+    setTimeout(() => {
+        if (_pwaInstallPrompt) showPwaToast();
+    }, 30000);
+});
+
+function showPwaToast() {
+    const existing = document.getElementById('pwaInstallBanner');
+    if (existing) return;
+    const banner = document.createElement('div');
+    banner.id = 'pwaInstallBanner';
+    banner.style.cssText = `
+        position:fixed; bottom:80px; left:50%; transform:translateX(-50%);
+        background:#0E0B1E; border:1px solid rgba(201,168,76,0.5);
+        color:var(--gold-light); padding:14px 20px; border-radius:16px;
+        font-family:'Cinzel',serif; font-size:11px; letter-spacing:1px;
+        z-index:9998; display:flex; align-items:center; gap:12px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.5); max-width:90vw;
+        animation: fadeUp 0.4s ease;
+    `;
+    banner.innerHTML = `
+        <span>✦ Installa Sidera come app</span>
+        <button onclick="installPwa()" style="background:var(--gold);color:var(--deep);
+            border:none;padding:6px 14px;border-radius:50px;font-family:'Cinzel',serif;
+            font-size:10px;letter-spacing:1px;cursor:pointer;white-space:nowrap;">
+            Installa
+        </button>
+        <button onclick="this.parentElement.remove()" style="background:none;border:none;
+            color:var(--text-muted);font-size:16px;cursor:pointer;line-height:1;">✕</button>
+    `;
+    document.body.appendChild(banner);
+    setTimeout(() => { if (banner.parentElement) banner.remove(); }, 12000);
+}
+
+async function installPwa() {
+    if (!_pwaInstallPrompt) return;
+    _pwaInstallPrompt.prompt();
+    const { outcome } = await _pwaInstallPrompt.userChoice;
+    console.log('[PWA] Scelta utente:', outcome);
+    _pwaInstallPrompt = null;
+    const banner = document.getElementById('pwaInstallBanner');
+    if (banner) banner.remove();
+    if (outcome === 'accepted') showToast('✦ Sidera installata — la trovi nella tua home!');
+}
+
+window.addEventListener('appinstalled', () => {
+    console.log('[PWA] App installata con successo');
+    _pwaInstallPrompt = null;
+});
 </script>
 <!-- ════════════════════════════════
      INSTAGRAM SHARE MODAL
