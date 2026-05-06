@@ -2021,7 +2021,6 @@
                     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;justify-content:center;align-items:center;">
                         <button class="btn-share" onclick="openIgCard('carta')" style="font-size:0.76rem;">📸 Card Instagram</button>
                         <button class="btn-share" onclick="shareDailyCard()" style="font-size:0.76rem;">✨ Condividi</button>
-                        <button class="btn-share" onclick="loadDailyCard(true)" style="font-size:0.76rem;">↺ Aggiorna</button>
                     </div>
                     <!-- ════════════════════════════════
      INFLUENZE LUNARI
@@ -2108,12 +2107,12 @@
             <button class="tarot-mode-btn active" id="modeBtnBase" onclick="selectTarotMode('base')">
                 <span class="mode-icon">🌙</span>
                 <span class="mode-title">LETTURA BASE</span>
-                <span class="mode-desc">22 Arcani Maggiori · 3 carte · 1 Credito</span>
+                <span class="mode-desc">22 Arcani Maggiori · 3 carte · 2 Credito</span>
             </button>
             <button class="tarot-mode-btn premium" id="modeBtnFull" onclick="selectTarotMode('full')">
                 <span class="mode-icon">✦</span>
                 <span class="mode-title">LETTURA COMPLETA</span>
-                <span class="mode-desc">78 carte · tutti i semi · 2 Crediti</span>
+                <span class="mode-desc">78 carte · tutti i semi · 4 Crediti</span>
                 <span class="mode-badge">ORACOLO INFINITO</span>
             </button>
         </div>
@@ -2220,7 +2219,7 @@
                     <button class="dream-prompt-btn" onclick="setDreamPrompt('Ho sognato l\'acqua...')">🌊 Acqua</button>
                 </div>
 
-                <button class="btn-action" onclick="runDream()">🌙 Interpreta la Visione — 1 Credito</button>
+                <button class="btn-action" onclick="runDream()">🌙 Interpreta la Visione — 2 Credito</button>
             </div>
         </div>
 
@@ -2300,11 +2299,11 @@
                 <div class="depth-row">
                     <label class="depth-option">
                         <input type="radio" name="astroDepth" value="base" checked>
-                        <span><strong>Essenziale</strong><small>Sole · Luna · Asc — 1 Credito</small></span>
+                        <span><strong>Essenziale</strong><small>Sole · Luna · Asc — 2 Credito</small></span>
                     </label>
                     <label class="depth-option">
                         <input type="radio" name="astroDepth" value="profonda">
-                        <span><strong>Profonda</strong><small>Analisi completa — 3 Crediti</small></span>
+                        <span><strong>Profonda</strong><small>Analisi completa — 4 Crediti</small></span>
                     </label>
                 </div>
                 <button class="btn-action" onclick="runAstrology()">⭐ Genera la Mappa Astrale</button>
@@ -2604,7 +2603,7 @@
             </div>
 
             <button class="btn-action" id="palmSubmitBtn" onclick="runPalmReading()" style="margin-top:16px;background:linear-gradient(135deg,rgba(107,63,160,0.7),rgba(42,26,85,0.9));">
-                ✦ Invia la Foto per la Lettura — 15 Crediti
+                ✦ Invia la Foto per la Lettura — 20 Crediti
             </button>
             <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-top:10px;font-style:italic;">
                 La tua foto viene trasmessa in modo sicuro e non viene conservata.<br>
@@ -2650,13 +2649,13 @@
                     <span class="icon">🎴</span>
                     <h3>Lettura Tarocchi</h3>
                     <p>Un'analisi approfondita della tua situazione attraverso gli Arcani, con una sessione dedicata.</p>
-                    <span class="badge">10 Crediti</span>
+                    <span class="badge">20 Crediti</span>
                 </div>
                 <div class="consult-type-card" onclick="selectConsult('amore')">
                     <span class="icon">💫</span>
                     <h3>Consulto Amore</h3>
                     <p>Esplora le energie relazionali e i nodi karmici che legano la tua anima a un'altra.</p>
-                    <span class="badge">10 Crediti</span>
+                    <span class="badge">20 Crediti</span>
                 </div>
                 <div class="consult-type-card" onclick="selectConsult('rito')" style="border-color: rgba(107,63,160,0.4); background: rgba(107,63,160,0.06);">
                     <span class="icon">🔮</span>
@@ -4053,7 +4052,7 @@ async function shareAstroText() {
 // ─────────────────────────────────────────────
 let selectedConsult = '';
 const consultLabels = { tarocchi: 'Lettura Tarocchi', amore: 'Consulto Amore', rito: 'Rito dell\'Anima — Premium' };
-const consultCosts  = { tarocchi: 10, amore: 10, rito: 40 };
+const consultCosts  = { tarocchi: 20, amore: 20, rito: 40 };
 
 function selectConsult(type) {
     const c = parseInt(localStorage.getItem('astral_credits')) || 0;
@@ -4343,7 +4342,7 @@ function selectTarotMode(mode) {
 }
 
 async function runTarot() {
-    const cost = _tarotMode === 'full' ? 2 : 1;
+    const cost = _tarotMode === 'full' ? 4 : 2;
     let c = parseInt(localStorage.getItem('astral_credits')) || 0;
     if (c < cost) return openPayment();
     const q = document.getElementById('questionInput').value.trim();
@@ -4460,7 +4459,7 @@ async function runDream() {
         }
 
         saveToHistory('sogno', d, text);
-        deductCredits(1);
+        deductCredits(2);
     } catch (e) { content.innerHTML = "<p style='color:var(--text-muted);font-style:italic;'>Non sono riuscita a interpretare il sogno in questo momento. Riprova tra poco.</p>"; }
 }
 
@@ -4469,7 +4468,7 @@ async function runDream() {
 // ─────────────────────────────────────────────
 async function runAstrology() {
     const depth = document.querySelector('input[name="astroDepth"]:checked').value;
-    const cost = depth === 'profonda' ? 3 : 1;
+    const cost = depth === 'profonda' ? 4 : 2;
     let c = parseInt(localStorage.getItem('astral_credits')) || 0;
     if (c < cost) return openPayment();
 
@@ -4853,7 +4852,7 @@ async function runPalmReading() {
 
     if (!email || !email.includes('@')) { showToast('Inserisci un\'email valida per ricevere la lettura.'); return; }
 
-    const COST = 15;
+    const COST = 20;
     let c = parseInt(localStorage.getItem('astral_credits')) || 0;
     if (c < COST) { openPayment(); return; }
 
