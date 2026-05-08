@@ -1874,8 +1874,137 @@
 .lunar-sign-btn:hover { border-color: var(--border-hover); color: var(--gold-light); }
 .lunar-sign-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
 .lunar-sign-btn .sign-sym { font-size: 1.1rem; display: block; margin-bottom: 3px; }
+.lunar-deep-link {
+    margin-top: 18px; text-align: center;
+}
+.lunar-deep-link .btn-share,
+.lunar-deep-link .btn-hero-primary {
+    min-width: 220px;
+}
+.lunar-oracle-shell {
+    max-width: 980px; margin: 0 auto;
+}
+.lunar-oracle-hero {
+    position: relative; overflow: hidden;
+    padding: 34px 28px; border-radius: 28px;
+    border: 1px solid rgba(201,168,76,0.18);
+    background:
+        radial-gradient(circle at top, rgba(201,168,76,0.12), transparent 42%),
+        linear-gradient(160deg, rgba(29,18,56,0.92), rgba(9,6,20,0.98));
+    box-shadow: 0 18px 44px rgba(0,0,0,0.28);
+    margin-bottom: 24px;
+}
+.lunar-oracle-hero::before {
+    content: ''; position: absolute; inset: 18px;
+    border-radius: 22px; border: 1px solid rgba(201,168,76,0.08);
+    pointer-events: none;
+}
+.lunar-oracle-grid {
+    display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 22px;
+}
+.lunar-oracle-panel,
+.lunar-oracle-side {
+    border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 22px;
+    background: rgba(7,5,15,0.42);
+    backdrop-filter: blur(10px);
+}
+.lunar-oracle-panel { padding: 26px; }
+.lunar-oracle-side { padding: 22px; }
+.lunar-oracle-kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 16px; border-radius: 999px;
+    border: 1px solid rgba(201,168,76,0.22);
+    background: rgba(201,168,76,0.07);
+    font-family: 'Cinzel', serif; font-size: 9px;
+    color: var(--gold-light); letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 16px;
+}
+.lunar-oracle-title {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: var(--gold-light); line-height: 1.15;
+    margin-bottom: 14px;
+}
+.lunar-oracle-desc {
+    color: var(--text-muted); font-size: 1rem;
+    line-height: 1.8; max-width: 720px;
+}
+.lunar-oracle-pills,
+.lunar-oracle-signals,
+.lunar-oracle-actions {
+    display: flex; flex-wrap: wrap; gap: 10px;
+}
+.lunar-oracle-pills { margin-top: 18px; }
+.lunar-oracle-pill,
+.lunar-oracle-signal {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 14px; border-radius: 999px;
+    border: 1px solid rgba(201,168,76,0.14);
+    background: rgba(255,255,255,0.03);
+    font-family: 'Cinzel', serif; font-size: 10px;
+    color: var(--text); letter-spacing: 1px;
+}
+.lunar-oracle-signal {
+    width: 100%; justify-content: space-between;
+    border-radius: 16px; padding: 12px 14px;
+}
+.lunar-oracle-list {
+    display: grid; gap: 12px; margin-top: 20px;
+}
+.lunar-oracle-list-item {
+    padding: 16px 18px; border-radius: 18px;
+    border: 1px solid rgba(201,168,76,0.1);
+    background: rgba(255,255,255,0.02);
+}
+.lunar-oracle-list-item strong {
+    display: block; margin-bottom: 6px;
+    font-family: 'Cinzel', serif; font-size: 0.88rem; color: var(--gold-light);
+    letter-spacing: 1px;
+}
+.lunar-oracle-list-item span {
+    color: var(--text-muted); font-size: 0.9rem; line-height: 1.7;
+}
+.lunar-oracle-side h3,
+.lunar-oracle-panel h3 {
+    font-family: 'Cinzel', serif; font-size: 0.92rem;
+    color: var(--gold-light); letter-spacing: 2px; margin-bottom: 12px;
+}
+.lunar-oracle-side textarea {
+    min-height: 118px; resize: vertical;
+}
+.lunar-oracle-note {
+    color: var(--text-muted); font-size: 0.8rem; line-height: 1.7;
+    font-style: italic; margin-top: 12px;
+}
+.lunar-oracle-actions {
+    margin-top: 16px; justify-content: center;
+}
+.lunar-oracle-result {
+    display: none; margin-top: 22px; padding: 24px;
+    border-radius: 22px;
+    border: 1px solid rgba(201,168,76,0.18);
+    background: linear-gradient(180deg, rgba(19,12,36,0.9), rgba(8,6,18,0.96));
+}
+.lunar-oracle-result.visible { display: block; animation: fadeUp 0.45s ease; }
+.lunar-oracle-result-head {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
+}
+.lunar-oracle-result-body {
+    color: var(--text); font-size: 0.96rem; line-height: 1.9;
+}
+.lunar-oracle-result-body p { margin-bottom: 12px; }
+.lunar-oracle-result-body p:last-child { margin-bottom: 0; }
+@media (max-width: 860px) {
+    .lunar-oracle-grid { grid-template-columns: 1fr; }
+}
 @media (max-width: 640px) {
     .lunar-sign-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .lunar-oracle-hero { padding: 28px 20px; border-radius: 24px; }
+    .lunar-oracle-panel,
+    .lunar-oracle-side,
+    .lunar-oracle-result { padding: 20px; }
 }
 @media (max-width: 400px) {
     .lunar-sign-grid { grid-template-columns: repeat(3, 1fr); }
@@ -2082,6 +2211,12 @@
         </button>
     </div>
 
+        <div class="lunar-deep-link">
+            <button class="btn-share" onclick="showSection('lunar-oracle')" style="font-size:0.76rem;">
+                Approfondisci le influenze della Luna
+            </button>
+        </div>
+
     <!-- Selettore altri segni (solo utenti registrati) -->
     <div class="lunar-sign-selector" id="lunarSignSelector" style="display:none;">
         <span class="lunar-sign-selector-label">✦ Esplora l'influenza sugli altri segni ✦</span>
@@ -2111,7 +2246,87 @@
         </div>
     </div>
 </section>
-
+<!-- ORACOLO LUNARE -->
+<section id="lunar-oracle" class="content-section">
+    <div class="container">
+        <div class="lunar-oracle-shell">
+            <div class="lunar-oracle-hero">
+                <span class="lunar-oracle-kicker">Lettura quotidiana personalizzata</span>
+                <h2 class="lunar-oracle-title">ORACOLO LUNARE DEL GIORNO</h2>
+                <p class="lunar-oracle-desc">
+                    Una lettura piu profonda costruita sul giorno presente, sulla fase della Luna e sul tuo segno.
+                    Pensata come un oroscopo intimo: breve, personale, ripetibile ogni giorno.
+                </p>
+                <div class="lunar-oracle-pills">
+                    <span class="lunar-oracle-pill" id="lunarOraclePhasePill">Fase lunare del giorno</span>
+                    <span class="lunar-oracle-pill" id="lunarOracleMoonPill">Segno della Luna</span>
+                    <span class="lunar-oracle-pill" id="lunarOracleSignPill">Il tuo segno</span>
+                </div>
+            </div>
+            <div class="lunar-oracle-grid">
+                <div class="lunar-oracle-panel">
+                    <h3>Cosa riceverai</h3>
+                    <div class="lunar-oracle-list">
+                        <div class="lunar-oracle-list-item">
+                            <strong>Clima energetico del giorno</strong>
+                            <span>Una sintesi che collega fase lunare, segno della Luna e il tuo modo di attraversare questa giornata.</span>
+                        </div>
+                        <div class="lunar-oracle-list-item">
+                            <strong>Messaggio operativo</strong>
+                            <span>Un consiglio concreto su dove spingere, cosa osservare e quale tono interiore coltivare adesso.</span>
+                        </div>
+                        <div class="lunar-oracle-list-item">
+                            <strong>Intento personale</strong>
+                            <span>Puoi aggiungere una domanda o un tema del giorno per rendere il responso ancora piu vicino alla tua energia.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="lunar-oracle-side">
+                    <h3>Richiedi la lettura</h3>
+                    <div class="lunar-oracle-signals">
+                        <div class="lunar-oracle-signal">
+                            <span>Accesso</span>
+                            <strong id="lunarOracleAccessLabel">Profilo consigliato</strong>
+                        </div>
+                        <div class="lunar-oracle-signal">
+                            <span>Costo</span>
+                            <strong>1 Credito Energia</strong>
+                        </div>
+                        <div class="lunar-oracle-signal">
+                            <span>Frequenza ideale</span>
+                            <strong>1 volta al giorno</strong>
+                        </div>
+                    </div>
+                    <label class="input-label" style="margin-top:18px;">Tema del giorno o intenzione personale</label>
+                    <textarea id="lunarOracleIntent" placeholder="Amore, lavoro, decisioni, energia interiore... oppure lascia che la Luna parli liberamente."></textarea>
+                    <p class="lunar-oracle-note">
+                        La lettura usa il tuo segno natale se presente nel profilo. Se non lo hai ancora indicato,
+                        riceverai un responso piu generale basato sul cielo del giorno.
+                    </p>
+                    <div class="lunar-oracle-actions">
+                        <button class="btn-action" id="lunarOracleBtn" onclick="runLunarOracle()">
+                            Richiedi l'Oracolo Lunare - 1 Credito
+                        </button>
+                        <button class="btn-share" onclick="showSection('home')" style="font-size:0.76rem;">
+                            Torna alle influenze lunari
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="lunarOracleResult" class="lunar-oracle-result">
+                <div class="lunar-oracle-result-head">
+                    <span class="daily-card-label" style="margin:0;">Responso del giorno</span>
+                    <span class="lunar-resonance-badge" id="lunarOracleResultBadge">Lettura personalizzata</span>
+                </div>
+                <div id="lunarOracleResultBody" class="lunar-oracle-result-body"></div>
+                <div class="lunar-oracle-actions" style="justify-content:flex-start;">
+                    <button class="btn-share" onclick="copyText('lunarOracleResultBody')" style="font-size:0.76rem;">Copia Testo</button>
+                    <button class="btn-share" onclick="showSection('home')" style="font-size:0.76rem;">Rivedi la Luna di oggi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <!-- TAROCCHI -->
 <section id="oracolo" class="content-section">
     <div class="container">
@@ -3328,6 +3543,9 @@ function showSection(id) {
         // Carica carta del giorno se non ancora mostrata
         setTimeout(() => loadDailyCard(), 300);
         setTimeout(() => renderLunarSection(), 400);
+    }
+    if (id === 'lunar-oracle') {
+        setTimeout(() => syncLunarOracleSection(), 120);
     }
     if (id === 'oracolo' && !localStorage.getItem('visited_tarot')) {
         document.getElementById('infoModal').classList.add('open');
@@ -6462,16 +6680,121 @@ function renderLunarSection() {
             <button class="btn-share" onclick="copyLunarText()" style="font-size:0.76rem;">
                 Copia Testo
             </button>
+            <button class="btn-share" onclick="showSection('lunar-oracle')" style="font-size:0.76rem;">
+                Approfondisci
+            </button>
         </div>`;
     
 } // ── chiude renderLunarSection ──────────────────────────────────────────────
 
-function selectLunarSign(sign) {
-    if (!currentUser) { openAccount(); return; }
-    _lunarViewSign = sign; // null → torna al segno natale
-    renderLunarSection();
-    const label = sign || currentUser?.sign || 'il tuo segno';
-    showToast(`Influenza per ${label} ✦`);
+function escapeHtml(text) {
+    return String(text || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+function formatOracleText(text) {
+    return String(text || '')
+        .split(/\n\s*\n/)
+        .map(part => part.trim())
+        .filter(Boolean)
+        .map(part => `<p>${escapeHtml(part)}</p>`)
+        .join('');
+}
+function syncLunarOracleSection() {
+    const phase = getMoonPhase();
+    const moonSign = getCurrentMoonSign();
+    const sign = currentUser?.sign || 'Ospite';
+    const phasePill = document.getElementById('lunarOraclePhasePill');
+    const moonPill = document.getElementById('lunarOracleMoonPill');
+    const signPill = document.getElementById('lunarOracleSignPill');
+    const accessLabel = document.getElementById('lunarOracleAccessLabel');
+    if (phasePill) phasePill.innerText = `${phase.sym} ${phase.name}`;
+    if (moonPill) moonPill.innerText = `Luna in ${moonSign}`;
+    if (signPill) signPill.innerText = currentUser?.sign ? `Segno: ${sign}` : 'Lettura generale del giorno';
+    if (accessLabel) accessLabel.innerText = currentUser?.sign ? 'Profilo sincronizzato' : 'Ospite o profilo incompleto';
+}
+function getLunarOracleFallbackText(intent) {
+    const phase = getMoonPhase();
+    const moonSign = getCurrentMoonSign();
+    const moonData = MOON_SIGN_DATA[moonSign];
+    const sign = currentUser?.sign || null;
+    const resonance = sign ? getMoonResonance(sign, moonSign) : { label: 'Energia del giorno', type: 'neutral', icon: '☽' };
+    const opening = sign
+        ? `Oggi la ${phase.name.toLowerCase()} incontra il tuo segno, ${sign}, attraverso la Luna in ${moonSign}.`
+        : `Oggi la ${phase.name.toLowerCase()} si esprime attraverso la Luna in ${moonSign}, creando un clima da ascoltare con attenzione.`;
+    const focus = intent
+        ? `Il tema che hai indicato, "${intent}", va affrontato senza forzare il ritmo: prima ascolto, poi azione.`
+        : 'Lascia che la giornata prenda forma senza anticipare troppo le risposte: la chiarezza cresce se non la stringi.';
+    const close = sign
+        ? `${resonance.icon} ${resonance.label}: ${moonData.energy}. ${moonData.desc}`
+        : `Energia del giorno: ${moonData.energy}. ${moonData.desc}`;
+    return [opening, focus, close].join('\n\n');
+}
+async function runLunarOracle() {
+    syncLunarOracleSection();
+    const cost = 1;
+    const credits = parseInt(localStorage.getItem('astral_credits')) || 0;
+    if (credits < cost) {
+        openPayment();
+        showToast('Ti serve 1 credito per questa lettura.');
+        return;
+    }
+    const btn = document.getElementById('lunarOracleBtn');
+    const resultWrap = document.getElementById('lunarOracleResult');
+    const resultBody = document.getElementById('lunarOracleResultBody');
+    const badge = document.getElementById('lunarOracleResultBadge');
+    const intent = (document.getElementById('lunarOracleIntent')?.value || '').trim();
+    const phase = getMoonPhase();
+    const moonSign = getCurrentMoonSign();
+    const sign = currentUser?.sign || '';
+    const resonance = sign ? getMoonResonance(sign, moonSign) : { label: 'Energia del giorno', type: 'neutral', icon: '☽' };
+    const today = new Date().toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric' });
+    if (btn) {
+        btn.disabled = true;
+        btn.innerText = 'Lettura in preparazione...';
+    }
+    try {
+        const response = await fetch(MAKE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tipo: 'oracolo_lunare',
+                modalita: 'giornaliero_personalizzato',
+                data: today,
+                fase_lunare: phase.name,
+                simbolo_fase: phase.sym,
+                luna_in: moonSign,
+                segno_utente: sign || null,
+                intento: intent || null,
+                energia: MOON_SIGN_DATA[moonSign]?.energy || '',
+                nome: currentUser?.name || 'Anima',
+                email: currentUser?.email || ''
+            })
+        });
+        let payload = null;
+        try { payload = await response.json(); } catch (e) { payload = null; }
+        let finalText = payload?.reading || payload?.response || payload?.output || payload?.text || payload?.message || '';
+        if (!finalText && response.ok) finalText = getLunarOracleFallbackText(intent);
+        if (!response.ok || !finalText) throw new Error('Nessuna lettura disponibile');
+        deductCredits(cost);
+        saveToHistory('luna', intent || 'Oracolo lunare del giorno', finalText);
+        badge.className = `lunar-resonance-badge resonance-${resonance.type}`;
+        badge.innerText = `${resonance.icon} ${resonance.label}`;
+        resultBody.innerHTML = formatOracleText(finalText);
+        resultWrap.classList.add('visible');
+        showToast('Lettura lunare ricevuta ✦');
+    } catch (e) {
+        console.warn('[Sidera] Oracolo lunare non disponibile:', e);
+        showToast('La lettura lunare non e arrivata. Nessun credito e stato scalato.');
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "Richiedi l'Oracolo Lunare - 1 Credito";
+        }
+    }
 }
 
 // ── Registrazione Service Worker (PWA) ───────────────────────────────────
@@ -6656,4 +6979,3 @@ window.addEventListener('appinstalled', () => {
 
 </body>
 </html>
-
