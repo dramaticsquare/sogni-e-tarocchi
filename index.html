@@ -1878,8 +1878,27 @@
     margin-top: 18px; text-align: center;
 }
 .lunar-deep-link .btn-share,
-.lunar-deep-link .btn-hero-primary {
+.lunar-deep-link .btn-hero-primary,
+.lunar-deep-link .btn-lunar-cta {
     min-width: 220px;
+}
+.btn-lunar-cta {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 14px 26px; border-radius: 999px; border: 1px solid rgba(201,168,76,0.45);
+    background: linear-gradient(135deg, rgba(201,168,76,0.22), rgba(107,63,160,0.24));
+    color: var(--gold-light); cursor: pointer; transition: 0.28s;
+    font-family: 'Cinzel', serif; font-size: 0.76rem; letter-spacing: 1.4px;
+    text-transform: uppercase; box-shadow: 0 12px 28px rgba(0,0,0,0.24);
+}
+.btn-lunar-cta:hover {
+    transform: translateY(-2px);
+    border-color: rgba(201,168,76,0.7);
+    background: linear-gradient(135deg, rgba(201,168,76,0.3), rgba(107,63,160,0.34));
+    color: #fff4cf;
+}
+.lunar-deep-link-note {
+    margin-top: 10px; color: var(--text-muted); font-size: 0.76rem;
+    line-height: 1.7; font-style: italic;
 }
 .lunar-oracle-shell {
     max-width: 980px; margin: 0 auto;
@@ -2212,9 +2231,10 @@
     </div>
 
         <div class="lunar-deep-link">
-            <button class="btn-share" onclick="showSection('lunar-oracle')" style="font-size:0.76rem;">
-                Approfondisci le influenze della Luna
+            <button class="btn-lunar-cta" onclick="showSection('lunar-oracle')">
+                ✦ Apri l'Oracolo Lunare
             </button>
+            <p class="lunar-deep-link-note">Una lettura piu profonda e quotidiana, personalizzata sul cielo di oggi.</p>
         </div>
 
     <!-- Selettore altri segni (solo utenti registrati) -->
@@ -2290,7 +2310,7 @@
                         </div>
                         <div class="lunar-oracle-signal">
                             <span>Costo</span>
-                            <strong>1 Credito Energia</strong>
+                            <strong>2 Crediti Energia</strong>
                         </div>
                         <div class="lunar-oracle-signal">
                             <span>Frequenza ideale</span>
@@ -2305,7 +2325,7 @@
                     </p>
                     <div class="lunar-oracle-actions">
                         <button class="btn-action" id="lunarOracleBtn" onclick="runLunarOracle()">
-                            Richiedi l'Oracolo Lunare - 1 Credito
+                            Richiedi l'Oracolo Lunare - 2 Crediti
                         </button>
                         <button class="btn-share" onclick="showSection('home')" style="font-size:0.76rem;">
                             Torna alle influenze lunari
@@ -2320,6 +2340,7 @@
                 </div>
                 <div id="lunarOracleResultBody" class="lunar-oracle-result-body"></div>
                 <div class="lunar-oracle-actions" style="justify-content:flex-start;">
+                    <button class="btn-share" onclick="openLunarOracleIgCard()" style="font-size:0.76rem;">📸 Card Instagram</button>
                     <button class="btn-share" onclick="copyText('lunarOracleResultBody')" style="font-size:0.76rem;">Copia Testo</button>
                     <button class="btn-share" onclick="showSection('home')" style="font-size:0.76rem;">Rivedi la Luna di oggi</button>
                 </div>
@@ -5327,7 +5348,7 @@ function openIgCard(tipo) {
     const d = window._lunarIgData || {};
     renderIgCanvas({
         tipo:    'lunare',
-        quote:   d.resoMsg   || '',
+        quote:   d.quote     || d.resoMsg || '',
         moonSign: d.moonSign || '',
         phase:   d.phase     || getMoonPhase(),
         viewSign: d.viewSign || '',
@@ -6680,7 +6701,7 @@ function renderLunarSection() {
             <button class="btn-share" onclick="copyLunarText()" style="font-size:0.76rem;">
                 Copia Testo
             </button>
-            <button class="btn-share" onclick="showSection('lunar-oracle')" style="font-size:0.76rem;">
+            <button class="btn-lunar-cta" onclick="showSection('lunar-oracle')" style="font-size:0.72rem;padding:12px 22px;">
                 Approfondisci
             </button>
         </div>`;
@@ -6716,6 +6737,21 @@ function syncLunarOracleSection() {
     if (signPill) signPill.innerText = currentUser?.sign ? `Segno: ${sign}` : 'Lettura generale del giorno';
     if (accessLabel) accessLabel.innerText = currentUser?.sign ? 'Profilo sincronizzato' : 'Ospite o profilo incompleto';
 }
+function openLunarOracleIgCard() {
+    const moonSign   = getCurrentMoonSign();
+    const phase      = getMoonPhase();
+    const viewSign   = currentUser?.sign || _lunarViewSign || '';
+    const resonance  = getMoonResonance(viewSign, moonSign);
+    const raw        = document.getElementById('lunarOracleResultBody')?.innerText || '';
+    const quote      = extractQuote(raw, 220);
+    const oggi       = new Date();
+    const giornoAnno = Math.floor((oggi - new Date(oggi.getFullYear(), 0, 0)) / 86400000);
+    const pool       = RESONANCE_MSGS[resonance.type];
+    const offset     = viewSign ? viewSign.charCodeAt(0) % pool.length : 0;
+    const resoMsg    = pool[(giornoAnno + offset) % pool.length];
+    window._lunarIgData = { moonSign, phase, viewSign, resonance, resoMsg, quote };
+    openIgCard('lunare');
+}
 function getLunarOracleFallbackText(intent) {
     const phase = getMoonPhase();
     const moonSign = getCurrentMoonSign();
@@ -6735,11 +6771,11 @@ function getLunarOracleFallbackText(intent) {
 }
 async function runLunarOracle() {
     syncLunarOracleSection();
-    const cost = 1;
+    const cost = 2;
     const credits = parseInt(localStorage.getItem('astral_credits')) || 0;
     if (credits < cost) {
         openPayment();
-        showToast('Ti serve 1 credito per questa lettura.');
+        showToast('Ti servono 2 crediti per questa lettura.');
         return;
     }
     const btn = document.getElementById('lunarOracleBtn');
@@ -6792,7 +6828,7 @@ async function runLunarOracle() {
     } finally {
         if (btn) {
             btn.disabled = false;
-            btn.innerText = "Richiedi l'Oracolo Lunare - 1 Credito";
+            btn.innerText = "Richiedi l'Oracolo Lunare - 2 Crediti";
         }
     }
 }
