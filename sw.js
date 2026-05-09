@@ -1,42 +1,47 @@
 // ── Sidera Service Worker ─────────────────────────────────────────────────
-// riga 3 — aggiorna la versione per invalidare la cache sui dispositivi installati
+// Aggiorna CACHE_VERSION ad ogni deploy per forzare il refresh sui dispositivi
 const CACHE_VERSION = 'sidera-v3';
 
-// Risorse da cacheare immediatamente all'installazione (app shell)
+// App shell — solo risorse locali (no URL esterni: causano crash di addAll)
 const PRECACHE_ASSETS = [
     '/',
     '/index.html',
     '/sidera-oracolo-lunare.js',
-    'https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500;600&display=swap',
+    '/manifest.json',
 ];
 
-// ── Install: pre-cacha l'app shell ────────────────────────────────────────
+// ── Install ───────────────────────────────────────────────────────────────
 self.addEventListener('install', event => {
     event.waitUntil(
-        caches.open(CACHE_VERSION).then(cache => {
-            return cache.addAll(PRECACHE_ASSETS.map(url => new Request(url, { mode: 'no-cors' })));
-        }).then(() => self.skipWaiting())
+        caches.open(CACHE_VERSION)
+            .then(cache => cache.addAll(PRECACHE_ASSETS))
+            .then(() => self.skipWaiting())
+            .catch(err => {
+                // Log dell'errore ma non blocca l'installazione
+                console.warn('[SW] Precache parzialmente fallita:', err);
+                return self.skipWaiting();
+            })
     );
 });
 
-// ── Activate: rimuovi cache vecchie ───────────────────────────────────────
+// ── Activate: rimuovi cache vecchie ──────────────────────────────────────
 self.addEventListener('activate', event => {
     event.waitUntil(
-        caches.keys().then(keys =>
-            Promise.all(
+        caches.keys()
+            .then(keys => Promise.all(
                 keys
                     .filter(key => key !== CACHE_VERSION)
                     .map(key => caches.delete(key))
-            )
-        ).then(() => self.clients.claim())
+            ))
+            .then(() => self.clients.claim())
     );
 });
 
-// ── Fetch: strategia Network-first con fallback cache ─────────────────────
+// ── Fetch: Network-first con fallback cache ───────────────────────────────
 self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
 
-    // Richieste API (Make, Supabase, PayPal, Astrologer) → sempre network, mai cache
+    // Questi domini vanno sempre in rete — mai intercettati
     const networkOnly = [
         'hook.eu1.make.com',
         'supabase.co',
@@ -45,7 +50,11 @@ self.addEventListener('fetch', event => {
         'astrologer.p.rapidapi.com',
         'nominatim.openstreetmap.org',
         'allorigins.win',
-        'wikipedia.org'
+        'wikipedia.org',
+        'fonts.googleapis.com',   // ← spostato qui: non più in precache
+        'fonts.gstatic.com',      // ← idem
+        'cdnjs.cloudflare.com',
+        'cdn.jsdelivr.net',
     ];
 
     if (networkOnly.some(domain => url.hostname.includes(domain))) {
@@ -53,66 +62,56 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // Richieste POST → sempre network
+    // POST e altri metodi → sempre network
     if (event.request.method !== 'GET') {
         event.respondWith(fetch(event.request));
         return;
     }
 
-    // Tutto il resto → Network first, poi cache, poi offline page
+    // GET → Network-first, poi cache, poi offline fallback
     event.respondWith(
         fetch(event.request)
             .then(response => {
-                // Copia la risposta nella cache
                 if (response && response.status === 200) {
-                    const responseClone = response.clone();
-                    caches.open(CACHE_VERSION).then(cache => {
-                        cache.put(event.request, responseClone);
-                    });
+                    const clone = response.clone();
+                    caches.open(CACHE_VERSION)
+                        .then(cache => cache.put(event.request, clone));
                 }
                 return response;
             })
-            .catch(() => {
-                // Offline: prova dalla cache
-                return caches.match(event.request).then(cached => {
+            .catch(() =>
+                caches.match(event.request).then(cached => {
                     if (cached) return cached;
-                    // Fallback: home page se disponibile
                     if (event.request.destination === 'document') {
                         return caches.match('/') || caches.match('/index.html');
                     }
-                });
-            })
+                })
+            )
     );
 });
 
-// ── Push notifications (future) ───────────────────────────────────────────
+// ── Push notifications ────────────────────────────────────────────────────
 self.addEventListener('push', event => {
     if (!event.data) return;
     const data = event.data.json();
-    const options = {
-        body:    data.body    || 'L\'oracolo ha un messaggio per te ✦',
-        icon:    '/icon-192.png',
-        badge:   '/icon-192.png',
-        vibrate: [100, 50, 100],
-        data:    { url: data.url || '/' },
-        actions: [
-            { action: 'open',    title: 'Apri Sidera' },
-            { action: 'dismiss', title: 'Ignora'      }
-        ]
-    };
     event.waitUntil(
-        self.registration.showNotification(data.title || 'Sidera', options)
+        self.registration.showNotification(data.title || 'Sidera', {
+            body:    data.body    || "L'oracolo ha un messaggio per te ✦",
+            icon:    '/icon-192.png',
+            badge:   '/icon-192.png',
+            vibrate: [100, 50, 100],
+            data:    { url: data.url || '/' },
+        })
     );
 });
 
 self.addEventListener('notificationclick', event => {
     event.notification.close();
-    if (event.action === 'dismiss') return;
     const url = event.notification.data?.url || '/';
     event.waitUntil(
-        clients.matchAll({ type: 'window' }).then(windowClients => {
-            for (const client of windowClients) {
-                if (client.url === url && 'focus' in client) return client.focus();
+        clients.matchAll({ type: 'window' }).then(wins => {
+            for (const w of wins) {
+                if (w.url === url && 'focus' in w) return w.focus();
             }
             if (clients.openWindow) return clients.openWindow(url);
         })
