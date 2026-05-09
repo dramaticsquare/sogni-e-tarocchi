@@ -2067,7 +2067,63 @@
 
     <!-- Scheda influenza (utenti registrati) -->
     <div class="lunar-influence-card" id="lunarInfluenceBox" style="display:none;"></div>
+    <!-- Guida Lunare Personalizzata — pulsante CTA -->
+<div id="lunarDeepDiveBtn" style="display:none; max-width:720px; margin:16px auto 0;">
+    <label style="display:block; font-family:'Cinzel',serif; font-size:9px; color:var(--text-muted);
+        letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">
+        ✦ Il tuo intento per oggi &nbsp;
+        <span style="color:rgba(138,122,94,0.5); font-size:8px;">— opzionale</span>
+    </label>
+    <textarea id="lunarIntentoInput" rows="2" style="width:100%; background:rgba(7,5,15,0.65);
+        border:1px solid rgba(201,168,76,0.18); border-radius:12px; color:var(--text);
+        padding:13px 16px; font-family:'Cormorant Garamond',serif; font-size:16px;
+        font-style:italic; outline:none; resize:none; margin-bottom:12px; display:block;
+        transition:border-color 0.3s;"
+        placeholder="Cosa vuoi mettere a fuoco oggi? Un'intenzione, una domanda, un'emozione…">
+    </textarea>
+    <button onclick="window.sideraLunar.run()" style="width:100%; padding:18px;
+        border-radius:14px; cursor:pointer; border:1px solid rgba(201,168,76,0.65);
+        background:linear-gradient(135deg,rgba(42,26,85,0.92),rgba(107,63,160,0.75));
+        color:var(--gold-pale); font-family:'Cinzel',serif; font-size:11px;
+        letter-spacing:0.22em; text-transform:uppercase; transition:all 0.4s;">
+        ☽ Svela la tua Guida Lunare — 2 Crediti
+    </button>
+    <span style="font-family:'Cinzel',serif; font-size:9px; color:rgba(138,122,94,0.48);
+        letter-spacing:1px; text-align:center; margin-top:8px; display:block;">
+        lettura personalizzata · valida per tutta la giornata
+    </span>
+</div>
 
+<!-- Pannello risultato Guida Lunare -->
+<div id="lunarDeepDiveResult" style="display:none; max-width:720px; margin:20px auto 0;
+    border:1px solid var(--border); border-radius:20px; overflow:hidden;
+    background:rgba(20,14,40,0.55); backdrop-filter:blur(12px); animation:fadeUp 0.6s ease;">
+    <div style="padding:18px 26px; background:rgba(42,26,85,0.3); border-bottom:1px solid var(--border);
+        display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <div>
+            <p style="font-family:'Cinzel',serif; font-size:0.82rem; color:var(--gold-light);
+                letter-spacing:2px; text-transform:uppercase; margin:0;">☽ Guida Lunare del Giorno</p>
+            <p id="lunarDeepDiveMeta" style="font-family:'Cinzel',serif; font-size:9px;
+                color:var(--text-muted); letter-spacing:1px; margin:2px 0 0;">—</p>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+            <span id="lunarCachedBadge" style="display:none; padding:3px 12px; border-radius:50px;
+                background:rgba(80,160,80,0.1); border:1px solid rgba(80,160,80,0.3);
+                font-family:'Cinzel',serif; font-size:8px; color:#90c870; letter-spacing:2px;">
+                ✦ già generata oggi
+            </span>
+            <button class="btn-share" onclick="window.sideraLunar.shareResult()" style="font-size:0.72rem;">✨ Condividi</button>
+            <button class="btn-share" onclick="window.sideraLunar.copyResult()" style="font-size:0.72rem;">Copia</button>
+            <button class="btn-share" onclick="document.getElementById('lunarDeepDiveResult').style.display='none'" style="font-size:0.72rem;">✕</button>
+        </div>
+    </div>
+    <div id="lunarDeepDiveContent" style="padding:30px 28px;"></div>
+    <div style="padding:16px 26px; border-top:1px solid var(--border); text-align:center;">
+        <button class="btn-share" onclick="window.sideraLunar.run(true)" style="font-size:0.76rem;">
+            ☽ Nuova lettura — 2 Crediti
+        </button>
+    </div>
+</div>
     <!-- CTA ospiti -->
     <div class="lunar-guest-cta" id="lunarGuestCta">
         <span class="gcta-icon">🌙</span>
