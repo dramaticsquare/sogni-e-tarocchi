@@ -1,11 +1,12 @@
 // ── Sidera Service Worker ─────────────────────────────────────────────────
-// Versione cache: aggiorna questo numero ad ogni deploy per invalidare la cache
-const CACHE_VERSION = 'sidera-v1';
+// riga 3 — aggiorna la versione per invalidare la cache sui dispositivi installati
+const CACHE_VERSION = 'sidera-v2';
 
 // Risorse da cacheare immediatamente all'installazione (app shell)
 const PRECACHE_ASSETS = [
     '/',
     '/index.html',
+    '/sidera-oracolo-lunare.js',
     'https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500;600&display=swap',
 ];
 
