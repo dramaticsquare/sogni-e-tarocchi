@@ -161,21 +161,47 @@
         `;
         lunarSection.parentNode.insertBefore(resultDiv, lunarSection.nextSibling);
 
-        // ── Observer: inietta il blocco CTA dentro lunarInfluenceBox ──────
-        const observer = new MutationObserver(() => {
-            injectDeepDiveButton();
-        });
+        // ── 1. Monkey-patch renderLunarSection (metodo più affidabile) ────
+        // La funzione è già definita nell'index.html — la avvolgiamo
+        // così ogni chiamata (anche future: cambio segno, login, ecc.)
+        // inietta automaticamente il pulsante alla fine.
+        const _origRender = window.renderLunarSection;
+        if (typeof _origRender === 'function') {
+            window.renderLunarSection = function () {
+                _origRender.apply(this, arguments);
+                // Piccolo delay: lascia che il DOM si stabilizzi
+                setTimeout(injectDeepDiveButton, 80);
+            };
+        }
+
+        // ── 2. MutationObserver come backup ──────────────────────────
         const infBox = document.getElementById('lunarInfluenceBox');
         if (infBox) {
+            const observer = new MutationObserver(() => {
+                setTimeout(injectDeepDiveButton, 80);
+            });
             observer.observe(infBox, { childList: true, subtree: false });
         }
+
+        // ── 3. Retry polling (cattura render già avvenute + login lento)
+        // Si ferma non appena il pulsante appare, max 15 tentativi
+        let _attempts = 0;
+        const _poller = setInterval(() => {
+            _attempts++;
+            injectDeepDiveButton();
+            const btn = document.querySelector('.btn-lunar-deepdive');
+            if (btn || _attempts >= 15) clearInterval(_poller);
+        }, 800);
     });
 
     // ── Iniezione pulsante CTA nel pannello influenza ────────────────────
     function injectDeepDiveButton() {
+        // Solo per utenti loggati con infBox visibile e popolato
+        if (!window.currentUser) return;
         const infBox = document.getElementById('lunarInfluenceBox');
         if (!infBox || infBox.style.display === 'none') return;
-        if (infBox.querySelector('.btn-lunar-deepdive')) return; // già presente
+        if (!infBox.children.length) return;             // ancora vuoto
+        if (infBox.querySelector('.btn-lunar-deepdive')) return; // già iniettato
 
         const wrap = document.createElement('div');
         wrap.className = 'lunar-intento-wrap';
