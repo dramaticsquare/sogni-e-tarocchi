@@ -1,121 +1,115 @@
 // ══════════════════════════════════════════════════════════════════════════
-//  SIDERA — Guida Lunare Personalizzata (Oracolo Lunare)
-//  Aggiunge la funzione runLunarDeepDive() e il pannello risultato.
-//  Come usare: aggiungi <script src="sidera-oracolo-lunare.js"></script>
-//  subito prima di </body> in index.html
+//  SIDERA — Guida Lunare Personalizzata
+//  Aggiungi <script src="sidera-oracolo-lunare.js"></script> prima di </body>
 // ══════════════════════════════════════════════════════════════════════════
-
 (function () {
     'use strict';
 
-    // ── Iniezione HTML: pannello risultato e CSS aggiuntivo ─────────────────
+    // ── Iniezione CSS e HTML ────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
 
-        // CSS per il nuovo pannello
+        // ── Stili ───────────────────────────────────────────────────────
         const style = document.createElement('style');
         style.textContent = `
+            #lunarDeepDiveBtn {
+                display: none;
+                max-width: 720px;
+                margin: 20px auto 0;
+                padding: 0 0 4px;
+                animation: fadeUp 0.5s ease;
+            }
+            #lunarDeepDiveBtn textarea {
+                width: 100%;
+                background: rgba(7,5,15,0.65);
+                border: 1px solid rgba(201,168,76,0.18);
+                border-radius: 12px;
+                color: var(--text);
+                padding: 13px 16px;
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 16px;
+                font-style: italic;
+                outline: none;
+                resize: none;
+                transition: border-color 0.3s;
+                margin-bottom: 12px;
+                display: block;
+            }
+            #lunarDeepDiveBtn textarea:focus {
+                border-color: rgba(201,168,76,0.45);
+            }
+            #lunarDeepDiveBtn textarea::placeholder {
+                color: rgba(138,122,94,0.45);
+            }
+            .btn-guida-lunare {
+                width: 100%;
+                padding: 18px;
+                border-radius: 14px;
+                cursor: pointer;
+                transition: all 0.4s;
+                border: 1px solid rgba(201,168,76,0.65);
+                background: linear-gradient(135deg, rgba(42,26,85,0.92), rgba(107,63,160,0.75));
+                color: var(--gold-pale);
+                font-family: 'Cinzel', serif;
+                font-size: 11px;
+                letter-spacing: 0.22em;
+                text-transform: uppercase;
+                display: block;
+                position: relative;
+                overflow: hidden;
+            }
+            .btn-guida-lunare::after {
+                content: '';
+                position: absolute; top: 0; left: -100%;
+                width: 100%; height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+                transition: left 0.5s;
+            }
+            .btn-guida-lunare:hover::after { left: 100%; }
+            .btn-guida-lunare:hover {
+                background: linear-gradient(135deg, rgba(107,63,160,0.92), rgba(42,26,85,1));
+                box-shadow: 0 8px 30px rgba(201,168,76,0.22);
+                transform: translateY(-1px);
+            }
+
+            /* Pannello risultato */
             #lunarDeepDiveResult {
                 display: none;
                 max-width: 720px;
                 margin: 28px auto 0;
                 animation: fadeUp 0.6s ease;
             }
-            .lunar-deepdive-panel {
+            .lddr-panel {
                 border: 1px solid var(--border);
                 border-radius: 20px;
                 overflow: hidden;
-                background: rgba(20,14,40,0.5);
+                background: rgba(20,14,40,0.55);
                 backdrop-filter: blur(12px);
             }
-            .lunar-deepdive-header {
+            .lddr-header {
                 padding: 18px 26px;
                 background: rgba(42,26,85,0.3);
                 border-bottom: 1px solid var(--border);
                 display: flex; align-items: center;
-                justify-content: space-between; gap: 10px;
-                flex-wrap: wrap;
+                justify-content: space-between; gap: 10px; flex-wrap: wrap;
             }
-            .lunar-deepdive-header-left { display: flex; align-items: center; gap: 12px; }
-            .lunar-deepdive-header-icon { font-size: 1.4rem; }
-            .lunar-deepdive-header h3 {
+            .lddr-header h3 {
                 font-family: 'Cinzel', serif; font-size: 0.82rem;
                 color: var(--gold-light); letter-spacing: 2px;
                 text-transform: uppercase; margin: 0;
             }
-            .lunar-deepdive-header p {
+            .lddr-header p {
                 font-family: 'Cinzel', serif; font-size: 9px;
                 color: var(--text-muted); letter-spacing: 1px; margin: 2px 0 0;
             }
-            .lunar-deepdive-body { padding: 30px 28px; }
-            .lunar-deepdive-footer {
+            .lddr-body { padding: 30px 28px; }
+            .lddr-footer {
                 padding: 16px 26px; border-top: 1px solid var(--border);
                 display: flex; gap: 8px; flex-wrap: wrap;
                 align-items: center; justify-content: center;
             }
-
-            /* Intento personale — input sottile */
-            .lunar-intento-wrap {
-                margin-top: 14px; margin-bottom: 0;
-            }
-            .lunar-intento-label {
-                display: block; font-family: 'Cinzel', serif; font-size: 9px;
-                color: var(--text-muted); letter-spacing: 2px;
-                text-transform: uppercase; margin-bottom: 6px;
-            }
-            .lunar-intento-label span {
-                color: rgba(138,122,94,0.5);
-                font-size: 8px; letter-spacing: 1px;
-            }
-            #lunarIntentoInput {
-                width: 100%; background: rgba(7,5,15,0.6);
-                border: 1px solid rgba(201,168,76,0.15);
-                border-radius: 10px; color: var(--text);
-                padding: 12px 16px; font-family: 'Cormorant Garamond', serif;
-                font-size: 16px; font-style: italic; outline: none;
-                resize: none; transition: border-color 0.3s;
-                line-height: 1.5;
-            }
-            #lunarIntentoInput:focus {
-                border-color: rgba(201,168,76,0.4);
-                box-shadow: 0 0 0 3px rgba(201,168,76,0.05);
-            }
-            #lunarIntentoInput::placeholder { color: rgba(138,122,94,0.45); }
-
-            /* Pulsante principale */
-            .btn-lunar-deepdive {
-                width: 100%; margin-top: 14px; padding: 18px;
-                border-radius: 14px; cursor: pointer; transition: 0.4s;
-                border: 1px solid rgba(201,168,76,0.6);
-                background: linear-gradient(135deg, rgba(42,26,85,0.9), rgba(107,63,160,0.7));
-                color: var(--gold-pale);
-                font-family: 'Cinzel', serif; font-size: 11px;
-                letter-spacing: 0.2em; text-transform: uppercase;
-                position: relative; overflow: hidden;
-            }
-            .btn-lunar-deepdive::after {
-                content: ''; position: absolute; top: 0; left: -100%;
-                width: 100%; height: 100%;
-                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-                transition: left 0.5s;
-            }
-            .btn-lunar-deepdive:hover::after { left: 100%; }
-            .btn-lunar-deepdive:hover {
-                background: linear-gradient(135deg, rgba(107,63,160,0.9), rgba(42,26,85,1));
-                box-shadow: 0 8px 30px rgba(201,168,76,0.2);
-                transform: translateY(-1px);
-            }
-            .btn-lunar-deepdive:disabled {
-                opacity: 0.5; cursor: not-allowed; transform: none;
-            }
-            .lunar-cost-note {
-                font-family: 'Cinzel', serif; font-size: 9px;
-                color: rgba(138,122,94,0.5); letter-spacing: 1px;
-                text-align: center; margin-top: 8px; display: block;
-            }
-            /* Cached badge */
-            .lunar-cached-badge {
+            .lddr-cached {
                 display: inline-flex; align-items: center; gap: 6px;
-                padding: 4px 14px; border-radius: 50px;
+                padding: 3px 12px; border-radius: 50px;
                 background: rgba(80,160,80,0.1);
                 border: 1px solid rgba(80,160,80,0.3);
                 font-family: 'Cinzel', serif; font-size: 8px;
@@ -124,253 +118,204 @@
         `;
         document.head.appendChild(style);
 
-        // ── Pannello risultato (iniettato dopo #lunarSection) ─────────────
-        const lunarSection = document.getElementById('lunarSection');
-        if (!lunarSection) return;
-
-        const resultDiv = document.createElement('div');
-        resultDiv.id = 'lunarDeepDiveResult';
-        resultDiv.innerHTML = `
-            <div class="lunar-deepdive-panel">
-                <div class="lunar-deepdive-header">
-                    <div class="lunar-deepdive-header-left">
-                        <span class="lunar-deepdive-header-icon">☽</span>
-                        <div>
-                            <h3>Guida Lunare del Giorno</h3>
-                            <p id="lunarDeepDiveMeta">— · —</p>
-                        </div>
-                    </div>
-                    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-                        <span id="lunarCachedBadge" class="lunar-cached-badge" style="display:none;">
-                            ✦ già generata oggi
-                        </span>
-                        <button class="btn-share" onclick="window.sideraLunar.shareDeepDive()" style="font-size:0.72rem;">✨ Condividi</button>
-                        <button class="btn-share" onclick="window.sideraLunar.copyDeepDive()" style="font-size:0.72rem;">Copia</button>
-                        <button class="btn-share" onclick="document.getElementById('lunarDeepDiveResult').style.display='none'; document.getElementById('lunarDeepDiveResult').scrollIntoView({block:'end'});" style="font-size:0.72rem;">✕ Chiudi</button>
-                    </div>
-                </div>
-                <div class="lunar-deepdive-body">
-                    <div id="lunarDeepDiveContent"></div>
-                </div>
-                <div class="lunar-deepdive-footer">
-                    <button class="btn-share" onclick="window.sideraLunar.runAgain()" style="font-size:0.76rem;">
-                        ☽ Genera nuova lettura — 2 Crediti
-                    </button>
-                </div>
-            </div>
-        `;
-        lunarSection.parentNode.insertBefore(resultDiv, lunarSection.nextSibling);
-
-        // ── 1. Monkey-patch renderLunarSection (metodo più affidabile) ────
-        // La funzione è già definita nell'index.html — la avvolgiamo
-        // così ogni chiamata (anche future: cambio segno, login, ecc.)
-        // inietta automaticamente il pulsante alla fine.
-        const _origRender = window.renderLunarSection;
-        if (typeof _origRender === 'function') {
-            window.renderLunarSection = function () {
-                _origRender.apply(this, arguments);
-                // Piccolo delay: lascia che il DOM si stabilizzi
-                setTimeout(injectDeepDiveButton, 80);
-            };
-        }
-
-        // ── 2. MutationObserver come backup ──────────────────────────
+        // ── Pulsante CTA (fuori da #lunarInfluenceBox) ──────────────────
         const infBox = document.getElementById('lunarInfluenceBox');
         if (infBox) {
-            const observer = new MutationObserver(() => {
-                setTimeout(injectDeepDiveButton, 80);
-            });
-            observer.observe(infBox, { childList: true, subtree: false });
+            const btnDiv = document.createElement('div');
+            btnDiv.id = 'lunarDeepDiveBtn';
+            btnDiv.innerHTML = `
+                <label style="display:block; font-family:'Cinzel',serif; font-size:9px;
+                    color:var(--text-muted); letter-spacing:2px; text-transform:uppercase;
+                    margin-bottom:8px;">
+                    ✦ Il tuo intento per oggi &nbsp;
+                    <span style="color:rgba(138,122,94,0.5); font-size:8px; letter-spacing:1px;">
+                        — opzionale
+                    </span>
+                </label>
+                <textarea id="lunarIntentoInput" rows="2"
+                    placeholder="Cosa vuoi mettere a fuoco oggi? Un'intenzione, una domanda, un'emozione…">
+                </textarea>
+                <button class="btn-guida-lunare" onclick="window.sideraLunar.run()">
+                    ☽ Svela la tua Guida Lunare — 2 Crediti
+                </button>
+                <span style="font-family:'Cinzel',serif; font-size:9px; color:rgba(138,122,94,0.48);
+                    letter-spacing:1px; text-align:center; margin-top:8px; display:block;">
+                    lettura personalizzata · valida per tutta la giornata
+                </span>
+            `;
+            // Inserisci DOPO infBox (non dentro)
+            infBox.parentNode.insertBefore(btnDiv, infBox.nextSibling);
         }
 
-        // ── 3. Retry polling (cattura render già avvenute + login lento)
-        // Si ferma non appena il pulsante appare, max 15 tentativi
-        let _attempts = 0;
-        const _poller = setInterval(() => {
-            _attempts++;
-            injectDeepDiveButton();
-            const btn = document.querySelector('.btn-lunar-deepdive');
-            if (btn || _attempts >= 15) clearInterval(_poller);
-        }, 800);
+        // ── Pannello risultato (dopo il pulsante CTA) ───────────────────
+        const btnDiv = document.getElementById('lunarDeepDiveBtn');
+        if (btnDiv) {
+            const resultDiv = document.createElement('div');
+            resultDiv.id = 'lunarDeepDiveResult';
+            resultDiv.innerHTML = `
+                <div class="lddr-panel">
+                    <div class="lddr-header">
+                        <div>
+                            <h3>☽ Guida Lunare del Giorno</h3>
+                            <p id="lunarDeepDiveMeta">—</p>
+                        </div>
+                        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                            <span id="lunarCachedBadge" class="lddr-cached" style="display:none;">
+                                ✦ già generata oggi
+                            </span>
+                            <button class="btn-share" onclick="window.sideraLunar.shareResult()" style="font-size:0.72rem;">✨ Condividi</button>
+                            <button class="btn-share" onclick="window.sideraLunar.copyResult()" style="font-size:0.72rem;">Copia</button>
+                            <button class="btn-share" onclick="document.getElementById('lunarDeepDiveResult').style.display='none'" style="font-size:0.72rem;">✕</button>
+                        </div>
+                    </div>
+                    <div class="lddr-body">
+                        <div id="lunarDeepDiveContent"></div>
+                    </div>
+                    <div class="lddr-footer">
+                        <button class="btn-share" onclick="window.sideraLunar.run(true)" style="font-size:0.76rem;">
+                            ☽ Nuova lettura — 2 Crediti
+                        </button>
+                    </div>
+                </div>
+            `;
+            btnDiv.parentNode.insertBefore(resultDiv, btnDiv.nextSibling);
+        }
+
+        // ── Mostra/nascondi il pulsante in base all'auth ────────────────
+        // Controlla ogni 600ms finché non è stabile, poi ogni 3s
+        let _stable = 0;
+        const _vis = setInterval(() => {
+            updateBtnVisibility();
+            _stable++;
+            if (_stable > 20) clearInterval(_vis);
+        }, 600);
+
+        // ── Monkey-patch: aggiorna visibilità dopo ogni render ──────────
+        const _orig = window.renderLunarSection;
+        if (typeof _orig === 'function') {
+            window.renderLunarSection = function () {
+                _orig.apply(this, arguments);
+                setTimeout(updateBtnVisibility, 120);
+            };
+        }
     });
 
-    // ── Iniezione pulsante CTA nel pannello influenza ────────────────────
-    function injectDeepDiveButton() {
-        // Solo per utenti loggati con infBox visibile e popolato
-        if (!window.currentUser) return;
+    // ── Mostra il pulsante solo se utente loggato + panel visibile ──────
+    function updateBtnVisibility() {
+        const btn    = document.getElementById('lunarDeepDiveBtn');
         const infBox = document.getElementById('lunarInfluenceBox');
-        if (!infBox || infBox.style.display === 'none') return;
-        if (!infBox.children.length) return;             // ancora vuoto
-        if (infBox.querySelector('.btn-lunar-deepdive')) return; // già iniettato
-
-        const wrap = document.createElement('div');
-        wrap.className = 'lunar-intento-wrap';
-        wrap.innerHTML = `
-            <label class="lunar-intento-label">
-                ✦ Il tuo intento per oggi
-                <span>— opzionale, personalizza ulteriormente la lettura</span>
-            </label>
-            <textarea id="lunarIntentoInput" rows="2"
-                placeholder="Cosa vuoi mettere a fuoco oggi? Un'intenzione, una decisione, un'emozione…"></textarea>
-
-            <button class="btn-lunar-deepdive" onclick="window.sideraLunar.run()">
-                ☽ Guida Lunare Personalizzata — 2 Crediti
-            </button>
-            <span class="lunar-cost-note">
-                L'oracolo interpreta la luna nel tuo segno · valida per tutta la giornata
-            </span>
-        `;
-
-        // Inserisci prima dell'ultimo div (quello con i pulsanti condivisione)
-        const lastDiv = infBox.querySelector('div:last-child');
-        if (lastDiv) {
-            infBox.insertBefore(wrap, lastDiv);
-        } else {
-            infBox.appendChild(wrap);
-        }
+        if (!btn || !infBox) return;
+        const show = !!window.currentUser && infBox.style.display !== 'none';
+        btn.style.display = show ? 'block' : 'none';
     }
 
     // ── Namespace pubblico ───────────────────────────────────────────────
     window.sideraLunar = {
 
-        // ── Funzione principale ──────────────────────────────────────────
-        run: async function (forceNew = false) {
-            const cu        = window.currentUser;
-            const moonSign  = window.getCurrentMoonSign();
-            const phase     = window.getMoonPhase();
-            const moonData  = window.MOON_SIGN_DATA?.[moonSign] || {};
-            const viewSign  = window._lunarViewSign || cu?.sign || '';
-            const today     = new Date().toISOString().split('T')[0];
-            const intento   = document.getElementById('lunarIntentoInput')?.value?.trim() || '';
-            const COST      = 2;
+        run: async function (forceNew) {
+            const cu       = window.currentUser;
+            const moonSign = window.getCurrentMoonSign?.();
+            const phase    = window.getMoonPhase?.();
+            const moonData = window.MOON_SIGN_DATA?.[moonSign] || {};
+            const viewSign = window._lunarViewSign || cu?.sign || '';
+            const today    = new Date().toISOString().split('T')[0];
+            const intento  = document.getElementById('lunarIntentoInput')?.value?.trim() || '';
+            const COST     = 2;
 
-            // Mostra subito il pannello
-            const resultArea    = document.getElementById('lunarDeepDiveResult');
-            const resultContent = document.getElementById('lunarDeepDiveContent');
-            const metaEl        = document.getElementById('lunarDeepDiveMeta');
-            const cachedBadge   = document.getElementById('lunarCachedBadge');
+            const resultArea = document.getElementById('lunarDeepDiveResult');
+            const content    = document.getElementById('lunarDeepDiveContent');
+            const metaEl     = document.getElementById('lunarDeepDiveMeta');
+            const badge      = document.getElementById('lunarCachedBadge');
 
+            // Mostra il pannello e scrolla
             resultArea.style.display = 'block';
-            resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setTimeout(() => resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
 
-            // ── Cache giornaliera ────────────────────────────────────────
-            // Chiave: data + segno + (hash intento se presente)
-            const intentoHash = intento ? '_' + btoa(encodeURIComponent(intento)).slice(0, 8) : '';
-            const cacheKey    = `sidera_oracolo_lunare_${today}_${viewSign || 'gen'}${intentoHash}`;
-            const cached      = !forceNew && localStorage.getItem(cacheKey);
+            // Cache giornaliera
+            const cacheKey = `sidera_oracolo_lunare_${today}_${viewSign||'gen'}${intento ? '_'+btoa(encodeURIComponent(intento)).slice(0,6) : ''}`;
+            const cached   = !forceNew && localStorage.getItem(cacheKey);
 
-            if (metaEl) {
-                metaEl.innerText = `${phase.name} · Luna in ${moonSign}${viewSign ? ' · ' + viewSign : ''}`;
-            }
+            if (metaEl) metaEl.innerText = `${phase?.name||''} · Luna in ${moonSign}${viewSign ? ' · ' + viewSign : ''}`;
 
             if (cached) {
-                resultContent.innerHTML = window.formatText ? window.formatText(cached) : cached;
-                if (cachedBadge) cachedBadge.style.display = 'inline-flex';
-                window.showToast?.('✦ Lettura del giorno già generata — nessun credito scalato.');
+                content.innerHTML = window.formatText ? window.formatText(cached) : cached;
+                if (badge) badge.style.display = 'inline-flex';
+                window.showToast?.('✦ Lettura già generata oggi — nessun credito scalato.');
                 return;
             }
 
-            if (cachedBadge) cachedBadge.style.display = 'none';
+            if (badge) badge.style.display = 'none';
 
-            // ── Controllo crediti ────────────────────────────────────────
+            // Controlla crediti
             const c = parseInt(localStorage.getItem('astral_credits')) || 0;
-            if (c < COST) {
-                resultArea.style.display = 'none';
-                window.openPayment?.();
-                return;
-            }
+            if (c < COST) { resultArea.style.display = 'none'; window.openPayment?.(); return; }
 
-            // ── Loading ──────────────────────────────────────────────────
-            resultContent.innerHTML = '<p class="loading-text">La luna sta componendo il tuo messaggio</p>';
+            content.innerHTML = '<p class="loading-text">La luna sta componendo il tuo messaggio</p>';
 
             try {
-                // Il payload usa i nomi esatti che il prompt Make.com si aspetta
-                const payload = {
-                    tipo:         'oracolo_lunare',          // filtro Router Make
-                    data:          today,
-                    fase_lunare:   phase.name,               // {{1.fase_lunare}}
-                    luna_in:       moonSign,                 // {{1.luna_in}}
-                    segno_utente:  viewSign,                 // {{1.segno_utente}}
-                    nome:          cu?.name || '',           // {{1.nome}}
-                    energia:       moonData.energy || '',    // {{1.energia}}
-                    intento:       intento,                  // {{1.intento}}
-                    personalizzato: !!viewSign
-                };
-
-                const response = await fetch(window.MAKE_URL, {
+                const res = await fetch(window.MAKE_URL, {
                     method:  'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body:    JSON.stringify(payload)
+                    body: JSON.stringify({
+                        tipo:          'oracolo_lunare',
+                        data:           today,
+                        fase_lunare:    phase?.name  || '',
+                        luna_in:        moonSign     || '',
+                        segno_utente:   viewSign,
+                        nome:           cu?.name     || '',
+                        energia:        moonData.energy || '',
+                        intento:        intento,
+                        personalizzato: !!viewSign,
+                    })
                 });
 
-                const text = await response.text();
-                resultContent.innerHTML = window.formatText ? window.formatText(text) : text;
+                const text = await res.text();
+                content.innerHTML = window.formatText ? window.formatText(text) : text;
 
-                // ── Salva in cache ───────────────────────────────────────
+                // Salva in cache e pulisci giorni vecchi
                 localStorage.setItem(cacheKey, text);
-                // Pulisci cache giorni precedenti (stessa prefix)
                 Object.keys(localStorage)
                     .filter(k => k.startsWith('sidera_oracolo_lunare_') && k !== cacheKey)
                     .forEach(k => localStorage.removeItem(k));
 
                 window.saveToHistory?.('oracolo_lunare',
-                    `${phase.name} · Luna in ${moonSign}${viewSign ? ' · ' + viewSign : ''}${intento ? ' | ' + intento.slice(0,60) : ''}`,
+                    `${phase?.name||''} · Luna in ${moonSign}${viewSign ? ' · ' + viewSign : ''}${intento ? ' | ' + intento.slice(0,60) : ''}`,
                     text
                 );
-
                 window.deductCredits?.(COST);
 
             } catch (e) {
-                console.error('[Sidera] Oracolo Lunare error:', e);
-                resultContent.innerHTML = `
-                    <p style="color:var(--text-muted); font-style:italic; text-align:center; padding:12px 0;">
-                        La luna non ha risposto in questo momento.<br>
-                        I crediti non sono stati scalati — riprova tra poco.
-                    </p>`;
+                console.error('[Sidera] Oracolo Lunare:', e);
+                content.innerHTML = `<p style="color:var(--text-muted);font-style:italic;text-align:center;padding:12px 0;">
+                    La luna non ha risposto. I crediti non sono stati scalati — riprova tra poco.
+                </p>`;
             }
         },
 
-        // ── Rigenera forzando nuova chiamata API ─────────────────────────
-        runAgain: function () {
-            const cachedBadge = document.getElementById('lunarCachedBadge');
-            if (cachedBadge) cachedBadge.style.display = 'none';
-            window.sideraLunar.run(true);
-        },
-
-        // ── Condivisione nativa ──────────────────────────────────────────
-        shareDeepDive: async function () {
-            const content = document.getElementById('lunarDeepDiveContent')?.innerText || '';
-            const phase   = window.getMoonPhase?.() || {};
-            const moon    = window.getCurrentMoonSign?.() || '';
-            const sign    = window._lunarViewSign || window.currentUser?.sign || '';
-            const sym     = (window.ZODIAC_SYMBOLS && sign) ? window.ZODIAC_SYMBOLS[sign] : '✦';
-
-            const text = `✦ Guida Lunare del Giorno · Sidera ✦\n\n`
-                + `${phase.sym || '☽'} ${phase.name || ''} · Luna in ${moon}${sign ? '\n' + sym + ' ' + sign : ''}\n\n`
-                + content.slice(0, 400)
-                + '…\n\nScopri la tua guida lunare → https://sidera7.vercel.app/';
-
+        shareResult: async function () {
+            const text  = document.getElementById('lunarDeepDiveContent')?.innerText || '';
+            const phase = window.getMoonPhase?.() || {};
+            const moon  = window.getCurrentMoonSign?.() || '';
+            const sign  = window._lunarViewSign || window.currentUser?.sign || '';
+            const sym   = (window.ZODIAC_SYMBOLS?.[sign]) || '✦';
+            const share = `✦ Guida Lunare del Giorno · Sidera ✦\n\n${phase.sym||'☽'} ${phase.name||''} · Luna in ${moon}${sign ? '\n' + sym + ' ' + sign : ''}\n\n${text.slice(0,400)}…\n\nhttps://sidera7.vercel.app/`;
             if (navigator.share) {
-                try { await navigator.share({ title: 'Sidera — Guida Lunare', text }); return; }
+                try { await navigator.share({ title: 'Sidera — Guida Lunare', text: share }); return; }
                 catch (e) { if (e.name === 'AbortError') return; }
             }
-            try {
-                await navigator.clipboard.writeText(text);
-                window.showToast?.('✨ Testo copiato — incollalo dove vuoi!');
-            } catch { window.showToast?.('Copia il testo manualmente.'); }
+            try { await navigator.clipboard.writeText(share); window.showToast?.('✨ Testo copiato!'); }
+            catch { window.showToast?.('Copia il testo manualmente.'); }
         },
 
-        // ── Copia testo ──────────────────────────────────────────────────
-        copyDeepDive: async function () {
-            const content = document.getElementById('lunarDeepDiveContent')?.innerText || '';
+        copyResult: async function () {
             try {
-                await navigator.clipboard.writeText(content);
+                await navigator.clipboard.writeText(document.getElementById('lunarDeepDiveContent')?.innerText || '');
                 window.showToast?.('Testo copiato negli appunti.');
             } catch { window.showToast?.('Copia il testo manualmente.'); }
         }
     };
 
-    // Alias globale per retrocompatibilità (es. onclick="runLunarDeepDive()")
+    // Alias diretto
     window.runLunarDeepDive = () => window.sideraLunar.run();
 
 })();
