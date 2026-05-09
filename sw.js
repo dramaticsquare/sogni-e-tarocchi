@@ -1,6 +1,6 @@
 // ── Sidera Service Worker ─────────────────────────────────────────────────
 // riga 3 — aggiorna la versione per invalidare la cache sui dispositivi installati
-const CACHE_VERSION = 'sidera-v2';
+const CACHE_VERSION = 'sidera-v3';
 
 // Risorse da cacheare immediatamente all'installazione (app shell)
 const PRECACHE_ASSETS = [
