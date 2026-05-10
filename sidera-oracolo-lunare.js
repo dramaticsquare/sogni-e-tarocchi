@@ -205,7 +205,7 @@
         const btn    = document.getElementById('lunarDeepDiveBtn');
         const infBox = document.getElementById('lunarInfluenceBox');
         if (!btn || !infBox) return;
-        const show = !!window.currentUser && infBox.style.display !== 'none';
+        const show = !!currentUser && infBox.style.display !== 'none';
         btn.style.display = show ? 'block' : 'none';
     }
 
@@ -213,11 +213,11 @@
     window.sideraLunar = {
 
         run: async function (forceNew) {
-            const cu       = window.currentUser;
+            const cu       = currentUser;
             const moonSign = window.getCurrentMoonSign?.();
             const phase    = window.getMoonPhase?.();
-            const moonData = window.MOON_SIGN_DATA?.[moonSign] || {};
-            const viewSign = window._lunarViewSign || cu?.sign || '';
+            const moonData = MOON_SIGN_DATA?.[moonSign] || {};
+            const viewSign = _lunarViewSign || cu?.sign || '';
             const today    = new Date().toISOString().split('T')[0];
             const intento  = document.getElementById('lunarIntentoInput')?.value?.trim() || '';
             const COST     = 2;
@@ -253,7 +253,7 @@
             content.innerHTML = '<p class="loading-text">La luna sta componendo il tuo messaggio</p>';
 
             try {
-                const res = await fetch(window.MAKE_URL, {
+                const res = await fetch(MAKE_URL, {
                     method:  'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -296,8 +296,8 @@
             const text  = document.getElementById('lunarDeepDiveContent')?.innerText || '';
             const phase = window.getMoonPhase?.() || {};
             const moon  = window.getCurrentMoonSign?.() || '';
-            const sign  = window._lunarViewSign || window.currentUser?.sign || '';
-            const sym   = (window.ZODIAC_SYMBOLS?.[sign]) || '✦';
+            const sign  = _lunarViewSign || currentUser?.sign || '';
+            const sym   = (ZODIAC_SYMBOLS?.[sign]) || '✦';
             const share = `✦ Guida Lunare del Giorno · Sidera ✦\n\n${phase.sym||'☽'} ${phase.name||''} · Luna in ${moon}${sign ? '\n' + sym + ' ' + sign : ''}\n\n${text.slice(0,400)}…\n\nhttps://sidera7.vercel.app/`;
             if (navigator.share) {
                 try { await navigator.share({ title: 'Sidera — Guida Lunare', text: share }); return; }
