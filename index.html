@@ -2112,6 +2112,7 @@
                 font-family:'Cinzel',serif; font-size:8px; color:#90c870; letter-spacing:2px;">
                 ✦ già generata oggi
             </span>
+            <button class="btn-share" onclick="openIgCard('guida_lunare')" style="font-size:0.72rem;">📸 Card Instagram</button>
             <button class="btn-share" onclick="window.sideraLunar.shareResult()" style="font-size:0.72rem;">✨ Condividi</button>
             <button class="btn-share" onclick="window.sideraLunar.copyResult()" style="font-size:0.72rem;">Copia</button>
             <button class="btn-share" onclick="document.getElementById('lunarDeepDiveResult').style.display='none'" style="font-size:0.72rem;">✕</button>
@@ -5171,6 +5172,16 @@ function openIgCard(tipo) {
         viewSign: d.viewSign || '',
         resonance: d.resonance || { label:'', icon:'✦', type:'neutro' }});
     
+    } else if (tipo === 'guida_lunare') {
+        // Riusa il renderer lunare con la quote dell'AI invece di quella statica
+        const raw      = document.getElementById('lunarDeepDiveContent')?.innerText || '';
+        const quote    = showQuote ? extractQuote(raw, 220) : '';
+        const phase    = getMoonPhase();
+        const moonSign = getCurrentMoonSign();
+        const viewSign = _lunarViewSign || currentUser?.sign || '';
+        const resonance = getMoonResonance(viewSign, moonSign);
+        renderIgCanvas({ tipo: 'lunare', quote, moonSign, phase, viewSign, resonance });
+
     } else if (tipo === 'astrologia') {
         const sole = document.getElementById('summarySoleSign')?.innerText || '—';
         const luna = document.getElementById('summaryLunaSign')?.innerText || '—';
