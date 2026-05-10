@@ -1,6 +1,6 @@
 // ── Sidera Service Worker ─────────────────────────────────────────────────
 // Aggiorna CACHE_VERSION ad ogni deploy per forzare il refresh sui dispositivi
-const CACHE_VERSION = 'sidera-v4';
+const CACHE_VERSION = 'sidera-v5';
 
 // App shell — solo risorse locali (no URL esterni: causano crash di addAll)
 const PRECACHE_ASSETS = [
