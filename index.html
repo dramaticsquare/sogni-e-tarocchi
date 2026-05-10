@@ -2881,6 +2881,19 @@
                 <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password">
                 <div id="loginError" style="display:none;font-size:0.78rem;color:#e07070;text-align:center;margin:-8px 0 10px;font-family:'Cinzel',serif;letter-spacing:1px;"></div>
                 <button type="submit" class="btn-action" id="loginBtn">✦ Accedi al Tempio</button>
+
+<!-- NUOVO: recupero password -->
+<div style="text-align:center; margin-top:10px;">
+    <button type="button" onclick="doResetPassword()"
+        style="background:none; border:none; color:var(--text-muted);
+               font-family:'Cinzel',serif; font-size:9px; letter-spacing:1.5px;
+               cursor:pointer; text-decoration:underline; text-underline-offset:3px;
+               transition:color 0.3s;"
+        onmouseover="this.style.color='var(--gold-light)'"
+        onmouseout="this.style.color='var(--text-muted)'">
+        Password dimenticata?
+    </button>
+</div>
                 </form>
                 <p style="font-size:0.73rem;color:var(--text-muted);margin-top:14px;text-align:center;line-height:1.6;">
                     Crediti e letture sincronizzati su tutti i tuoi dispositivi.
@@ -3879,7 +3892,44 @@ async function doLogin() {
         btn.disabled = false;
     }
 }
+async function doResetPassword() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const errEl = document.getElementById('loginError');
+    errEl.style.display = 'none';
 
+    if (!email || !email.includes('@')) {
+        errEl.innerText = 'Inserisci la tua email nel campo sopra.';
+        errEl.style.display = 'block';
+        return;
+    }
+
+    if (!window._supabase) {
+        showToast('Recupero password non disponibile in modalità locale.');
+        return;
+    }
+
+    try {
+        const { error } = await window._supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: 'https://sidera7.vercel.app/'  // ← Supabase reindirizza qui dopo il click
+        });
+
+        if (error) {
+            errEl.innerText = error.message || 'Errore durante la richiesta. Riprova.';
+            errEl.style.display = 'block';
+            return;
+        }
+
+        // Feedback positivo — non rivela se l'email esiste (sicurezza)
+        errEl.style.color = '#90c870';
+        errEl.innerText = '✦ Se l\'email è registrata, riceverai le istruzioni a breve.';
+        errEl.style.display = 'block';
+        setTimeout(() => { errEl.style.display = 'none'; errEl.style.color = '#e07070'; }, 6000);
+
+    } catch(e) {
+        errEl.innerText = e?.message || 'Errore imprevisto. Riprova tra un attimo.';
+        errEl.style.display = 'block';
+    }
+}
 async function doRegister() {
     const name  = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim();
