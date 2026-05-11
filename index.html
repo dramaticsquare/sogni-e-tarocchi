@@ -4312,19 +4312,18 @@ async function sendConsult() {
     const name = document.getElementById('cName').value.trim();
     const email = document.getElementById('cEmail').value.trim();
     const msg = document.getElementById('cMessage').value.trim();
-    if (!name || !email || !msg) return showToast('Compila nome, email e messaggio prima di inviare la richiesta.');
+    if (!name || !email || !msg) return showToast('Compila nome, email e messaggio prima di inviare.');
     if (!email.includes('@')) return showToast('Inserisci un\'email valida.');
 
     const cost = consultCosts[selectedConsult] || 10;
     let c = parseInt(localStorage.getItem('astral_credits')) || 0;
     if (c < cost) { openPayment(); return; }
 
-    // Disabilita il bottone durante l'invio
     const btn = document.querySelector('#consultStep2 .btn-action');
     if (btn) { btn.disabled = true; btn.innerText = '...'; }
 
     try {
-        await fetch(MAKE_URL, {
+        const response = await fetch(MAKE_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -4335,11 +4334,24 @@ async function sendConsult() {
                 messaggio: msg
             })
         });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
     } catch(e) {
         console.warn('[Sidera] Consulenza webhook error:', e);
-        // Procedi comunque — non bloccare l'utente per un errore di rete
+        showToast('Richiesta non inviata. Riprova tra un momento — i crediti sono al sicuro.');
+        if (btn) { btn.disabled = false; btn.innerText = '✦ Invia la Richiesta'; }
+        return;
     }
 
+    // Scala solo se l'invio è andato a buon fine
+    deductCredits(cost);
+    document.getElementById('consultStep2').classList.remove('visible');
+    document.getElementById('consultStep3').classList.add('visible');
+    saveToHistory('consulenza', msg, 'Consulenza: ' + selectedConsult);
+
+    if (btn) { btn.disabled = false; btn.innerText = '✦ Invia la Richiesta'; }
+}
     // Scala crediti e mostra conferma
     const newC = c - cost;
     localStorage.setItem('astral_credits', newC);
@@ -4483,6 +4495,7 @@ async function loadDailyCard(forceRefresh = false) {
                 personalizzato: !!userSign
             })
         });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const text = await response.text();
         const clean = text.replace(/###[^\n]*/g,'').replace(/\n+/g,' ').trim();
         const finalMsg = clean;
@@ -4648,6 +4661,7 @@ async function runTarot() {
                 carte_totali: deck.length
             })
         });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const text = await response.text();
         content.innerHTML = formatText(text);
         saveToHistory('tarocchi', q, text);
@@ -4678,6 +4692,7 @@ async function runDream() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ tipo: "sogno", descrizione: d })
         });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const text = await response.text();
         content.innerHTML = formatText(text);
 
@@ -4838,6 +4853,7 @@ async function runAstrology() {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const text = await response.text();
         if (text.includes('##SUMMARY_DATA##')) {
             const parts = text.split('##SUMMARY_DATA##');
@@ -4914,6 +4930,7 @@ async function runSynastry() {
                     pianeti: planetsB ? extractPlanetSummary(planetsB) : null }
             })
         });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const text = await response.text();
 
         // Parsing strutturato: cerca blocco ##SCORES## se il prompt Make lo genera
