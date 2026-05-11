@@ -4352,21 +4352,7 @@ async function sendConsult() {
 
     if (btn) { btn.disabled = false; btn.innerText = '✦ Invia la Richiesta'; }
 }
-    // Scala crediti e mostra conferma
-    const newC = c - cost;
-    localStorage.setItem('astral_credits', newC);
-    document.getElementById('creditCount').innerText = newC;
-    if (currentUser) {
-        currentUser.credits = newC;
-        localStorage.setItem('sidera_user', JSON.stringify(currentUser));
-    }
-    document.getElementById('consultStep2').classList.remove('visible');
-    document.getElementById('consultStep3').classList.add('visible');
-    saveToHistory('consulenza', msg, 'Consulenza: ' + selectedConsult);
-
-    if (btn) { btn.disabled = false; btn.innerText = '✦ Invia la Richiesta'; }
-}
-
+   
 function resetConsult() {
     document.getElementById('consultStep1').style.display = 'block';
     document.getElementById('consultStep2').classList.remove('visible');
